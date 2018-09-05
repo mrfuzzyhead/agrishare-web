@@ -2,8 +2,7 @@
 SQLyog Ultimate v12.2.5 (64 bit)
 MySQL - 5.7.21-log : Database - agrishare
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -34,6 +33,8 @@ CREATE TABLE `BookingUsers` (
   CONSTRAINT `bookingusers_ibfk_1` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*Data for the table `BookingUsers` */
+
 /*Table structure for table `Bookings` */
 
 DROP TABLE IF EXISTS `Bookings`;
@@ -43,6 +44,7 @@ CREATE TABLE `Bookings` (
   `ForId` smallint(6) NOT NULL COMMENT 'Enum: Me, Friend, Group',
   `UserId` int(11) NOT NULL,
   `ListingId` int(11) NOT NULL,
+  `ServiceId` int(11) NOT NULL,
   `Location` varchar(256) DEFAULT NULL,
   `Latitude` decimal(11,8) NOT NULL DEFAULT '0.00000000',
   `Longitude` decimal(11,8) NOT NULL DEFAULT '0.00000000',
@@ -59,9 +61,13 @@ CREATE TABLE `Bookings` (
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `ListingId` (`ListingId`),
+  KEY `bookings_ibfk_3` (`ServiceId`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Bookings` */
 
 /*Table structure for table `Categories` */
 
@@ -77,6 +83,8 @@ CREATE TABLE `Categories` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*Data for the table `Categories` */
+
 /*Table structure for table `Config` */
 
 DROP TABLE IF EXISTS `Config`;
@@ -91,17 +99,25 @@ CREATE TABLE `Config` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*Data for the table `Config` */
+
 /*Table structure for table `Counters` */
 
 DROP TABLE IF EXISTS `Counters`;
 
 CREATE TABLE `Counters` (
-  `Event` varchar(16) NOT NULL,
-  `Category` varchar(16) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Event` varchar(16) DEFAULT NULL,
+  `Category` varchar(16) DEFAULT NULL,
   `Date` date NOT NULL,
-  `Count` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Event`,`Category`,`Date`)
+  `Hits` int(11) NOT NULL DEFAULT '0',
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Counters` */
 
 /*Table structure for table `Faqs` */
 
@@ -118,6 +134,8 @@ CREATE TABLE `Faqs` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*Data for the table `Faqs` */
+
 /*Table structure for table `Listings` */
 
 DROP TABLE IF EXISTS `Listings`;
@@ -126,7 +144,6 @@ CREATE TABLE `Listings` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) NOT NULL,
   `CategoryId` int(11) NOT NULL,
-  `SubcategoryId` int(11) DEFAULT NULL,
   `Title` varchar(256) DEFAULT NULL,
   `Description` varchar(2048) DEFAULT NULL,
   `Location` varchar(256) DEFAULT NULL,
@@ -137,18 +154,10 @@ CREATE TABLE `Listings` (
   `Year` int(11) DEFAULT NULL,
   `Mobile` tinyint(1) NOT NULL DEFAULT '0',
   `ConditionId` smallint(6) NOT NULL DEFAULT '0',
-  `TotalVolume` decimal(10,3) DEFAULT NULL COMMENT 'Lorry',
-  `TimeUnitId` smallint(6) NOT NULL DEFAULT '0',
-  `TimeQuantity` decimal(10,3) DEFAULT NULL,
-  `QuantityUnitId` smallint(6) NOT NULL DEFAULT '0',
-  `MinimumQuantity` decimal(10,3) DEFAULT NULL,
-  `PricePerQuantityUnit` decimal(10,3) DEFAULT NULL,
-  `FuelPerQuantityUnit` decimal(10,3) DEFAULT NULL,
-  `DistanceUnitId` smallint(6) NOT NULL DEFAULT '0',
-  `MaximumDistance` decimal(10,3) DEFAULT NULL,
-  `PricePerDistanceUnit` decimal(10,3) DEFAULT NULL,
   `GroupServices` tinyint(1) NOT NULL DEFAULT '0',
   `Photos` text,
+  `AverageRating` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `RatingCount` int(11) NOT NULL DEFAULT '0',
   `StatusId` smallint(6) NOT NULL DEFAULT '0',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -156,11 +165,11 @@ CREATE TABLE `Listings` (
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `CategoryId` (`CategoryId`),
-  KEY `SubcategoryId` (`SubcategoryId`),
   CONSTRAINT `listings_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `listings_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `listings_ibfk_3` FOREIGN KEY (`SubcategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `listings_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Listings` */
 
 /*Table structure for table `Log` */
 
@@ -177,6 +186,8 @@ CREATE TABLE `Log` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Log` */
 
 /*Table structure for table `Notifications` */
 
@@ -198,6 +209,8 @@ CREATE TABLE `Notifications` (
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Notifications` */
 
 /*Table structure for table `Pages` */
 
@@ -224,6 +237,58 @@ CREATE TABLE `Pages` (
   CONSTRAINT `pages_ibfk_1` FOREIGN KEY (`ParentId`) REFERENCES `Pages` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*Data for the table `Pages` */
+
+/*Table structure for table `Ratings` */
+
+DROP TABLE IF EXISTS `Ratings`;
+
+CREATE TABLE `Ratings` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ListingId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `Comments` varchar(1024) DEFAULT NULL,
+  `Rating` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `ListingId` (`ListingId`),
+  KEY `UserId` (`UserId`),
+  CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Ratings` */
+
+/*Table structure for table `Services` */
+
+DROP TABLE IF EXISTS `Services`;
+
+CREATE TABLE `Services` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ListingId` int(11) NOT NULL,
+  `Mobile` tinyint(1) NOT NULL DEFAULT '0',
+  `TotalVolume` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `QuantityUnitId` smallint(6) NOT NULL DEFAULT '0',
+  `TimeUnitId` smallint(6) NOT NULL DEFAULT '0',
+  `DistanceUnitId` smallint(6) NOT NULL DEFAULT '0',
+  `MinimumQuantity` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `MaximumDistance` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `PricePerQuantityUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `FuelPerQuantityUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `TimePerQuantityUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `PricePerDistanceUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `ListingId` (`ListingId`),
+  CONSTRAINT `services_ibfk_1` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Services` */
+
 /*Table structure for table `Templates` */
 
 DROP TABLE IF EXISTS `Templates`;
@@ -238,6 +303,8 @@ CREATE TABLE `Templates` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Templates` */
 
 /*Table structure for table `Transactions` */
 
@@ -260,8 +327,10 @@ CREATE TABLE `Transactions` (
   KEY `BookingUserId` (`BookingUserId`),
   CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`BookingUserId`) REFERENCES `BookingUsers` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`BookingUserId`) REFERENCES `bookingusers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Transactions` */
 
 /*Table structure for table `Users` */
 
@@ -273,6 +342,8 @@ CREATE TABLE `Users` (
   `LastName` varchar(256) DEFAULT NULL,
   `EmailAddress` varchar(1024) DEFAULT NULL,
   `Telephone` varchar(16) DEFAULT NULL,
+  `GenderId` smallint(6) NOT NULL DEFAULT '0',
+  `DateOfBirth` date DEFAULT NULL,
   `Password` varchar(1024) DEFAULT NULL,
   `Salt` varchar(512) DEFAULT NULL,
   `AuthToken` varchar(1024) DEFAULT NULL,
@@ -280,17 +351,21 @@ CREATE TABLE `Users` (
   `FailedLoginAttempts` int(11) NOT NULL DEFAULT '0',
   `VerificationCode` varchar(8) DEFAULT NULL,
   `VerificationCodeExpiry` datetime DEFAULT NULL,
+  `NotificationPreferences` smallint(6) NOT NULL DEFAULT '0',
+  `InterestId` smallint(6) NOT NULL COMMENT 'Enum: Seeking, Offering',
   `FacebookId` varchar(256) DEFAULT NULL,
   `GoogleId` varchar(256) DEFAULT NULL,
   `AvatarUrl` varchar(1024) DEFAULT NULL,
   `SignalRConnectionId` varchar(256) DEFAULT NULL,
   `StatusId` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Enum: Pending, Verified',
-  `Roles` varchar(1024) DEFAULT NULL,
+  `RoleList` varchar(1024) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Users` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
