@@ -54,6 +54,9 @@ CREATE TABLE `Bookings` (
   `StartDate` date NOT NULL,
   `EndDate` date NOT NULL,
   `Price` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `HireCost` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `FuelCost` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `TransportCost` decimal(10,3) NOT NULL DEFAULT '0.000',
   `StatusId` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Enum: Pending, Approved, Declined, In Progress, Complete',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -395,9 +398,9 @@ CREATE TABLE `Notifications` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) NOT NULL,
   `BookingId` int(11) DEFAULT NULL,
-  `Title` varchar(1024) DEFAULT NULL,
   `TypeId` smallint(6) NOT NULL DEFAULT '0',
   `StatusId` smallint(6) NOT NULL DEFAULT '0',
+  `GroupId` smallint(6) NOT NULL DEFAULT '0',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -482,6 +485,7 @@ CREATE TABLE `Services` (
   `FuelPerQuantityUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
   `TimePerQuantityUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
   `PricePerDistanceUnit` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `FuelPrice` decimal(10,3) NOT NULL DEFAULT '0.000',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -494,14 +498,14 @@ CREATE TABLE `Services` (
 
 /*Data for the table `Services` */
 
-insert  into `Services`(`Id`,`ListingId`,`CategoryId`,`Mobile`,`TotalVolume`,`QuantityUnitId`,`TimeUnitId`,`DistanceUnitId`,`MinimumQuantity`,`MaximumDistance`,`PricePerQuantityUnit`,`FuelPerQuantityUnit`,`TimePerQuantityUnit`,`PricePerDistanceUnit`,`DateCreated`,`LastModified`,`Deleted`) values 
-(1,2,4,1,'0.000',1,1,1,'0.000','50.000','79.990','10.000','2.000','15.000','2018-09-17 14:33:07','2018-09-17 14:33:07',0),
-(2,3,5,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','2018-09-17 14:35:27','2018-09-17 14:35:27',0),
-(3,4,6,1,'0.000',1,1,1,'0.000','75.000','100.000','20.000','5.000','20.000','2018-09-17 14:36:56','2018-09-17 14:45:58',0),
-(5,5,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','2018-09-20 12:46:29','2018-09-20 12:46:29',0),
-(6,6,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','2018-09-20 12:48:57','2018-09-20 12:48:57',0),
-(7,7,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','2018-09-20 14:41:12','2018-09-20 14:41:12',0),
-(8,8,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','2018-09-20 14:45:30','2018-09-21 11:14:12',1);
+insert  into `Services`(`Id`,`ListingId`,`CategoryId`,`Mobile`,`TotalVolume`,`QuantityUnitId`,`TimeUnitId`,`DistanceUnitId`,`MinimumQuantity`,`MaximumDistance`,`PricePerQuantityUnit`,`FuelPerQuantityUnit`,`TimePerQuantityUnit`,`PricePerDistanceUnit`,`FuelPrice`,`DateCreated`,`LastModified`,`Deleted`) values 
+(1,2,4,1,'0.000',1,1,1,'0.000','50.000','79.990','10.000','2.000','15.000','0.000','2018-09-17 14:33:07','2018-09-17 14:33:07',0),
+(2,3,5,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','0.000','2018-09-17 14:35:27','2018-09-17 14:35:27',0),
+(3,4,6,1,'0.000',1,1,1,'0.000','75.000','100.000','20.000','5.000','20.000','0.000','2018-09-17 14:36:56','2018-09-17 14:45:58',0),
+(5,5,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','0.000','2018-09-20 12:46:29','2018-09-20 12:46:29',0),
+(6,6,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','0.000','2018-09-20 12:48:57','2018-09-20 12:48:57',0),
+(7,7,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','0.000','2018-09-20 14:41:12','2018-09-20 14:41:12',0),
+(8,8,6,1,'0.000',1,1,1,'0.000','75.000','99.990','15.000','3.000','18.000','0.000','2018-09-20 14:45:30','2018-09-21 11:14:12',1);
 
 /*Table structure for table `Templates` */
 
@@ -516,9 +520,18 @@ CREATE TABLE `Templates` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `Templates` */
+
+insert  into `Templates`(`Id`,`TypeId`,`Title`,`HTML`,`DateCreated`,`LastModified`,`Deleted`) values 
+(1,1,'Email Template','<html>\r\n<head>\r\n    <style type=\"text/css\">\r\n        body {\r\n            font: normal 14px arial;\r\n            color: #666;\r\n        }\r\n        a {\r\n            color: black;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n\r\n    <table cellpadding=\"30\" cellspacing=\"0\" style=\"width: 600px\" align=\"center\">\r\n        <tr>\r\n            <td style=\"font-size: 18px\">\r\n                AgriShare\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td style=\"font-size: 14px\">\r\n                {{Content}}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td style=\"font-size: 11px\">\r\n                <strong>Agrishare</strong> - Connecting you to farm eqiupment.\r\n            </td>\r\n        </tr>\r\n    </table>\r\n\r\n</body>\r\n</html>','2018-09-24 16:01:11','2018-09-24 16:02:06',0),
+(2,1,'Booking Cancelled','<big>Your booking was cancelled by the supplier.</big><br/>\r\n<br/>\r\n<small>Service:</small> {{Service}}<br/>\r\n<small>Supplier:</small> {{Supplier}}<br/>\r\n<small>Start date:</small> {{Start Date}}<br/>\r\n<small>End date:</small> {{|End Date}}','2018-09-24 16:01:52','2018-09-24 16:13:17',0),
+(3,1,'Booking Confirmed','<big>Your booking was confirmed by the supplier.</big><br/>\r\n<br/>\r\n<small>Service:</small> {{Service}}<br/>\r\n<small>Supplier:</small> {{Supplier}}<br/>\r\n<small>Start date:</small> {{Start Date}}<br/>\r\n<small>End date:</small> {{|End Date}}<br/>\r\n<br/>\r\nTap the link below to submit make the payment.<br/>\r\n<br/>\r\n<a href=\"{{Payment URL}}\" class=\"button\"><span>Make Payment</span></a>','2018-09-24 16:11:44','2018-09-24 16:51:22',0),
+(4,1,'New Booking','<big>You have received a new booking.</big><br/>\r\n<br/>\r\n<small>Service:</small> {{Service}}<br/>\r\n<small>Start date:</small> {{Start Date}}<br/>\r\n<small>End date:</small> {{|End Date}}','2018-09-24 16:11:47','2018-09-24 16:13:45',0),
+(5,1,'New Review','<big>You have received a new review.</big><br/>\r\n<br/>\r\n<small>Service:</small> {{Service}}<br/>','2018-09-24 16:11:53','2018-09-24 16:13:40',0),
+(6,1,'Payment Received','<big>You have received a payment.</big><br/>\r\n<br/>\r\n<small>Amount:</small> {{Payment Amount}}<br/>\r\n<small>Fees:</small> {{Payment Fees}}<br/>\r\n<small>Total:</small> {{Payment Total}}','2018-09-24 16:11:58','2018-09-24 16:14:42',0),
+(7,1,'Service Complete','<big>Your service is complete.</big><br/>\r\n<br/>\r\n<small>Service:</small> {{Service}}<br/>\r\n<small>Supplier:</small> {{Supplier}}<br/>\r\n<small>Start date:</small> {{Start Date}}<br/>\r\n<small>End date:</small> {{|End Date}}<br/>\r\n<br/>\r\nPlease tap the link below to cnfirm the service is complete and leave a review.<br/>\r\n<br/>\r\n<a href=\"{{Confirm URL}}\" class=\"button\"><span>Confirm</span></a>','2018-09-24 16:12:01','2018-09-24 16:15:41',0);
 
 /*Table structure for table `Transactions` */
 
