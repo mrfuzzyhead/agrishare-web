@@ -116,7 +116,7 @@ CREATE TABLE `Config` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `Config` */
 
@@ -138,7 +138,12 @@ insert  into `Config`(`Id`,`Key`,`Value`,`DateCreated`,`LastModified`,`Deleted`)
 (15,'AWS Access Key','AKIAJQ3SQVY3D2RAQQAQ','2018-09-20 13:00:31','2018-09-20 13:00:31',0),
 (16,'AWS Secret Key','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','2018-09-20 13:00:41','2018-09-20 13:00:41',0),
 (17,'AWS Application ARN','arn:aws:sns:ap-southeast-2:152006936362:app/GCM/Agrishare','2018-09-20 13:24:54','2018-09-20 13:24:54',0),
-(18,'Log SNS','True','2018-09-20 13:51:30','2018-09-20 13:51:30',0);
+(18,'Log SNS','True','2018-09-20 13:51:30','2018-09-20 13:51:30',0),
+(19,'EcoCash URL',NULL,'2018-09-25 11:35:54','2018-09-25 11:35:54',0),
+(20,'EcoCash Merchant Code',NULL,'2018-09-25 11:35:55','2018-09-25 11:35:55',0),
+(21,'EcoCash Merchant Pin',NULL,'2018-09-25 11:36:35','2018-09-25 11:36:35',0),
+(22,'EcoCash Merchant Number',NULL,'2018-09-25 11:36:40','2018-09-25 11:36:40',0),
+(23,'EcoCash Log','True','2018-09-25 11:41:29','2018-09-25 11:41:29',0);
 
 /*Table structure for table `Counters` */
 
@@ -539,20 +544,18 @@ DROP TABLE IF EXISTS `Transactions`;
 
 CREATE TABLE `Transactions` (
   `Id` int(11) NOT NULL,
-  `UserId` int(11) NOT NULL,
   `BookingId` int(11) NOT NULL,
   `BookingUserId` int(11) DEFAULT NULL,
   `Reference` varchar(256) DEFAULT NULL,
   `Amount` decimal(10,3) NOT NULL DEFAULT '0.000',
   `StatusId` smallint(6) NOT NULL DEFAULT '0',
+  `Log` text,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
-  KEY `UserId` (`UserId`),
   KEY `BookingId` (`BookingId`),
   KEY `BookingUserId` (`BookingUserId`),
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`BookingUserId`) REFERENCES `BookingUsers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
