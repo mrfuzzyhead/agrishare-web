@@ -80,8 +80,7 @@ CREATE TABLE `Bookings` (
   `AdditionalInformation` varchar(4096) DEFAULT NULL,
   `TotalVolume` decimal(10,3) NOT NULL DEFAULT '0.000',
   `StatusId` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Enum: Pending, Approved, Declined, In Progress, Complete',
-  `EcoCashReference` varchar(128) DEFAULT NULL,
-  `Reconciled` tinyint(1) NOT NULL DEFAULT '0',
+  `PaidOut` tinyint(1) NOT NULL DEFAULT '0',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -119,7 +118,7 @@ CREATE TABLE `Config` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Counters` */
 
@@ -129,6 +128,7 @@ CREATE TABLE `Counters` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) DEFAULT NULL,
   `ServiceId` int(11) DEFAULT NULL,
+  `BookingId` int(11) DEFAULT NULL,
   `Event` varchar(32) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -136,8 +136,10 @@ CREATE TABLE `Counters` (
   PRIMARY KEY (`Id`),
   KEY `ServiceId` (`ServiceId`),
   KEY `UserId` (`UserId`),
+  KEY `BookingId` (`BookingId`),
   CONSTRAINT `counters_ibfk_1` FOREIGN KEY (`ServiceId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
@@ -171,6 +173,29 @@ CREATE TABLE `Faqs` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+/*Table structure for table `Journals` */
+
+DROP TABLE IF EXISTS `Journals`;
+
+CREATE TABLE `Journals` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Title` varchar(256) DEFAULT NULL,
+  `UserId` int(11) DEFAULT NULL,
+  `BookingId` int(11) DEFAULT NULL,
+  `Amount` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Reconciled` tinyint(1) NOT NULL DEFAULT '0',
+  `EcoCashReference` varchar(128) DEFAULT NULL,
+  `TypeId` smallint(6) NOT NULL DEFAULT '0',
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `UserId` (`UserId`),
+  KEY `BookingId` (`BookingId`),
+  CONSTRAINT `journals_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `journals_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `Listings` */
 
@@ -220,7 +245,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1067 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1107 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -390,7 +415,7 @@ CREATE TABLE `Users` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8mb4;
 
 /* Function  structure for function  `GetDistance` */
 

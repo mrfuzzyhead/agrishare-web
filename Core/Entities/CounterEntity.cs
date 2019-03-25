@@ -36,11 +36,11 @@ namespace Agrishare.Core.Entities
         public static string DefaultSort = "Date";
         public string Title => $"{Event}";
 
-        public static int Count(Counters Event = Counters.None, DateTime? StartDate = null, DateTime? EndDate = null, Gender Gender = Gender.None, int ServiceId = 0, bool UniqueUser = false, int CategoryId = 0)
+        public static int Count(Counters Event = Counters.None, DateTime? StartDate = null, DateTime? EndDate = null, Gender Gender = Gender.None, int ServiceId = 0, bool UniqueUser = false, int CategoryId = 0, BookingFor? For = null)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Counters.Include(o => o.User).Include(o => o.Service).Where(o => !o.Deleted);
+                var query = ctx.Counters.Include(o => o.User).Include(o => o.Service).Include(o => o.Booking).Where(o => !o.Deleted);
 
                 if (Event != Counters.None)
                 {
@@ -62,6 +62,9 @@ namespace Agrishare.Core.Entities
                     var end = EndDate.Value.EndOfDay();
                     query = query.Where(o => o.DateCreated <= end);
                 }
+
+                if (For.HasValue)
+                    query = query.Where(o => o.Booking.ForId == For.Value);
 
                 if (CategoryId > 0)
                     query = query.Where(o => o.Service.ParentId == CategoryId);
@@ -150,11 +153,11 @@ namespace Agrishare.Core.Entities
 
         // TODO update this method to use caching so that we only write to the db once every minute instead of once every hit
         // Using caching will limit the disk IO which will become an issue
-        public static bool Hit(int UserId, Counters Event, int ServiceId = 0)
+        public static bool Hit(int UserId, Counters Event, int ServiceId = 0, int BookingId = 0)
         {
-            return Hit(UserId, $"{Event}".ExplodeCamelCase(), ServiceId);
+            return Hit(UserId, $"{Event}".ExplodeCamelCase(), ServiceId, BookingId);
         }
-        public static bool Hit(int UserId, string Event, int ServiceId = 0)
+        public static bool Hit(int UserId, string Event, int ServiceId = 0, int BookingId = 0)
         {
             var textInfo = new CultureInfo("en-US", false).TextInfo;
             Event = textInfo.ToTitleCase(Event.ToLower());
@@ -164,6 +167,8 @@ namespace Agrishare.Core.Entities
                 hit.UserId = UserId;
             if (ServiceId > 0)
                 hit.ServiceId = ServiceId;
+            if (BookingId > 0)
+                hit.BookingId = BookingId;
 
             return hit.Save();
         }

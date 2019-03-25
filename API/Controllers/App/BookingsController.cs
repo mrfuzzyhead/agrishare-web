@@ -51,7 +51,7 @@ namespace Agrishare.API.Controllers.App
 
             if (booking.Save())
             {
-                Entities.Counter.Hit(CurrentUser.Id, Entities.Counters.Book, booking.Service.CategoryId);
+                Entities.Counter.Hit(CurrentUser.Id, Entities.Counters.Book, booking.Service.CategoryId, booking.Id);
 
                 new Entities.Notification
                 {
@@ -107,7 +107,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.ConfirmBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.ConfirmBooking, booking.Service.CategoryId, booking.Id);
 
                 return Success(new
                 {
@@ -152,7 +152,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.DeclineBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.DeclineBooking, booking.Service.CategoryId, booking.Id);
 
                 return Success(new
                 {
@@ -190,7 +190,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.Listing.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.CompleteBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.CompleteBooking, booking.Service.CategoryId, booking.Id);
 
                 return Success(new
                 {
@@ -238,7 +238,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.IncompleteBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.IncompleteBooking, booking.Service.CategoryId, booking.Id);
 
                 return Success(new
                 {
@@ -374,8 +374,8 @@ namespace Agrishare.API.Controllers.App
             if (booking.StatusId == Entities.BookingStatus.InProgress)
                 return Error("You can not cancel a paid booking that is not complete");
 
-            if (DateTime.Now.AddDays(7) >= booking.StartDate)
-                return Error("You can not cancel a booking within 7 days of the start date");
+            if (DateTime.Now.StartOfDay() >= booking.StartDate.StartOfDay())
+                return Error("You can not cancel a booking after the start date");
 
             booking.StatusId = Entities.BookingStatus.Cancelled;
             if (booking.Save())
@@ -407,7 +407,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.Listing.UserId)
                 }.Save(Notify: false);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId, booking.Id);
 
                 return Success(new
                 {

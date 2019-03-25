@@ -132,7 +132,7 @@ namespace Agrishare.API.Controllers.CMS
                             User = Entities.User.Find(Id: booking.Listing.UserId)
                         }.Save(Notify: true);
 
-                        Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId);
+                        Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId, booking.Id);
                     }
                 }
 

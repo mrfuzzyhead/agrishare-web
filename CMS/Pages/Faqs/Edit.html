@@ -6,7 +6,8 @@
     <ag-section ag-controller="form">
 
         <form>
-
+            
+            <gl-dropdown-list gl-label="Language" ng-model="form.entity.LanguageId" gl-source="form.data.Languages" gl-selection="Id"></gl-dropdown-list>
             <gl-textarea gl-label="Question" ng-model="form.entity.Question" gl-required="true"></gl-textarea>
             <gl-textarea gl-label="Answer" ng-model="form.entity.Answer" gl-required="true"></gl-textarea>
 
