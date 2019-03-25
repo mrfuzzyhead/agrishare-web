@@ -35,7 +35,8 @@ namespace Agrishare.API.Controllers.CMS
         {
             var data = new
             {
-                Entity = Entities.Faq.Find(Id: Id).Json()
+                Entity = Entities.Faq.Find(Id: Id).Json(),
+                Languages = EnumInfo.ToList<Entities.Language>()
             };
 
             return Success(data);

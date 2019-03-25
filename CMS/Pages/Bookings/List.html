@@ -16,20 +16,24 @@
 
         <div class="summary-view" ng-show="!list.busy && list.data.length>0 && !list.filter">
             <div>
-                <strong>{{list.summary.BookingsMade}}</strong>
+                <strong>{{list.summary.BookingsMadeMe + list.summary.BookingsMadeFriend + list.summary.BookingsMadeGroup}}</strong>
                 <small>Bookings Made</small>
+                <em>Me: {{list.summary.BookingsMadeMe}} &bull; Friend: {{list.summary.BookingsMadeFriend}} &bull; Group: {{list.summary.BookingsMadeGroup}}</em>
             </div>
             <div>
-                <strong>{{list.summary.ConfirmedBookings}}</strong>
+                <strong>{{list.summary.ConfirmedBookingsMe + list.summary.ConfirmedBookingsFriend + list.summary.ConfirmedBookingsGroup}}</strong>
                 <small>Confirmed Bookings</small>
+                <em>Me: {{list.summary.ConfirmedBookingsMe}} &bull; Friend: {{list.summary.ConfirmedBookingsFriend}} &bull; Group: {{list.summary.ConfirmedBookingsGroup}}</em>
             </div>
             <div>
-                <strong>{{list.summary.PaidBookings}}</strong>
+                <strong>{{list.summary.PaidBookingsMe + list.summary.PaidBookingsFriend + list.summary.PaidBookingsGroup}}</strong>
                 <small>Paid Bookings</small>
+                <em>Me: {{list.summary.PaidBookingsMe}} &bull; Friend: {{list.summary.PaidBookingsFriend}} &bull; Group: {{list.summary.PaidBookingsGroup}}</em>
             </div>
             <div>
-                <strong>{{list.summary.CompletedBookings}}</strong>
+                <strong>{{list.summary.CompletedBookingsMe + list.summary.CompletedBookingsFriend + list.summary.CompletedBookingsGroup}}</strong>
                 <small>Completed Bookings</small>
+                <em>Me: {{list.summary.CompletedBookingsMe}} &bull; Friend: {{list.summary.CompletedBookingsFriend}} &bull; Group: {{list.summary.CompletedBookingsGroup}}</em>
             </div>
             <ul>
                 <li><strong>{{list.summary.DeclinedBookings}}</strong> Declined Bookings</li>

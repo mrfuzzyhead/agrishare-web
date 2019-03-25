@@ -105,10 +105,16 @@ ui-view {
             color: #999;
         }
 
+        em {
+            font-size: 10px;
+            font-style: normal;
+            color: #999;
+        }
+
         &:first-child {
             background-color: $pink;
 
-            strong, small {
+            strong, small, em {
                 color: white;
             }
         }

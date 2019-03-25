@@ -25,13 +25,28 @@ namespace Agrishare.API.Controllers.CMS
                     title = $"{user.FirstName} {user.LastName}";
             }
 
-            int bookingsMade = 0, confirmedBookings = 0, paidBookings = 0, completedBookings = 0, declinedBookings = 0, cancelledBookings = 0, incompleteBookings = 0;
+            int bookingsMadeMe = 0, bookingsMadeFriend = 0, bookingsMadeGroup = 0;
+            int confirmedBookingsMe = 0, confirmedBookingsFriend = 0, confirmedBookingsGroup = 0;
+            int paidBookingsMe = 0, paidBookingsFriend = 0, paidBookingsGroup = 0;
+            int completedBookingsMe = 0, completedBookingsFriend = 0, completedBookingsGroup = 0;
+            int declinedBookings = 0, cancelledBookings = 0, incompleteBookings = 0;
             if (PageIndex == 0)
             {
-                bookingsMade = Entities.Counter.Count(Event: Entities.Counters.Book);
-                confirmedBookings = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking);
-                paidBookings = Entities.Counter.Count(Event: Entities.Counters.CompletePayment);
-                completedBookings = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking);
+                bookingsMadeMe = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Me);
+                confirmedBookingsMe = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Me);
+                paidBookingsMe = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Me);
+                completedBookingsMe = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Me);
+
+                bookingsMadeFriend = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Friend);
+                confirmedBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Friend);
+                paidBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Friend);
+                completedBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Friend);
+
+                bookingsMadeGroup = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Group);
+                confirmedBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Group);
+                paidBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Group);
+                completedBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Group);
+
                 declinedBookings = Entities.Counter.Count(Event: Entities.Counters.DeclineBooking);
                 cancelledBookings = Entities.Counter.Count(Event: Entities.Counters.CancelBooking);
                 incompleteBookings = Entities.Counter.Count(Event: Entities.Counters.IncompleteBooking);
@@ -45,10 +60,21 @@ namespace Agrishare.API.Controllers.CMS
                 Title = title,
                 Summary = new
                 {
-                    BookingsMade = bookingsMade,
-                    ConfirmedBookings = confirmedBookings,
-                    PaidBookings = paidBookings,
-                    CompletedBookings = completedBookings,
+                    BookingsMadeMe = bookingsMadeMe,
+                    ConfirmedBookingsMe = confirmedBookingsMe,
+                    PaidBookingsMe = paidBookingsMe,
+                    CompletedBookingsMe = completedBookingsMe,
+
+                    BookingsMadeFriend = bookingsMadeFriend,
+                    ConfirmedBookingsFriend = confirmedBookingsFriend,
+                    PaidBookingsFriend = paidBookingsFriend,
+                    CompletedBookingsFriend = completedBookingsFriend,
+
+                    BookingsMadeGroup = bookingsMadeGroup,
+                    ConfirmedBookingsGroup = confirmedBookingsGroup,
+                    PaidBookingsGroup = paidBookingsGroup,
+                    CompletedBookingsGroup = completedBookingsGroup,
+
                     DeclinedBookings = declinedBookings,
                     CancelledBookings = cancelledBookings,
                     IncompleteBookings = incompleteBookings
@@ -153,7 +179,7 @@ namespace Agrishare.API.Controllers.CMS
                     User = Entities.User.Find(Id: booking.Listing.UserId)
                 }.Save(Notify: false);
 
-                Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId);
+                Entities.Counter.Hit(booking.UserId, Entities.Counters.CancelBooking, booking.Service.CategoryId, booking.Id);
 
                 var data = new
                 {

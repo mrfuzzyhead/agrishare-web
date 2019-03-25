@@ -39,6 +39,7 @@
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Booking" ToRole="Journal" />
+    <NavigationProperty Name="Counters" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Booking" ToRole="Counter" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -93,6 +94,7 @@
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
   </EntityType>
   <EntityType Name="Listing">
     <Key>
@@ -480,6 +482,10 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Journal" EntitySet="Journals" />
     </AssociationSet>
+    <AssociationSet Name="counters_ibfk_3" Association="AgrishareModel.counters_ibfk_3">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="Counter" EntitySet="Counters" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -617,6 +623,8 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Service" Relationship="AgrishareModel.counters_ibfk_1" FromRole="Counter" ToRole="Category" />
     <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
+    <Property Name="BookingId" Type="Int32" />
+    <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
   </EntityType>
   <EnumType Name="ListingStatus" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
@@ -863,4 +871,18 @@
     <Member Name="Settlement" Value="3" />
     <Member Name="Fee" Value="4" />
   </EnumType>
+  <Association Name="counters_ibfk_3">
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.Counter" Role="Counter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Counter">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

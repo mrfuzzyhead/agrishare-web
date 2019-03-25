@@ -11,7 +11,7 @@ namespace Agrishare.Web.Pages.About
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            List.DataSource = Core.Entities.Faq.List();
+            List.DataSource = Core.Entities.Faq.List(Language: Core.Entities.Language.English);
             List.DataBind();
         }
 

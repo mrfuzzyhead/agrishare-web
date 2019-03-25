@@ -8,6 +8,7 @@ namespace Agrishare.API.Controllers.App
 {
     public class FaqsController : BaseApiController
     {
+        [@Authorize(Roles = "User")]
         [Route("faqs/list")]
         [AcceptVerbs("GET")]
         public object List()
@@ -17,7 +18,7 @@ namespace Agrishare.API.Controllers.App
 
             return Success(new
             {
-                List = Entities.Faq.List().Select(e => e.Json())
+                List = Entities.Faq.List(Language: CurrentUser.LanguageId).Select(e => e.Json())
             });
         }
 

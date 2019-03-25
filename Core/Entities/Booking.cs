@@ -21,6 +21,7 @@ namespace Agrishare.Core.Entities
             this.Transactions = new HashSet<Transaction>();
             this.Ratings = new HashSet<Rating>();
             this.Journals = new HashSet<Journal>();
+            this.Counters = new HashSet<Counter>();
         }
     
         public int Id { get; set; }
@@ -63,5 +64,7 @@ namespace Agrishare.Core.Entities
         public virtual ICollection<Rating> Ratings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Counter> Counters { get; set; }
     }
 }

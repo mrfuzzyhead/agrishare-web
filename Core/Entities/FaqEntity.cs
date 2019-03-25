@@ -34,7 +34,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Faq> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "")
+        public static List<Faq> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", Language? Language = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -42,12 +42,15 @@ namespace Agrishare.Core.Entities
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.Question + " " + o.Answer).ToLower().Contains(Keywords.ToLower()));
+
+                if (Language.HasValue)
+                    query = query.Where(o => o.LanguageId == Language.Value);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "")
+        public static int Count(string Keywords = "", Language? Language = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -55,6 +58,9 @@ namespace Agrishare.Core.Entities
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.Question + " " + o.Answer).ToLower().Contains(Keywords.ToLower()));
+
+                if (Language.HasValue)
+                    query = query.Where(o => o.LanguageId == Language.Value);
 
                 return query.Count();
             }
@@ -135,6 +141,7 @@ namespace Agrishare.Core.Entities
                 Title,
                 Question,
                 Answer,
+                LanguageId,
                 SortOrder,
                 DateCreated,
                 LastModified
