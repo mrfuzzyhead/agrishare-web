@@ -18,7 +18,7 @@ namespace Agrishare.Core.Entities
         public int ListingId { get; set; }
         public int ServiceId { get; set; }
         public string Title { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public ListingCondition ConditionId { get; set; }
         public string Condition => $"{ConditionId}".ExplodeCamelCase();
         public double AverageRating { get; set; }
