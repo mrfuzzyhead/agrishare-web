@@ -29,21 +29,26 @@ namespace Agrishare.API.Controllers.App
                 return Error("Transaction not found");
 
             var transactions = Entities.Transaction.List(BookingId: booking.Id).Where(e => e.StatusId != Entities.TransactionStatus.Error);
+            if (transactions.Count() == 0)
+                return Error("There are no transactions for this booking");
+
             foreach (var transaction in transactions)
-                if (transaction.StatusId != Entities.TransactionStatus.Completed && transaction.StatusId != Entities.TransactionStatus.Refunded)
+                if (transaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
                     transaction.RequestEcoCashStatus();
 
             var bookingUsers = Entities.BookingUser.List(BookingId: BookingId);
             if (bookingUsers.Count(e => e.StatusId != Entities.BookingUserStatus.Paid) == 0)
                 return Success("Payment complete");
 
-            if (transactions.Count(e => e.StatusId == Entities.TransactionStatus.Completed || e.StatusId == Entities.TransactionStatus.PendingSubscriberValidation) == transactions.Count())
+            // NB assumes there is only one transaction required per booking (no more group users)
+            var lastTransaction = transactions.OrderByDescending(e => e.DateCreated).First();
+            if (lastTransaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
                 return Success(new
                 {
-                    Transactions = transactions.Select(e => e.Json())
+                    Transactions = new List<object>()
                 });
 
-            return Error("Please try again");
+            return Error(lastTransaction.Status);
         }
 
         [@Authorize(Roles = "User")]

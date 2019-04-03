@@ -13,7 +13,7 @@ namespace Agrishare.Core.Entities
             new Translation { Key = "Verification Code", English = "Your verification code is {0}", Shona = "", Ndebele = "" },
             new Translation { Key = "Booking Cancelled", English = "Booking {0} cancelled", Shona = "", Ndebele = "" },
             new Translation { Key = "Booking Confirmed", English = "Booking {0} confirmed", Shona = "", Ndebele = "" },
-            new Translation { Key = "New Booking", English = "New booking received: {0}", Shona = "", Ndebele = "" },
+            new Translation { Key = "Booking Received", English = "New booking received: {0}", Shona = "", Ndebele = "" },
             new Translation { Key = "New Review", English = "New review received for booking {0}", Shona = "", Ndebele = "" },
             new Translation { Key = "Payment Received", English = "Payment received for booking {0}", Shona = "", Ndebele = "" },
             new Translation { Key = "Booking Completed", English = "Booking {0} completed", Shona = "", Ndebele = "" },
