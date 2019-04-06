@@ -11,8 +11,6 @@
 
             <asp:PlaceHolder runat="server" ID="Introduction" Visible="false">
 
-                <p>Lorem ipsum dolores sit amet.</p>
-
                 <p><strong><asp:Literal runat="server" ID="DisplayName" /></strong></p>
 
                 <p>
