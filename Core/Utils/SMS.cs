@@ -11,49 +11,10 @@ namespace Agrishare.Core.Utils
 {
     public class SMS
     {
-        private static string _username { get; set; }
-        private static string Username
-        {
-            get
-            {
-                if (_username.IsEmpty())
-                    _username = Config.Find(Key: "SMS Username").Value;
-                return _username;
-            }
-        }
-
-        private static string _sender { get; set; }
-        private static string Sender
-        {
-            get
-            {
-                if (_sender.IsEmpty())
-                    _sender = Config.Find(Key: "SMS Sender").Value;
-                return _sender;
-            }
-        }
-
-        private static string _live { get; set; }
-        private static bool Live
-        {
-            get
-            {
-                if (_live.IsEmpty())
-                    _live = Config.Find(Key: "SMS Live").Value;
-                return _live.Equals("True", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
-
-        private static string _log { get; set; }
-        private static bool Log
-        {
-            get
-            {
-                if (_log.IsEmpty())
-                    _log = Config.Find(Key: "SMS Log").Value;
-                return _log.Equals("True", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        private static string Username => Config.Find(Key: "SMS Username").Value;
+        private static string Sender => Config.Find(Key: "SMS Sender").Value;
+        private static bool Live => Config.Find(Key: "SMS Live")?.Value == "True";
+        private static bool Log => Config.Find(Key: "SMS Log")?.Value == "True";
 
         public static decimal GetBalance()
         {

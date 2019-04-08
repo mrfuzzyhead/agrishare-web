@@ -222,25 +222,25 @@ namespace Agrishare.Core.Entities
             switch (TypeId)
             {
                 case NotificationType.BookingCancelled:
-                    message = string.Format(Translations.Translate("Booking Cancelled", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingCancelled, User.LanguageId), BookingId);
                     break;
                 case NotificationType.BookingConfirmed:
-                    message = string.Format(Translations.Translate("Booking Confirmed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingConfirmed, User.LanguageId), BookingId);
                     break;
                 case NotificationType.NewBooking:
-                    message = string.Format(Translations.Translate("New Booking", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingReceived, User.LanguageId), BookingId);
                     break;
                 case NotificationType.NewReview:
-                    message = string.Format(Translations.Translate("New Review", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.NewReview, User.LanguageId), BookingId);
                     break;
                 case NotificationType.PaymentReceived:
-                    message = string.Format(Translations.Translate("Payment Received", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.PaymentReceived, User.LanguageId), BookingId);
                     break;
                 case NotificationType.ServiceComplete:
-                    message = string.Format(Translations.Translate("Booking Completed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingCompleted, User.LanguageId), BookingId);
                     break;
                 case NotificationType.ServiceIncomplete:
-                    message = string.Format(Translations.Translate("Booking Not Completed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingNotCompleted, User.LanguageId), BookingId);
                     break;
             }
 
@@ -253,25 +253,25 @@ namespace Agrishare.Core.Entities
             switch (TypeId)
             {
                 case NotificationType.BookingCancelled:
-                    message = string.Format(Translations.Translate("Booking Cancelled", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingCancelled, User.LanguageId), BookingId);
                     break;
                 case NotificationType.BookingConfirmed:
-                    message = string.Format(Translations.Translate("Booking Confirmed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingConfirmed, User.LanguageId), BookingId);
                     break;
                 case NotificationType.NewBooking:
-                    message = string.Format(Translations.Translate("Booking Received", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingReceived, User.LanguageId), BookingId);
                     break;
                 case NotificationType.NewReview:
-                    message = string.Format(Translations.Translate("New Review", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.NewReview, User.LanguageId), BookingId);
                     break;
                 case NotificationType.PaymentReceived:
-                    message = string.Format(Translations.Translate("Payment Received", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.PaymentReceived, User.LanguageId), BookingId);
                     break;
                 case NotificationType.ServiceComplete:
-                    message = string.Format(Translations.Translate("Booking Completed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingCompleted, User.LanguageId), BookingId);
                     break;
                 case NotificationType.ServiceIncomplete:
-                    message = string.Format(Translations.Translate("Booking Not Completed", User.LanguageId), BookingId);
+                    message = string.Format(Translations.Translate(TranslationKey.BookingNotCompleted, User.LanguageId), BookingId);
                     break;
             }
 
