@@ -6,21 +6,33 @@ using System.Threading.Tasks;
 
 namespace Agrishare.Core.Entities
 {
+    public enum TranslationKey
+    {
+        VerificationCode,
+        BookingCancelled,
+        BookingConfirmed,
+        BookingReceived,
+        NewReview,
+        PaymentReceived,
+        BookingCompleted,
+        BookingNotCompleted
+    }
+
     public class Translations
     {
         private static List<Translation> List = new List<Translation>
         {
-            new Translation { Key = "Verification Code", English = "Your verification code is {0}", Shona = "", Ndebele = "" },
-            new Translation { Key = "Booking Cancelled", English = "Booking {0} cancelled", Shona = "", Ndebele = "" },
-            new Translation { Key = "Booking Confirmed", English = "Booking {0} confirmed", Shona = "", Ndebele = "" },
-            new Translation { Key = "Booking Received", English = "New booking received: {0}", Shona = "", Ndebele = "" },
-            new Translation { Key = "New Review", English = "New review received for booking {0}", Shona = "", Ndebele = "" },
-            new Translation { Key = "Payment Received", English = "Payment received for booking {0}", Shona = "", Ndebele = "" },
-            new Translation { Key = "Booking Completed", English = "Booking {0} completed", Shona = "", Ndebele = "" },
-            new Translation { Key = "Booking Not Completed", English = "Booking {0} not completed", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.VerificationCode, English = "Your verification code is {0}", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.BookingCancelled, English = "Booking {0} cancelled", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.BookingConfirmed, English = "Booking {0} confirmed", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.BookingReceived, English = "New booking received: {0}", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.NewReview, English = "New review received for booking {0}", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.PaymentReceived, English = "Payment received for booking {0}", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.BookingCompleted, English = "Booking {0} completed", Shona = "", Ndebele = "" },
+            new Translation { Key = TranslationKey.BookingNotCompleted, English = "Booking {0} not completed", Shona = "", Ndebele = "" },
         };
 
-        public static string Translate(string Key, Language Language)
+        public static string Translate(TranslationKey Key, Language Language)
         {
             var phrase = List.FirstOrDefault(o => o.Key == Key);
 
@@ -43,7 +55,7 @@ namespace Agrishare.Core.Entities
 
     public class Translation
     {
-        public string Key { get; set; }
+        public TranslationKey Key { get; set; }
         public string English { get; set; }
         public string Shona { get; set; }
         public string Ndebele { get; set; }
