@@ -63,7 +63,7 @@ namespace Agrishare.API.Models
         public decimal PricePerQuantityUnit { get; set; }
         public decimal FuelPerQuantityUnit { get; set; }
         public decimal TimePerQuantityUnit { get; set; }
-        public decimal PricePerDistanceUnit { get; set; }
+        public decimal? PricePerDistanceUnit { get; set; }
         public decimal FuelPrice { get; set; }
     }
 
