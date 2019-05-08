@@ -19,11 +19,9 @@ namespace Agrishare.API.Models
 
         public string Location { get; set; }
 
-        [Required]
-        public decimal Latitude { get; set; }
+        public decimal? Latitude { get; set; }
 
-        [Required]
-        public decimal Longitude { get; set; }
+        public decimal? Longitude { get; set; }
 
         public string Brand { get; set; }
         

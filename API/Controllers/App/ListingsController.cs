@@ -47,6 +47,9 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            if (!Model.Latitude.HasValue || Model.Longitude.HasValue)
+                return Error("Location is required");
+
             var listing = new Entities.Listing
             {
                 AvailableWithoutFuel = Model.AvailableWithoutFuel,
@@ -54,8 +57,8 @@ namespace Agrishare.API.Controllers.App
                 Brand = Model.Brand,
                 CategoryId = Model.CategoryId,
                 ConditionId = Model.ConditionId,
-                Latitude = Model.Latitude,
-                Longitude = Model.Longitude,
+                Latitude = Model.Latitude ?? 0,
+                Longitude = Model.Longitude ?? 0,
                 Description = Model.Description,
                 GroupServices = Model.GroupServices,
                 HorsePower = Model.HorsePower,
@@ -126,6 +129,9 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            if (!Model.Latitude.HasValue || Model.Longitude.HasValue)
+                return Error("Location is required");
+
             var listing = Entities.Listing.Find(Id: Model.Id);
             if (listing.UserId != CurrentUser.Id)
                 return Error("Listing not found");
@@ -136,8 +142,8 @@ namespace Agrishare.API.Controllers.App
             listing.Category = null;
             listing.CategoryId = Model.CategoryId;
             listing.ConditionId = Model.ConditionId;
-            listing.Latitude = Model.Latitude;
-            listing.Longitude = Model.Longitude;
+            listing.Latitude = Model.Latitude ?? 0;
+            listing.Longitude = Model.Longitude ?? 0;
             listing.Description = Model.Description;
             listing.GroupServices = Model.GroupServices;
             listing.HorsePower = Model.HorsePower;
