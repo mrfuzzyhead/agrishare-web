@@ -43,6 +43,20 @@
                 </ul>
             </div>
 
+            <div class="box" ng-if="detail.entity.VerificationCode">
+                <h2>Verification</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Code</strong>
+                        <span>{{detail.entity.VerificationCode || 'N/A'}}</span>
+                    </li>
+                    <li>
+                        <strong>Expiry</strong>
+                        <span>{{detail.entity.VerificationCodeExpiry || 'N/A' | date : 'd MMMM yyyy h:mma'}}</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
 </ag-section>
