@@ -47,7 +47,7 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            if (!Model.Latitude.HasValue || Model.Longitude.HasValue)
+            if (!Model.Latitude.HasValue || !Model.Longitude.HasValue)
                 return Error("Location is required");
 
             var listing = new Entities.Listing
@@ -129,7 +129,7 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            if (!Model.Latitude.HasValue || Model.Longitude.HasValue)
+            if (!Model.Latitude.HasValue || !Model.Longitude.HasValue)
                 return Error("Location is required");
 
             var listing = Entities.Listing.Find(Id: Model.Id);
