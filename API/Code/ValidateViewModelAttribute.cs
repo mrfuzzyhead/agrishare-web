@@ -16,8 +16,8 @@ namespace Agrishare.API
     {        
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (actionContext.ActionArguments.Any(kv => kv.Value == null))
-                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Arguments cannot be null");
+            //if (actionContext.ActionArguments.Any(kv => kv.Value == null))
+                //actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Arguments cannot be null");
         }
     }
 }
