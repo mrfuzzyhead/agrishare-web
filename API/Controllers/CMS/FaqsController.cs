@@ -62,7 +62,7 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Delete(int Id)
         {
-            var faqs = Entities.User.Find(Id: Id);
+            var faqs = Entities.Faq.Find(Id: Id);
 
             if (faqs.Delete())
                 return Success(new
