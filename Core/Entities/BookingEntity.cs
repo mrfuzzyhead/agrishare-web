@@ -18,7 +18,7 @@ namespace Agrishare.Core.Entities
         public string Title => Id.ToString() ?? "00000";
         public string For => $"{ForId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
-        public decimal AgriShareCommission => Transaction.AgriShareCommission * HireCost;
+        public decimal AgriShareCommission => Math.Round(HireCost - (HireCost / (1 + Transaction.AgriShareCommission)));
 
         public static Booking Find(int Id = 0)
         {
@@ -162,14 +162,13 @@ namespace Agrishare.Core.Entities
                 query = query.Where(o => o.StatusId == BookingStatus.Complete && !o.PaidOut);
 
                 var startDate = StartDate.StartOfDay();
-                query = query.Where(o => o.EndDate >= startDate);
-
-                var endDate = EndDate.StartOfDay();
-                query = query.Where(o => o.StartDate <= endDate);
+                var endDate = EndDate.EndOfDay();
+                query = query.Where(o => o.EndDate >= startDate.Date && o.EndDate <= endDate.Date);
 
                 query = query.OrderBy(o => o.DateCreated);
 
-                return query.ToList();
+                var results = query.ToList();
+                return results;
             }
         }
 

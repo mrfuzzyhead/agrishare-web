@@ -39,7 +39,7 @@ namespace Agrishare.Web.Pages.Account
                     EmailAddress = EmailAddress.Text,
                     Telephone = Telephone.Text,
                     ClearPassword = PIN.Text,
-                    GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue)),
+                    GenderId = (Core.Entities.Gender)Enum.Parse(typeof(Core.Entities.Gender), Gender.SelectedValue),
                     DateOfBirth = DateTime.Parse(DateOfBirth.Text),
                     Roles = new List<Core.Entities.Role> { Core.Entities.Role.User },
                     AuthToken = Guid.NewGuid().ToString(),
