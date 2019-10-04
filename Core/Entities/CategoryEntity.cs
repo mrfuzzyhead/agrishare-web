@@ -16,6 +16,7 @@ namespace Agrishare.Core.Entities
         public const int LorriesId = 2;
         public const int LorriesServiceId = 16;
         public const int ProcessingId = 3;
+        public const int BusId = 17;
 
         public static string DefaultSort = "Title";
 

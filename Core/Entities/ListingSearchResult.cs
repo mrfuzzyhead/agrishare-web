@@ -179,6 +179,8 @@ namespace Agrishare.Core.Entities
                 var transportDistance = $"0";
                 if (CategoryId == Category.LorriesId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
+                else if (CategoryId == Category.BusId)
+                    transportDistance = $"({depotToPickup} + {dropoffToDepot} + {pickupToDropoff})";
                 else if (Mobile)
                     transportDistance = $"{distance} * 2";
 
@@ -187,6 +189,11 @@ namespace Agrishare.Core.Entities
                 if (CategoryId == Category.LorriesId)
                 {
                     sizeField = $"({trips})";
+                    sql.AppendLine($"{sizeField} AS Size,");
+                }
+                else if (CategoryId == Category.BusId)
+                {
+                    sizeField = $"1";
                     sql.AppendLine($"{sizeField} AS Size,");
                 }
                 else
@@ -200,6 +207,11 @@ namespace Agrishare.Core.Entities
                 if (CategoryId == Category.LorriesId)
                 {
                     var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * (({trips} * 2) - 1))) / 100)";
+                    days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
+                }
+                else if (CategoryId == Category.BusId)
+                {
+                    var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + {pickupToDropoff}) / 100)";
                     days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
                 }
                 else if (CategoryId == Category.ProcessingId)
