@@ -42,7 +42,7 @@
         <AssociationConnector Association="AgrishareModel.counters_ibfk_2" />
         <AssociationConnector Association="AgrishareModel.bookingusers_ibfk_2" ManuallyRouted="true" >
           <ConnectorPoint PointX="17.125" PointY="4" />
-          <ConnectorPoint PointX="16.625" PointY="3.5" />
+          <ConnectorPoint PointX="17.125" PointY="3.5" />
           <ConnectorPoint PointX="13.583333833333333" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="13.416667166666665" PointY="3.5" />
           <ConnectorPoint PointX="12.333333333333334" PointY="3.4999999999999996" />
@@ -59,6 +59,8 @@
         <AssociationConnector Association="AgrishareModel.journals_ibfk_2" />
         <AssociationConnector Association="AgrishareModel.journals_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.counters_ibfk_3" />
+        <EntityTypeShape EntityType="AgrishareModel.Agent" Width="1.5" PointX="14.875" PointY="0.75" />
+        <AssociationConnector Association="AgrishareModel.users_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

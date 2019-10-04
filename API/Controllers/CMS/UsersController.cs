@@ -68,7 +68,8 @@ namespace Agrishare.API.Controllers.CMS
                 Entity = Entities.User.Find(Id: Id).AdminJson(),
                 Roles = EnumInfo.ToList<Entities.Role>(),
                 Genders = EnumInfo.ToList<Entities.Gender>(),
-                Languages = EnumInfo.ToList<Entities.Language>()
+                Languages = EnumInfo.ToList<Entities.Language>(),
+                Agents = Entities.Agent.List().Select(a => a.Json())
             };
 
             return Success(data);

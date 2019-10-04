@@ -1,0 +1,23 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Agent" ag-selected-url="#/agents/list" ag-api-route="/cms/agents/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
+            <gl-textbox gl-label="Commission" ng-model="form.entity.Commission" gl-required="true" gl-type="number"></gl-textbox>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>
