@@ -162,7 +162,7 @@ namespace Agrishare.Core.Entities
             Agent = agent;
 
             if (!AuthToken.IsEmpty())
-                Cache.Instance.Add(CacheKey(AuthToken), this);
+                Cache.Instance.Add(CacheKey(AuthToken), this.AdminJson());
 
             return success;
         }
@@ -234,7 +234,11 @@ namespace Agrishare.Core.Entities
                 AuthToken,
                 Roles = Roles.Select(e => $"{e}".ExplodeCamelCase()).ToList(),
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                Status,
+                StatusId,
+                Telephone,
+                Language
             };
         }
 

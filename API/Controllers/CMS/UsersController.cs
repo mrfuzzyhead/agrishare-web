@@ -43,7 +43,7 @@ namespace Agrishare.API.Controllers.CMS
             {
                 Count = recordCount,
                 Sort = Entities.User.DefaultSort,
-                List = list.Select(e => e.Json()),
+                List = list.Select(e => e.CmsJson()),
                 Title = "Users",
                 Summary = new
                 {
@@ -69,7 +69,8 @@ namespace Agrishare.API.Controllers.CMS
                 Roles = EnumInfo.ToList<Entities.Role>(),
                 Genders = EnumInfo.ToList<Entities.Gender>(),
                 Languages = EnumInfo.ToList<Entities.Language>(),
-                Agents = Entities.Agent.List().Select(a => a.Json())
+                Agents = Entities.Agent.List().Select(a => a.Json()),
+                Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0)
             };
 
             return Success(data);

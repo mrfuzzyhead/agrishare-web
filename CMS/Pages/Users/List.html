@@ -40,7 +40,7 @@
 
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
-                <icon>
+                <icon ng-class="{'pending': item.StatusId!==2}">
                     <i class="material-icons">person</i>
                 </icon>
                 <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
