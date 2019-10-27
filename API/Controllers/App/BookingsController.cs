@@ -263,7 +263,10 @@ namespace Agrishare.API.Controllers.App
             var totalSpend = Entities.Booking.SeekingSummary(CurrentUser.Id);
             var commissionEarned = 0M;
             if (CurrentUser.Agent != null)
-                commissionEarned = totalSpend * CurrentUser.Agent.Commission;
+            {
+                var hireCost = Entities.Booking.SeekingSummaryHireCost(CurrentUser.Id);
+                commissionEarned = hireCost * CurrentUser.Agent.Commission;
+            }
 
             var bookings = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: CurrentUser.Id);
 

@@ -135,6 +135,24 @@ namespace Agrishare.Core.Entities
 
         }
 
+        public static decimal SeekingSummaryHireCost(int UserId, DateTime? StartDate = null)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Bookings.Include(o => o.Listing)
+                        .Where(o => !o.Deleted && o.UserId == UserId && (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.Complete || o.StatusId == BookingStatus.InProgress));
+
+                if (StartDate.HasValue)
+                {
+                    var startDate = StartDate.Value.StartOfDay();
+                    query = query.Where(o => o.StartDate >= startDate);
+                }
+
+                return query.Select(o => o.HireCost).DefaultIfEmpty(0).Sum();
+            }
+
+        }
+
         public static decimal OfferingSummary(int UserId, DateTime? StartDate = null)
         {
             using (var ctx = new AgrishareEntities())
