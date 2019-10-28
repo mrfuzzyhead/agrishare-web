@@ -265,7 +265,8 @@ namespace Agrishare.Core.Entities
                 {
                     SMS = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.SMS) > 0,
                     PushNotifications = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.PushNotifications) > 0,
-                    Email = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.Email) > 0
+                    Email = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.Email) > 0,
+                    BulkSMS = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.BulkSMS) > 0
                 },
                 InterestId,
                 Interest,

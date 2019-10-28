@@ -112,6 +112,7 @@
     <Content Include="Pages\Account\Seeking\Tractor.aspx" />
     <Content Include="Pages\Account\Seeking\Lorry.aspx" />
     <Content Include="Pages\Account\Seeking\Results.aspx" />
+    <Content Include="Pages\Listing.aspx" />
     <Content Include="Pages\Error404.html" />
     <Content Include="Pages\Error500.html" />
     <Content Include="Pages\About.aspx" />
@@ -286,6 +287,13 @@
     </Compile>
     <Compile Include="Pages\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Listing.aspx.cs">
+      <DependentUpon>Listing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Listing.aspx.designer.cs">
+      <DependentUpon>Listing.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Homepage.aspx.cs">
       <DependentUpon>Homepage.aspx</DependentUpon>
