@@ -26,6 +26,9 @@
             <gl-textbox gl-label="PIN" ng-model="form.entity.ClearPassword" ng-if="form.entity.Id==0" gl-type="password"></gl-textbox>
             <gl-checkbox-list gl-label="Roles" ng-model="form.entity.Roles" gl-source="form.data.Roles" gl-required="true" gl-selection="Id"></gl-checkbox-list>
 
+            <gl-dropdown-list gl-label="Status" ng-model="form.entity.StatusId" gl-source="form.data.Statuses" gl-selection="Id"></gl-dropdown-list>
+            <gl-dropdown-list gl-label="Agent" ng-model="form.entity.Agent" gl-source="form.data.Agents"></gl-dropdown-list>
+
         </form>
 
     </ag-section>

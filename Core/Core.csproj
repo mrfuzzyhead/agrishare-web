@@ -179,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\Redis.cs" />
+    <Compile Include="Entities\Agent.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Agrishare.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -198,6 +201,7 @@
     <Compile Include="Entities\Blog.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AgentEntity.cs" />
     <Compile Include="Entities\Booking.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

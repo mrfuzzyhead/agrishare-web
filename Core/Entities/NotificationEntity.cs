@@ -99,6 +99,8 @@ namespace Agrishare.Core.Entities
 
             if (Notify)
             {
+                SendEmail(Config.ApplicationName, Config.ApplicationEmailAddress);
+
                 if ((User.NotificationPreferences & (int)NotificationPreferences.Email) > 0)
                     SendEmail();
 
@@ -165,7 +167,7 @@ namespace Agrishare.Core.Entities
             };
         }
 
-        private void SendEmail()
+        private void SendEmail(string RecipientName = "", string RecipientEmailAddress = "")
         {
             var template = Template.Find(Title: Type);
             template.Replace("Service", Booking.Service.Category.Title);
@@ -209,8 +211,8 @@ namespace Agrishare.Core.Entities
             new Email
             {
                 Message = template.EmailHtml(),
-                RecipientEmail = User.EmailAddress,
-                RecipientName = User.FullName,
+                RecipientEmail = RecipientEmailAddress.Coalesce(User.EmailAddress),
+                RecipientName = RecipientName.Coalesce(User.FullName),
                 SenderEmail = Config.ApplicationEmailAddress,
                 Subject = subject
             }.Send();
