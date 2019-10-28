@@ -29,6 +29,7 @@ agrishareApp.factory('App', function ($location, Utils) {
             },
             {
                 title: "Admin", icon: "settings", roles: 'Administrator', submenu: [
+                    { title: "Agents", url: "#/agents/list", roles: 'Administrator' },
                     { title: "Blog", url: "#/blogs/list", roles: 'Administrator' },
                     { title: "Broadcast SMS", url: "#/sms/broadcast", roles: 'Administrator' },
                     { title: "FAQs", url: "#/faqs/list", roles: 'Administrator' },

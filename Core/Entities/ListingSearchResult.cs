@@ -225,7 +225,7 @@ namespace Agrishare.Core.Entities
                 // costs
                 var hireCost = $"(Services.PricePerQuantityUnit * {Size} * {1 + Transaction.AgriShareCommission})";
                 if (CategoryId == Category.LorriesId)
-                    hireCost = $"(Services.PricePerQuantityUnit * {trips})";
+                    hireCost = $"(Services.PricePerQuantityUnit * {trips} * {1 + Transaction.AgriShareCommission})";
                 var fuelCost = $"0";
                 if (CategoryId != Category.LorriesId && IncludeFuel)
                     fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice)";

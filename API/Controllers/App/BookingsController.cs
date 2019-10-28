@@ -261,6 +261,12 @@ namespace Agrishare.API.Controllers.App
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
             var monthlySpend = Entities.Booking.SeekingSummary(CurrentUser.Id, startDate);
             var totalSpend = Entities.Booking.SeekingSummary(CurrentUser.Id);
+            var commissionEarned = 0M;
+            if (CurrentUser.Agent != null)
+            {
+                var hireCost = Entities.Booking.SeekingSummaryHireCost(CurrentUser.Id);
+                commissionEarned = hireCost * CurrentUser.Agent.Commission;
+            }
 
             var bookings = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: CurrentUser.Id);
 
@@ -270,7 +276,8 @@ namespace Agrishare.API.Controllers.App
                 Summary = new
                 {
                     Month = monthlySpend,
-                    Total = totalSpend
+                    Total = totalSpend,
+                    Commission = commissionEarned
                 }
             });
         }

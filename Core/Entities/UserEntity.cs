@@ -68,7 +68,7 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == Deleted);
+                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -86,11 +86,11 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == Deleted);
+                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -103,12 +103,18 @@ namespace Agrishare.Core.Entities
 
                 if (FailedLoginAttempts > 0)
                     query = query.Where(o => o.FailedLoginAttempts > 0);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.AgentId == AgentId);
+
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -125,6 +131,12 @@ namespace Agrishare.Core.Entities
 
                 if (FailedLoginAttempts > 0)
                     query = query.Where(o => o.FailedLoginAttempts > 0);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.AgentId == AgentId);
+
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
 
                 return query.Count();
             }
@@ -143,13 +155,20 @@ namespace Agrishare.Core.Entities
             if (Roles != null)
                 RoleList = string.Join(",", Roles);
 
+            var agent = Agent;
+            if (agent != null && agent.Id > 0)
+                AgentId = agent.Id;
+            Agent = null;
+
             if (Id == 0)
                 success = Add();
             else
                 success = Update();
 
+            Agent = agent;
+
             if (!AuthToken.IsEmpty())
-                Cache.Instance.Add(CacheKey(AuthToken), this);
+                Cache.Instance.Add(CacheKey(AuthToken), this.AdminJson());
 
             return success;
         }
@@ -195,7 +214,9 @@ namespace Agrishare.Core.Entities
                 FirstName,
                 LastName,
                 Telephone,
-                Language
+                Language,
+                AgentId,
+                Agent = Agent?.Json()
             };
         }
 
@@ -217,7 +238,13 @@ namespace Agrishare.Core.Entities
                 FirstName,
                 LastName,
                 AuthToken,
-                Roles = Roles.Select(e => $"{e}".ExplodeCamelCase()).ToList()
+                Roles = Roles.Select(e => $"{e}".ExplodeCamelCase()).ToList(),
+                AgentId,
+                Agent = Agent?.Json(),
+                Status,
+                StatusId,
+                Telephone,
+                Language
             };
         }
 
@@ -243,7 +270,9 @@ namespace Agrishare.Core.Entities
                 InterestId,
                 Interest,
                 LanguageId,
-                Language
+                Language,
+                AgentId,
+                Agent = Agent?.Json()
             };
         }
 
@@ -272,7 +301,9 @@ namespace Agrishare.Core.Entities
                 Language,
                 Roles,
                 DateCreated,
-                LastModified
+                LastModified,
+                AgentId,
+                Agent = Agent?.Json()
             };
         }
 
