@@ -86,7 +86,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -107,11 +107,14 @@ namespace Agrishare.Core.Entities
                 if (AgentId > 0)
                     query = query.Where(o => o.AgentId == AgentId);
 
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -131,6 +134,9 @@ namespace Agrishare.Core.Entities
 
                 if (AgentId > 0)
                     query = query.Where(o => o.AgentId == AgentId);
+
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
 
                 return query.Count();
             }

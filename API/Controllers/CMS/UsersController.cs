@@ -28,7 +28,7 @@ namespace Agrishare.API.Controllers.CMS
             var recordCount = Entities.User.Count(Keywords: Query);
             var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
 
-            int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0;
+            int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0;
             if (PageIndex == 0)
             {
                 total = Entities.User.Count();
@@ -37,6 +37,7 @@ namespace Agrishare.API.Controllers.CMS
                 deleted = Entities.User.Count(Deleted: true);
                 lockedout = Entities.User.Count(FailedLoginAttempts: 1);
                 active = Entities.Counter.Count(UniqueUser: true);
+                unverified = Entities.User.Count(Status: Entities.UserStatus.Pending);
             }
 
             var data = new
@@ -52,8 +53,27 @@ namespace Agrishare.API.Controllers.CMS
                     Male =  male,
                     Female = female,
                     Deleted = deleted,
-                    LockedOut = lockedout
+                    LockedOut = lockedout,
+                    Unverified = unverified
                 }
+            };
+
+            return Success(data);
+        }
+
+        [Route("users/unverified/list")]
+        [AcceptVerbs("GET")]
+        public object UnverifiedList(int PageIndex = 0, int PageSize = 25, string Query = "")
+        {
+            var recordCount = Entities.User.Count(Keywords: Query, Status: Entities.UserStatus.Pending);
+            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Status: Entities.UserStatus.Pending);
+
+            var data = new
+            {
+                Count = recordCount,
+                Sort = Entities.User.DefaultSort,
+                List = list.Select(e => e.CmsJson()),
+                Title = "Unverified Users"
             };
 
             return Success(data);

@@ -112,6 +112,7 @@
     <Content Include="Pages\Faqs\List.html" />
     <Content Include="Pages\Users\Detail.html" />
     <Content Include="Pages\Users\Edit.html" />
+    <Content Include="Pages\Users\Unverified.html" />
     <Content Include="Pages\Users\List.html" />
     <Content Include="Pages\Dashboard.html" />
     <Content Include="Pages\Bookings\List.html" />
