@@ -61,18 +61,18 @@ namespace Agrishare.Core.Entities
                 var pickupToDropoff = SQL.Distance(Latitude, Longitude, DestinationLatitude, DestinationLongitude);
                 var dropoffToDepot = SQL.Distance(DestinationLatitude, DestinationLongitude, "Listings");
                 var trips = $"0";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     trips = $"(CEIL({TotalVolume} / Services.TotalVolume))";
 
                 var transportDistance = $"0";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
                 else if (Mobile)
                     transportDistance = $"{distance} * 2";
 
                 // size
                 string sizeField = "";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     sizeField = $"({trips})";
                     //sql.AppendLine($"{sizeField} AS Size,");
@@ -85,7 +85,7 @@ namespace Agrishare.Core.Entities
 
                 // time
                 var days = $"CEIL((Services.TimePerQuantityUnit * {sizeField}) / 8)";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * (({trips} * 2) - 1))) / 100)";
                     days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
@@ -98,10 +98,10 @@ namespace Agrishare.Core.Entities
                 
                 // costs
                 var hireCost = $"(Services.PricePerQuantityUnit * {Size})";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     hireCost = $"(Services.PricePerQuantityUnit * {trips})";
                 var fuelCost = $"0";
-                if (CategoryId != Category.LorriesId && IncludeFuel)
+                if ((CategoryId != Category.LorriesId || ServiceId == Category.TractorTransportServiceId) && IncludeFuel)
                     fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice)";
                 var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit)";
 
@@ -145,7 +145,6 @@ namespace Agrishare.Core.Entities
             }
         }
 
-
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, 
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude, 
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0)
@@ -173,11 +172,11 @@ namespace Agrishare.Core.Entities
                 var pickupToDropoff = SQL.Distance(Latitude, Longitude, DestinationLatitude, DestinationLongitude);
                 var dropoffToDepot = SQL.Distance(DestinationLatitude, DestinationLongitude, "Listings");
                 var trips = $"0";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     trips = $"(CEIL({TotalVolume} / Services.TotalVolume))";
 
                 var transportDistance = $"0";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
                 else if (CategoryId == Category.BusId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + {pickupToDropoff})";
@@ -186,7 +185,7 @@ namespace Agrishare.Core.Entities
 
                 // size
                 string sizeField = "";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     sizeField = $"({trips})";
                     sql.AppendLine($"{sizeField} AS Size,");
@@ -204,7 +203,7 @@ namespace Agrishare.Core.Entities
 
                 // time
                 var days = $"CEIL((Services.TimePerQuantityUnit * {sizeField}) / 8)";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * (({trips} * 2) - 1))) / 100)";
                     days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
@@ -224,10 +223,10 @@ namespace Agrishare.Core.Entities
 
                 // costs
                 var hireCost = $"(Services.PricePerQuantityUnit * {Size} * {1 + Transaction.AgriShareCommission})";
-                if (CategoryId == Category.LorriesId)
+                if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     hireCost = $"(Services.PricePerQuantityUnit * {trips} * {1 + Transaction.AgriShareCommission})";
                 var fuelCost = $"0";
-                if (CategoryId != Category.LorriesId && IncludeFuel)
+                if ((CategoryId != Category.LorriesId || ServiceId == Category.TractorTransportServiceId) && IncludeFuel)
                     fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice)";
                 var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit)";
 
