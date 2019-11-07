@@ -31,6 +31,10 @@
                 <strong>{{list.summary.Processors}}</strong>
                 <small>Processors</small>
             </div>
+            <div>
+                <strong>{{list.summary.Buses}}</strong>
+                <small>Buses</small>
+            </div>
             <ul>
                 <li><strong>{{list.summary.Reviews}}</strong> Ratings</li>
                 <li><strong>{{list.summary.OneStar}}</strong> 1-Star Ratings</li>
@@ -45,7 +49,8 @@
                 <row class="listing" ng-click="app.go('/listings/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <div>
                         <strong>{{item.Title}}</strong> &nbsp; <gl-rating gl-stars="item.AverageRating" ng-if="item.RatingCount>0" style="position:relative;top:2px"></gl-rating> <small style="position:relative;top:-2px" ng-if="item.RatingCount>0">({{item.RatingCount}})</small><br />
-                        <small>{{item.Category.Title}} &bull; {{item.Brand}}</small>
+                        <small>{{item.Category.Title}}</small> 
+                        <small ng-if="item.Brand">&bull; {{item.Brand}}</small>
                     </div>
                     <div>
                         <em class="status outline">{{item.Status}}</em>
