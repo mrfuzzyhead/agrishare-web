@@ -114,7 +114,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -137,6 +137,11 @@ namespace Agrishare.Core.Entities
 
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
+
+                if (Agent.HasValue && Agent.Value == true)
+                    query = query.Where(o => o.AgentId.HasValue);
+                if (Agent.HasValue && Agent.Value == false)
+                    query = query.Where(o => !o.AgentId.HasValue);
 
                 return query.Count();
             }

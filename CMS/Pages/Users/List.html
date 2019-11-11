@@ -18,7 +18,9 @@
         <div class="summary-view" ng-show="!list.busy && list.data.length>0 && !list.filter">
             <div>
                 <strong>{{list.summary.Total}}</strong>
-                <small>Users</small>
+                <small>
+                    {{list.summary.TotalAgents}} Agents &bull; {{list.summary.TotalRegular}} Regular
+                </small>
             </div>
             <div>
                 <strong>{{list.summary.Active}}</strong>

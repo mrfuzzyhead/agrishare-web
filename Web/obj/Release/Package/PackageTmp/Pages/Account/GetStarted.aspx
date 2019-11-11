@@ -5,7 +5,7 @@
     
     <h1>Get Started</h1>
 
-    <p>Lorem ipsum dolores sit amet.</p>
+    <p>Sign up for an account today!</p>
 
     <div class="cols">
 

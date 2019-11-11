@@ -12,6 +12,9 @@ namespace Agrishare.Web.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.Body.Attributes["class"] += " home ";
+
+            ListingCount.Text = Core.Entities.Listing.Count(Status: Core.Entities.ListingStatus.Live).ToString();
+            UserCount.Text = Core.Entities.User.Count(Status: Core.Entities.UserStatus.Verified).ToString();
         }
     }
 }
