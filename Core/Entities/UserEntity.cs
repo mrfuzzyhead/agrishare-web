@@ -147,6 +147,25 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<User> BulkSMSList()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                return query.ToList();
+            }
+        }
+
+
+        public static int BulkSMSCount()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                return query.Count();
+            }
+        }
+
         public bool Save()
         {
             var success = false;

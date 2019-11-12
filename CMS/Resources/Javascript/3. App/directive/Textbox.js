@@ -33,6 +33,8 @@ agrishareApp.directive('glTextbox', function () {
             customAttributes.push('type="' + type + '"');
             customAttributes.push('name="' + name + '"');
             customAttributes.push('placeholder="' + placeholder + '"');
+            if (attrs.glMaxLength)
+                customAttributes.push('maxlength="' + attrs.glMaxLength + '"');
             if (attrs.glMin)
                 customAttributes.push('min="' + attrs.glMin + '"');
             if (attrs.glMax)

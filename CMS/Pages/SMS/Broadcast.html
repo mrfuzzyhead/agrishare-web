@@ -12,8 +12,8 @@
         <form ng-if="!form.entity.Sent">
 
             <h2>Message</h2>
-            <p>Your message will be broadcast to {{form.entity.RecipientCount}} recipients.</p>            
-            <gl-textbox gl-label="Message" ng-model="form.entity.Message" gl-required="true"></gl-textbox>
+            <p>Your message will be broadcast to {{form.entity.RecipientCount}} recipients (based on user notification preferences).</p>            
+            <gl-textbox gl-label="Message" ng-model="form.entity.Message" gl-required="true" gl-max-length="140"></gl-textbox>
 
         </form>
 

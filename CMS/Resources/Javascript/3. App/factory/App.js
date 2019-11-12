@@ -65,6 +65,10 @@ agrishareApp.factory('App', function ($location, Utils) {
             location.href = url;
         },
 
+        window: function (url, width = 400, height = 300) {
+            window.open(url, "", "width=" + width + ",height=" + height);
+        },
+
         go: function (url) {
             location.hash = url;
         },
