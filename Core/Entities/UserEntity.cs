@@ -23,6 +23,7 @@ namespace Agrishare.Core.Entities
         public string Gender => $"{GenderId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public string Language => $"{LanguageId}".ExplodeCamelCase();
+        public string AgentType => $"{AgentTypeId}".ExplodeCamelCase();
 
         private List<Role> roles { get; set; }
         public List<Role> Roles
@@ -240,7 +241,9 @@ namespace Agrishare.Core.Entities
                 Telephone,
                 Language,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 
@@ -265,6 +268,8 @@ namespace Agrishare.Core.Entities
                 Roles = Roles.Select(e => $"{e}".ExplodeCamelCase()).ToList(),
                 AgentId,
                 Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType,
                 Status,
                 StatusId,
                 Telephone,
@@ -297,7 +302,9 @@ namespace Agrishare.Core.Entities
                 LanguageId,
                 Language,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 
@@ -328,7 +335,9 @@ namespace Agrishare.Core.Entities
                 DateCreated,
                 LastModified,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 

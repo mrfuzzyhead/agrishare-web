@@ -40,6 +40,8 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Booking" ToRole="Journal" />
     <NavigationProperty Name="Counters" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Booking" ToRole="Counter" />
+    <Property Name="Commission" Type="Decimal" Nullable="false" />
+    <Property Name="AgentCommission" Type="Decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -236,6 +238,7 @@
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_1" FromRole="User" ToRole="Journal" />
     <Property Name="AgentId" Type="Int32" />
     <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
+    <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
   </EntityType>
   <Association Name="bookings_ibfk_1">
     <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -903,6 +906,8 @@
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_1" FromRole="Agent" ToRole="User" />
+    <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
+    <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="users_ibfk_1">
     <End Type="AgrishareModel.Agent" Role="Agent" Multiplicity="0..1" />
@@ -916,4 +921,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EnumType Name="AgentType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Personal" Value="1" />
+    <Member Name="Organisation" Value="2" />
+  </EnumType>
+  <EnumType Name="AgentUserType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Admin" Value="1" />
+    <Member Name="User" Value="2" />
+  </EnumType>
 </Schema>

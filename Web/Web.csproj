@@ -93,6 +93,7 @@
     <Content Include="Global.asax" />
     <Content Include="Pages\About\Contact.aspx" />
     <Content Include="Pages\About\Rules.aspx" />
+    <Content Include="Pages\Account\Commission\Report.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
     <Content Include="Pages\About\Privacy.aspx" />
@@ -161,6 +162,13 @@
     </Compile>
     <Compile Include="Pages\About\Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Commission\Report.aspx.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Commission\Report.aspx.designer.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>

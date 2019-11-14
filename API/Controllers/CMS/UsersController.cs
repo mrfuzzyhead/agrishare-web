@@ -1,5 +1,6 @@
 ﻿using Agrishare.API;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -94,7 +95,8 @@ namespace Agrishare.API.Controllers.CMS
                 Genders = EnumInfo.ToList<Entities.Gender>(),
                 Languages = EnumInfo.ToList<Entities.Language>(),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
-                Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0)
+                Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
+                Types = EnumInfo.ToList<AgentUserType>()
             };
 
             return Success(data);
