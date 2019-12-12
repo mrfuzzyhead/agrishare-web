@@ -203,7 +203,7 @@ namespace Agrishare.Core.Entities
                     Environment.NewLine +
                     "Exception: " + ex.Message + Environment.NewLine +
                     Environment.NewLine +
-                    "Stack trace: " + ex.StackTrace.ToString() +
+                    "Stack trace: " + ex.StackTrace?.ToString() +
                     message +
                     Environment.NewLine +
                     GetValidationMessage(ex);
