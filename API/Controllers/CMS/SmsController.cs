@@ -17,7 +17,7 @@ namespace Agrishare.API.Controllers.CMS
         {
             var entity = new SmsModel
             {
-                RecipientCount = Entities.User.Count(),
+                RecipientCount = Entities.User.BulkSMSCount(),
                 Sent = false
             };
 
@@ -38,7 +38,7 @@ namespace Agrishare.API.Controllers.CMS
 
             Model.Sent = true;
 
-            var users = Entities.User.List().Select(e => e.Telephone).ToList();
+            var users = Entities.User.BulkSMSList().Select(e => e.Telephone).ToList();
 
             if (Core.Utils.SMS.SendMessages(users, Model.Message))
                 return Success(new

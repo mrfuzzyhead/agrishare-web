@@ -3,7 +3,6 @@
 
     <ag-title-bar>
         <gl-icon-button gl-icon="receipt" ng-click="app.redirect(app.apiUrl + '/cms/settlement/report')" ng-if="app.hasRole('Administrator')">Download Settlement Report</gl-icon-button>
-
     </ag-title-bar>
 
     <ag-section ag-controller="dashboard">
@@ -30,6 +29,7 @@
 
             <div class="settlement">
                 <ul>
+                    <li><big>{{dashboard.data.totalRegistrations}}</big><strong>Total<br />Registrations</strong></li>
                     <li><big>{{dashboard.data.totalBookingAmount | currency}}</big><strong>Total<br />Transactions</strong></li>
                     <li><big>{{dashboard.data.agrishareCommission | currency}}</big><strong>AgriShare<br />Commission</strong></li>
                     <li><big>{{dashboard.data.totalBookingAmount - dashboard.data.agrishareCommission | currency}}</big><strong>Paid<br />Out</strong></li>
@@ -45,6 +45,7 @@
                     <a ng-click="dashboard.activity.filter.category=1" ng-class="{'active':dashboard.activity.filter.category==1}">Tractors</a>
                     <a ng-click="dashboard.activity.filter.category=2" ng-class="{'active':dashboard.activity.filter.category==2}">Lorries</a>
                     <a ng-click="dashboard.activity.filter.category=3" ng-class="{'active':dashboard.activity.filter.category==3}">Processing</a>
+                    <a ng-click="dashboard.activity.filter.category=17" ng-class="{'active':dashboard.activity.filter.category==17}">Buses</a>
                 </h2>
                 <ul>
                     <li>

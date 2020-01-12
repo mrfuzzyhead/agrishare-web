@@ -60,7 +60,7 @@ namespace Agrishare.API.Controllers.App
                 return Error($"{user.EmailAddress} has already been registered");
 
             user.RoleList = $"{Entities.Role.User}";
-            user.NotificationPreferences = (int)Entities.NotificationPreferences.PushNotifications + (int)Entities.NotificationPreferences.SMS;
+            user.NotificationPreferences = (int)Entities.NotificationPreferences.PushNotifications + (int)Entities.NotificationPreferences.SMS + (int)Entities.NotificationPreferences.BulkSMS;
             user.StatusId = Entities.UserStatus.Pending;
 
             if (!Entities.User.VerificationRequired)
@@ -261,7 +261,7 @@ namespace Agrishare.API.Controllers.App
         [@Authorize(Roles = "User")]
         [Route("profile/preferences/notifications/update")]
         [AcceptVerbs("GET")]
-        public object UpdateNotificationPreferences(bool SMS, bool PushNotifications, bool Email)
+        public object UpdateNotificationPreferences(bool SMS, bool PushNotifications, bool Email, bool BulkSMS = false)
         {
             CurrentUser.NotificationPreferences = 0;
             if (SMS)
@@ -270,6 +270,8 @@ namespace Agrishare.API.Controllers.App
                 CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.PushNotifications;
             if (Email)
                 CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.Email;
+            if (BulkSMS)
+                CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.BulkSMS;
 
             if (CurrentUser.Save())
                 return Success(new

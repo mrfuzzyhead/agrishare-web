@@ -1,5 +1,6 @@
 ﻿using Agrishare.API;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -39,7 +40,8 @@ namespace Agrishare.API.Controllers.CMS
 
             var data = new
             {
-                Entity = agent.Json()
+                Entity = agent.Json(),
+                Types = EnumInfo.ToList<AgentType>()
             };
 
             return Success(data);

@@ -26,7 +26,7 @@ namespace Agrishare.API.Controllers.CMS
                     title = $"{user.FirstName} {user.LastName}";
             }
 
-            int total = 0, tractors = 0, lorries = 0, processors = 0, reviews = 0, onestar = 0;
+            int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0;
             decimal averageRating = 0M;
             if (PageIndex == 0)
             {
@@ -34,6 +34,7 @@ namespace Agrishare.API.Controllers.CMS
                 tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId);
                 lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId);
                 processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId);
+                buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId);
                 reviews = Entities.Rating.Count();
                 onestar = Entities.Rating.Count(Stars: 1);
                 averageRating = Entities.Rating.AverageRating();
@@ -51,6 +52,7 @@ namespace Agrishare.API.Controllers.CMS
                     Tractors = tractors,
                     Lorries = lorries,
                     Processors = processors,
+                    Buses = buses,
                     Reviews = reviews,
                     AverageRating = averageRating,
                     OneStar = onestar

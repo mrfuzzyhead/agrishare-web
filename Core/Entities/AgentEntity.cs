@@ -13,6 +13,7 @@ namespace Agrishare.Core.Entities
     public partial class Agent : IEntity
     {
         public static string DefaultSort = "Title";
+        public string Type => $"{TypeId}".ExplodeCamelCase();
 
         public static Agent Find(int Id = 0)
         {
@@ -113,6 +114,9 @@ namespace Agrishare.Core.Entities
                 Id,
                 Title,
                 Commission,
+                TypeId,
+                Type,
+                Telephone,
                 DateCreated
             };
         }

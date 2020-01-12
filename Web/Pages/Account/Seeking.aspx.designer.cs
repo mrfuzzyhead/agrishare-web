@@ -31,13 +31,22 @@ namespace Agrishare.Web.Pages.Account.Seeking {
         protected global::System.Web.UI.WebControls.Panel Summary;
         
         /// <summary>
-        /// MonthSummary control.
+        /// LeftSummaryTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MonthSummary;
+        protected global::System.Web.UI.WebControls.Literal LeftSummaryTitle;
+        
+        /// <summary>
+        /// LeftSummaryAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal LeftSummaryAmount;
         
         /// <summary>
         /// AllTimeSummary control.

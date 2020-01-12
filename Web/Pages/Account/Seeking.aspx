@@ -61,8 +61,8 @@
 
             <asp:Panel runat="server" ID="Summary" CssClass="summary">
                 <div>
-                    <small>This Month</small>
-                    <span><asp:Literal runat="server" Id="MonthSummary" /></span>
+                    <small><asp:Literal runat="server" Id="LeftSummaryTitle" /></small>
+                    <span><asp:Literal runat="server" Id="LeftSummaryAmount" /></span>
                 </div>
                 <div>
                     <small>All Time</small>

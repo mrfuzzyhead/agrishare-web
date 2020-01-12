@@ -44,7 +44,7 @@ var agrishareApp = angular
         $scope.index = -1;
 
         var loop = function () {
-            if ($scope.index === 1)
+            if ($scope.index === 2)
                 $scope.index = 0;
             else
                 $scope.index += 1;            

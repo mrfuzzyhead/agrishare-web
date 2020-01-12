@@ -182,6 +182,12 @@
     <Compile Include="Entities\Agent.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AgentType.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AgentUserType.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Agrishare.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

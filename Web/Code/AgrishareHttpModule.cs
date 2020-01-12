@@ -55,6 +55,11 @@ namespace Agrishare.Web
             {
                 Context.RewritePath($"/Pages{Context.Request.Path.Replace("-", "")}.aspx", false);
             }
+            else if (Regex.IsMatch(Context.Request.Path, @"^/listing/[\d]+/[a-zA-Z0-9]+$"))
+            {
+                var id = Regex.Replace(Context.Request.Path, @"^/listing/([\d]+)/[a-zA-Z0-9]+$", "$1");
+                Context.RewritePath($"/Pages/Listing.aspx?id={id}", false);
+            }
         }
 
         private void BundleMinifyCompress(string Path)

@@ -23,6 +23,7 @@ namespace Agrishare.Core.Entities
         public string Gender => $"{GenderId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public string Language => $"{LanguageId}".ExplodeCamelCase();
+        public string AgentType => $"{AgentTypeId}".ExplodeCamelCase();
 
         private List<Role> roles { get; set; }
         public List<Role> Roles
@@ -114,7 +115,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -138,6 +139,30 @@ namespace Agrishare.Core.Entities
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (Agent.HasValue && Agent.Value == true)
+                    query = query.Where(o => o.AgentId.HasValue);
+                if (Agent.HasValue && Agent.Value == false)
+                    query = query.Where(o => !o.AgentId.HasValue);
+
+                return query.Count();
+            }
+        }
+
+        public static List<User> BulkSMSList()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                return query.ToList();
+            }
+        }
+
+
+        public static int BulkSMSCount()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.Count();
             }
         }
@@ -216,7 +241,9 @@ namespace Agrishare.Core.Entities
                 Telephone,
                 Language,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 
@@ -241,6 +268,8 @@ namespace Agrishare.Core.Entities
                 Roles = Roles.Select(e => $"{e}".ExplodeCamelCase()).ToList(),
                 AgentId,
                 Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType,
                 Status,
                 StatusId,
                 Telephone,
@@ -265,14 +294,17 @@ namespace Agrishare.Core.Entities
                 {
                     SMS = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.SMS) > 0,
                     PushNotifications = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.PushNotifications) > 0,
-                    Email = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.Email) > 0
+                    Email = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.Email) > 0,
+                    BulkSMS = (NotificationPreferences & (int)Agrishare.Core.Entities.NotificationPreferences.BulkSMS) > 0
                 },
                 InterestId,
                 Interest,
                 LanguageId,
                 Language,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 
@@ -303,7 +335,9 @@ namespace Agrishare.Core.Entities
                 DateCreated,
                 LastModified,
                 AgentId,
-                Agent = Agent?.Json()
+                Agent = Agent?.Json(),
+                AgentTypeId,
+                AgentType
             };
         }
 

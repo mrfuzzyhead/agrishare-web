@@ -8,7 +8,9 @@
         <form>
 
             <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
-            <gl-textbox gl-label="Commission" ng-model="form.entity.Commission" gl-required="true" gl-type="number"></gl-textbox>
+            <gl-textbox gl-label="Commission (percentage of AgriShare commission)" ng-model="form.entity.Commission" gl-required="true" gl-type="number"></gl-textbox>
+            <gl-dropdown-list gl-label="Type" ng-model="form.entity.TypeId" gl-source="form.data.Types" gl-selection="Id"></gl-dropdown-list>
+            <gl-textbox gl-label="Telephone" ng-model="form.entity.Telephone" gl-required="form.entity.TypeId===2"></gl-textbox>
 
         </form>
 

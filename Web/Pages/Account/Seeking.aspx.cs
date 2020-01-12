@@ -26,7 +26,17 @@ namespace Agrishare.Web.Pages.Account.Seeking
             Bookings.DataBind();
 
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
-            MonthSummary.Text = "$" + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
+
+            if (Master.CurrentUser.AgentId.HasValue)
+            {
+                LeftSummaryTitle.Text = "My Commission";
+                LeftSummaryAmount.Text = "$" + Core.Entities.Booking.SeekingSummaryAgentCommission(Master.CurrentUser.Id).ToString("N2");
+            }
+            else
+            {
+                LeftSummaryTitle.Text = "This Month";
+                LeftSummaryAmount.Text = "$" + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
+            }
             AllTimeSummary.Text = "$" + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id).ToString("N2");
         }
 
