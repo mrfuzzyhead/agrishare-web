@@ -70,6 +70,15 @@ namespace Agrishare.Web.Pages.Account
 
                 default:
                     Introduction.Visible = true;
+
+                    AgentName.Text = Master.CurrentUser.Agent?.Title ?? "";
+                    AgentDetails.Visible = Master.CurrentUser.AgentId.HasValue && Master.CurrentUser.AgentTypeId == Core.Entities.AgentUserType.Admin;
+                    if (AgentDetails.Visible)
+                    {
+                        BookingCount.Text = Core.Entities.Booking.SeekingSummaryAgentAdminCount(Master.CurrentUser.AgentId ?? 0).ToString("N0");
+                        CommissionAmount.Text = "$" + Core.Entities.Booking.SeekingSummaryAgentAdminCommission(Master.CurrentUser.AgentId ?? 0).ToString("N2");
+                    }
+
                     break;
             }
 

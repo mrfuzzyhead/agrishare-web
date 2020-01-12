@@ -4,6 +4,7 @@
     {
         SMS = 1,
         Email = 2,
-        PushNotifications = 4
+        PushNotifications = 4,
+        BulkSMS = 8
     }
 }

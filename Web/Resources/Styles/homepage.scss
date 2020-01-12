@@ -201,6 +201,20 @@
         }
     }
 
+    .social {
+        display: flex;
+        background: white;
+        padding: 20px;
+
+        @media all and (max-width: $mobile-breakpoint) {
+            flex-direction: column;
+        }
+
+        > div {
+            flex: 1;
+        }
+    }
+
     .testimony {
         background: white url(/Resources/Images/Phinneas.jpg) no-repeat center center;
         background-size: cover;
@@ -229,4 +243,10 @@
             }
         }
     }
+}
+
+.fb-page,
+.fb-page span,
+.fb-page span iframe[style] {
+    max-width: 100% !important;
 }

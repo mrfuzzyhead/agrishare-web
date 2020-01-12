@@ -13,6 +13,24 @@ namespace Agrishare.Web.Pages {
     public partial class Homepage {
         
         /// <summary>
+        /// ListingCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ListingCount;
+        
+        /// <summary>
+        /// UserCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal UserCount;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

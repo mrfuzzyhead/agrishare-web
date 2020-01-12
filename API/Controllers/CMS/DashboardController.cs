@@ -31,6 +31,7 @@ namespace Agrishare.API.Controllers.CMS
                 activeUsers = Entities.Counter.Count(UniqueUser: true),
                 completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete),
                 totalBookingAmount,
+                totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate),
                 agrishareCommission,
                 searchCount = new
                 {

@@ -46,7 +46,9 @@ namespace Agrishare.API.Controllers.App
                 TransportCost = Model.TransportCost,
                 Price = Model.HireCost + Model.FuelCost + Model.TransportCost,
                 Distance = Model.Distance,
-                TransportDistance = Model.TransportDistance
+                TransportDistance = Model.TransportDistance,
+                Commission = Entities.Transaction.AgriShareCommission,
+                AgentCommission = CurrentUser.Agent?.Commission ?? 0
             };       
 
             if (booking.Save())
@@ -263,10 +265,7 @@ namespace Agrishare.API.Controllers.App
             var totalSpend = Entities.Booking.SeekingSummary(CurrentUser.Id);
             var commissionEarned = 0M;
             if (CurrentUser.Agent != null)
-            {
-                var hireCost = Entities.Booking.SeekingSummaryHireCost(CurrentUser.Id);
-                commissionEarned = hireCost * CurrentUser.Agent.Commission;
-            }
+                commissionEarned = Entities.Booking.SeekingSummaryAgentCommission(CurrentUser.Id);
 
             var bookings = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: CurrentUser.Id);
 

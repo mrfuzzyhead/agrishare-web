@@ -1,5 +1,6 @@
 ﻿using Agrishare.API;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -28,10 +29,12 @@ namespace Agrishare.API.Controllers.CMS
             var recordCount = Entities.User.Count(Keywords: Query);
             var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
 
-            int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0;
+            int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
             if (PageIndex == 0)
             {
                 total = Entities.User.Count();
+                totalAgents = Entities.User.Count(Agent: true);
+                totalRegular = Entities.User.Count(Agent: false);
                 male = Entities.User.Count(Gender: Entities.Gender.Male);
                 female = Entities.User.Count(Gender: Entities.Gender.Female);
                 deleted = Entities.User.Count(Deleted: true);
@@ -49,6 +52,8 @@ namespace Agrishare.API.Controllers.CMS
                 Summary = new
                 {
                     Total = total,
+                    TotalAgents = totalAgents,
+                    TotalRegular = totalRegular,
                     Active = active,
                     Male =  male,
                     Female = female,
@@ -90,7 +95,8 @@ namespace Agrishare.API.Controllers.CMS
                 Genders = EnumInfo.ToList<Entities.Gender>(),
                 Languages = EnumInfo.ToList<Entities.Language>(),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
-                Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0)
+                Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
+                Types = EnumInfo.ToList<AgentUserType>()
             };
 
             return Success(data);

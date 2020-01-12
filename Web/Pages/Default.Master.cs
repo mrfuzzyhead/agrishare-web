@@ -104,6 +104,7 @@ namespace Agrishare.Web.Pages
                 menu.Add(new MenuItem { Title = "Get Started", Url = "/account/profile", CssClass = "button" });
             }
 
+            Menu.InnerHtml = "";
             foreach (var item in menu)
                 Menu.InnerHtml += $@"<li><a href=""{item.Url}"" class=""{MenuItemClass(item)}"">{item.Title}</a></li>";
 

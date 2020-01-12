@@ -12,6 +12,22 @@ MySQL - 5.7.21-log : Database - agrishare
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `Agents` */
+
+DROP TABLE IF EXISTS `Agents`;
+
+CREATE TABLE `Agents` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Title` varchar(256) DEFAULT NULL,
+  `Commission` decimal(10,4) NOT NULL,
+  `TypeId` smallint(6) NOT NULL DEFAULT '0',
+  `Telephone` varchar(32) DEFAULT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
 /*Table structure for table `Blogs` */
 
 DROP TABLE IF EXISTS `Blogs`;
@@ -78,6 +94,8 @@ CREATE TABLE `Bookings` (
   `TransportCost` decimal(10,3) NOT NULL DEFAULT '0.000',
   `TransportDistance` decimal(10,3) NOT NULL DEFAULT '0.000',
   `AdditionalInformation` varchar(4096) DEFAULT NULL,
+  `Commission` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `AgentCommission` decimal(10,3) NOT NULL DEFAULT '0.000',
   `TotalVolume` decimal(10,3) NOT NULL DEFAULT '0.000',
   `StatusId` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Enum: Pending, Approved, Declined, In Progress, Complete',
   `PaidOut` tinyint(1) NOT NULL DEFAULT '0',
@@ -90,7 +108,7 @@ CREATE TABLE `Bookings` (
   KEY `bookings_ibfk_3` (`ServiceId`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5017 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5019 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Categories` */
 
@@ -104,7 +122,7 @@ CREATE TABLE `Categories` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Config` */
 
@@ -140,7 +158,7 @@ CREATE TABLE `Counters` (
   CONSTRAINT `counters_ibfk_1` FOREIGN KEY (`ServiceId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
 
@@ -165,6 +183,7 @@ DROP TABLE IF EXISTS `Faqs`;
 
 CREATE TABLE `Faqs` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `LanguageId` int(11) NOT NULL DEFAULT '1',
   `Question` varchar(4096) DEFAULT NULL,
   `Answer` text,
   `SortOrder` int(11) NOT NULL DEFAULT '0',
@@ -229,7 +248,7 @@ CREATE TABLE `Listings` (
   KEY `CategoryId` (`CategoryId`),
   CONSTRAINT `listings_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `listings_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Log` */
 
@@ -245,7 +264,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1107 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1172 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -267,7 +286,7 @@ CREATE TABLE `Notifications` (
   KEY `BookingId` (`BookingId`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Pages` */
 
@@ -315,7 +334,7 @@ CREATE TABLE `Ratings` (
   CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `ratings_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Services` */
 
@@ -345,7 +364,7 @@ CREATE TABLE `Services` (
   KEY `CategoryId` (`CategoryId`),
   CONSTRAINT `services_ibfk_1` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `services_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Templates` */
 
@@ -408,14 +427,18 @@ CREATE TABLE `Users` (
   `NotificationPreferences` smallint(6) NOT NULL DEFAULT '0',
   `InterestId` smallint(6) NOT NULL COMMENT 'Enum: Seeking, Offering',
   `LanguageId` smallint(6) NOT NULL DEFAULT '1',
+  `AgentId` int(11) DEFAULT NULL,
+  `AgentTypeId` smallint(6) NOT NULL DEFAULT '0',
   `SignalRConnectionId` varchar(256) DEFAULT NULL,
   `StatusId` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Enum: Pending, Verified',
   `RoleList` varchar(1024) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`Id`),
+  KEY `AgentId` (`AgentId`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`AgentId`) REFERENCES `Agents` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10005 DEFAULT CHARSET=utf8mb4;
 
 /* Function  structure for function  `GetDistance` */
 

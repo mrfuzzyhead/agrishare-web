@@ -49,6 +49,51 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.Literal DisplayEmailAddress;
         
         /// <summary>
+        /// AgentDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel AgentDetails;
+        
+        /// <summary>
+        /// AgentName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal AgentName;
+        
+        /// <summary>
+        /// Summary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Summary;
+        
+        /// <summary>
+        /// BookingCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal BookingCount;
+        
+        /// <summary>
+        /// CommissionAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal CommissionAmount;
+        
+        /// <summary>
         /// EditProfileForm control.
         /// </summary>
         /// <remarks>

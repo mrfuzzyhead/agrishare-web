@@ -18,6 +18,23 @@
                     <small>EMAIL:</small> <asp:Literal runat="server" ID="DisplayEmailAddress" />
                 </p>
 
+                <asp:Panel runat="server" ID="AgentDetails">
+                    <h3>Commissions: <asp:Literal runat="server" Id="AgentName" /></h3>
+                    <asp:Panel runat="server" ID="Summary" CssClass="summary">
+                        <div>
+                            <small>Bookings</small>
+                            <span><asp:Literal runat="server" Id="BookingCount" /></span>
+                        </div>
+                        <div>
+                            <small>Commission</small>
+                            <span><asp:Literal runat="server" Id="CommissionAmount" /></span>
+                        </div>
+                    </asp:Panel>
+                    <p>
+                        <a href="/account/commission/report" class="button">Download report</a>
+                    </p>
+                </asp:Panel>
+
             </asp:PlaceHolder>
 
             <asp:PlaceHolder runat="server" ID="EditProfileForm" Visible="false">

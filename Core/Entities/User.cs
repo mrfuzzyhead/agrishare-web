@@ -43,6 +43,7 @@ namespace Agrishare.Core.Entities
         public bool Deleted { get; set; }
         public Language LanguageId { get; set; }
         public Nullable<int> AgentId { get; set; }
+        public AgentUserType AgentTypeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }

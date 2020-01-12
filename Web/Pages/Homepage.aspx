@@ -9,11 +9,17 @@
     
     <div class="slideshow" ng-controller="SlideshowController">
         <div ng-class="{'visible': index==0 }">
+            <h2><asp:Literal runat="server" ID="ListingCount" /> Live Listings<br />
+                <asp:Literal runat="server" ID="UserCount" /> Active Users</h2>
+            <p>Join our active community today</p>
+            <p><a href="/account/get-started">Get Started</a></p>
+        </div>
+        <div ng-class="{'visible': index==1 }">
             <h2>Linking farmers in Africa to agricultural equipment</h2>
             <p>AgriShare is an app to hire or rent out agricultural equipment between farmers and equipment manufacturers securely and with ease.</p>
             <p><a href="/account/get-started">Get Started</a></p>
         </div>
-        <div ng-class="{'visible': index==1 }">
+        <div ng-class="{'visible': index==2 }">
             <h2>Share Agricultural resources</h2>
             <p>Find farming equipment in your area and hire your equipment out to other farmers.</p>
             <p><a href="/account/get-started">Get Started</a></p>
@@ -48,8 +54,17 @@
         </div>
     </div>
 
+    <div class="social">
+        <div>
+            <a class="twitter-timeline" href="https://twitter.com/agri_share?ref_src=twsrc%5Etfw">Tweets by agri_share</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        <div>
+            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAgriShareZim%2F&tabs=timeline&width=480&height=4000&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=146461798748713" width="480" height="4000" data-adapt-container-width="true" style="border:none;overflow:hidden; width: 100% !important;" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+        </div>
+    </div>
+
     <div class="testimony">
-        <p><span>Phinneas Chikombo was able to reap his tobacco on time thanks to AgriShare</span></p>
+        <p><span>Phinneas Chikombo was able to harvest his crop on time thanks to AgriShare</span></p>
     </div>
 
 </asp:Content>

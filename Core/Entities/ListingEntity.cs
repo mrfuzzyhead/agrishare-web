@@ -18,6 +18,7 @@ namespace Agrishare.Core.Entities
         public string Condition => $"{ConditionId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public List<File> Photos => PhotoPaths?.Split(',').Select(e => new File(e)).ToList();
+        public string UrlPath => $"/listing/{Id}/{Title.UrlPath()}";
 
         private Category _category;
         public Category Category
@@ -208,6 +209,7 @@ namespace Agrishare.Core.Entities
                 StatusId,
                 Status,
                 User = IncludeUser ? User?.Json() : null,
+                Url = $"{Config.WebURL}{UrlPath}",
                 DateCreated,
                 LastModified
             };

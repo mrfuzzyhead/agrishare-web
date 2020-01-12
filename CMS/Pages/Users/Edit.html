@@ -28,6 +28,7 @@
 
             <gl-dropdown-list gl-label="Status" ng-model="form.entity.StatusId" gl-source="form.data.Statuses" gl-selection="Id"></gl-dropdown-list>
             <gl-dropdown-list gl-label="Agent" ng-model="form.entity.Agent" gl-source="form.data.Agents"></gl-dropdown-list>
+            <gl-dropdown-list gl-label="Agent Type" ng-model="form.entity.AgentTypeId" gl-source="form.data.Types" gl-selection="Id" ng-if="form.entity.Agent"></gl-dropdown-list>
 
         </form>
 

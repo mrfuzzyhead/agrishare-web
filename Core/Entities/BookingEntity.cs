@@ -18,7 +18,7 @@ namespace Agrishare.Core.Entities
         public string Title => Id.ToString() ?? "00000";
         public string For => $"{ForId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
-        public decimal AgriShareCommission => Math.Round(HireCost - (HireCost / (1 + Transaction.AgriShareCommission)));
+        public decimal AgriShareCommission => Math.Round(HireCost - (HireCost / (1 + Commission)));
 
         public static Booking Find(int Id = 0)
         {
@@ -40,18 +40,21 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, 
+        public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, int AgentId = 0,
             int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.User).Include(o => o.Service).Include(o => o.Listing).Where(o => !o.Deleted);
+                var query = ctx.Bookings.Include(o => o.User.Agent).Include(o => o.Service).Include(o => o.Listing).Where(o => !o.Deleted);
 
                 if (ListingId > 0)
                     query = query.Where(o => o.ListingId == ListingId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.User.AgentId == AgentId);
 
                 if (SupplierId > 0)
                     query = query.Where(o => o.Listing.UserId == SupplierId);
@@ -135,7 +138,7 @@ namespace Agrishare.Core.Entities
 
         }
 
-        public static decimal SeekingSummaryHireCost(int UserId, DateTime? StartDate = null)
+        public static decimal SeekingSummaryAgentCommission(int UserId, DateTime? StartDate = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -148,7 +151,43 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.StartDate >= startDate);
                 }
 
-                return query.Select(o => o.HireCost).DefaultIfEmpty(0).Sum();
+                return query.Select(o => o.HireCost * o.Commission * o.AgentCommission).DefaultIfEmpty(0).Sum();
+            }
+
+        }
+
+        public static int SeekingSummaryAgentAdminCount(int AgentId, DateTime? StartDate = null)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Bookings.Include(o => o.Listing)
+                        .Where(o => !o.Deleted && o.User.AgentId == AgentId && (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.Complete || o.StatusId == BookingStatus.InProgress));
+
+                if (StartDate.HasValue)
+                {
+                    var startDate = StartDate.Value.StartOfDay();
+                    query = query.Where(o => o.StartDate >= startDate);
+                }
+
+                return query.Count();
+            }
+
+        }
+
+        public static decimal SeekingSummaryAgentAdminCommission(int AgentId, DateTime? StartDate = null)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Bookings.Include(o => o.Listing)
+                        .Where(o => !o.Deleted && o.User.AgentId == AgentId && (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.Complete || o.StatusId == BookingStatus.InProgress));
+
+                if (StartDate.HasValue)
+                {
+                    var startDate = StartDate.Value.StartOfDay();
+                    query = query.Where(o => o.StartDate >= startDate);
+                }
+
+                return query.Select(o => o.HireCost * o.Commission * o.AgentCommission).DefaultIfEmpty(0).Sum();
             }
 
         }
@@ -175,7 +214,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.Listing).Include(o => o.Listing.User).Where(o => !o.Deleted);
+                var query = ctx.Bookings.Include(o => o.User.Agent).Include(o => o.Listing.User).Where(o => !o.Deleted);
 
                 query = query.Where(o => o.StatusId == BookingStatus.Complete && !o.PaidOut);
 
@@ -274,6 +313,8 @@ namespace Agrishare.Core.Entities
                 EndDate,
                 Price,
                 AgriShareCommission,
+                Commission,
+                AgentCommission,
                 HireCost,
                 FuelCost,
                 TransportCost,
