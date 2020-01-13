@@ -1,4 +1,5 @@
 ﻿using Agrishare.API;
+using Agrishare.API.Models;
 using Agrishare.Core;
 using System;
 using System.Linq;
@@ -13,17 +14,23 @@ namespace Agrishare.API.Controllers.CMS
     {
         [Route("listings/list")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex, int PageSize, string Query = "", int UserId = 0)
+        public object List(int PageIndex, int PageSize, [FromUri] ListingFilterModel Filter)
         {
-            var recordCount = Entities.Listing.Count(Keywords: Query, UserId: UserId);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, UserId: UserId);
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
             var title = "Listings";
 
-            if (UserId > 0)
+            if (Filter.UserId > 0)
             {
-                var user = Entities.User.Find(Id: UserId);
+                var user = Entities.User.Find(Id: Filter.UserId);
                 if (user != null)
                     title = $"{user.FirstName} {user.LastName}";
+            }
+            else if (Filter.CategoryId > 0)
+            {
+                var category = Entities.Category.Find(Id: Filter.CategoryId);
+                if (category != null)
+                    title = category.Title;
             }
 
             int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0;

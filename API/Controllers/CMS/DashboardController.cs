@@ -28,7 +28,7 @@ namespace Agrishare.API.Controllers.CMS
             var data = new
             {
                 activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live),
-                activeUsers = Entities.Counter.Count(UniqueUser: true),
+                activeUsers = Entities.Counter.ActiveUsers(startDate, endDate), //Entities.Counter.Count(UniqueUser: true),
                 completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete),
                 totalBookingAmount,
                 totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate),

@@ -22,7 +22,14 @@ namespace Agrishare.Core.Utils
             var request = new RestRequest(Method.GET);
             request.AddHeader("Cache-Control", "no-cache");
             var response = client.Execute(request);
-            return Convert.ToDecimal(response.Content);
+            try
+            {
+                return Convert.ToDecimal(response.Content);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public static bool SendMessage(string Recipient, string Message)

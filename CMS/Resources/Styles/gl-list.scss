@@ -214,3 +214,18 @@ gl-list {
         }
     }
 }
+
+.filter-view {
+    background: #ccc;
+    display: flex;
+    padding: 10px 40px;
+
+    > div {
+        flex: 1;
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

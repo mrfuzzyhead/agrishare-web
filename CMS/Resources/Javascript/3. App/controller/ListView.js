@@ -22,9 +22,17 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
     list.searching = false;
     list.query = '';
     list.filter = $scope.filter;
+    list.response = null;
     list.summary = {};
 
     $scope.list = list;
+
+    $scope.$watch(function () {
+        return list.filter;
+    }, function () {
+        if(list.filter)
+            list.refresh();
+    }, true);
 
     list.refresh = function () {
         if (list.aborter)
@@ -50,8 +58,18 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
         if (list.query)
             url += '&Query=' + encodeURIComponent(list.query);
 
-        for (var item in list.filter)
-            url += '&' + item + '=' + encodeURIComponent(list.filter[item]);
+        
+        //var startDate = new moment(dashboard.activity.filter.startDate);
+        //if (!startDate.isValid()) startDate = new moment(0);
+        //var endDate = new moment(dashboard.activity.filter.endDate);
+        //if (!endDate.isValid()) endDate = new moment();
+
+        for (var item in list.filter) {
+            var value = list.filter[item];
+            if (list.filter[item] instanceof Date)
+                value = new moment(value).format('YYYY-MM-DDTHH:mm:ss');
+            url += '&' + item + '=' + encodeURIComponent(value);
+        }
 
         list.aborter = $q.defer();
         $http({
@@ -62,6 +80,7 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
 
             list.busy = false;
             list.loading = false;
+            list.response = response.data;
 
             var json = response.data;
             App.title = json.Title;

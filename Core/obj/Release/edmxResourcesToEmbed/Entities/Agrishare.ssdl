@@ -7,6 +7,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="varchar" MaxLength="256" />
     <Property Name="Commission" Type="decimal" Precision="10" Scale="4" Nullable="false" />
+    <Property Name="TypeId" Type="smallint" Nullable="false" />
+    <Property Name="Telephone" Type="varchar" MaxLength="32" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -49,6 +51,8 @@
     <Property Name="TransportCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TransportDistance" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="AdditionalInformation" Type="varchar" MaxLength="4096" />
+    <Property Name="Commission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="PaidOut" Type="bool" Nullable="false" />
@@ -312,6 +316,7 @@
     <Property Name="InterestId" Type="smallint" Nullable="false" />
     <Property Name="LanguageId" Type="smallint" Nullable="false" />
     <Property Name="AgentId" Type="int" />
+    <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
     <Property Name="SignalRConnectionId" Type="varchar" MaxLength="256" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="RoleList" Type="varchar" MaxLength="1024" />
