@@ -30,7 +30,7 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
     $scope.$watch(function () {
         return list.filter;
     }, function () {
-        if(list.filter)
+        if(list.filter && !list.busy)
             list.refresh();
     }, true);
 
@@ -58,12 +58,6 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
         if (list.query)
             url += '&Query=' + encodeURIComponent(list.query);
 
-        
-        //var startDate = new moment(dashboard.activity.filter.startDate);
-        //if (!startDate.isValid()) startDate = new moment(0);
-        //var endDate = new moment(dashboard.activity.filter.endDate);
-        //if (!endDate.isValid()) endDate = new moment();
-
         for (var item in list.filter) {
             var value = list.filter[item];
             if (list.filter[item] instanceof Date)
@@ -81,6 +75,7 @@ agrishareApp.controller('ListViewController', function ($attrs, $controller, $ht
             list.busy = false;
             list.loading = false;
             list.response = response.data;
+            list.error = '';
 
             var json = response.data;
             App.title = json.Title;

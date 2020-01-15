@@ -87,7 +87,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -121,6 +121,11 @@ namespace Agrishare.Core.Entities
                     var toDate = RegisterToDate.Value.StartOfDay();
                     query = query.Where(o => o.DateCreated <= toDate);
                 }
+
+                if (Agent.HasValue && Agent.Value == true)
+                    query = query.Where(o => o.AgentId.HasValue);
+                if (Agent.HasValue && Agent.Value == false)
+                    query = query.Where(o => !o.AgentId.HasValue);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -560,7 +565,8 @@ namespace Agrishare.Core.Entities
         All = 0,
         Active = 1,
         CompletedBooking = 2,
-        EquipmentOwner = 3
+        EquipmentOwner = 3,
+        Agent = 4
     }
 
 }

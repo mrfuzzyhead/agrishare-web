@@ -1,5 +1,8 @@
 ﻿using Agrishare.API;
+using Agrishare.API.Models;
 using Agrishare.Core;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -12,44 +15,47 @@ namespace Agrishare.API.Controllers.CMS
     {
         [Route("bookings/list")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex, int PageSize, string Query = "", int UserId = 0)
+        public object List(int PageIndex, int PageSize, [FromUri] BookingFilterModel Filter)
         {
-            var recordCount = Entities.Booking.Count(UserId: UserId);
-            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: UserId);
+            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
+            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
             var title = "Bookings";
 
-            if (UserId > 0)
+            if (Filter.UserId > 0)
             {
-                var user = Entities.User.Find(Id: UserId);
+                var user = Entities.User.Find(Id: Filter.UserId);
                 if (user != null)
                     title = $"{user.FirstName} {user.LastName}";
             }
 
-            int bookingsMadeMe = 0, bookingsMadeFriend = 0, bookingsMadeGroup = 0;
-            int confirmedBookingsMe = 0, confirmedBookingsFriend = 0, confirmedBookingsGroup = 0;
-            int paidBookingsMe = 0, paidBookingsFriend = 0, paidBookingsGroup = 0;
-            int completedBookingsMe = 0, completedBookingsFriend = 0, completedBookingsGroup = 0;
-            int declinedBookings = 0, cancelledBookings = 0, incompleteBookings = 0;
-            if (PageIndex == 0)
+            if (Filter.Status != Entities.BookingStatus.None)
+                title = $"{Filter.Status}".ExplodeCamelCase();
+
+            if (Filter.Category > 0)
             {
-                bookingsMadeMe = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Me);
-                confirmedBookingsMe = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Me);
-                paidBookingsMe = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Me);
-                completedBookingsMe = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Me);
+                var category = Entities.Category.Find(Id: Filter.Category);
+                if (category != null)
+                    title = category.Title;
+            }
 
-                bookingsMadeFriend = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Friend);
-                confirmedBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Friend);
-                paidBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Friend);
-                completedBookingsFriend = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Friend);
+            var summary = Entities.Booking.Summary();
 
-                bookingsMadeGroup = Entities.Counter.Count(Event: Entities.Counters.Book, For: Entities.BookingFor.Group);
-                confirmedBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, For: Entities.BookingFor.Group);
-                paidBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, For: Entities.BookingFor.Group);
-                completedBookingsGroup = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, For: Entities.BookingFor.Group);
+            var Statuses = EnumInfo.ToList<Entities.BookingStatus>().Where(s => s.Id != (int)Entities.BookingStatus.None).ToList();
+            Statuses.Insert(0, new EnumDescriptor { Id = -1, Title = "All" });
 
-                declinedBookings = Entities.Counter.Count(Event: Entities.Counters.DeclineBooking);
-                cancelledBookings = Entities.Counter.Count(Event: Entities.Counters.CancelBooking);
-                incompleteBookings = Entities.Counter.Count(Event: Entities.Counters.IncompleteBooking);
+            var Categories = Entities.Category.List(ParentId: 0);
+            Categories.Insert(0, new Entities.Category { Id = 0, Title = "All" });
+
+            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
+            var Graph = new List<object>();
+            foreach(var item in graphData)
+            {
+                Graph.Add(new
+                {
+                    Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
+                    item.Count,
+                    Height = item.Count / graphData.Max(d => d.Count) * 100
+                });
             }
 
             var data = new
@@ -60,25 +66,36 @@ namespace Agrishare.API.Controllers.CMS
                 Title = title,
                 Summary = new
                 {
-                    BookingsMadeMe = bookingsMadeMe,
-                    ConfirmedBookingsMe = confirmedBookingsMe,
-                    PaidBookingsMe = paidBookingsMe,
-                    CompletedBookingsMe = completedBookingsMe,
+                    Complete = new
+                    {
+                        Me = summary.Where(p => p.Status == Entities.BookingStatus.Complete && p.For == Entities.BookingFor.Me).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Friend = summary.Where(p => p.Status == Entities.BookingStatus.Complete && p.For == Entities.BookingFor.Friend).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Group = summary.Where(p => p.Status == Entities.BookingStatus.Complete && p.For == Entities.BookingFor.Group).Select(p => p.Count).DefaultIfEmpty(0).Sum()
+                    },
 
-                    BookingsMadeFriend = bookingsMadeFriend,
-                    ConfirmedBookingsFriend = confirmedBookingsFriend,
-                    PaidBookingsFriend = paidBookingsFriend,
-                    CompletedBookingsFriend = completedBookingsFriend,
+                    InProgress = new
+                    {
+                        Me = summary.Where(p => p.Status == Entities.BookingStatus.InProgress && p.For == Entities.BookingFor.Me).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Friend = summary.Where(p => p.Status == Entities.BookingStatus.InProgress && p.For == Entities.BookingFor.Friend).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Group = summary.Where(p => p.Status == Entities.BookingStatus.InProgress && p.For == Entities.BookingFor.Group).Select(p => p.Count).DefaultIfEmpty(0).Sum()
+                    },
 
-                    BookingsMadeGroup = bookingsMadeGroup,
-                    ConfirmedBookingsGroup = confirmedBookingsGroup,
-                    PaidBookingsGroup = paidBookingsGroup,
-                    CompletedBookingsGroup = completedBookingsGroup,
+                    Approved = new
+                    {
+                        Me = summary.Where(p => p.Status == Entities.BookingStatus.Approved && p.For == Entities.BookingFor.Me).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Friend = summary.Where(p => p.Status == Entities.BookingStatus.Approved && p.For == Entities.BookingFor.Friend).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                        Group = summary.Where(p => p.Status == Entities.BookingStatus.Approved && p.For == Entities.BookingFor.Group).Select(p => p.Count).DefaultIfEmpty(0).Sum()
+                    },
 
-                    DeclinedBookings = declinedBookings,
-                    CancelledBookings = cancelledBookings,
-                    IncompleteBookings = incompleteBookings
-                }
+                    Pending = summary.Where(p => p.Status == Entities.BookingStatus.Pending).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                    Declined = summary.Where(p => p.Status == Entities.BookingStatus.Declined).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                    Cancelled = summary.Where(p => p.Status == Entities.BookingStatus.Cancelled).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+                    Incomplete = summary.Where(p => p.Status == Entities.BookingStatus.Incomplete).Select(p => p.Count).DefaultIfEmpty(0).Sum(),
+
+                    Graph
+                },
+                Statuses,
+                Categories = Categories.Select(c => c.Json())
             };
 
             return Success(data);

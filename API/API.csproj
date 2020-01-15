@@ -172,6 +172,7 @@
     <Compile Include="Models\EcoCashModel.cs" />
     <Compile Include="Models\SMSModel.cs" />
     <Compile Include="Models\ListingFilterModel.cs" />
+    <Compile Include="Models\BookingFilterModel.cs" />
     <Compile Include="Models\UserFilterModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
