@@ -42,6 +42,17 @@
             </ul>
         </div>
 
+        <div class="graph-view" ng-if="list.summary.Graph.length">
+
+            <div class="col" ng-repeat="item in list.summary.Graph">
+                <div>
+                    <span style="min-height: {{item.Height}}%">{{item.Count}}</span>
+                </div>
+                <span>{{item.Label}}</span>
+            </div>
+
+        </div>
+
         <gl-list gl-controller="list" gl-infinite="list.next()">
 
             <div ng-repeat="item in list.data">
@@ -49,7 +60,7 @@
                 <row class="listing" ng-click="app.go('/listings/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <div>
                         <strong>{{item.Title}}</strong> &nbsp; <gl-rating gl-stars="item.AverageRating" ng-if="item.RatingCount>0" style="position:relative;top:2px"></gl-rating> <small style="position:relative;top:-2px" ng-if="item.RatingCount>0">({{item.RatingCount}})</small><br />
-                        <small>{{item.Category.Title}}</small> 
+                        <small>{{item.Category.Title}}</small>
                         <small ng-if="item.Brand">&bull; {{item.Brand}}</small>
                     </div>
                     <div>

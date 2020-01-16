@@ -214,5 +214,31 @@ namespace Agrishare.Core.Entities
                 LastModified
             };
         }
+
+        /* Reports */
+
+        public static List<ListingData> Graph(DateTime StartDate, DateTime EndDate, int CategoryId = 0)
+        {
+            var sql = $@"SELECT MONTH(Listings.DateCreated) AS `Month`, YEAR(Listings.DateCreated) AS `Year`, COUNT(Listings.Id) AS 'Count' 
+                            FROM Listings
+                            INNER JOIN Categories ON Listings.CategoryId = Categories.Id
+                            WHERE DATE(Listings.DateCreated) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND 
+	                            DATE(Listings.DateCreated) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') ";
+
+            if (CategoryId > 0)
+                sql += $"AND Listings.CategoryId = {CategoryId} ";
+
+            sql += $@"GROUP BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) ORDER BY Listings.DateCreated LIMIT 6";
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<ListingData>(sql).ToList();
+        }
+    }
+
+    public class ListingData
+    {
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int Count { get; set; }
     }
 }

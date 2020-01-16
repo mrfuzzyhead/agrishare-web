@@ -2,6 +2,7 @@
 using Agrishare.API.Models;
 using Agrishare.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -47,6 +48,18 @@ namespace Agrishare.API.Controllers.CMS
                 averageRating = Entities.Rating.AverageRating();
             }
 
+            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId);
+            var Graph = new List<object>();
+            foreach (var item in graphData)
+            {
+                Graph.Add(new
+                {
+                    Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
+                    item.Count,
+                    Height = item.Count / graphData.Max(d => d.Count) * 100
+                });
+            }
+
             var data = new
             {
                 Count = recordCount,
@@ -62,7 +75,8 @@ namespace Agrishare.API.Controllers.CMS
                     Buses = buses,
                     Reviews = reviews,
                     AverageRating = averageRating,
-                    OneStar = onestar
+                    OneStar = onestar,
+                    Graph
                 }
             };
 
