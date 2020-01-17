@@ -343,6 +343,26 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static decimal TotalAgriShareCommission(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * (e.Commission - e.AgentCommission)).DefaultIfEmpty(0).Sum();
+            }
+        }
+
+        public static decimal TotalAgentsCommission(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * e.AgentCommission).DefaultIfEmpty(0).Sum();
+            }
+        }
+
         public static List<BookingCounter> Summary()
         {
             using (var ctx = new AgrishareEntities())
