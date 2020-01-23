@@ -108,6 +108,20 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var sql = $"SELECT *, Photos AS PhotoPaths FROM Listings WHERE Listings.Deleted = 0 AND (Latitude BETWEEN {SouthWestLatitude} AND {NorthEastLatitude}) ";
+                if (NorthEastLongitude < SouthWestLongitude)
+                    sql += $"AND NOT (Longitude BETWEEN {NorthEastLongitude} AND {SouthWestLongitude})";
+                else
+                    sql += $"AND (Longitude BETWEEN {SouthWestLongitude} AND {NorthEastLongitude})";
+
+                return ctx.Database.SqlQuery<Listing>(sql).ToList();
+            }
+        }
+
         public bool Save()
         {
             var success = false;

@@ -7,6 +7,7 @@
 
         <gl-popup-menu gl-position="top right" class="responsive">
             <gl-menu-item gl-icon="search" ng-click="list.showSearch()">Search</gl-menu-item>
+            <gl-menu-item gl-icon="map" ng-click="app.go('/listings/map?'+app.returnUrlQs())">Map</gl-menu-item>
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>
 

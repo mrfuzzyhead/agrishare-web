@@ -210,5 +210,15 @@ namespace Agrishare.API.Controllers.CMS
 
             return Success(data);
         }
+
+        /* Map */
+
+        [Route("listings/map")]
+        [AcceptVerbs("GET")]
+        public object MapList(double NELat, double NELng, double SWLat, double SWLng)
+        {
+            var list = Entities.Listing.MapList(NELat, NELng, SWLat, SWLng);
+            return Success(list.Select(e => e.Json()));
+        }
     }
 }
