@@ -182,6 +182,13 @@
     <Compile Include="Entities\Agent.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FeeType.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TransactionFee.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TransactionFeeEntity.cs" />
     <Compile Include="Entities\AgentType.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

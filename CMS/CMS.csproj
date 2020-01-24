@@ -84,6 +84,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\TransactionFees\Edit.html" />
+    <Content Include="Pages\TransactionFees\List.html" />
     <Content Include="Pages\Agents\Edit.html" />
     <Content Include="Pages\Agents\List.html" />
     <Content Include="Pages\Journals\Reconcile.html" />

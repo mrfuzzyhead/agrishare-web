@@ -102,6 +102,10 @@ CREATE TABLE `Bookings` (
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `SMSCount` int(11) NOT NULL DEFAULT '0',
+  `SMSCost` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `TransactionFee` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `IMTT` decimal(10,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `ListingId` (`ListingId`),
@@ -136,7 +140,7 @@ CREATE TABLE `Config` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Counters` */
 
@@ -264,7 +268,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1172 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1184 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -380,6 +384,22 @@ CREATE TABLE `Templates` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+
+/*Table structure for table `TransactionFees` */
+
+DROP TABLE IF EXISTS `TransactionFees`;
+
+CREATE TABLE `TransactionFees` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `MinimumValue` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `MaximumValue` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Fee` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `FeeType` smallint(6) NOT NULL DEFAULT '0',
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Transactions` */
 

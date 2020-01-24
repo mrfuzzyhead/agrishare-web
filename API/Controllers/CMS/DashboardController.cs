@@ -23,6 +23,7 @@ namespace Agrishare.API.Controllers.CMS
             var totalBookingAmount = Entities.Booking.TotalAmountPaid(startDate, endDate);
             var agrishareCommission = Entities.Booking.TotalAgriShareCommission(startDate, endDate);
             var agentsCommission = Entities.Booking.TotalAgentsCommission(startDate, endDate);
+            var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate);
 
             var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate);
 
@@ -35,6 +36,7 @@ namespace Agrishare.API.Controllers.CMS
                 totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate),
                 agrishareCommission,
                 agentsCommission,
+                feesIncurred,
                 searchCount = new
                 {
                     Male = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),

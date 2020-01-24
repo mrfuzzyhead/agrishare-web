@@ -155,7 +155,17 @@ namespace Agrishare.Core.Entities
                 Save();
             }
             var message = $"Your verification code is {VerificationCode}";
-            return SMS.SendMessage(Telephone, message);
+            if (SMS.SendMessage(Telephone, message))
+            {
+                var booking = Booking.Find(Id: Booking?.Id ?? BookingId);
+                booking.SMSCount += 1;
+                booking.SMSCost += Transaction.SMSCost;
+                booking.Save();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

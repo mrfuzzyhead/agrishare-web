@@ -321,6 +321,10 @@ namespace Agrishare.Core.Entities
                 AgriShareCommission,
                 Commission,
                 AgentCommission,
+                TransactionFee,
+                IMTT,
+                SMSCost,
+                SMSCount,
                 HireCost,
                 FuelCost,
                 TransportCost,
@@ -360,6 +364,16 @@ namespace Agrishare.Core.Entities
                 StartDate = StartDate.StartOfDay();
                 EndDate = EndDate.EndOfDay();
                 return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * e.AgentCommission).DefaultIfEmpty(0).Sum();
+            }
+        }
+
+        public static decimal TotalFeesIncurred(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.SMSCount + e.TransactionFee + e.IMTT).DefaultIfEmpty(0).Sum();
             }
         }
 

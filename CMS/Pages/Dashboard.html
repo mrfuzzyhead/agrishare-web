@@ -29,11 +29,10 @@
 
             <div class="settlement">
                 <ul>
-                    <li><big>{{dashboard.data.totalRegistrations}}</big><strong>Total<br />Registrations</strong></li>
                     <li><big>{{dashboard.data.totalBookingAmount | currency}}</big><strong>Total<br />Transactions</strong></li>
                     <li><big>{{dashboard.data.agrishareCommission | currency}}</big><strong>AgriShare<br />Commission</strong></li>
+                    <li><big>{{dashboard.data.feesIncurred | currency}}</big><strong>Fees<br />Incurred</strong></li>
                     <li><big>{{dashboard.data.agentsCommission | currency}}</big><strong>Agents<br />Commission</strong></li>
-                    <li><big>{{dashboard.data.totalBookingAmount - dashboard.data.agrishareCommission | currency}}</big><strong>Paid<br />Out</strong></li>
                 </ul>
             </div>
 

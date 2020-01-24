@@ -61,6 +61,7 @@
         <AssociationConnector Association="AgrishareModel.counters_ibfk_3" />
         <EntityTypeShape EntityType="AgrishareModel.Agent" Width="1.5" PointX="14.875" PointY="0.75" />
         <AssociationConnector Association="AgrishareModel.users_ibfk_1" />
+        <EntityTypeShape EntityType="AgrishareModel.TransactionFee" Width="1.5" PointX="3.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

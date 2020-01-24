@@ -48,7 +48,8 @@ namespace Agrishare.API.Controllers.App
                 Distance = Model.Distance,
                 TransportDistance = Model.TransportDistance,
                 Commission = Entities.Transaction.AgriShareCommission,
-                AgentCommission = CurrentUser.Agent?.Commission ?? 0
+                AgentCommission = CurrentUser.Agent?.Commission ?? 0,
+                IMTT = Entities.Transaction.IMTT
             };       
 
             if (booking.Save())
