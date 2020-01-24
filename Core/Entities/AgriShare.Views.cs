@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Data.Mapping.EntityViewGenerationAttribute(typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsDB633E7A7BF69C17D36D29DAE3C032B55A091733AE78D8805E373F195850146C))]
+[assembly: System.Data.Mapping.EntityViewGenerationAttribute(typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -17,19 +17,19 @@ namespace Edm_EntityMappingGeneratedViews
     /// <Summary>
     /// The type contains views for EntitySets and AssociationSets that were generated at design time.
     /// </Summary>
-    public sealed class ViewsForBaseEntitySetsDB633E7A7BF69C17D36D29DAE3C032B55A091733AE78D8805E373F195850146C : System.Data.Mapping.EntityViewContainer
+    public sealed class ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5 : System.Data.Mapping.EntityViewContainer
     {
         
         /// <Summary>
         /// The constructor stores the views for the extents and also the hash values generated based on the metadata and mapping closure and views.
         /// </Summary>
-        public ViewsForBaseEntitySetsDB633E7A7BF69C17D36D29DAE3C032B55A091733AE78D8805E373F195850146C()
+        public ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5()
         {
             this.EdmEntityContainerName = "AgrishareEntities";
             this.StoreEntityContainerName = "AgrishareModelStoreContainer";
-            this.HashOverMappingClosure = "a67a97527d75ecdd60094cb5e3f3c7b4f1ebad83dcc186c755b0cf03526c809b";
-            this.HashOverAllExtentViews = "3e5598833e002da975e5196efef2fb974ad742bb4e782adc31dec0bde50e9bf3";
-            this.ViewCount = 34;
+            this.HashOverMappingClosure = "6de21a11ae1598da0b06499a2dfd35e97e2e550c350793e9a298f503aa3e25fe";
+            this.HashOverAllExtentViews = "f5f9296d5cb4498b3de6a5435e167c128a66bd74b54c93452ae94979d705d4fd";
+            this.ViewCount = 40;
         }
         
         /// <Summary>
@@ -173,6 +173,30 @@ namespace Edm_EntityMappingGeneratedViews
             {
                 return GetView33();
             }
+            if ((index == 34))
+            {
+                return GetView34();
+            }
+            if ((index == 35))
+            {
+                return GetView35();
+            }
+            if ((index == 36))
+            {
+                return GetView36();
+            }
+            if ((index == 37))
+            {
+                return GetView37();
+            }
+            if ((index == 38))
+            {
+                return GetView38();
+            }
+            if ((index == 39))
+            {
+                return GetView39();
+            }
             throw new System.IndexOutOfRangeException();
         }
         
@@ -181,7 +205,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// </Summary>
         private System.Collections.Generic.KeyValuePair<string, string> GetView0()
         {
-            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2267);
+            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2777);
             viewString.Append("\r\n    SELECT VALUE -- Constructing Bookings\r\n        [AgrishareModel.Store.Booki");
             viewString.Append("ngs](T1.Bookings_Id, T1.Bookings_ForId, T1.Bookings_UserId, T1.Bookings_ListingI");
             viewString.Append("d, T1.Bookings_ServiceId, T1.Bookings_Location, T1.Bookings_Latitude, T1.Booking");
@@ -189,28 +213,34 @@ namespace Edm_EntityMappingGeneratedViews
             viewString.Append("gs_DestinationLongitude, T1.Bookings_Quantity, T1.Bookings_Distance, T1.Bookings");
             viewString.Append("_IncludeFuel, T1.Bookings_StartDate, T1.Bookings_EndDate, T1.Bookings_Price, T1.");
             viewString.Append("Bookings_HireCost, T1.Bookings_FuelCost, T1.Bookings_TransportCost, T1.Bookings_");
-            viewString.Append("TransportDistance, T1.Bookings_AdditionalInformation, T1.Bookings_TotalVolume, T");
-            viewString.Append("1.Bookings_StatusId, T1.Bookings_DateCreated, T1.Bookings_LastModified, T1.Booki");
-            viewString.Append("ngs_Deleted)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS Bookings_Id, \r\n  ");
-            viewString.Append("          CAST(T.ForId AS [Edm.Int16]) AS Bookings_ForId, \r\n            T.UserId");
-            viewString.Append(" AS Bookings_UserId, \r\n            T.ListingId AS Bookings_ListingId, \r\n        ");
-            viewString.Append("    T.ServiceId AS Bookings_ServiceId, \r\n            T.Location AS Bookings_Loca");
-            viewString.Append("tion, \r\n            T.Latitude AS Bookings_Latitude, \r\n            T.Longitude A");
-            viewString.Append("S Bookings_Longitude, \r\n            T.Destination AS Bookings_Destination, \r\n   ");
-            viewString.Append("         T.DestinationLatitude AS Bookings_DestinationLatitude, \r\n            T.");
-            viewString.Append("DestinationLongitude AS Bookings_DestinationLongitude, \r\n            T.Quantity ");
-            viewString.Append("AS Bookings_Quantity, \r\n            T.Distance AS Bookings_Distance, \r\n         ");
-            viewString.Append("   T.IncludeFuel AS Bookings_IncludeFuel, \r\n            T.StartDate AS Bookings_");
-            viewString.Append("StartDate, \r\n            T.EndDate AS Bookings_EndDate, \r\n            T.Price AS");
-            viewString.Append(" Bookings_Price, \r\n            T.HireCost AS Bookings_HireCost, \r\n            T.");
-            viewString.Append("FuelCost AS Bookings_FuelCost, \r\n            T.TransportCost AS Bookings_Transpo");
-            viewString.Append("rtCost, \r\n            T.TransportDistance AS Bookings_TransportDistance, \r\n     ");
-            viewString.Append("       T.AdditionalInformation AS Bookings_AdditionalInformation, \r\n            ");
-            viewString.Append("T.TotalVolume AS Bookings_TotalVolume, \r\n            CAST(T.StatusId AS [Edm.Int");
-            viewString.Append("16]) AS Bookings_StatusId, \r\n            T.DateCreated AS Bookings_DateCreated, ");
+            viewString.Append("TransportDistance, T1.Bookings_AdditionalInformation, T1.Bookings_Commission, T1");
+            viewString.Append(".Bookings_AgentCommission, T1.Bookings_TotalVolume, T1.Bookings_StatusId, T1.Boo");
+            viewString.Append("kings_PaidOut, T1.Bookings_DateCreated, T1.Bookings_LastModified, T1.Bookings_De");
+            viewString.Append("leted, T1.Bookings_SMSCount, T1.Bookings_SMSCost, T1.Bookings_TransactionFee, T1");
+            viewString.Append(".Bookings_IMTT)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS Bookings_Id, \r");
+            viewString.Append("\n            CAST(T.ForId AS [Edm.Int16]) AS Bookings_ForId, \r\n            T.Use");
+            viewString.Append("rId AS Bookings_UserId, \r\n            T.ListingId AS Bookings_ListingId, \r\n     ");
+            viewString.Append("       T.ServiceId AS Bookings_ServiceId, \r\n            T.Location AS Bookings_L");
+            viewString.Append("ocation, \r\n            T.Latitude AS Bookings_Latitude, \r\n            T.Longitud");
+            viewString.Append("e AS Bookings_Longitude, \r\n            T.Destination AS Bookings_Destination, \r\n");
+            viewString.Append("            T.DestinationLatitude AS Bookings_DestinationLatitude, \r\n           ");
+            viewString.Append(" T.DestinationLongitude AS Bookings_DestinationLongitude, \r\n            T.Quanti");
+            viewString.Append("ty AS Bookings_Quantity, \r\n            T.Distance AS Bookings_Distance, \r\n      ");
+            viewString.Append("      T.IncludeFuel AS Bookings_IncludeFuel, \r\n            T.StartDate AS Bookin");
+            viewString.Append("gs_StartDate, \r\n            T.EndDate AS Bookings_EndDate, \r\n            T.Price");
+            viewString.Append(" AS Bookings_Price, \r\n            T.HireCost AS Bookings_HireCost, \r\n           ");
+            viewString.Append(" T.FuelCost AS Bookings_FuelCost, \r\n            T.TransportCost AS Bookings_Tran");
+            viewString.Append("sportCost, \r\n            T.TransportDistance AS Bookings_TransportDistance, \r\n  ");
+            viewString.Append("          T.AdditionalInformation AS Bookings_AdditionalInformation, \r\n         ");
+            viewString.Append("   T.Commission AS Bookings_Commission, \r\n            T.AgentCommission AS Booki");
+            viewString.Append("ngs_AgentCommission, \r\n            T.TotalVolume AS Bookings_TotalVolume, \r\n    ");
+            viewString.Append("        CAST(T.StatusId AS [Edm.Int16]) AS Bookings_StatusId, \r\n            T.Pa");
+            viewString.Append("idOut AS Bookings_PaidOut, \r\n            T.DateCreated AS Bookings_DateCreated, ");
             viewString.Append("\r\n            T.LastModified AS Bookings_LastModified, \r\n            T.Deleted A");
-            viewString.Append("S Bookings_Deleted, \r\n            True AS _from0\r\n        FROM AgrishareEntities");
-            viewString.Append(".Bookings AS T\r\n    ) AS T1");
+            viewString.Append("S Bookings_Deleted, \r\n            T.SMSCount AS Bookings_SMSCount, \r\n           ");
+            viewString.Append(" T.SMSCost AS Bookings_SMSCost, \r\n            T.TransactionFee AS Bookings_Trans");
+            viewString.Append("actionFee, \r\n            T.IMTT AS Bookings_IMTT, \r\n            True AS _from0\r\n");
+            viewString.Append("        FROM AgrishareEntities.Bookings AS T\r\n    ) AS T1");
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Bookings", viewString.ToString());
         }
         
@@ -325,14 +355,15 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Transactions", @"
     SELECT VALUE -- Constructing Transactions
-        [AgrishareModel.Store.Transactions](T1.Transactions_Id, T1.Transactions_ClientCorrelator, T1.Transactions_BookingId, T1.Transactions_BookingUserId, T1.Transactions_Reference, T1.Transactions_Amount, T1.Transactions_StatusId, T1.Transactions_Log, T1.Transactions_Error, T1.Transactions_DateCreated, T1.Transactions_LastModified, T1.Transactions_Deleted)
+        [AgrishareModel.Store.Transactions](T1.Transactions_Id, T1.Transactions_ClientCorrelator, T1.Transactions_BookingId, T1.Transactions_BookingUserId, T1.Transactions_ServerReference, T1.Transactions_EcoCashReference, T1.Transactions_Amount, T1.Transactions_StatusId, T1.Transactions_Log, T1.Transactions_Error, T1.Transactions_DateCreated, T1.Transactions_LastModified, T1.Transactions_Deleted)
     FROM (
         SELECT 
             T.Id AS Transactions_Id, 
             T.ClientCorrelator AS Transactions_ClientCorrelator, 
             T.BookingId AS Transactions_BookingId, 
             T.BookingUserId AS Transactions_BookingUserId, 
-            T.Reference AS Transactions_Reference, 
+            T.ServerReference AS Transactions_ServerReference, 
+            T.EcoCashReference AS Transactions_EcoCashReference, 
             T.Amount AS Transactions_Amount, 
             CAST(T.StatusId AS [Edm.Int16]) AS Transactions_StatusId, 
             T.Log AS Transactions_Log, 
@@ -355,25 +386,27 @@ namespace Edm_EntityMappingGeneratedViews
                     "s_Telephone, T1.Users_GenderId, T1.Users_DateOfBirth, T1.Users_Password, T1.User" +
                     "s_Salt, T1.Users_AuthToken, T1.Users_FailedLoginAttempts, T1.Users_VerificationC" +
                     "ode, T1.Users_VerificationCodeExpiry, T1.Users_NotificationPreferences, T1.Users" +
-                    "_InterestId, T1.Users_LanguageId, T1.Users_SignalRConnectionId, T1.Users_StatusI" +
-                    "d, T1.Users_RoleList, T1.Users_DateCreated, T1.Users_LastModified, T1.Users_Dele" +
-                    "ted)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS Users_Id, \r\n            T" +
-                    ".FirstName AS Users_FirstName, \r\n            T.LastName AS Users_LastName, \r\n   " +
-                    "         T.EmailAddress AS Users_EmailAddress, \r\n            T.Telephone AS User" +
-                    "s_Telephone, \r\n            CAST(T.GenderId AS [Edm.Int16]) AS Users_GenderId, \r\n" +
-                    "            T.DateOfBirth AS Users_DateOfBirth, \r\n            T.Password AS User" +
-                    "s_Password, \r\n            T.Salt AS Users_Salt, \r\n            T.AuthToken AS Use" +
-                    "rs_AuthToken, \r\n            T.FailedLoginAttempts AS Users_FailedLoginAttempts, " +
-                    "\r\n            T.VerificationCode AS Users_VerificationCode, \r\n            T.Veri" +
-                    "ficationCodeExpiry AS Users_VerificationCodeExpiry, \r\n            T.Notification" +
-                    "Preferences AS Users_NotificationPreferences, \r\n            CAST(T.InterestId AS" +
-                    " [Edm.Int16]) AS Users_InterestId, \r\n            CAST(T.LanguageId AS [Edm.Int16" +
-                    "]) AS Users_LanguageId, \r\n            T.SignalRConnectionId AS Users_SignalRConn" +
-                    "ectionId, \r\n            CAST(T.StatusId AS [Edm.Int16]) AS Users_StatusId, \r\n   " +
-                    "         T.RoleList AS Users_RoleList, \r\n            T.DateCreated AS Users_Date" +
-                    "Created, \r\n            T.LastModified AS Users_LastModified, \r\n            T.Del" +
-                    "eted AS Users_Deleted, \r\n            True AS _from0\r\n        FROM AgrishareEntit" +
-                    "ies.Users AS T\r\n    ) AS T1");
+                    "_InterestId, T1.Users_LanguageId, T1.Users_AgentId, T1.Users_AgentTypeId, T1.Use" +
+                    "rs_SignalRConnectionId, T1.Users_StatusId, T1.Users_RoleList, T1.Users_DateCreat" +
+                    "ed, T1.Users_LastModified, T1.Users_Deleted)\r\n    FROM (\r\n        SELECT \r\n     " +
+                    "       T.Id AS Users_Id, \r\n            T.FirstName AS Users_FirstName, \r\n       " +
+                    "     T.LastName AS Users_LastName, \r\n            T.EmailAddress AS Users_EmailAd" +
+                    "dress, \r\n            T.Telephone AS Users_Telephone, \r\n            CAST(T.Gender" +
+                    "Id AS [Edm.Int16]) AS Users_GenderId, \r\n            T.DateOfBirth AS Users_DateO" +
+                    "fBirth, \r\n            T.Password AS Users_Password, \r\n            T.Salt AS User" +
+                    "s_Salt, \r\n            T.AuthToken AS Users_AuthToken, \r\n            T.FailedLogi" +
+                    "nAttempts AS Users_FailedLoginAttempts, \r\n            T.VerificationCode AS User" +
+                    "s_VerificationCode, \r\n            T.VerificationCodeExpiry AS Users_Verification" +
+                    "CodeExpiry, \r\n            T.NotificationPreferences AS Users_NotificationPrefere" +
+                    "nces, \r\n            CAST(T.InterestId AS [Edm.Int16]) AS Users_InterestId, \r\n   " +
+                    "         CAST(T.LanguageId AS [Edm.Int16]) AS Users_LanguageId, \r\n            T." +
+                    "AgentId AS Users_AgentId, \r\n            CAST(T.AgentTypeId AS [Edm.Int16]) AS Us" +
+                    "ers_AgentTypeId, \r\n            T.SignalRConnectionId AS Users_SignalRConnectionI" +
+                    "d, \r\n            CAST(T.StatusId AS [Edm.Int16]) AS Users_StatusId, \r\n          " +
+                    "  T.RoleList AS Users_RoleList, \r\n            T.DateCreated AS Users_DateCreated" +
+                    ", \r\n            T.LastModified AS Users_LastModified, \r\n            T.Deleted AS" +
+                    " Users_Deleted, \r\n            True AS _from0\r\n        FROM AgrishareEntities.Use" +
+                    "rs AS T\r\n    ) AS T1");
         }
         
         /// <Summary>
@@ -436,12 +469,13 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Counters", @"
     SELECT VALUE -- Constructing Counters
-        [AgrishareModel.Store.Counters](T1.Counters_Id, T1.Counters_UserId, T1.Counters_ServiceId, T1.Counters_Event, T1.Counters_DateCreated, T1.Counters_LastModified, T1.Counters_Deleted)
+        [AgrishareModel.Store.Counters](T1.Counters_Id, T1.Counters_UserId, T1.Counters_ServiceId, T1.Counters_BookingId, T1.Counters_Event, T1.Counters_DateCreated, T1.Counters_LastModified, T1.Counters_Deleted)
     FROM (
         SELECT 
             T.Id AS Counters_Id, 
             T.UserId AS Counters_UserId, 
             T.ServiceId AS Counters_ServiceId, 
+            T.BookingId AS Counters_BookingId, 
             T.Event AS Counters_Event, 
             T.DateCreated AS Counters_DateCreated, 
             T.LastModified AS Counters_LastModified, 
@@ -474,47 +508,102 @@ namespace Edm_EntityMappingGeneratedViews
         }
         
         /// <Summary>
-        /// return view for AgrishareEntities.Bookings
+        /// return view for AgrishareModelStoreContainer.Journals
         /// </Summary>
         private System.Collections.Generic.KeyValuePair<string, string> GetView11()
         {
-            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2252);
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Journals", @"
+    SELECT VALUE -- Constructing Journals
+        [AgrishareModel.Store.Journals](T1.Journals_Id, T1.Journals_Title, T1.Journals_UserId, T1.Journals_BookingId, T1.Journals_Amount, T1.Journals_Reconciled, T1.Journals_EcoCashReference, T1.Journals_TypeId, T1.Journals_DateCreated, T1.Journals_LastModified, T1.Journals_Deleted)
+    FROM (
+        SELECT 
+            T.Id AS Journals_Id, 
+            T.Title AS Journals_Title, 
+            T.UserId AS Journals_UserId, 
+            T.BookingId AS Journals_BookingId, 
+            T.Amount AS Journals_Amount, 
+            T.Reconciled AS Journals_Reconciled, 
+            T.EcoCashReference AS Journals_EcoCashReference, 
+            CAST(T.TypeId AS [Edm.Int16]) AS Journals_TypeId, 
+            T.DateCreated AS Journals_DateCreated, 
+            T.LastModified AS Journals_LastModified, 
+            T.Deleted AS Journals_Deleted, 
+            True AS _from0
+        FROM AgrishareEntities.Journals AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
+        /// return view for AgrishareModelStoreContainer.Agents
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView12()
+        {
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Agents", @"
+    SELECT VALUE -- Constructing Agents
+        [AgrishareModel.Store.Agents](T1.Agents_Id, T1.Agents_Title, T1.Agents_Commission, T1.Agents_TypeId, T1.Agents_Telephone, T1.Agents_DateCreated, T1.Agents_LastModified, T1.Agents_Deleted)
+    FROM (
+        SELECT 
+            T.Id AS Agents_Id, 
+            T.Title AS Agents_Title, 
+            T.Commission AS Agents_Commission, 
+            CAST(T.TypeId AS [Edm.Int16]) AS Agents_TypeId, 
+            T.Telephone AS Agents_Telephone, 
+            T.DateCreated AS Agents_DateCreated, 
+            T.LastModified AS Agents_LastModified, 
+            T.Deleted AS Agents_Deleted, 
+            True AS _from0
+        FROM AgrishareEntities.Agents AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
+        /// return view for AgrishareEntities.Bookings
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView13()
+        {
+            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2748);
             viewString.Append("\r\n    SELECT VALUE -- Constructing Bookings\r\n        [AgrishareModel.Booking](T1");
             viewString.Append(".Booking_Id, T1.Booking_ListingId, T1.Booking_ServiceId, T1.Booking_ForId, T1.Bo");
             viewString.Append("oking_UserId, T1.Booking_Location, T1.Booking_Latitude, T1.Booking_Longitude, T1");
             viewString.Append(".Booking_Quantity, T1.Booking_Distance, T1.Booking_IncludeFuel, T1.Booking_Start");
             viewString.Append("Date, T1.Booking_EndDate, T1.Booking_Price, T1.Booking_HireCost, T1.Booking_Fuel");
-            viewString.Append("Cost, T1.Booking_TransportCost, T1.Booking_StatusId, T1.Booking_DateCreated, T1.");
-            viewString.Append("Booking_LastModified, T1.Booking_Deleted, T1.Booking_DestinationLatitude, T1.Boo");
-            viewString.Append("king_DestinationLongitude, T1.Booking_Destination, T1.Booking_AdditionalInformat");
-            viewString.Append("ion, T1.Booking_TotalVolume, T1.Booking_TransportDistance)\r\n    FROM (\r\n        ");
-            viewString.Append("SELECT \r\n            T.Id AS Booking_Id, \r\n            T.ListingId AS Booking_Li");
-            viewString.Append("stingId, \r\n            T.ServiceId AS Booking_ServiceId, \r\n            CAST(T.Fo");
-            viewString.Append("rId AS [AgrishareModel.BookingFor]) AS Booking_ForId, \r\n            T.UserId AS ");
-            viewString.Append("Booking_UserId, \r\n            T.Location AS Booking_Location, \r\n            T.La");
-            viewString.Append("titude AS Booking_Latitude, \r\n            T.Longitude AS Booking_Longitude, \r\n  ");
-            viewString.Append("          T.Quantity AS Booking_Quantity, \r\n            T.Distance AS Booking_Di");
-            viewString.Append("stance, \r\n            T.IncludeFuel AS Booking_IncludeFuel, \r\n            T.Star");
-            viewString.Append("tDate AS Booking_StartDate, \r\n            T.EndDate AS Booking_EndDate, \r\n      ");
-            viewString.Append("      T.Price AS Booking_Price, \r\n            T.HireCost AS Booking_HireCost, \r\n");
-            viewString.Append("            T.FuelCost AS Booking_FuelCost, \r\n            T.TransportCost AS Boo");
-            viewString.Append("king_TransportCost, \r\n            CAST(T.StatusId AS [AgrishareModel.BookingStat");
-            viewString.Append("us]) AS Booking_StatusId, \r\n            T.DateCreated AS Booking_DateCreated, \r\n");
-            viewString.Append("            T.LastModified AS Booking_LastModified, \r\n            T.Deleted AS B");
-            viewString.Append("ooking_Deleted, \r\n            T.DestinationLatitude AS Booking_DestinationLatitu");
+            viewString.Append("Cost, T1.Booking_TransportCost, T1.Booking_DestinationLatitude, T1.Booking_Desti");
+            viewString.Append("nationLongitude, T1.Booking_Destination, T1.Booking_AdditionalInformation, T1.Bo");
+            viewString.Append("oking_TotalVolume, T1.Booking_TransportDistance, T1.Booking_StatusId, T1.Booking");
+            viewString.Append("_PaidOut, T1.Booking_DateCreated, T1.Booking_LastModified, T1.Booking_Deleted, T");
+            viewString.Append("1.Booking_Commission, T1.Booking_AgentCommission, T1.Booking_SMSCount, T1.Bookin");
+            viewString.Append("g_SMSCost, T1.Booking_IMTT, T1.Booking_TransactionFee)\r\n    FROM (\r\n        SELE");
+            viewString.Append("CT \r\n            T.Id AS Booking_Id, \r\n            T.ListingId AS Booking_Listin");
+            viewString.Append("gId, \r\n            T.ServiceId AS Booking_ServiceId, \r\n            CAST(T.ForId ");
+            viewString.Append("AS [AgrishareModel.BookingFor]) AS Booking_ForId, \r\n            T.UserId AS Book");
+            viewString.Append("ing_UserId, \r\n            T.Location AS Booking_Location, \r\n            T.Latitu");
+            viewString.Append("de AS Booking_Latitude, \r\n            T.Longitude AS Booking_Longitude, \r\n      ");
+            viewString.Append("      T.Quantity AS Booking_Quantity, \r\n            T.Distance AS Booking_Distan");
+            viewString.Append("ce, \r\n            T.IncludeFuel AS Booking_IncludeFuel, \r\n            T.StartDat");
+            viewString.Append("e AS Booking_StartDate, \r\n            T.EndDate AS Booking_EndDate, \r\n          ");
+            viewString.Append("  T.Price AS Booking_Price, \r\n            T.HireCost AS Booking_HireCost, \r\n    ");
+            viewString.Append("        T.FuelCost AS Booking_FuelCost, \r\n            T.TransportCost AS Booking");
+            viewString.Append("_TransportCost, \r\n            T.DestinationLatitude AS Booking_DestinationLatitu");
             viewString.Append("de, \r\n            T.DestinationLongitude AS Booking_DestinationLongitude, \r\n    ");
             viewString.Append("        T.Destination AS Booking_Destination, \r\n            T.AdditionalInformat");
             viewString.Append("ion AS Booking_AdditionalInformation, \r\n            T.TotalVolume AS Booking_Tot");
             viewString.Append("alVolume, \r\n            T.TransportDistance AS Booking_TransportDistance, \r\n    ");
-            viewString.Append("        True AS _from0\r\n        FROM AgrishareModelStoreContainer.Bookings AS T\r");
-            viewString.Append("\n    ) AS T1");
+            viewString.Append("        CAST(T.StatusId AS [AgrishareModel.BookingStatus]) AS Booking_StatusId, ");
+            viewString.Append("\r\n            T.PaidOut AS Booking_PaidOut, \r\n            T.DateCreated AS Booki");
+            viewString.Append("ng_DateCreated, \r\n            T.LastModified AS Booking_LastModified, \r\n        ");
+            viewString.Append("    T.Deleted AS Booking_Deleted, \r\n            T.Commission AS Booking_Commissi");
+            viewString.Append("on, \r\n            T.AgentCommission AS Booking_AgentCommission, \r\n            T.");
+            viewString.Append("SMSCount AS Booking_SMSCount, \r\n            T.SMSCost AS Booking_SMSCost, \r\n    ");
+            viewString.Append("        T.IMTT AS Booking_IMTT, \r\n            T.TransactionFee AS Booking_Transa");
+            viewString.Append("ctionFee, \r\n            True AS _from0\r\n        FROM AgrishareModelStoreContaine");
+            viewString.Append("r.Bookings AS T\r\n    ) AS T1");
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Bookings", viewString.ToString());
         }
         
         /// <Summary>
         /// return view for AgrishareEntities.BookingUsers
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView12()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView14()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.BookingUsers", @"
     SELECT VALUE -- Constructing BookingUsers
@@ -541,7 +630,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Categories
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView13()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView15()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Categories", @"
     SELECT VALUE -- Constructing Categories
@@ -562,7 +651,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Listings
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView14()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView16()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Listings", "\r\n    SELECT VALUE -- Constructing Listings\r\n        [AgrishareModel.Listing](T1." +
                     "Listing_Id, T1.Listing_UserId, T1.Listing_CategoryId, T1.Listing_Title, T1.Listi" +
@@ -593,7 +682,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Notifications
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView15()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView17()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Notifications", @"
     SELECT VALUE -- Constructing Notifications
@@ -618,18 +707,19 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Transactions
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView16()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView18()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Transactions", @"
     SELECT VALUE -- Constructing Transactions
-        [AgrishareModel.Transaction](T1.Transaction_Id, T1.Transaction_ClientCorrelator, T1.Transaction_BookingId, T1.Transaction_BookingUserId, T1.Transaction_Reference, T1.Transaction_Amount, T1.Transaction_StatusId, T1.Transaction_Log, T1.Transaction_Error, T1.Transaction_DateCreated, T1.Transaction_LastModified, T1.Transaction_Deleted)
+        [AgrishareModel.Transaction](T1.Transaction_Id, T1.Transaction_ClientCorrelator, T1.Transaction_BookingId, T1.Transaction_BookingUserId, T1.Transaction_ServerReference, T1.Transaction_EcoCashReference, T1.Transaction_Amount, T1.Transaction_StatusId, T1.Transaction_Log, T1.Transaction_Error, T1.Transaction_DateCreated, T1.Transaction_LastModified, T1.Transaction_Deleted)
     FROM (
         SELECT 
             T.Id AS Transaction_Id, 
             T.ClientCorrelator AS Transaction_ClientCorrelator, 
             T.BookingId AS Transaction_BookingId, 
             T.BookingUserId AS Transaction_BookingUserId, 
-            T.Reference AS Transaction_Reference, 
+            T.ServerReference AS Transaction_ServerReference, 
+            T.EcoCashReference AS Transaction_EcoCashReference, 
             T.Amount AS Transaction_Amount, 
             CAST(T.StatusId AS [AgrishareModel.TransactionStatus]) AS Transaction_StatusId, 
             T.Log AS Transaction_Log, 
@@ -645,38 +735,42 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Users
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView17()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView19()
         {
-            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Users", "\r\n    SELECT VALUE -- Constructing Users\r\n        [AgrishareModel.User](T1.User_I" +
-                    "d, T1.User_FirstName, T1.User_LastName, T1.User_EmailAddress, T1.User_Telephone," +
-                    " T1.User_GenderId, T1.User_DateOfBirth, T1.User_NotificationPreferences, T1.User" +
-                    "_InterestId, T1.User_RoleList, T1.User_Password, T1.User_Salt, T1.User_AuthToken" +
-                    ", T1.User_FailedLoginAttempts, T1.User_VerificationCode, T1.User_VerificationCod" +
-                    "eExpiry, T1.User_SignalRConnectionId, T1.User_StatusId, T1.User_DateCreated, T1." +
-                    "User_LastModified, T1.User_Deleted, T1.User_LanguageId)\r\n    FROM (\r\n        SEL" +
-                    "ECT \r\n            T.Id AS User_Id, \r\n            T.FirstName AS User_FirstName, " +
-                    "\r\n            T.LastName AS User_LastName, \r\n            T.EmailAddress AS User_" +
-                    "EmailAddress, \r\n            T.Telephone AS User_Telephone, \r\n            CAST(T." +
-                    "GenderId AS [AgrishareModel.Gender]) AS User_GenderId, \r\n            T.DateOfBir" +
-                    "th AS User_DateOfBirth, \r\n            T.NotificationPreferences AS User_Notifica" +
-                    "tionPreferences, \r\n            CAST(T.InterestId AS [AgrishareModel.Interest]) A" +
-                    "S User_InterestId, \r\n            T.RoleList AS User_RoleList, \r\n            T.Pa" +
-                    "ssword AS User_Password, \r\n            T.Salt AS User_Salt, \r\n            T.Auth" +
-                    "Token AS User_AuthToken, \r\n            T.FailedLoginAttempts AS User_FailedLogin" +
-                    "Attempts, \r\n            T.VerificationCode AS User_VerificationCode, \r\n         " +
-                    "   T.VerificationCodeExpiry AS User_VerificationCodeExpiry, \r\n            T.Sign" +
-                    "alRConnectionId AS User_SignalRConnectionId, \r\n            CAST(T.StatusId AS [A" +
-                    "grishareModel.UserStatus]) AS User_StatusId, \r\n            T.DateCreated AS User" +
-                    "_DateCreated, \r\n            T.LastModified AS User_LastModified, \r\n            T" +
-                    ".Deleted AS User_Deleted, \r\n            CAST(T.LanguageId AS [AgrishareModel.Lan" +
-                    "guage]) AS User_LanguageId, \r\n            True AS _from0\r\n        FROM Agrishare" +
-                    "ModelStoreContainer.Users AS T\r\n    ) AS T1");
+            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2052);
+            viewString.Append("\r\n    SELECT VALUE -- Constructing Users\r\n        [AgrishareModel.User](T1.User_");
+            viewString.Append("Id, T1.User_FirstName, T1.User_LastName, T1.User_EmailAddress, T1.User_Telephone");
+            viewString.Append(", T1.User_GenderId, T1.User_DateOfBirth, T1.User_NotificationPreferences, T1.Use");
+            viewString.Append("r_InterestId, T1.User_RoleList, T1.User_Password, T1.User_Salt, T1.User_AuthToke");
+            viewString.Append("n, T1.User_FailedLoginAttempts, T1.User_VerificationCode, T1.User_VerificationCo");
+            viewString.Append("deExpiry, T1.User_SignalRConnectionId, T1.User_StatusId, T1.User_DateCreated, T1");
+            viewString.Append(".User_LastModified, T1.User_Deleted, T1.User_LanguageId, T1.User_AgentId, T1.Use");
+            viewString.Append("r_AgentTypeId)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS User_Id, \r\n    ");
+            viewString.Append("        T.FirstName AS User_FirstName, \r\n            T.LastName AS User_LastName");
+            viewString.Append(", \r\n            T.EmailAddress AS User_EmailAddress, \r\n            T.Telephone A");
+            viewString.Append("S User_Telephone, \r\n            CAST(T.GenderId AS [AgrishareModel.Gender]) AS U");
+            viewString.Append("ser_GenderId, \r\n            T.DateOfBirth AS User_DateOfBirth, \r\n            T.N");
+            viewString.Append("otificationPreferences AS User_NotificationPreferences, \r\n            CAST(T.Int");
+            viewString.Append("erestId AS [AgrishareModel.Interest]) AS User_InterestId, \r\n            T.RoleLi");
+            viewString.Append("st AS User_RoleList, \r\n            T.Password AS User_Password, \r\n            T.");
+            viewString.Append("Salt AS User_Salt, \r\n            T.AuthToken AS User_AuthToken, \r\n            T.");
+            viewString.Append("FailedLoginAttempts AS User_FailedLoginAttempts, \r\n            T.VerificationCod");
+            viewString.Append("e AS User_VerificationCode, \r\n            T.VerificationCodeExpiry AS User_Verif");
+            viewString.Append("icationCodeExpiry, \r\n            T.SignalRConnectionId AS User_SignalRConnection");
+            viewString.Append("Id, \r\n            CAST(T.StatusId AS [AgrishareModel.UserStatus]) AS User_Status");
+            viewString.Append("Id, \r\n            T.DateCreated AS User_DateCreated, \r\n            T.LastModifie");
+            viewString.Append("d AS User_LastModified, \r\n            T.Deleted AS User_Deleted, \r\n            C");
+            viewString.Append("AST(T.LanguageId AS [AgrishareModel.Language]) AS User_LanguageId, \r\n           ");
+            viewString.Append(" T.AgentId AS User_AgentId, \r\n            CAST(T.AgentTypeId AS [AgrishareModel.");
+            viewString.Append("AgentUserType]) AS User_AgentTypeId, \r\n            True AS _from0\r\n        FROM ");
+            viewString.Append("AgrishareModelStoreContainer.Users AS T\r\n    ) AS T1");
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Users", viewString.ToString());
         }
         
         /// <Summary>
         /// return view for AgrishareEntities.Ratings
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView18()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView20()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Ratings", @"
     SELECT VALUE -- Constructing Ratings
@@ -700,7 +794,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Services
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView19()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView21()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Services", "\r\n    SELECT VALUE -- Constructing Services\r\n        [AgrishareModel.Service](T1." +
                     "Service_Id, T1.Service_ListingId, T1.Service_CategoryId, T1.Service_Mobile, T1.S" +
@@ -729,11 +823,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Counters
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView20()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView22()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Counters", @"
     SELECT VALUE -- Constructing Counters
-        [AgrishareModel.Counter](T1.Counter_Id, T1.Counter_UserId, T1.Counter_ServiceId, T1.Counter_Event, T1.Counter_DateCreated, T1.Counter_LastModified, T1.Counter_Deleted)
+        [AgrishareModel.Counter](T1.Counter_Id, T1.Counter_UserId, T1.Counter_ServiceId, T1.Counter_Event, T1.Counter_DateCreated, T1.Counter_LastModified, T1.Counter_Deleted, T1.Counter_BookingId)
     FROM (
         SELECT 
             T.Id AS Counter_Id, 
@@ -743,6 +837,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DateCreated AS Counter_DateCreated, 
             T.LastModified AS Counter_LastModified, 
             T.Deleted AS Counter_Deleted, 
+            T.BookingId AS Counter_BookingId, 
             True AS _from0
         FROM AgrishareModelStoreContainer.Counters AS T
     ) AS T1");
@@ -751,7 +846,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Devices
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView21()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView23()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Devices", @"
     SELECT VALUE -- Constructing Devices
@@ -771,9 +866,58 @@ namespace Edm_EntityMappingGeneratedViews
         }
         
         /// <Summary>
+        /// return view for AgrishareEntities.Journals
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView24()
+        {
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Journals", @"
+    SELECT VALUE -- Constructing Journals
+        [AgrishareModel.Journal](T1.Journal_Id, T1.Journal_Title, T1.Journal_UserId, T1.Journal_BookingId, T1.Journal_Amount, T1.Journal_Reconciled, T1.Journal_EcoCashReference, T1.Journal_TypeId, T1.Journal_DateCreated, T1.Journal_LastModified, T1.Journal_Deleted)
+    FROM (
+        SELECT 
+            T.Id AS Journal_Id, 
+            T.Title AS Journal_Title, 
+            T.UserId AS Journal_UserId, 
+            T.BookingId AS Journal_BookingId, 
+            T.Amount AS Journal_Amount, 
+            T.Reconciled AS Journal_Reconciled, 
+            T.EcoCashReference AS Journal_EcoCashReference, 
+            CAST(T.TypeId AS [AgrishareModel.JournalType]) AS Journal_TypeId, 
+            T.DateCreated AS Journal_DateCreated, 
+            T.LastModified AS Journal_LastModified, 
+            T.Deleted AS Journal_Deleted, 
+            True AS _from0
+        FROM AgrishareModelStoreContainer.Journals AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
+        /// return view for AgrishareEntities.Agents
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView25()
+        {
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Agents", @"
+    SELECT VALUE -- Constructing Agents
+        [AgrishareModel.Agent](T1.Agent_Id, T1.Agent_Title, T1.Agent_Commission, T1.Agent_DateCreated, T1.Agent_LastModified, T1.Agent_Deleted, T1.Agent_TypeId, T1.Agent_Telephone)
+    FROM (
+        SELECT 
+            T.Id AS Agent_Id, 
+            T.Title AS Agent_Title, 
+            T.Commission AS Agent_Commission, 
+            T.DateCreated AS Agent_DateCreated, 
+            T.LastModified AS Agent_LastModified, 
+            T.Deleted AS Agent_Deleted, 
+            CAST(T.TypeId AS [AgrishareModel.AgentType]) AS Agent_TypeId, 
+            T.Telephone AS Agent_Telephone, 
+            True AS _from0
+        FROM AgrishareModelStoreContainer.Agents AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
         /// return view for AgrishareModelStoreContainer.Config
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView22()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView26()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Config", @"
     SELECT VALUE -- Constructing Config
@@ -794,7 +938,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Configs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView23()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView27()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Configs", @"
     SELECT VALUE -- Constructing Configs
@@ -815,14 +959,15 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareModelStoreContainer.Faqs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView24()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView28()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Faqs", @"
     SELECT VALUE -- Constructing Faqs
-        [AgrishareModel.Store.Faqs](T1.Faqs_Id, T1.Faqs_Question, T1.Faqs_Answer, T1.Faqs_SortOrder, T1.Faqs_DateCreated, T1.Faqs_LastModified, T1.Faqs_Deleted)
+        [AgrishareModel.Store.Faqs](T1.Faqs_Id, T1.Faqs_LanguageId, T1.Faqs_Question, T1.Faqs_Answer, T1.Faqs_SortOrder, T1.Faqs_DateCreated, T1.Faqs_LastModified, T1.Faqs_Deleted)
     FROM (
         SELECT 
             T.Id AS Faqs_Id, 
+            CAST(T.LanguageId AS [Edm.Int32]) AS Faqs_LanguageId, 
             T.Question AS Faqs_Question, 
             T.Answer AS Faqs_Answer, 
             T.SortOrder AS Faqs_SortOrder, 
@@ -837,11 +982,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Faqs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView25()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView29()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Faqs", @"
     SELECT VALUE -- Constructing Faqs
-        [AgrishareModel.Faq](T1.Faq_Id, T1.Faq_Question, T1.Faq_Answer, T1.Faq_SortOrder, T1.Faq_DateCreated, T1.Faq_LastModified, T1.Faq_Deleted)
+        [AgrishareModel.Faq](T1.Faq_Id, T1.Faq_Question, T1.Faq_Answer, T1.Faq_SortOrder, T1.Faq_DateCreated, T1.Faq_LastModified, T1.Faq_Deleted, T1.Faq_LanguageId)
     FROM (
         SELECT 
             T.Id AS Faq_Id, 
@@ -851,6 +996,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DateCreated AS Faq_DateCreated, 
             T.LastModified AS Faq_LastModified, 
             T.Deleted AS Faq_Deleted, 
+            CAST(T.LanguageId AS [AgrishareModel.Language]) AS Faq_LanguageId, 
             True AS _from0
         FROM AgrishareModelStoreContainer.Faqs AS T
     ) AS T1");
@@ -859,7 +1005,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareModelStoreContainer.Log
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView26()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView30()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Log", @"
     SELECT VALUE -- Constructing Log
@@ -882,7 +1028,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Logs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView27()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView31()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Logs", @"
     SELECT VALUE -- Constructing Logs
@@ -905,7 +1051,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareModelStoreContainer.Pages
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView28()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView32()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Pages", @"
     SELECT VALUE -- Constructing Pages
@@ -935,7 +1081,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Pages
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView29()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView33()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Pages", @"
     SELECT VALUE -- Constructing Pages
@@ -965,7 +1111,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareModelStoreContainer.Templates
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView30()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView34()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Templates", @"
     SELECT VALUE -- Constructing Templates
@@ -987,7 +1133,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Templates
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView31()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView35()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Templates", @"
     SELECT VALUE -- Constructing Templates
@@ -1009,7 +1155,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareModelStoreContainer.Blogs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView32()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView36()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Blogs", @"
     SELECT VALUE -- Constructing Blogs
@@ -1031,7 +1177,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// <Summary>
         /// return view for AgrishareEntities.Blogs
         /// </Summary>
-        private System.Collections.Generic.KeyValuePair<string, string> GetView33()
+        private System.Collections.Generic.KeyValuePair<string, string> GetView37()
         {
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Blogs", @"
     SELECT VALUE -- Constructing Blogs
@@ -1047,6 +1193,52 @@ namespace Edm_EntityMappingGeneratedViews
             T.Deleted AS Blog_Deleted, 
             True AS _from0
         FROM AgrishareModelStoreContainer.Blogs AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
+        /// return view for AgrishareModelStoreContainer.TransactionFees
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView38()
+        {
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.TransactionFees", @"
+    SELECT VALUE -- Constructing TransactionFees
+        [AgrishareModel.Store.TransactionFees](T1.TransactionFees_Id, T1.TransactionFees_MinimumValue, T1.TransactionFees_MaximumValue, T1.TransactionFees_Fee, T1.TransactionFees_FeeType, T1.TransactionFees_DateCreated, T1.TransactionFees_LastModified, T1.TransactionFees_Deleted)
+    FROM (
+        SELECT 
+            T.Id AS TransactionFees_Id, 
+            T.MinimumValue AS TransactionFees_MinimumValue, 
+            T.MaximumValue AS TransactionFees_MaximumValue, 
+            T.Fee AS TransactionFees_Fee, 
+            CAST(T.FeeType AS [Edm.Int16]) AS TransactionFees_FeeType, 
+            T.DateCreated AS TransactionFees_DateCreated, 
+            T.LastModified AS TransactionFees_LastModified, 
+            T.Deleted AS TransactionFees_Deleted, 
+            True AS _from0
+        FROM AgrishareEntities.TransactionFees AS T
+    ) AS T1");
+        }
+        
+        /// <Summary>
+        /// return view for AgrishareEntities.TransactionFees
+        /// </Summary>
+        private System.Collections.Generic.KeyValuePair<string, string> GetView39()
+        {
+            return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.TransactionFees", @"
+    SELECT VALUE -- Constructing TransactionFees
+        [AgrishareModel.TransactionFee](T1.TransactionFee_Id, T1.TransactionFee_MinimumValue, T1.TransactionFee_MaximumValue, T1.TransactionFee_Fee, T1.TransactionFee_FeeType, T1.TransactionFee_DateCreated, T1.TransactionFee_LastModified, T1.TransactionFee_Deleted)
+    FROM (
+        SELECT 
+            T.Id AS TransactionFee_Id, 
+            T.MinimumValue AS TransactionFee_MinimumValue, 
+            T.MaximumValue AS TransactionFee_MaximumValue, 
+            T.Fee AS TransactionFee_Fee, 
+            CAST(T.FeeType AS [AgrishareModel.FeeType]) AS TransactionFee_FeeType, 
+            T.DateCreated AS TransactionFee_DateCreated, 
+            T.LastModified AS TransactionFee_LastModified, 
+            T.Deleted AS TransactionFee_Deleted, 
+            True AS _from0
+        FROM AgrishareModelStoreContainer.TransactionFees AS T
     ) AS T1");
         }
     }

@@ -54,6 +54,10 @@ namespace Agrishare.Core.Entities
         public bool Deleted { get; set; }
         public decimal Commission { get; set; }
         public decimal AgentCommission { get; set; }
+        public int SMSCount { get; set; }
+        public decimal SMSCost { get; set; }
+        public decimal IMTT { get; set; }
+        public decimal TransactionFee { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

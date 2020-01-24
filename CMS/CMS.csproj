@@ -84,6 +84,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\TransactionFees\Edit.html" />
+    <Content Include="Pages\TransactionFees\List.html" />
     <Content Include="Pages\Agents\Edit.html" />
     <Content Include="Pages\Agents\List.html" />
     <Content Include="Pages\Journals\Reconcile.html" />
@@ -96,6 +98,7 @@
     <Content Include="Pages\Blogs\Detail.html" />
     <Content Include="Pages\Blogs\Edit.html" />
     <Content Include="Pages\Blogs\List.html" />
+    <Content Include="Pages\Listings\Map.html" />
     <Content Include="Pages\Ratings\List.html" />
     <Content Include="Pages\Listings\Detail.html" />
     <Content Include="Pages\Login.html" />
@@ -123,6 +126,7 @@
     <Content Include="Resources\Javascript\3. App\controller\DashboardView.js" />
     <Content Include="Resources\Javascript\3. App\controller\FormView.js" />
     <Content Include="Resources\Javascript\3. App\controller\DetailView.js" />
+    <Content Include="Resources\Javascript\3. App\controller\ListingsMap.js" />
     <Content Include="Resources\Javascript\3. App\controller\ListView.js" />
     <Content Include="Resources\Javascript\3. App\controller\View.js" />
     <Content Include="Resources\Javascript\3. App\controller\App.js" />

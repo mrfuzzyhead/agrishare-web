@@ -1,6 +1,8 @@
 ﻿using Agrishare.API;
+using Agrishare.API.Models;
 using Agrishare.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -13,17 +15,23 @@ namespace Agrishare.API.Controllers.CMS
     {
         [Route("listings/list")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex, int PageSize, string Query = "", int UserId = 0)
+        public object List(int PageIndex, int PageSize, [FromUri] ListingFilterModel Filter)
         {
-            var recordCount = Entities.Listing.Count(Keywords: Query, UserId: UserId);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, UserId: UserId);
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
             var title = "Listings";
 
-            if (UserId > 0)
+            if (Filter.UserId > 0)
             {
-                var user = Entities.User.Find(Id: UserId);
+                var user = Entities.User.Find(Id: Filter.UserId);
                 if (user != null)
                     title = $"{user.FirstName} {user.LastName}";
+            }
+            else if (Filter.CategoryId > 0)
+            {
+                var category = Entities.Category.Find(Id: Filter.CategoryId);
+                if (category != null)
+                    title = category.Title;
             }
 
             int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0;
@@ -38,6 +46,18 @@ namespace Agrishare.API.Controllers.CMS
                 reviews = Entities.Rating.Count();
                 onestar = Entities.Rating.Count(Stars: 1);
                 averageRating = Entities.Rating.AverageRating();
+            }
+
+            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId);
+            var Graph = new List<object>();
+            foreach (var item in graphData)
+            {
+                Graph.Add(new
+                {
+                    Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
+                    item.Count,
+                    Height = item.Count / graphData.Max(d => d.Count) * 100
+                });
             }
 
             var data = new
@@ -55,7 +75,8 @@ namespace Agrishare.API.Controllers.CMS
                     Buses = buses,
                     Reviews = reviews,
                     AverageRating = averageRating,
-                    OneStar = onestar
+                    OneStar = onestar,
+                    Graph
                 }
             };
 
@@ -188,6 +209,16 @@ namespace Agrishare.API.Controllers.CMS
             };
 
             return Success(data);
+        }
+
+        /* Map */
+
+        [Route("listings/map")]
+        [AcceptVerbs("GET")]
+        public object MapList(double NELat, double NELng, double SWLat, double SWLng)
+        {
+            var list = Entities.Listing.MapList(NELat, NELng, SWLat, SWLng);
+            return Success(list.Select(e => e.Json()));
         }
     }
 }

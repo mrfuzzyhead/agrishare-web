@@ -41,7 +41,7 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, int AgentId = 0,
-            int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false)
+            int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -77,13 +77,16 @@ namespace Agrishare.Core.Entities
                 if (Upcoming)
                     query = query.Where(e => e.StatusId == BookingStatus.Approved || e.StatusId == BookingStatus.InProgress);
 
+                if (CategoryId > 0)
+                    query = query.Where(e => e.Listing.CategoryId == CategoryId);
+
                 query = query.OrderBy(Sort.Coalesce(DefaultSort));
 
                 return query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(int ListingId = 0, int UserId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false)
+        public static int Count(int ListingId = 0, int UserId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -115,6 +118,9 @@ namespace Agrishare.Core.Entities
 
                 if (Upcoming)
                     query = query.Where(e => e.StatusId == BookingStatus.Approved || e.StatusId == BookingStatus.InProgress);
+
+                if (CategoryId > 0)
+                    query = query.Where(e => e.Listing.CategoryId == CategoryId);
 
                 return query.Count();
             }
@@ -315,6 +321,10 @@ namespace Agrishare.Core.Entities
                 AgriShareCommission,
                 Commission,
                 AgentCommission,
+                TransactionFee,
+                IMTT,
+                SMSCost,
+                SMSCount,
                 HireCost,
                 FuelCost,
                 TransportCost,
@@ -336,5 +346,77 @@ namespace Agrishare.Core.Entities
                 return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price).DefaultIfEmpty(0).Sum();
             }
         }
+
+        public static decimal TotalAgriShareCommission(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * (e.Commission - e.AgentCommission)).DefaultIfEmpty(0).Sum();
+            }
+        }
+
+        public static decimal TotalAgentsCommission(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * e.AgentCommission).DefaultIfEmpty(0).Sum();
+            }
+        }
+
+        public static decimal TotalFeesIncurred(DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.SMSCount + e.TransactionFee + e.IMTT).DefaultIfEmpty(0).Sum();
+            }
+        }
+
+        public static List<BookingCounter> Summary()
+        {
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<BookingCounter>("SELECT StatusId AS `Status`, ForId AS `For`, COUNT(Id) AS `Count` FROM Bookings GROUP BY StatusId, ForId").ToList();
+        }
+
+        public static List<BookingData> Graph(DateTime StartDate, DateTime EndDate, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0)
+        {
+            var sql = $@"SELECT MONTH(Bookings.StartDate) AS `Month`, YEAR(Bookings.StartDate) AS `Year`, COUNT(Bookings.Id) AS 'Count' 
+                            FROM Bookings
+                            INNER JOIN Listings ON Bookings.ListingId = Listings.Id
+                            WHERE DATE(Bookings.StartDate) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Bookings.EndDate) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') ";
+
+            if (UserId > 0)
+                sql += $"AND Bookings.UserId = {UserId} ";
+
+            if (CategoryId > 0)
+                sql += $"AND Listings.CategoryId = {CategoryId} ";
+
+            if (Status != BookingStatus.None)
+                sql += $"AND Bookings.StatusId = {(int)Status} ";
+
+            sql += $@"GROUP BY MONTH(Bookings.StartDate), YEAR(Bookings.StartDate) ORDER BY Bookings.StartDate LIMIT 6";
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<BookingData>(sql).ToList();
+        }
+    }
+
+    public class BookingCounter
+    {
+        public BookingStatus Status { get; set; }
+        public BookingFor For { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class BookingData
+    {
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int Count { get; set; }
     }
 }

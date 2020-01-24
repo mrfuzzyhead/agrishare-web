@@ -7,6 +7,7 @@
 
         <gl-popup-menu gl-position="top right" class="responsive">
             <gl-menu-item gl-icon="search" ng-click="list.showSearch()">Search</gl-menu-item>
+            <gl-menu-item gl-icon="map" ng-click="app.go('/listings/map?'+app.returnUrlQs())">Map</gl-menu-item>
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>
 
@@ -19,19 +20,19 @@
                 <strong>{{list.summary.Total}}</strong>
                 <small>Listings</small>
             </div>
-            <div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/1?'+app.returnUrlQs())">
                 <strong>{{list.summary.Tractors}}</strong>
                 <small>Tractors</small>
             </div>
-            <div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/2?'+app.returnUrlQs())">
                 <strong>{{list.summary.Lorries}}</strong>
                 <small>Lorries</small>
             </div>
-            <div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/3?'+app.returnUrlQs())">
                 <strong>{{list.summary.Processors}}</strong>
                 <small>Processors</small>
             </div>
-            <div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/17?'+app.returnUrlQs())">
                 <strong>{{list.summary.Buses}}</strong>
                 <small>Buses</small>
             </div>
@@ -42,6 +43,17 @@
             </ul>
         </div>
 
+        <div class="graph-view" ng-if="list.summary.Graph.length">
+
+            <div class="col" ng-repeat="item in list.summary.Graph">
+                <div>
+                    <span style="min-height: {{item.Height}}%">{{item.Count}}</span>
+                </div>
+                <span>{{item.Label}}</span>
+            </div>
+
+        </div>
+
         <gl-list gl-controller="list" gl-infinite="list.next()">
 
             <div ng-repeat="item in list.data">
@@ -49,7 +61,7 @@
                 <row class="listing" ng-click="app.go('/listings/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <div>
                         <strong>{{item.Title}}</strong> &nbsp; <gl-rating gl-stars="item.AverageRating" ng-if="item.RatingCount>0" style="position:relative;top:2px"></gl-rating> <small style="position:relative;top:-2px" ng-if="item.RatingCount>0">({{item.RatingCount}})</small><br />
-                        <small>{{item.Category.Title}}</small> 
+                        <small>{{item.Category.Title}}</small>
                         <small ng-if="item.Brand">&bull; {{item.Brand}}</small>
                     </div>
                     <div>

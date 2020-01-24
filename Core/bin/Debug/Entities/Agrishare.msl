@@ -4,6 +4,13 @@
     <EntitySetMapping Name="Bookings">
       <EntityTypeMapping TypeName="AgrishareModel.Booking">
         <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="IMTT" ColumnName="IMTT" />
+          <ScalarProperty Name="EcoCashFees" ColumnName="EcoCashFees" />
+          <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
+          <ScalarProperty Name="SMSCount" ColumnName="SMSCount" />
+          <ScalarProperty Name="AgentCommission" ColumnName="AgentCommission" />
+          <ScalarProperty Name="Commission" ColumnName="Commission" />
+          <ScalarProperty Name="PaidOut" ColumnName="PaidOut" />
           <ScalarProperty Name="TransportDistance" ColumnName="TransportDistance" />
           <ScalarProperty Name="TotalVolume" ColumnName="TotalVolume" />
           <ScalarProperty Name="AdditionalInformation" ColumnName="AdditionalInformation" />
@@ -79,6 +86,7 @@
     <EntitySetMapping Name="Faqs">
       <EntityTypeMapping TypeName="AgrishareModel.Faq">
         <MappingFragment StoreEntitySet="Faqs">
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Question" ColumnName="Question" />
           <ScalarProperty Name="Answer" ColumnName="Answer" />
@@ -184,13 +192,14 @@
     <EntitySetMapping Name="Transactions">
       <EntityTypeMapping TypeName="AgrishareModel.Transaction">
         <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
+          <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />
           <ScalarProperty Name="Error" ColumnName="Error" />
           <ScalarProperty Name="ClientCorrelator" ColumnName="ClientCorrelator" />
           <ScalarProperty Name="Log" ColumnName="Log" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="BookingId" ColumnName="BookingId" />
           <ScalarProperty Name="BookingUserId" ColumnName="BookingUserId" />
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="StatusId" ColumnName="StatusId" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
@@ -202,6 +211,8 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
+          <ScalarProperty Name="AgentId" ColumnName="AgentId" />
           <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
           <ScalarProperty Name="InterestId" ColumnName="InterestId" />
           <ScalarProperty Name="NotificationPreferences" ColumnName="NotificationPreferences" />
@@ -269,6 +280,7 @@
     <EntitySetMapping Name="Counters">
       <EntityTypeMapping TypeName="AgrishareModel.Counter">
         <MappingFragment StoreEntitySet="Counters">
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
           <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
@@ -301,6 +313,51 @@
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="PhotoPath" ColumnName="Photo" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Journals">
+      <EntityTypeMapping TypeName="AgrishareModel.Journal">
+        <MappingFragment StoreEntitySet="Journals">
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
+          <ScalarProperty Name="Reconciled" ColumnName="Reconciled" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Agents">
+      <EntityTypeMapping TypeName="AgrishareModel.Agent">
+        <MappingFragment StoreEntitySet="Agents">
+          <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Commission" ColumnName="Commission" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransactionFees">
+      <EntityTypeMapping TypeName="AgrishareModel.TransactionFee">
+        <MappingFragment StoreEntitySet="TransactionFees">
+          <ScalarProperty Name="FeeType" ColumnName="FeeType" />
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="MaximumValue" ColumnName="MaximumValue" />
+          <ScalarProperty Name="MinimumValue" ColumnName="MinimumValue" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

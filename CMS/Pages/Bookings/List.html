@@ -15,31 +15,45 @@
     <ag-section ag-controller="list">
 
         <div class="summary-view" ng-show="!list.busy && list.data.length>0 && !list.filter">
-            <div>
-                <strong>{{list.summary.BookingsMadeMe + list.summary.BookingsMadeFriend + list.summary.BookingsMadeGroup}}</strong>
-                <small>Bookings Made</small>
-                <em>Me: {{list.summary.BookingsMadeMe}} &bull; Friend: {{list.summary.BookingsMadeFriend}} &bull; Group: {{list.summary.BookingsMadeGroup}}</em>
+            <div style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/4?'+app.returnUrlQs())">
+                <strong>{{list.summary.Complete.Me + list.summary.Complete.Friend + list.summary.Complete.Group}}</strong>
+                <small>Complete Bookings</small>
+                <em>Me: {{list.summary.Complete.Me}} &bull; Friend: {{list.summary.Complete.Friend}} &bull; Group: {{list.summary.Complete.Group}}</em>
             </div>
-            <div>
-                <strong>{{list.summary.ConfirmedBookingsMe + list.summary.ConfirmedBookingsFriend + list.summary.ConfirmedBookingsGroup}}</strong>
-                <small>Confirmed Bookings</small>
-                <em>Me: {{list.summary.ConfirmedBookingsMe}} &bull; Friend: {{list.summary.ConfirmedBookingsFriend}} &bull; Group: {{list.summary.ConfirmedBookingsGroup}}</em>
+            <div style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/3?'+app.returnUrlQs())">
+                <strong>{{list.summary.InProgress.Me + list.summary.InProgress.Friend + list.summary.InProgress.Group}}</strong>
+                <small>Bookings In Progress</small>
+                <em>Me: {{list.summary.InProgress.Me}} &bull; Friend: {{list.summary.InProgress.Friend}} &bull; Group: {{list.summary.InProgress.Group}}</em>
             </div>
-            <div>
-                <strong>{{list.summary.PaidBookingsMe + list.summary.PaidBookingsFriend + list.summary.PaidBookingsGroup}}</strong>
-                <small>Paid Bookings</small>
-                <em>Me: {{list.summary.PaidBookingsMe}} &bull; Friend: {{list.summary.PaidBookingsFriend}} &bull; Group: {{list.summary.PaidBookingsGroup}}</em>
-            </div>
-            <div>
-                <strong>{{list.summary.CompletedBookingsMe + list.summary.CompletedBookingsFriend + list.summary.CompletedBookingsGroup}}</strong>
-                <small>Completed Bookings</small>
-                <em>Me: {{list.summary.CompletedBookingsMe}} &bull; Friend: {{list.summary.CompletedBookingsFriend}} &bull; Group: {{list.summary.CompletedBookingsGroup}}</em>
+            <div style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/1?'+app.returnUrlQs())">
+                <strong>{{list.summary.Approved.Me + list.summary.Approved.Friend + list.summary.Approved.Group}}</strong>
+                <small>Approved Bookings</small>
+                <em>Me: {{list.summary.Approved.Me}} &bull; Friend: {{list.summary.Approved.Friend}} &bull; Group: {{list.summary.Approved.Group}}</em>
             </div>
             <ul>
-                <li><strong>{{list.summary.DeclinedBookings}}</strong> Declined Bookings</li>
-                <li><strong>{{list.summary.CancelledBookings}}</strong> Cancelled Bookings</li>
-                <li><strong>{{list.summary.IncompleteBookings}}</strong> Incomplete Bookings</li>
+                <li style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/0?'+app.returnUrlQs())"><strong>{{list.summary.Pending}}</strong> Pending Bookings</li>
+                <li style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/2?'+app.returnUrlQs())"><strong>{{list.summary.Declined}}</strong> Declined Bookings</li>
+                <li style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/5?'+app.returnUrlQs())"><strong>{{list.summary.Cancelled}}</strong> Cancelled Bookings</li>
+                <li style="cursor: pointer" ng-click="app.go('/bookings/list/filter/status/6?'+app.returnUrlQs())"><strong>{{list.summary.Incomplete}}</strong> Incomplete Bookings</li>
             </ul>
+        </div>
+
+        <div class="graph-view" ng-if="list.summary.Graph.length">
+
+            <div class="col" ng-repeat="item in list.summary.Graph">
+                <div>
+                    <span style="min-height: {{item.Height}}%">{{item.Count}}</span>
+                </div>
+                <span>{{item.Label}}</span>
+            </div>
+
+        </div>
+
+        <div class="filter-view">
+            <gl-dropdown-list gl-placeholder="Category" ng-model="list.filter.category" gl-source="list.response.Categories" gl-selection="Id"></gl-dropdown-list>
+            <gl-dropdown-list gl-placeholder="Status" ng-model="list.filter.status" gl-source="list.response.Statuses" gl-selection="Id"></gl-dropdown-list>
+            <gl-date gl-placeholder="From" ng-model="list.filter.startDate"></gl-date>
+            <gl-date gl-placeholder="To" ng-model="list.filter.endDate"></gl-date>
         </div>
 
         <gl-list gl-controller="list" gl-infinite="list.next()">

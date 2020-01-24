@@ -132,8 +132,12 @@
 
             <div class="box">
 
-                <h2>Commissions</h2>
+                <h2>Finance</h2>
                 <ul class="details">
+                    <li>
+                        <strong>Supplier Fee</strong>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency}}</span>
+                    </li>
                     <li ng-if="detail.entity.AgentCommission">
                         <strong>AgriShare Commission ({{1 - detail.entity.AgentCommission | percent}})</strong>
                         <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) | currency}}</span>
@@ -142,9 +146,25 @@
                         <strong>Agent Commission ({{detail.entity.AgentCommission | percent}})</strong>
                         <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency}}</span>
                     </li>
-                    <li>
-                        <strong>Total Commission ({{detail.entity.Commission | percent}})</strong>
+                    <li ng-if="!detail.entity.AgentCommission">
+                        <strong>AgriShare Commission ({{detail.entity.Commission | percent}})</strong>
                         <span>{{detail.entity.AgriShareCommission | currency}}</span>
+                    </li>
+                    <li>
+                        <strong><small>LESS</small> SMS Costs ({{detail.entity.SMSCount}})</strong>
+                        <span>{{detail.entity.SMSCost | currency}}</span>
+                    </li>
+                    <li>
+                        <strong><small>LESS</small> IMTT</strong>
+                        <span>{{detail.entity.IMTT | currency}}</span>
+                    </li>
+                    <li>
+                        <strong><small>LESS</small> Transaction Fee</strong>
+                        <span>{{detail.entity.TransactionFee | currency}}</span>
+                    </li>
+                    <li>
+                        <strong>Profit</strong>
+                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) - detail.entity.SMSCost - detail.entity.IMTT - detail.entity.TransactionFee | currency}}</span>
                     </li>
                 </ul>
 
