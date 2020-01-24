@@ -87,7 +87,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -111,11 +111,27 @@ namespace Agrishare.Core.Entities
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (RegisterFromDate.HasValue)
+                {
+                    var fromDate = RegisterFromDate.Value.StartOfDay();
+                    query = query.Where(o => o.DateCreated >= fromDate);
+                }
+                if (RegisterToDate.HasValue)
+                {
+                    var toDate = RegisterToDate.Value.StartOfDay();
+                    query = query.Where(o => o.DateCreated <= toDate);
+                }
+
+                if (Agent.HasValue && Agent.Value == true)
+                    query = query.Where(o => o.AgentId.HasValue);
+                if (Agent.HasValue && Agent.Value == false)
+                    query = query.Where(o => !o.AgentId.HasValue);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -144,6 +160,17 @@ namespace Agrishare.Core.Entities
                 if (Agent.HasValue && Agent.Value == false)
                     query = query.Where(o => !o.AgentId.HasValue);
 
+                if (RegisterFromDate.HasValue)
+                {
+                    var fromDate = RegisterFromDate.Value.StartOfDay();
+                    query = query.Where(o => o.DateCreated >= fromDate);
+                }
+                if (RegisterToDate.HasValue)
+                {
+                    var toDate = RegisterToDate.Value.StartOfDay();
+                    query = query.Where(o => o.DateCreated <= toDate);
+                }
+
                 return query.Count();
             }
         }
@@ -156,14 +183,145 @@ namespace Agrishare.Core.Entities
                 return query.ToList();
             }
         }
-
-
+        
         public static int BulkSMSCount()
         {
             using (var ctx = new AgrishareEntities())
             {
                 var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.Count();
+            }
+        }
+
+        public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                IQueryable<User> query = null;
+
+                switch (FilterView)
+                {
+                    case UserFilterView.Active:
+                        var counter1 = ctx.Counters.Include(c => c.User.Agent);
+                        if (FilterStartDate.HasValue)
+                            counter1 = counter1.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
+                        query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                    case UserFilterView.CompletedBooking:
+                        var eventName = $"{Counters.CompleteBooking}";
+                        var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
+                        if (FilterStartDate.HasValue)
+                            counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
+                        query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                    case UserFilterView.EquipmentOwner:
+                        var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
+                        if (FilterStartDate.HasValue)
+                        {
+                            var startDate = FilterStartDate.Value.StartOfDay();
+                            listings = listings.Where(c => c.DateCreated >= startDate);
+                        }
+                        if (FilterEndDate.HasValue)
+                        {
+                            var endDate = FilterEndDate.Value.StartOfDay();
+                            listings = listings.Where(c => c.DateCreated <= endDate);
+                        }
+                        query = listings.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                }
+
+                if (query == null)
+                    query = ctx.Users.Where(u => !u.Deleted);
+
+                if (!Keywords.IsEmpty())
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
+
+                if (!StartsWith.IsEmpty())
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().StartsWith(Keywords.ToLower()));
+
+                if (Gender != Gender.None)
+                    query = query.Where(o => o.GenderId == Gender);
+
+                if (FailedLoginAttempts > 0)
+                    query = query.Where(o => o.FailedLoginAttempts > 0);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.AgentId == AgentId);
+
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
+
+                return query.Count();
+            }
+        }
+
+        public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                IQueryable<User> query = null;
+
+                switch(FilterView)
+                {
+                    case UserFilterView.Active:
+                        var counter1 = ctx.Counters.Include(c => c.User.Agent);
+                        if (FilterStartDate.HasValue)
+                            counter1 = counter1.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
+                        query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                    case UserFilterView.CompletedBooking:
+                        var eventName = $"{Counters.CompleteBooking}";
+                        var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
+                        if (FilterStartDate.HasValue)
+                            counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
+                        query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                    case UserFilterView.EquipmentOwner:
+                        var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
+                        if (FilterStartDate.HasValue)
+                        {
+                            var startDate = FilterStartDate.Value.StartOfDay();
+                            listings = listings.Where(c => c.DateCreated >= startDate);
+                        }
+                        if (FilterEndDate.HasValue)
+                        {
+                            var endDate = FilterEndDate.Value.StartOfDay();
+                            listings = listings.Where(c => c.DateCreated <= endDate);
+                        }
+                        query = listings.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
+                        break;
+                }
+
+                if (query == null)
+                    query = ctx.Users.Where(u => !u.Deleted);
+
+                if (!Keywords.IsEmpty())
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
+
+                if (!StartsWith.IsEmpty())
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().StartsWith(Keywords.ToLower()));
+
+                if (Gender != Gender.None)
+                    query = query.Where(o => o.GenderId == Gender);
+
+                if (FailedLoginAttempts > 0)
+                    query = query.Where(o => o.FailedLoginAttempts > 0);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.AgentId == AgentId);
+
+                if (Status != UserStatus.None)
+                    query = query.Where(o => o.StatusId == Status);
+
+                return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
@@ -402,5 +560,13 @@ namespace Agrishare.Core.Entities
         #endregion
     }
 
+    public enum UserFilterView
+    {
+        All = 0,
+        Active = 1,
+        CompletedBooking = 2,
+        EquipmentOwner = 3,
+        Agent = 4
+    }
 
 }

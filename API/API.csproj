@@ -134,6 +134,7 @@
     <Compile Include="Code\ValidateViewModelAttribute.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\App\ConfigController.cs" />
+    <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />
     <Compile Include="Controllers\CMS\SettlementController.cs" />
@@ -171,6 +172,9 @@
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\EcoCashModel.cs" />
     <Compile Include="Models\SMSModel.cs" />
+    <Compile Include="Models\ListingFilterModel.cs" />
+    <Compile Include="Models\BookingFilterModel.cs" />
+    <Compile Include="Models\UserFilterModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,7 +1,9 @@
 ﻿using Agrishare.API;
+using Agrishare.API.Models;
 using Agrishare.Core;
 using Agrishare.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -24,10 +26,21 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("users/list")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex = 0, int PageSize = 25, string Query = "")
+        public object List([FromUri] UserFilterModel Filter, int PageIndex = 0, int PageSize = 25)
         {
-            var recordCount = Entities.User.Count(Keywords: Query);
-            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
+            int recordCount = 0;
+            List<User> list = new List<User>();
+
+            if (Filter.View == UserFilterView.Active || Filter.View == UserFilterView.CompletedBooking || Filter.View == UserFilterView.EquipmentOwner)
+            {
+                recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate);
+                list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate);
+            }
+            else
+            {
+                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null);
+                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null);
+            }
 
             int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
             if (PageIndex == 0)
@@ -35,13 +48,25 @@ namespace Agrishare.API.Controllers.CMS
                 total = Entities.User.Count();
                 totalAgents = Entities.User.Count(Agent: true);
                 totalRegular = Entities.User.Count(Agent: false);
-                male = Entities.User.Count(Gender: Entities.Gender.Male);
-                female = Entities.User.Count(Gender: Entities.Gender.Female);
+                male = Entities.User.Count(Gender: Gender.Male);
+                female = Entities.User.Count(Gender: Gender.Female);
                 deleted = Entities.User.Count(Deleted: true);
                 lockedout = Entities.User.Count(FailedLoginAttempts: 1);
                 active = Entities.Counter.Count(UniqueUser: true);
                 unverified = Entities.User.Count(Status: Entities.UserStatus.Pending);
             }
+
+            var Genders = EnumInfo.ToList<Gender>().Where(g => g.Title != "None").ToList();
+            Genders.Add(new EnumDescriptor { Id = 0, Title = "All" });
+
+            var Views = new List<EnumDescriptor>
+            {
+                new EnumDescriptor{ Id = 0, Title = "All" },
+                new EnumDescriptor{ Id = 1, Title = "Active" },
+                new EnumDescriptor{ Id = 2, Title = "Completed a booking" },
+                new EnumDescriptor{ Id = 3, Title = "Equipment Owner" },
+                new EnumDescriptor{ Id = 4, Title = "Agent" }
+            };
 
             var data = new
             {
@@ -49,6 +74,8 @@ namespace Agrishare.API.Controllers.CMS
                 Sort = Entities.User.DefaultSort,
                 List = list.Select(e => e.CmsJson()),
                 Title = "Users",
+                Genders,
+                Views,
                 Summary = new
                 {
                     Total = total,

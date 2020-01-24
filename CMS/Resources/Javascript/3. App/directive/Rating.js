@@ -22,7 +22,9 @@ agrishareApp.directive('glRating', function () {
 
         link: function (scope, element, attrs) {
             scope.getNumber = function (num) {
-                return new Array(num);
+                if (num)
+                    return new Array(parseInt(num));
+                return [];
             };
         }
     };

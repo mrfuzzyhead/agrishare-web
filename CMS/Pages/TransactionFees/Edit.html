@@ -1,0 +1,29 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Agent" ag-selected-url="#/transactionfees/list" ag-api-route="/cms/transactionfees/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <div flex>
+                <gl-textbox gl-label="Minimum Value" ng-model="form.entity.MinimumValue" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Maximum Value" ng-model="form.entity.MaximumValue" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+            <div flex>
+                <gl-dropdown-list gl-label="Type" ng-model="form.entity.FeeType" gl-source="form.data.FeeTypes" gl-selection="Id"></gl-dropdown-list>
+                <gl-textbox gl-label="Fee" ng-model="form.entity.Fee" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

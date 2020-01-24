@@ -246,7 +246,16 @@ namespace Agrishare.Core.Entities
                     break;
             }
 
-            SMS.SendMessage(User.Telephone, message);
+            if (SMS.SendMessage(User.Telephone, message))
+            {
+                var booking = Booking.Find(Booking?.Id ?? BookingId ?? 0);
+                if (booking.Id > 0)
+                {
+                    booking.SMSCount += 1;
+                    booking.SMSCost += Transaction.SMSCost;
+                    booking.Save();
+                }
+            }
         }
 
         private void SendPushNotification(string DeviceARN)

@@ -108,6 +108,20 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var sql = $"SELECT *, Photos AS PhotoPaths FROM Listings WHERE Listings.Deleted = 0 AND (Latitude BETWEEN {SouthWestLatitude} AND {NorthEastLatitude}) ";
+                if (NorthEastLongitude < SouthWestLongitude)
+                    sql += $"AND NOT (Longitude BETWEEN {NorthEastLongitude} AND {SouthWestLongitude})";
+                else
+                    sql += $"AND (Longitude BETWEEN {SouthWestLongitude} AND {NorthEastLongitude})";
+
+                return ctx.Database.SqlQuery<Listing>(sql).ToList();
+            }
+        }
+
         public bool Save()
         {
             var success = false;
@@ -214,5 +228,31 @@ namespace Agrishare.Core.Entities
                 LastModified
             };
         }
+
+        /* Reports */
+
+        public static List<ListingData> Graph(DateTime StartDate, DateTime EndDate, int CategoryId = 0)
+        {
+            var sql = $@"SELECT MONTH(Listings.DateCreated) AS `Month`, YEAR(Listings.DateCreated) AS `Year`, COUNT(Listings.Id) AS 'Count' 
+                            FROM Listings
+                            INNER JOIN Categories ON Listings.CategoryId = Categories.Id
+                            WHERE DATE(Listings.DateCreated) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND 
+	                            DATE(Listings.DateCreated) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') ";
+
+            if (CategoryId > 0)
+                sql += $"AND Listings.CategoryId = {CategoryId} ";
+
+            sql += $@"GROUP BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) ORDER BY Listings.DateCreated LIMIT 6";
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<ListingData>(sql).ToList();
+        }
+    }
+
+    public class ListingData
+    {
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int Count { get; set; }
     }
 }

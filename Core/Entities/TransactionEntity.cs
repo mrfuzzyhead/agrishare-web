@@ -18,6 +18,8 @@ namespace Agrishare.Core.Entities
     {
         public static bool LivePayments => Convert.ToBoolean(Config.Find(Key: "Live Payments")?.Value ?? "True");
         public static decimal AgriShareCommission => Convert.ToDecimal(Config.Find(Key: "AgriShare Commission").Value);
+        public static decimal SMSCost => Convert.ToDecimal(Config.Find(Key: "SMS Cost").Value);
+        public static decimal IMTT => Convert.ToDecimal(Config.Find(Key: "IMTT").Value);
 
         public static string DefaultSort = "DateCreated DESC";
         public string Title => "AGR-" + Id.ToString().PadLeft(8, '0');
@@ -369,6 +371,17 @@ namespace Agrishare.Core.Entities
                 {
                     var booking = Booking.Find(BookingId);
                     booking.StatusId = BookingStatus.InProgress;
+
+                    var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
+                    if (transactionFee != null)
+                    {
+                        if (transactionFee.FeeType == FeeType.Fixed)
+                            booking.TransactionFee = transactionFee.Fee;
+                        else
+                            booking.TransactionFee = (booking.Price - booking.AgriShareCommission) * transactionFee.Fee;
+                    }
+
+                    booking.IMTT = (booking.Price - booking.AgriShareCommission) * IMTT;
                     booking.Save();
 
                     var notifications = Notification.List(BookingId: booking.Id, Type: NotificationType.BookingConfirmed);

@@ -214,3 +214,53 @@ gl-list {
         }
     }
 }
+
+.filter-view {
+    background: #ccc;
+    display: flex;
+    padding: 10px 40px;
+
+    > div {
+        flex: 1;
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.graph-view {
+    background: #ddd;
+    display: flex;
+    padding: 40px;
+
+    .col {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        > div {
+            height: 100px;
+            border-bottom: solid 1px #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            > span {
+                margin: 0 auto;
+                display: block;
+                width: 50px;
+                background: $pink;
+                color: white;
+                text-align: center;
+                font-size: 10px;
+                padding: 5px 0;
+            }
+        }
+
+        > span {
+            text-align: center;
+        }
+    }
+}

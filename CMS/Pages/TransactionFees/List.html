@@ -1,0 +1,40 @@
+﻿
+<div ng-controller="ListViewController" ag-title="Agents" ag-selected-url="#/transactionfees/list" ag-api-route="/cms/transactionfees/">
+
+    <ag-title-bar>
+
+        <ag-title-bar-search ag-controller="list"></ag-title-bar-search>
+
+        <gl-popup-menu gl-position="top right" class="responsive">
+            <gl-menu-item gl-icon="add" ng-click="app.go('/transactionfees/edit?'+app.returnUrlQs())">Add</gl-menu-item>
+            <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
+        </gl-popup-menu>
+
+    </ag-title-bar>
+
+    <ag-section ag-controller="list">
+
+        <gl-list gl-controller="list" gl-infinite="list.next()">
+            <div ng-repeat="item in list.data">
+                <icon>
+                    <i class="material-icons">local_atm</i>
+                </icon>
+                <row class="transactionfee" ng-click="app.go('/transactionfees/edit/'+item.Id+'?'+app.returnUrlQs())" flex>
+                    <strong flex="1">{{item.Title}}</strong>
+                    <em ng-if="item.FeeType===1">{{item.Fee | currency}}</em>
+                    <em ng-if="item.FeeType===2">{{item.Fee | percent}}</em>
+                </row>
+                <action>
+                    <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="edit" ng-click="app.go('/transactionfees/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
+                        <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/transactionfees/delete?id=' + item.Id)">Delete</gl-menu-item>
+                    </gl-popup-menu>
+                </action>
+            </div>
+        </gl-list>
+
+    </ag-section>
+
+    <ag-status-bar></ag-status-bar>
+
+</div>

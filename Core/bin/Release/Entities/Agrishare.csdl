@@ -40,6 +40,12 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Booking" ToRole="Journal" />
     <NavigationProperty Name="Counters" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Booking" ToRole="Counter" />
+    <Property Name="Commission" Type="Decimal" Nullable="false" />
+    <Property Name="AgentCommission" Type="Decimal" Nullable="false" />
+    <Property Name="SMSCount" Type="Int32" Nullable="false" />
+    <Property Name="SMSCost" Type="Decimal" Nullable="false" />
+    <Property Name="IMTT" Type="Decimal" Nullable="false" />
+    <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -234,6 +240,9 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_1" FromRole="User" ToRole="Journal" />
+    <Property Name="AgentId" Type="Int32" />
+    <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
+    <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
   </EntityType>
   <Association Name="bookings_ibfk_1">
     <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -486,6 +495,12 @@
       <End Role="Booking" EntitySet="Bookings" />
       <End Role="Counter" EntitySet="Counters" />
     </AssociationSet>
+    <EntitySet Name="Agents" EntityType="AgrishareModel.Agent" />
+    <AssociationSet Name="users_ibfk_1" Association="AgrishareModel.users_ibfk_1">
+      <End Role="Agent" EntitySet="Agents" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <EntitySet Name="TransactionFees" EntityType="AgrishareModel.TransactionFee" />
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -885,4 +900,58 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Agent">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Commission" Type="Decimal" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_1" FromRole="Agent" ToRole="User" />
+    <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
+    <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="users_ibfk_1">
+    <End Type="AgrishareModel.Agent" Role="Agent" Multiplicity="0..1" />
+    <End Type="AgrishareModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Agent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="AgentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="AgentType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Personal" Value="1" />
+    <Member Name="Organisation" Value="2" />
+  </EnumType>
+  <EnumType Name="AgentUserType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Admin" Value="1" />
+    <Member Name="User" Value="2" />
+  </EnumType>
+  <EntityType Name="TransactionFee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MinimumValue" Type="Decimal" Nullable="false" />
+    <Property Name="MaximumValue" Type="Decimal" Nullable="false" />
+    <Property Name="Fee" Type="Decimal" Nullable="false" />
+    <Property Name="FeeType" Type="AgrishareModel.FeeType" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EnumType Name="FeeType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Fixed" Value="1" />
+    <Member Name="Percentage" Value="2" />
+  </EnumType>
 </Schema>

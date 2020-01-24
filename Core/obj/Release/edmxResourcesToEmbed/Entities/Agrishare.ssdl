@@ -7,6 +7,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="varchar" MaxLength="256" />
     <Property Name="Commission" Type="decimal" Precision="10" Scale="4" Nullable="false" />
+    <Property Name="TypeId" Type="smallint" Nullable="false" />
+    <Property Name="Telephone" Type="varchar" MaxLength="32" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -49,12 +51,18 @@
     <Property Name="TransportCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TransportDistance" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="AdditionalInformation" Type="varchar" MaxLength="4096" />
+    <Property Name="Commission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="PaidOut" Type="bool" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
+    <Property Name="SMSCount" Type="int" Nullable="false" />
+    <Property Name="SMSCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="TransactionFee" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="IMTT" Type="decimal" Precision="10" Scale="3" Nullable="false" />
   </EntityType>
   <EntityType Name="BookingUsers">
     <Key>
@@ -273,6 +281,19 @@
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
   </EntityType>
+  <EntityType Name="TransactionFees">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MinimumValue" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="MaximumValue" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="Fee" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="FeeType" Type="smallint" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Deleted" Type="bool" Nullable="false" />
+  </EntityType>
   <EntityType Name="Transactions">
     <Key>
       <PropertyRef Name="Id" />
@@ -312,6 +333,7 @@
     <Property Name="InterestId" Type="smallint" Nullable="false" />
     <Property Name="LanguageId" Type="smallint" Nullable="false" />
     <Property Name="AgentId" Type="int" />
+    <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
     <Property Name="SignalRConnectionId" Type="varchar" MaxLength="256" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="RoleList" Type="varchar" MaxLength="1024" />
@@ -657,6 +679,7 @@
     <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare" store:Type="Tables" />
+    <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
     <AssociationSet Name="bookings_ibfk_2" Association="Self.bookings_ibfk_2">

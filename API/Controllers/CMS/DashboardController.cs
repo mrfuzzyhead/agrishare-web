@@ -21,18 +21,22 @@ namespace Agrishare.API.Controllers.CMS
             var uniqueUser = Type.Equals("User");
 
             var totalBookingAmount = Entities.Booking.TotalAmountPaid(startDate, endDate);
-            var agrishareCommission = totalBookingAmount * Entities.Transaction.AgriShareCommission;
+            var agrishareCommission = Entities.Booking.TotalAgriShareCommission(startDate, endDate);
+            var agentsCommission = Entities.Booking.TotalAgentsCommission(startDate, endDate);
+            var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate);
 
             var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate);
 
             var data = new
             {
                 activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live),
-                activeUsers = Entities.Counter.Count(UniqueUser: true),
+                activeUsers = Entities.Counter.ActiveUsers(startDate, endDate), //Entities.Counter.Count(UniqueUser: true),
                 completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete),
                 totalBookingAmount,
                 totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate),
                 agrishareCommission,
+                agentsCommission,
+                feesIncurred,
                 searchCount = new
                 {
                     Male = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),

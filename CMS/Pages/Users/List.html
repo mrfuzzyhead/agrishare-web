@@ -42,10 +42,18 @@
             </ul>
         </div>
 
+        <div class="filter-view">
+            <gl-dropdown-list gl-placeholder="View" ng-model="list.filter.View" gl-source="list.response.Views" gl-selection="Id"></gl-dropdown-list>
+            <gl-dropdown-list gl-placeholder="Gender" ng-model="list.filter.Gender" gl-source="list.response.Genders" gl-selection="Id"></gl-dropdown-list>
+            <gl-date gl-placeholder="From" ng-model="list.filter.StartDate"></gl-date>
+            <gl-date gl-placeholder="To" ng-model="list.filter.EndDate"></gl-date>
+        </div>
+
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
                 <icon ng-class="{'pending': item.StatusId!==2}">
-                    <i class="material-icons">person</i>
+                    <i class="material-icons" ng-if="!item.Agent">person</i>
+                    <i class="material-icons" ng-if="item.Agent">assignment_ind</i>
                 </icon>
                 <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.FirstName}} {{item.LastName}}</strong><br />

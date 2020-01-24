@@ -1,0 +1,23 @@
+﻿
+<div ng-controller="ListingsMapController" ag-title="Map" ag-selected-url="#/listings/list" ag-api-route="/cms/listings/">
+
+    <ag-title-bar>
+
+        <ag-title-bar-search ag-controller="map"></ag-title-bar-search>
+
+        <gl-popup-menu gl-position="top right" class="responsive">
+            <gl-menu-item gl-icon="search" ng-click="map.showSearch()">Search</gl-menu-item>
+            <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="map.refresh()">Refresh</gl-menu-item>
+        </gl-popup-menu>
+
+    </ag-title-bar>
+          
+    <ag-section>
+        
+        <div id="listingsmap" style="width: 100%; height: 100%; background-color: #ccc"></div>
+
+    </ag-section>
+
+    <ag-status-bar></ag-status-bar>
+
+</div>

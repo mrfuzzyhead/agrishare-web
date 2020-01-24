@@ -4,6 +4,10 @@
     <EntitySetMapping Name="Bookings">
       <EntityTypeMapping TypeName="AgrishareModel.Booking">
         <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
+          <ScalarProperty Name="IMTT" ColumnName="IMTT" />
+          <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
+          <ScalarProperty Name="SMSCount" ColumnName="SMSCount" />
           <ScalarProperty Name="AgentCommission" ColumnName="AgentCommission" />
           <ScalarProperty Name="Commission" ColumnName="Commission" />
           <ScalarProperty Name="PaidOut" ColumnName="PaidOut" />
@@ -340,6 +344,20 @@
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="Commission" ColumnName="Commission" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransactionFees">
+      <EntityTypeMapping TypeName="AgrishareModel.TransactionFee">
+        <MappingFragment StoreEntitySet="TransactionFees">
+          <ScalarProperty Name="FeeType" ColumnName="FeeType" />
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="MaximumValue" ColumnName="MaximumValue" />
+          <ScalarProperty Name="MinimumValue" ColumnName="MinimumValue" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
