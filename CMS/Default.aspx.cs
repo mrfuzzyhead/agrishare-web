@@ -57,8 +57,9 @@ namespace Agrishare.CMS
 
             if (Request.QueryString["logout"] == "true")
             {
-                CurrentUser.AuthToken = string.Empty;
-                CurrentUser.Save();
+                var user = Core.Entities.User.Find(Id: CurrentUser.Id);
+                user.AuthToken = string.Empty;
+                user.Save();
 
                 currentUser = null;
 
