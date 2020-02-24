@@ -230,5 +230,21 @@ namespace Agrishare.API.Controllers.CMS
             else
                 return Error("Unable to process refund");
         }
+
+        [Route("bookings/transactions/find")]
+        [AcceptVerbs("GET")]
+        public object FindTransaction(int Id = 0)
+        {
+            var transaction = Entities.Transaction.Find(Id: Id);
+
+            var data = new
+            {
+                Entity = transaction.Json(),
+                Log = transaction.Log.Trim(),
+                transaction.ClientCorrelator
+            };
+
+            return Success(data);
+        }
     }
 }
