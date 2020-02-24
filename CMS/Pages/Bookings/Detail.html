@@ -147,7 +147,7 @@
                         <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency}}</span>
                     </li>
                     <li ng-if="!detail.entity.AgentCommission">
-                        <strong>AgriShare Commission ({{detail.entity.Commission | percent}})</strong>
+                        <strong>AgriShare Commission ({{detail.entity.Commission | percent : 2}})</strong>
                         <span>{{detail.entity.AgriShareCommission | currency}}</span>
                     </li>
                     <li>
@@ -186,7 +186,8 @@
                         <span>
                             <em class="status" ng-click="detail.async('/cms/bookings/transactions/poll?BookingId='+detail.entity.Id)">{{item.Status}}</em>
                         </span>
-                        <gl-icon-button gl-icon="delete_sweep" ng-click="detail.async('/cms/bookings/transactions/refund?Id='+item.Id)" ng-if="item.StatusId!=8 && item.Amount>0"></gl-icon-button>
+                        <gl-icon-button gl-icon="assignment" ng-click="app.go('/bookings/transactionlog/'+item.Id+'?'+app.returnUrlQs())"></gl-icon-button>
+                        <gl-icon-button gl-icon="delete_sweep" ng-click="detail.async('/cms/bookings/transactions/refund?Id='+item.Id)" ng-if="item.StatusId==4 && item.Amount>0"></gl-icon-button>
                     </li>
                 </ul>
 
