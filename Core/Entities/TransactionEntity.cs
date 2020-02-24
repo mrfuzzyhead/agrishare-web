@@ -237,7 +237,7 @@ namespace Agrishare.Core.Entities
             });
 
             if (EcoCashLog)
-                Log += resourceUri + Environment.NewLine + json;
+                Log += resourceUri + Environment.NewLine + Environment.NewLine + json;
 
             var client = new RestClient(resourceUri)
             {
@@ -251,7 +251,7 @@ namespace Agrishare.Core.Entities
             var response = client.Execute<dynamic>(request);
 
             if (EcoCashLog)
-                Log += Environment.NewLine + JsonConvert.SerializeObject(response);
+                Log += Environment.NewLine + Environment.NewLine + JsonConvert.SerializeObject(response);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -324,7 +324,9 @@ namespace Agrishare.Core.Entities
                         if (StatusId == TransactionStatus.Completed)
                         {
                             if (EcoCashLog)
-                                Log += Environment.NewLine + JsonConvert.SerializeObject(response);
+                                Log += Environment.NewLine + Environment.NewLine + 
+                                    resourceUri + Environment.NewLine + Environment.NewLine + 
+                                    JsonConvert.SerializeObject(response);
 
                             ServerReference = response.Data["serverReferenceCode"];
                             EcoCashReference = response.Data["ecocashReference"];
