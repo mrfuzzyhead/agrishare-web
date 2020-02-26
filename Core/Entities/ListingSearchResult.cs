@@ -247,10 +247,11 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine($"AND Listings.CategoryId = {CategoryId}");
                 sql.AppendLine($"AND Services.Mobile = {SQL.Safe(Mobile)}");
                 sql.AppendLine($"AND Services.CategoryId = {ServiceId}");
-                sql.AppendLine($"AND {Size} >= MinimumQuantity");
-
-                if (Mobile)
-                    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
+                
+                //BS: 2020-02-26 removed limitation checks
+                //sql.AppendLine($"AND {Size} >= MinimumQuantity");
+                //if (Mobile)
+                //    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
 
                 if (For == BookingFor.Group)
                     sql.AppendLine($"AND Listings.GroupServices = 1");

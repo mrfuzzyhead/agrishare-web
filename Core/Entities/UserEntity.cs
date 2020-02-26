@@ -276,7 +276,7 @@ namespace Agrishare.Core.Entities
                         query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
                     case UserFilterView.CompletedBooking:
-                        var eventName = $"{Counters.CompleteBooking}";
+                        var eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase();
                         var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
                         if (FilterStartDate.HasValue)
                             counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);

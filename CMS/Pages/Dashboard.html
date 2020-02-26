@@ -12,7 +12,7 @@
             <div class="overview">
                 <ul>
                     <li><big>{{dashboard.data.activeListingCount}}</big><strong>Live<br />Listings</strong></li>
-                    <li><big>{{dashboard.data.activeUsers}}</big><strong>Active<br />Users<br/><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Active User is a user who has used the app (performed any function within the app) during the selected time frame.">info</a></strong></li>
+                    <li><big>{{dashboard.data.activeUsers}}</big><strong>Active<br />Users<br /><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Active User is a user who has used the app (performed any function within the app) during the selected time frame.">info</a></strong></li>
                     <li><big>{{dashboard.data.completeBookingCount}}</big><strong>Paid<br />Bookings</strong></li>
                     <li><big>{{dashboard.data.smsBalance | currency}}</big><strong>SMS<br />Balance</strong></li>
                 </ul>
@@ -139,6 +139,18 @@
                         <small>{{dashboard.data.completeCount.Male}} Male &bull; {{dashboard.data.completeCount.Female}} Female</small>
                     </li>
                 </ul>
+            </div>
+
+            <h2>Bookings by month</h2>
+            <div class="graph-view" ng-if="dashboard.data.bookingsGraph.length">
+
+                <div class="col" ng-repeat="item in dashboard.data.bookingsGraph">
+                    <div>
+                        <span style="min-height: {{item.Height}}%">{{item.Count}}</span>
+                    </div>
+                    <span>{{item.Label}}</span>
+                </div>
+
             </div>
 
             <h2>Bookings by location</h2>
