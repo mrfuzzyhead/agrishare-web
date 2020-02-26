@@ -2,6 +2,7 @@
 using Agrishare.Core;
 using Agrishare.Core.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -26,6 +27,18 @@ namespace Agrishare.API.Controllers.CMS
             var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate);
 
             var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate);
+
+            var graphData = Entities.Booking.Graph(StartDate: DateTime.Now.AddMonths(-12), EndDate: DateTime.Now, Count: 12);
+            var Graph = new List<object>();
+            foreach (var item in graphData)
+            {
+                Graph.Add(new
+                {
+                    Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
+                    item.Count,
+                    Height = item.Count / graphData.Max(d => d.Count) * 100
+                });
+            }
 
             var data = new
             {
@@ -68,7 +81,8 @@ namespace Agrishare.API.Controllers.CMS
                     Female = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
                 },
                 locations = locations.Select(o => new { o.Latitude, o.Longitude }),
-                smsBalance = SMS.GetBalance()
+                smsBalance = SMS.GetBalance(),
+                bookingsGraph = Graph
             };
 
             return Success(data);

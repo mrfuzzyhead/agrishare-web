@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Data.Mapping.EntityViewGenerationAttribute(typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets62C4112F3491B2A3CF581917D4761CBA4E7612A8FCA1355CC37CBBE7AB68D476))]
+[assembly: System.Data.Mapping.EntityViewGenerationAttribute(typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -17,18 +17,18 @@ namespace Edm_EntityMappingGeneratedViews
     /// <Summary>
     /// The type contains views for EntitySets and AssociationSets that were generated at design time.
     /// </Summary>
-    public sealed class ViewsForBaseEntitySets62C4112F3491B2A3CF581917D4761CBA4E7612A8FCA1355CC37CBBE7AB68D476 : System.Data.Mapping.EntityViewContainer
+    public sealed class ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5 : System.Data.Mapping.EntityViewContainer
     {
         
         /// <Summary>
         /// The constructor stores the views for the extents and also the hash values generated based on the metadata and mapping closure and views.
         /// </Summary>
-        public ViewsForBaseEntitySets62C4112F3491B2A3CF581917D4761CBA4E7612A8FCA1355CC37CBBE7AB68D476()
+        public ViewsForBaseEntitySetsE4225DF9714EA0535A998E73423415382DBF7B93AB2E43024A576DFA55A723C5()
         {
             this.EdmEntityContainerName = "AgrishareEntities";
             this.StoreEntityContainerName = "AgrishareModelStoreContainer";
-            this.HashOverMappingClosure = "4d17b1ffb0c3ef67610d166dc41e30d5ea94ddf8e624556befd40992f562277c";
-            this.HashOverAllExtentViews = "9d946d83d2b9133b88d1e5f5013f1c16015cda72f45a94df6fdd75999e6bc55c";
+            this.HashOverMappingClosure = "6de21a11ae1598da0b06499a2dfd35e97e2e550c350793e9a298f503aa3e25fe";
+            this.HashOverAllExtentViews = "f5f9296d5cb4498b3de6a5435e167c128a66bd74b54c93452ae94979d705d4fd";
             this.ViewCount = 40;
         }
         
@@ -205,7 +205,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// </Summary>
         private System.Collections.Generic.KeyValuePair<string, string> GetView0()
         {
-            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2768);
+            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2777);
             viewString.Append("\r\n    SELECT VALUE -- Constructing Bookings\r\n        [AgrishareModel.Store.Booki");
             viewString.Append("ngs](T1.Bookings_Id, T1.Bookings_ForId, T1.Bookings_UserId, T1.Bookings_ListingI");
             viewString.Append("d, T1.Bookings_ServiceId, T1.Bookings_Location, T1.Bookings_Latitude, T1.Booking");
@@ -216,31 +216,31 @@ namespace Edm_EntityMappingGeneratedViews
             viewString.Append("TransportDistance, T1.Bookings_AdditionalInformation, T1.Bookings_Commission, T1");
             viewString.Append(".Bookings_AgentCommission, T1.Bookings_TotalVolume, T1.Bookings_StatusId, T1.Boo");
             viewString.Append("kings_PaidOut, T1.Bookings_DateCreated, T1.Bookings_LastModified, T1.Bookings_De");
-            viewString.Append("leted, T1.Bookings_SMSCount, T1.Bookings_SMSCost, T1.Bookings_EcoCashFees, T1.Bo");
-            viewString.Append("okings_IMTT)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS Bookings_Id, \r\n  ");
-            viewString.Append("          CAST(T.ForId AS [Edm.Int16]) AS Bookings_ForId, \r\n            T.UserId");
-            viewString.Append(" AS Bookings_UserId, \r\n            T.ListingId AS Bookings_ListingId, \r\n        ");
-            viewString.Append("    T.ServiceId AS Bookings_ServiceId, \r\n            T.Location AS Bookings_Loca");
-            viewString.Append("tion, \r\n            T.Latitude AS Bookings_Latitude, \r\n            T.Longitude A");
-            viewString.Append("S Bookings_Longitude, \r\n            T.Destination AS Bookings_Destination, \r\n   ");
-            viewString.Append("         T.DestinationLatitude AS Bookings_DestinationLatitude, \r\n            T.");
-            viewString.Append("DestinationLongitude AS Bookings_DestinationLongitude, \r\n            T.Quantity ");
-            viewString.Append("AS Bookings_Quantity, \r\n            T.Distance AS Bookings_Distance, \r\n         ");
-            viewString.Append("   T.IncludeFuel AS Bookings_IncludeFuel, \r\n            T.StartDate AS Bookings_");
-            viewString.Append("StartDate, \r\n            T.EndDate AS Bookings_EndDate, \r\n            T.Price AS");
-            viewString.Append(" Bookings_Price, \r\n            T.HireCost AS Bookings_HireCost, \r\n            T.");
-            viewString.Append("FuelCost AS Bookings_FuelCost, \r\n            T.TransportCost AS Bookings_Transpo");
-            viewString.Append("rtCost, \r\n            T.TransportDistance AS Bookings_TransportDistance, \r\n     ");
-            viewString.Append("       T.AdditionalInformation AS Bookings_AdditionalInformation, \r\n            ");
-            viewString.Append("T.Commission AS Bookings_Commission, \r\n            T.AgentCommission AS Bookings");
-            viewString.Append("_AgentCommission, \r\n            T.TotalVolume AS Bookings_TotalVolume, \r\n       ");
-            viewString.Append("     CAST(T.StatusId AS [Edm.Int16]) AS Bookings_StatusId, \r\n            T.PaidO");
-            viewString.Append("ut AS Bookings_PaidOut, \r\n            T.DateCreated AS Bookings_DateCreated, \r\n ");
-            viewString.Append("           T.LastModified AS Bookings_LastModified, \r\n            T.Deleted AS B");
-            viewString.Append("ookings_Deleted, \r\n            T.SMSCount AS Bookings_SMSCount, \r\n            T.");
-            viewString.Append("SMSCost AS Bookings_SMSCost, \r\n            T.EcoCashFees AS Bookings_EcoCashFees");
-            viewString.Append(", \r\n            T.IMTT AS Bookings_IMTT, \r\n            True AS _from0\r\n        F");
-            viewString.Append("ROM AgrishareEntities.Bookings AS T\r\n    ) AS T1");
+            viewString.Append("leted, T1.Bookings_SMSCount, T1.Bookings_SMSCost, T1.Bookings_TransactionFee, T1");
+            viewString.Append(".Bookings_IMTT)\r\n    FROM (\r\n        SELECT \r\n            T.Id AS Bookings_Id, \r");
+            viewString.Append("\n            CAST(T.ForId AS [Edm.Int16]) AS Bookings_ForId, \r\n            T.Use");
+            viewString.Append("rId AS Bookings_UserId, \r\n            T.ListingId AS Bookings_ListingId, \r\n     ");
+            viewString.Append("       T.ServiceId AS Bookings_ServiceId, \r\n            T.Location AS Bookings_L");
+            viewString.Append("ocation, \r\n            T.Latitude AS Bookings_Latitude, \r\n            T.Longitud");
+            viewString.Append("e AS Bookings_Longitude, \r\n            T.Destination AS Bookings_Destination, \r\n");
+            viewString.Append("            T.DestinationLatitude AS Bookings_DestinationLatitude, \r\n           ");
+            viewString.Append(" T.DestinationLongitude AS Bookings_DestinationLongitude, \r\n            T.Quanti");
+            viewString.Append("ty AS Bookings_Quantity, \r\n            T.Distance AS Bookings_Distance, \r\n      ");
+            viewString.Append("      T.IncludeFuel AS Bookings_IncludeFuel, \r\n            T.StartDate AS Bookin");
+            viewString.Append("gs_StartDate, \r\n            T.EndDate AS Bookings_EndDate, \r\n            T.Price");
+            viewString.Append(" AS Bookings_Price, \r\n            T.HireCost AS Bookings_HireCost, \r\n           ");
+            viewString.Append(" T.FuelCost AS Bookings_FuelCost, \r\n            T.TransportCost AS Bookings_Tran");
+            viewString.Append("sportCost, \r\n            T.TransportDistance AS Bookings_TransportDistance, \r\n  ");
+            viewString.Append("          T.AdditionalInformation AS Bookings_AdditionalInformation, \r\n         ");
+            viewString.Append("   T.Commission AS Bookings_Commission, \r\n            T.AgentCommission AS Booki");
+            viewString.Append("ngs_AgentCommission, \r\n            T.TotalVolume AS Bookings_TotalVolume, \r\n    ");
+            viewString.Append("        CAST(T.StatusId AS [Edm.Int16]) AS Bookings_StatusId, \r\n            T.Pa");
+            viewString.Append("idOut AS Bookings_PaidOut, \r\n            T.DateCreated AS Bookings_DateCreated, ");
+            viewString.Append("\r\n            T.LastModified AS Bookings_LastModified, \r\n            T.Deleted A");
+            viewString.Append("S Bookings_Deleted, \r\n            T.SMSCount AS Bookings_SMSCount, \r\n           ");
+            viewString.Append(" T.SMSCost AS Bookings_SMSCost, \r\n            T.TransactionFee AS Bookings_Trans");
+            viewString.Append("actionFee, \r\n            T.IMTT AS Bookings_IMTT, \r\n            True AS _from0\r\n");
+            viewString.Append("        FROM AgrishareEntities.Bookings AS T\r\n    ) AS T1");
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareModelStoreContainer.Bookings", viewString.ToString());
         }
         
@@ -561,7 +561,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// </Summary>
         private System.Collections.Generic.KeyValuePair<string, string> GetView13()
         {
-            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2739);
+            System.Text.StringBuilder viewString = new System.Text.StringBuilder(2748);
             viewString.Append("\r\n    SELECT VALUE -- Constructing Bookings\r\n        [AgrishareModel.Booking](T1");
             viewString.Append(".Booking_Id, T1.Booking_ListingId, T1.Booking_ServiceId, T1.Booking_ForId, T1.Bo");
             viewString.Append("oking_UserId, T1.Booking_Location, T1.Booking_Latitude, T1.Booking_Longitude, T1");
@@ -572,31 +572,31 @@ namespace Edm_EntityMappingGeneratedViews
             viewString.Append("oking_TotalVolume, T1.Booking_TransportDistance, T1.Booking_StatusId, T1.Booking");
             viewString.Append("_PaidOut, T1.Booking_DateCreated, T1.Booking_LastModified, T1.Booking_Deleted, T");
             viewString.Append("1.Booking_Commission, T1.Booking_AgentCommission, T1.Booking_SMSCount, T1.Bookin");
-            viewString.Append("g_SMSCost, T1.Booking_EcoCashFees, T1.Booking_IMTT)\r\n    FROM (\r\n        SELECT ");
-            viewString.Append("\r\n            T.Id AS Booking_Id, \r\n            T.ListingId AS Booking_ListingId");
-            viewString.Append(", \r\n            T.ServiceId AS Booking_ServiceId, \r\n            CAST(T.ForId AS ");
-            viewString.Append("[AgrishareModel.BookingFor]) AS Booking_ForId, \r\n            T.UserId AS Booking");
-            viewString.Append("_UserId, \r\n            T.Location AS Booking_Location, \r\n            T.Latitude ");
-            viewString.Append("AS Booking_Latitude, \r\n            T.Longitude AS Booking_Longitude, \r\n         ");
-            viewString.Append("   T.Quantity AS Booking_Quantity, \r\n            T.Distance AS Booking_Distance,");
-            viewString.Append(" \r\n            T.IncludeFuel AS Booking_IncludeFuel, \r\n            T.StartDate A");
-            viewString.Append("S Booking_StartDate, \r\n            T.EndDate AS Booking_EndDate, \r\n            T");
-            viewString.Append(".Price AS Booking_Price, \r\n            T.HireCost AS Booking_HireCost, \r\n       ");
-            viewString.Append("     T.FuelCost AS Booking_FuelCost, \r\n            T.TransportCost AS Booking_Tr");
-            viewString.Append("ansportCost, \r\n            T.DestinationLatitude AS Booking_DestinationLatitude,");
-            viewString.Append(" \r\n            T.DestinationLongitude AS Booking_DestinationLongitude, \r\n       ");
-            viewString.Append("     T.Destination AS Booking_Destination, \r\n            T.AdditionalInformation");
-            viewString.Append(" AS Booking_AdditionalInformation, \r\n            T.TotalVolume AS Booking_TotalV");
-            viewString.Append("olume, \r\n            T.TransportDistance AS Booking_TransportDistance, \r\n       ");
-            viewString.Append("     CAST(T.StatusId AS [AgrishareModel.BookingStatus]) AS Booking_StatusId, \r\n ");
-            viewString.Append("           T.PaidOut AS Booking_PaidOut, \r\n            T.DateCreated AS Booking_");
-            viewString.Append("DateCreated, \r\n            T.LastModified AS Booking_LastModified, \r\n           ");
-            viewString.Append(" T.Deleted AS Booking_Deleted, \r\n            T.Commission AS Booking_Commission,");
-            viewString.Append(" \r\n            T.AgentCommission AS Booking_AgentCommission, \r\n            T.SMS");
-            viewString.Append("Count AS Booking_SMSCount, \r\n            T.SMSCost AS Booking_SMSCost, \r\n       ");
-            viewString.Append("     T.EcoCashFees AS Booking_EcoCashFees, \r\n            T.IMTT AS Booking_IMTT,");
-            viewString.Append(" \r\n            True AS _from0\r\n        FROM AgrishareModelStoreContainer.Booking");
-            viewString.Append("s AS T\r\n    ) AS T1");
+            viewString.Append("g_SMSCost, T1.Booking_IMTT, T1.Booking_TransactionFee)\r\n    FROM (\r\n        SELE");
+            viewString.Append("CT \r\n            T.Id AS Booking_Id, \r\n            T.ListingId AS Booking_Listin");
+            viewString.Append("gId, \r\n            T.ServiceId AS Booking_ServiceId, \r\n            CAST(T.ForId ");
+            viewString.Append("AS [AgrishareModel.BookingFor]) AS Booking_ForId, \r\n            T.UserId AS Book");
+            viewString.Append("ing_UserId, \r\n            T.Location AS Booking_Location, \r\n            T.Latitu");
+            viewString.Append("de AS Booking_Latitude, \r\n            T.Longitude AS Booking_Longitude, \r\n      ");
+            viewString.Append("      T.Quantity AS Booking_Quantity, \r\n            T.Distance AS Booking_Distan");
+            viewString.Append("ce, \r\n            T.IncludeFuel AS Booking_IncludeFuel, \r\n            T.StartDat");
+            viewString.Append("e AS Booking_StartDate, \r\n            T.EndDate AS Booking_EndDate, \r\n          ");
+            viewString.Append("  T.Price AS Booking_Price, \r\n            T.HireCost AS Booking_HireCost, \r\n    ");
+            viewString.Append("        T.FuelCost AS Booking_FuelCost, \r\n            T.TransportCost AS Booking");
+            viewString.Append("_TransportCost, \r\n            T.DestinationLatitude AS Booking_DestinationLatitu");
+            viewString.Append("de, \r\n            T.DestinationLongitude AS Booking_DestinationLongitude, \r\n    ");
+            viewString.Append("        T.Destination AS Booking_Destination, \r\n            T.AdditionalInformat");
+            viewString.Append("ion AS Booking_AdditionalInformation, \r\n            T.TotalVolume AS Booking_Tot");
+            viewString.Append("alVolume, \r\n            T.TransportDistance AS Booking_TransportDistance, \r\n    ");
+            viewString.Append("        CAST(T.StatusId AS [AgrishareModel.BookingStatus]) AS Booking_StatusId, ");
+            viewString.Append("\r\n            T.PaidOut AS Booking_PaidOut, \r\n            T.DateCreated AS Booki");
+            viewString.Append("ng_DateCreated, \r\n            T.LastModified AS Booking_LastModified, \r\n        ");
+            viewString.Append("    T.Deleted AS Booking_Deleted, \r\n            T.Commission AS Booking_Commissi");
+            viewString.Append("on, \r\n            T.AgentCommission AS Booking_AgentCommission, \r\n            T.");
+            viewString.Append("SMSCount AS Booking_SMSCount, \r\n            T.SMSCost AS Booking_SMSCost, \r\n    ");
+            viewString.Append("        T.IMTT AS Booking_IMTT, \r\n            T.TransactionFee AS Booking_Transa");
+            viewString.Append("ctionFee, \r\n            True AS _from0\r\n        FROM AgrishareModelStoreContaine");
+            viewString.Append("r.Bookings AS T\r\n    ) AS T1");
             return new System.Collections.Generic.KeyValuePair<string, string>("AgrishareEntities.Bookings", viewString.ToString());
         }
         
