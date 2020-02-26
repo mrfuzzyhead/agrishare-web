@@ -1,6 +1,5 @@
 ﻿@import "global";
 
-
 .dashboard-view {
     padding: 40px;
 
@@ -162,5 +161,9 @@
                 }
             }
         }
+    }
+
+    tip {
+        width: 200px !important;
     }
 }

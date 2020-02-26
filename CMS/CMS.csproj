@@ -216,6 +216,7 @@
     <Content Include="Resources\Styles\angular-toast-alerts.css" />
     <Content Include="Resources\Styles\angular-toast-animations.min.css" />
     <Content Include="Resources\Styles\angular-toast.min.css" />
+    <Content Include="Resources\Styles\angular-tooltips.min.css" />
     <Content Include="Resources\Styles\ngToast-alerts.css" />
     <Content Include="Resources\Styles\ngToast-animations.min.css" />
     <Content Include="Resources\Styles\ngToast.min.css" />
