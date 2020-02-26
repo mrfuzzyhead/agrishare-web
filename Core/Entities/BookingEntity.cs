@@ -399,7 +399,7 @@ namespace Agrishare.Core.Entities
             if (Status != BookingStatus.None)
                 sql += $"AND Bookings.StatusId = {(int)Status} ";
 
-            sql += $@"GROUP BY MONTH(Bookings.StartDate), YEAR(Bookings.StartDate) ORDER BY Bookings.StartDate LIMIT 6";
+            sql += $@"GROUP BY MONTH(Bookings.StartDate), YEAR(Bookings.StartDate) ORDER BY YEAR(Bookings.StartDate), MONTH(Bookings.StartDate) LIMIT 6";
 
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<BookingData>(sql).ToList();
