@@ -113,7 +113,8 @@ namespace Agrishare.Core.Entities
 
         private bool Add()
         {
-            ClientCorrelator = Guid.NewGuid().ToString();
+            //ClientCorrelator =  Guid.NewGuid().ToString();
+            ClientCorrelator = GenerateRandomCode(16);
 
             using (var ctx = new AgrishareEntities())
             {
@@ -203,7 +204,6 @@ namespace Agrishare.Core.Entities
             var json = JsonConvert.SerializeObject(new
             {
                 clientCorrelator = ClientCorrelator,
-                //notifyUrl = $"{Config.APIURL}/transactions/ecocash/notify",
                 notifyUrl = $"http://197.211.236.157:9800/transactions/ecocash/notify",
                 referenceCode = Title,
                 tranType = "MER",
@@ -215,7 +215,7 @@ namespace Agrishare.Core.Entities
                     charginginformation = new
                     {
                         amount = Amount.ToString("0.##"),
-                        currency = "USD",
+                        currency = "RTGS",
                         description = Booking?.Listing?.Title ?? "AgriShare Booking"
                     },
                     chargeMetaData = new
@@ -228,7 +228,7 @@ namespace Agrishare.Core.Entities
                 merchantCode = EcoCashMerchantCode,
                 merchantPin = EcoCashMerchantPin,
                 merchantNumber = EcoCashMerchantNumber,
-                currencyCode = "USD",
+                currencyCode = "RTGS",
                 countryCode = "ZW", 
                 terminalID = "001",
                 location = "api.agrishare.app",
@@ -464,7 +464,7 @@ namespace Agrishare.Core.Entities
                     charginginformation = new
                     {
                         amount = Amount.ToString("0.##"),
-                        currency = "USD",
+                        currency = "RTGS",
                         description = Booking?.Listing?.Title ?? "AgriShare Booking"
                     },
                     chargeMetaData = new
@@ -477,7 +477,7 @@ namespace Agrishare.Core.Entities
                 merchantCode = EcoCashMerchantCode,
                 merchantPin = EcoCashMerchantPin,
                 merchantNumber = EcoCashMerchantNumber,
-                currencyCode = "USD",
+                currencyCode = "RTGS",
                 countryCode = "ZW",
                 terminalID = "001",
                 location = "api.agrishare.app",
@@ -561,6 +561,35 @@ namespace Agrishare.Core.Entities
                 return false;
             }
         }
+
+        #endregion
+
+        #region Random String
+
+        public static string GenerateRandomCode(int length)
+        {
+            //Initiate objects & vars    
+            String randomString = "";
+            int randNumber;
+
+            //Loop ‘length’ times to generate a random number or character
+            for (int i = 0; i < length; i++)
+            {
+                int _next = random.Next(1, 3);
+                if (_next == 1)
+                    randNumber = random.Next(97, 123); //char {a-z}
+                else if (_next == 2)
+                    randNumber = random.Next(65, 91); //char {A-Z}
+                else
+                    randNumber = random.Next(48, 58); //int {0-9}
+
+                //append random char or digit to random string
+                randomString = randomString + (char)randNumber;
+            }
+            //return the random string
+            return randomString;
+        }
+        private static Random random = new Random();
 
         #endregion
     }
