@@ -56,7 +56,7 @@ namespace Agrishare.API.Controllers.CMS
                 {
                     Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
                     item.Count,
-                    Height = item.Count / graphData.Max(d => d.Count) * 100
+                    Height = (decimal)item.Count / (decimal)graphData.Max(d => d.Count) * 100M
                 });
             }
 
