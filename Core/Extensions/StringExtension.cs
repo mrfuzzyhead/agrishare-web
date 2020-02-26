@@ -106,6 +106,6 @@ namespace Agrishare.Core
         public static string UrlPath(this string str)
         {
             return Regex.Replace(Regex.Replace(str.ToLower(), "[^a-z0-9]+", "-"), @"[-]+$", "");
-        }
+        }        
     }
 }
