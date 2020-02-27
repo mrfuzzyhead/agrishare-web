@@ -8,6 +8,7 @@ namespace Agrishare.API.Models
     {
         public string Query { get; set; }
         public int UserId { get; set; }
+        public int AgentId { get; set; }
         public BookingStatus Status { get; set; } = BookingStatus.None;
         public int Category { get; set; }
         public DateTime? StartDate { get; set; }
