@@ -108,7 +108,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude)
+        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude, List<int> CategoryIds)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -117,6 +117,10 @@ namespace Agrishare.Core.Entities
                     sql += $"AND NOT (Longitude BETWEEN {NorthEastLongitude} AND {SouthWestLongitude})";
                 else
                     sql += $"AND (Longitude BETWEEN {SouthWestLongitude} AND {NorthEastLongitude})";
+                if (CategoryIds.Count > 0)
+                    sql += $"AND Listings.CategoryId IN ({String.Join(",", CategoryIds)})";
+                else
+                    sql += $"AND Listings.CategoryId = -1";
 
                 return ctx.Database.SqlQuery<Listing>(sql).ToList();
             }

@@ -18,6 +18,10 @@ namespace Agrishare.API.Controllers.CMS
         {
             var recordCount = Entities.Agent.Count(Keywords: Query);
             var list = Entities.Agent.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
+            var bookingCounts = Agent.BookingCounts();
+
+            foreach (var item in list)
+                item.BookingCount = bookingCounts.FirstOrDefault(c => c.AgentId == item.Id)?.Count ?? 0;
 
             var data = new
             {

@@ -215,9 +215,9 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("listings/map")]
         [AcceptVerbs("GET")]
-        public object MapList(double NELat, double NELng, double SWLat, double SWLng)
+        public object MapList(double NELat, double NELng, double SWLat, double SWLng, [FromUri] int[] CategoryId)
         {
-            var list = Entities.Listing.MapList(NELat, NELng, SWLat, SWLng);
+            var list = Entities.Listing.MapList(NELat, NELng, SWLat, SWLng, CategoryId.OfType<int>().ToList());
             return Success(list.Select(e => e.Json()));
         }
     }

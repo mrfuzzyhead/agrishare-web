@@ -211,6 +211,20 @@ gl-list {
             action {
                 margin-left: 15px;
             }
+
+            .lozenge {
+                background: #aaa;
+                border-radius: 99px;
+                padding: 5px;
+                font-size: 11px;
+                font-weight: bold;
+                font-style: normal;
+                color: white;
+                text-align: center;
+                align-items: center;
+                align-self: center;
+                line-height: 1;
+            }
         }
     }
 }

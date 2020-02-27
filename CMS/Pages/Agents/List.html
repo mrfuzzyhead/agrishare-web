@@ -23,9 +23,11 @@
                 <row class="agent" ng-click="app.go('/agents/edit/'+item.Id+'?'+app.returnUrlQs())" flex>
                     <strong flex="1">{{item.Title}}</strong>
                     <em>{{item.Commission | percent}}</em>
+                    <em class="lozenge" style="width: 50px; margin-left: 10px">{{item.BookingCount}}</em>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="account_balance_wallet" ng-click="app.go('/bookings/list/filter/agentid/'+item.Id+'?'+app.returnUrlQs())">Bookings</gl-menu-item>
                         <gl-menu-item gl-icon="edit" ng-click="app.go('/agents/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
                         <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/agents/delete?id=' + item.Id)">Delete</gl-menu-item>
                     </gl-popup-menu>

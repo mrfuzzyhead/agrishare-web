@@ -17,8 +17,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, [FromUri] BookingFilterModel Filter)
         {
-            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
-            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
+            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
+            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
             var title = "Bookings";
 
             if (Filter.UserId > 0)
@@ -26,6 +26,13 @@ namespace Agrishare.API.Controllers.CMS
                 var user = Entities.User.Find(Id: Filter.UserId);
                 if (user != null)
                     title = $"{user.FirstName} {user.LastName}";
+            }
+
+            if (Filter.AgentId > 0)
+            {
+                var agent = Entities.Agent.Find(Id: Filter.AgentId);
+                if (agent != null)
+                    title = agent.Title;
             }
 
             if (Filter.Status != Entities.BookingStatus.None)
@@ -46,7 +53,7 @@ namespace Agrishare.API.Controllers.CMS
             var Categories = Entities.Category.List(ParentId: 0);
             Categories.Insert(0, new Entities.Category { Id = 0, Title = "All" });
 
-            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, Status: Filter.Status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
+            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
             var Graph = new List<object>();
             foreach(var item in graphData)
             {

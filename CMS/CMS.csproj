@@ -121,6 +121,10 @@
     <Content Include="Pages\Dashboard.html" />
     <Content Include="Pages\Bookings\List.html" />
     <Content Include="Pages\Listings\List.html" />
+    <Content Include="Resources\Images\Marker-1.png" />
+    <Content Include="Resources\Images\Marker-17.png" />
+    <Content Include="Resources\Images\Marker-2.png" />
+    <Content Include="Resources\Images\Marker-3.png" />
     <Content Include="Resources\Javascript\1. jQuery\jquery.2.1.0.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-map.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-round-progress.min.js" />
@@ -282,9 +286,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{4555ca08-186c-468a-87cf-1aedb2b7234c}</Project>

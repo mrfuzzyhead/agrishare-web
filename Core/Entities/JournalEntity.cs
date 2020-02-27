@@ -170,6 +170,9 @@ namespace Agrishare.Core.Entities
 
         private bool Add()
         {
+            if (!UqniueEcoCashReference())
+                return false;
+
             using (var ctx = new AgrishareEntities())
             {
                 ctx.Journals.Attach(this);
@@ -186,6 +189,12 @@ namespace Agrishare.Core.Entities
                 ctx.Entry(this).State = EntityState.Modified;
                 return ctx.SaveChanges() > 0;
             }
+        }
+
+        private bool UqniueEcoCashReference()
+        {
+            using (var ctx = new AgrishareEntities())
+                return ctx.Journals.Count(j => j.Id != Id && !j.Deleted && j.EcoCashReference == EcoCashReference) == 0;
         }
 
         public bool Delete()
