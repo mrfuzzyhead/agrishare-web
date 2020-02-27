@@ -4,9 +4,21 @@
     <ag-title-bar>
 
         <ag-title-bar-search ag-controller="map"></ag-title-bar-search>
-
+        
         <gl-popup-menu gl-position="top right" class="responsive">
-            <gl-menu-item gl-icon="search" ng-click="map.showSearch()">Search</gl-menu-item>
+
+            <gl-menu-item gl-icon="check_box" ng-click="map.toggleOff(1)" ng-if="map.categories.includes(1)">Tractors</gl-menu-item>
+            <gl-menu-item gl-icon="check_box_outline_blank" ng-click="map.toggleOn(1)" ng-if="!map.categories.includes(1)">Tractors</gl-menu-item>
+
+            <gl-menu-item gl-icon="check_box" ng-click="map.toggleOff(2)" ng-if="map.categories.includes(2)">Lorries</gl-menu-item>
+            <gl-menu-item gl-icon="check_box_outline_blank" ng-click="map.toggleOn(2)" ng-if="!map.categories.includes(2)">Lorries</gl-menu-item>
+
+            <gl-menu-item gl-icon="check_box" ng-click="map.toggleOff(3)" ng-if="map.categories.includes(3)">Processing</gl-menu-item>
+            <gl-menu-item gl-icon="check_box_outline_blank" ng-click="map.toggleOn(3)" ng-if="!map.categories.includes(3)">Processing</gl-menu-item>
+
+            <gl-menu-item gl-icon="check_box" ng-click="map.toggleOff(17)" ng-if="map.categories.includes(17)">Buses</gl-menu-item>
+            <gl-menu-item gl-icon="check_box_outline_blank" ng-click="map.toggleOn(17)" ng-if="!map.categories.includes(17)">Buses</gl-menu-item>
+
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="map.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>
 

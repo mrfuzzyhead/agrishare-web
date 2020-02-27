@@ -21,22 +21,64 @@ agrishareApp.controller('ListingsMapController', function ($attrs, $controller, 
     map.aborter = null;
     map.delay = null;
     map.markers = [];
+    map.bounds = null;
+    map.categories = [1, 2, 3, 17];
 
     App.status = "Done";
 
-    map.showSearch = function () {
-        map.searching = true;
-        Utils.focus('titleBarSearch');
+    map.toggleOn = function (id) {
+        map.categories.push(id);
+        map.getListings();
     };
 
-    map.hideSearch = function () {
-        map.searching = false;
-        if (map.query !== '') {
-            map.query = '';
-        }
+    map.toggleOff = function (id) {
+        var index = map.categories.indexOf(id);
+        map.categories.splice(index, 1);
+        map.getListings();
     };
 
-    $scope.map = map;
+    map.getListings = function () {
+        var bounds = map.bounds;
+
+        map.aborter = $q.defer();
+        $http({
+            timeout: map.aborter.promise,
+            url: App.apiUrl + '/cms/listings/map?NELat=' + bounds.Za.j + '&NELng=' + bounds.Ua.j + '&SWLat=' + bounds.Za.i + '&SWLng=' + bounds.Ua.i + '&' + map.categories.map(x => 'categoryId=' + x).join('&'),
+            headers: App.authorizationHeader()
+        }).then(function (response) {
+
+            for (var i = 0; i < map.markers.length; i++) {
+                map.markers[i].setMap(null);
+            }
+            map.markers = [];
+
+            for (var j = 0; j < response.data.length; j++) {
+                var listing = response.data[j];
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: listing.Latitude,
+                        lng: listing.Longitude
+                    },
+                    icon: '/Resources/Images/Marker-' + listing.Category.Id + '.png',
+                    map: map.gMap,
+                    title: listing.Title,
+                    id: listing.Id
+                });
+                marker.addListener('click', function () {
+                    App.go('/listings/detail/' + this.id + '?' + App.returnUrlQs());
+                });
+                map.markers.push(marker);
+            }
+
+        }, function (response) {
+
+            App.status = 'Error loading list';
+
+            var error = response.data && response.data.Message ? response.data.Message : 'An unknown error occurred';
+            console.log(error);
+
+        });
+    };
 
     setTimeout(function () {
 
@@ -51,51 +93,14 @@ agrishareApp.controller('ListingsMapController', function ($attrs, $controller, 
 
             $timeout.cancel(map.delay);
             map.delay = $timeout(function () {
-
-                var bounds = map.gMap.getBounds();
-
-                map.aborter = $q.defer();
-                $http({
-                    timeout: map.aborter.promise,
-                    url: App.apiUrl + '/cms/listings/map?NELat=' + bounds.Ya.i + '&NELng=' + bounds.Ta.i + '&SWLat=' + bounds.Ya.g + '&SWLng=' + bounds.Ta.g,
-                    headers: App.authorizationHeader()
-                }).then(function (response) {
-
-                    for (var i = 0; i < map.markers.length; i++) {
-                        map.markers[i].setMap(null);
-                    }
-                    map.markers = [];
-
-                    for (var j = 0; j < response.data.length; j++) {
-                        var listing = response.data[j];
-                        var marker = new google.maps.Marker({
-                            position: {
-                                lat: listing.Latitude,
-                                lng: listing.Longitude
-                            },
-                            map: map.gMap,
-                            title: listing.Title,
-                            id: listing.Id
-                        });
-                        marker.addListener('click', function () {                            
-                            App.go('/listings/detail/'+this.id+'?' + App.returnUrlQs());
-                        });
-                        map.markers.push(marker);
-                    }
-
-                }, function (response) {
-
-                    App.status = 'Error loading list';
-
-                    var error = response.data && response.data.Message ? response.data.Message : 'An unknown error occurred';
-                    console.log(error);
-
-                });
-
+                map.bounds = map.gMap.getBounds();
+                map.getListings();
             }, 500);
 
         });
 
     }, 500);
+
+    $scope.map = map;
 
 });
