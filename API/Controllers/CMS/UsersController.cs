@@ -38,8 +38,8 @@ namespace Agrishare.API.Controllers.CMS
             }
             else
             {
-                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null);
-                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null);
+                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null);
+                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null);
             }
 
             int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
@@ -65,7 +65,8 @@ namespace Agrishare.API.Controllers.CMS
                 new EnumDescriptor{ Id = 1, Title = "Active" },
                 new EnumDescriptor{ Id = 2, Title = "Completed a booking" },
                 new EnumDescriptor{ Id = 3, Title = "Equipment Owner" },
-                new EnumDescriptor{ Id = 4, Title = "Agent" }
+                new EnumDescriptor{ Id = 4, Title = "Agent" },
+                new EnumDescriptor{ Id = 5, Title = "Administrator" }
             };
 
             var data = new
