@@ -52,8 +52,9 @@
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
                 <icon ng-class="{'pending': item.StatusId!==2}">
-                    <i class="material-icons" ng-if="!item.Agent">person</i>
-                    <i class="material-icons" ng-if="item.Agent">assignment_ind</i>
+                    <i class="material-icons" ng-if="item.Roles.includes('Administrator')">verified_user</i>
+                    <i class="material-icons" ng-if="!item.Agent && !item.Roles.includes('Administrator')">person</i>
+                    <i class="material-icons" ng-if="item.Agent && !item.Roles.includes('Administrator')">assignment_ind</i>
                 </icon>
                 <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.FirstName}} {{item.LastName}}</strong><br />

@@ -87,7 +87,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -127,11 +127,16 @@ namespace Agrishare.Core.Entities
                 if (Agent.HasValue && Agent.Value == false)
                     query = query.Where(o => !o.AgentId.HasValue);
 
+                if (Administrator.HasValue && Administrator.Value == true)
+                    query = query.Where(o => o.RoleList.Contains("Administrator"));
+                if (Administrator.HasValue && Administrator.Value == false)
+                    query = query.Where(o => !o.RoleList.Contains("Administrator"));
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Administrator = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -159,6 +164,11 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.AgentId.HasValue);
                 if (Agent.HasValue && Agent.Value == false)
                     query = query.Where(o => !o.AgentId.HasValue);
+
+                if (Administrator.HasValue && Administrator.Value == true)
+                    query = query.Where(o => o.RoleList.Contains("Administrator"));
+                if (Administrator.HasValue && Administrator.Value == false)
+                    query = query.Where(o => !o.RoleList.Contains("Administrator"));
 
                 if (RegisterFromDate.HasValue)
                 {
@@ -566,7 +576,8 @@ namespace Agrishare.Core.Entities
         Active = 1,
         CompletedBooking = 2,
         EquipmentOwner = 3,
-        Agent = 4
+        Agent = 4,
+        Administrator = 5
     }
 
 }
