@@ -86,7 +86,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(int ListingId = 0, int UserId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
+        public static int Count(int ListingId = 0, int UserId = 0, int AgentId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -97,6 +97,9 @@ namespace Agrishare.Core.Entities
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
+
+                if (AgentId > 0)
+                    query = query.Where(o => o.User.AgentId == AgentId);
 
                 if (SupplierId > 0)
                     query = query.Where(o => o.Listing.UserId == SupplierId);
@@ -383,15 +386,19 @@ namespace Agrishare.Core.Entities
                 return ctx.Database.SqlQuery<BookingCounter>("SELECT StatusId AS `Status`, ForId AS `For`, COUNT(Id) AS `Count` FROM Bookings GROUP BY StatusId, ForId").ToList();
         }
 
-        public static List<BookingData> Graph(DateTime StartDate, DateTime EndDate, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6)
+        public static List<BookingData> Graph(DateTime StartDate, DateTime EndDate, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6, int AgentId = 0)
         {
             var sql = $@"SELECT MONTH(Bookings.StartDate) AS `Month`, YEAR(Bookings.StartDate) AS `Year`, COUNT(Bookings.Id) AS 'Count' 
                             FROM Bookings
                             INNER JOIN Listings ON Bookings.ListingId = Listings.Id
+                            INNER JOIN Users ON Listings.UserId = Users.Id
                             WHERE DATE(Bookings.StartDate) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Bookings.EndDate) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') ";
 
             if (UserId > 0)
                 sql += $"AND Bookings.UserId = {UserId} ";
+
+            if (AgentId > 0)
+                sql += $"AND Users.AgentId = {AgentId} ";
 
             if (CategoryId > 0)
                 sql += $"AND Listings.CategoryId = {CategoryId} ";
