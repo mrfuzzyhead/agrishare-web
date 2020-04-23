@@ -147,7 +147,7 @@ namespace Agrishare.Core.Entities
 
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, 
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude, 
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0)
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "")
         {
             var sort = ListingSearchResultSort.Distance;
             try { sort = (ListingSearchResultSort)Enum.Parse(typeof(ListingSearchResultSort), Sort); }
@@ -227,8 +227,8 @@ namespace Agrishare.Core.Entities
                     hireCost = $"(Services.PricePerQuantityUnit * {trips} * {1 + Transaction.AgriShareCommission})";
                 var fuelCost = $"0";
                 if ((CategoryId != Category.LorriesId || ServiceId == Category.TractorTransportServiceId) && IncludeFuel)
-                    fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice)";
-                var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit)";
+                    fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice * {1 + Transaction.AgriShareCommission})";
+                var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit * {1 + Transaction.AgriShareCommission})";
 
                 sql.AppendLine($"ROUND({transportCost}) AS TransportCost,");
                 sql.AppendLine($"ROUND({fuelCost}) AS FuelCost,");
@@ -263,6 +263,9 @@ namespace Agrishare.Core.Entities
 
                 if (ListingId > 0)
                     sql.AppendLine($"AND Listings.Id = {ListingId}");
+
+                if (!string.IsNullOrEmpty(Keywords))
+                    sql.AppendLine($@"AND Listings.Title LIKE '%{Keywords.SqlSafe()}%'");
 
                 sql.AppendLine($"GROUP BY Services.Id ORDER BY {sort} LIMIT {PageIndex * PageSize}, {PageSize}");
 

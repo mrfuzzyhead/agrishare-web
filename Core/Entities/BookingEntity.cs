@@ -18,7 +18,7 @@ namespace Agrishare.Core.Entities
         public string Title => Id.ToString() ?? "00000";
         public string For => $"{ForId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
-        public decimal AgriShareCommission => Math.Round(HireCost - (HireCost / (1 + Commission)));
+        public decimal AgriShareCommission => Math.Round(Price - (Price / (1 + Commission)));
 
         public static Booking Find(int Id = 0)
         {
@@ -356,7 +356,7 @@ namespace Agrishare.Core.Entities
             {
                 StartDate = StartDate.StartOfDay();
                 EndDate = EndDate.EndOfDay();
-                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * (e.Commission - e.AgentCommission)).DefaultIfEmpty(0).Sum();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * (e.Commission - (e.Commission * e.AgentCommission))).DefaultIfEmpty(0).Sum();
             }
         }
 
@@ -366,7 +366,7 @@ namespace Agrishare.Core.Entities
             {
                 StartDate = StartDate.StartOfDay();
                 EndDate = EndDate.EndOfDay();
-                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * e.AgentCommission).DefaultIfEmpty(0).Sum();
+                return ctx.Bookings.Where(o => !o.Deleted && o.StatusId == BookingStatus.Complete && o.StartDate <= EndDate && o.EndDate >= StartDate).Select(e => e.Price * (e.Commission * e.AgentCommission)).DefaultIfEmpty(0).Sum();
             }
         }
 
