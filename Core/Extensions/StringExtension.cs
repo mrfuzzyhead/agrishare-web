@@ -106,6 +106,15 @@ namespace Agrishare.Core
         public static string UrlPath(this string str)
         {
             return Regex.Replace(Regex.Replace(str.ToLower(), "[^a-z0-9]+", "-"), @"[-]+$", "");
-        }        
+        }
+
+        public static string SqlSafe(this string str)
+        {
+            str = str.Replace("'", "''");
+            str = str.Replace("’", "''");
+            str = str.Replace("‘", "''");
+            str = str.Replace(@"\", @"\\");
+            return str;
+        }
     }
 }
