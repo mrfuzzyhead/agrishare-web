@@ -246,7 +246,7 @@ namespace Agrishare.Core.Entities
             if (CategoryId > 0)
                 sql += $"AND Listings.CategoryId = {CategoryId} ";
 
-            sql += $@"GROUP BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) ORDER BY Listings.DateCreated LIMIT 6";
+            sql += $@"GROUP BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) ORDER BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) LIMIT 6";
 
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<ListingData>(sql).ToList();
