@@ -2,7 +2,10 @@
 using Agrishare.Core;
 using Agrishare.Core.Utils;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
 
@@ -339,6 +342,26 @@ namespace Agrishare.API.Controllers.App
                 Users = bookingUsers.Select(e => e.Json()),
                 Rated = ratingCount > 0
             });
+        }
+
+        [Route("result/pdf")]
+        [AcceptVerbs("GET")]
+        public HttpResponseMessage ResultPDF(int BookingId)
+        {
+            var booking = Entities.Booking.Find(Id: BookingId);
+            if (booking == null || (booking.UserId != CurrentUser.Id && booking.Listing.UserId != CurrentUser.Id))
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
+
+            var httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(booking.InvoicePDF());
+            httpResponseMessage.Content = new StreamContent(dataStream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                FileName = $"INV-{booking.Id.ToString().PadLeft(8, '0')}.pdf"
+            };
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+            return httpResponseMessage;
         }
 
         [Route("bookings/users/verify")]

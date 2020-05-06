@@ -324,5 +324,48 @@ namespace Agrishare.Core.Entities
             };
         }
 
+        public byte[] ListingPDF ()
+        {
+            var listing = Listing.Find(ListingId);
+
+            var content = Template.Find(Title: "Listing PDF");
+            content.Replace("Listing ID", ListingId.ToString());
+
+            if (Photos.Count > 0)
+                content.Replace("Listing Photo", $"{Config.CDNURL}/{Photos.First().ThumbName}");
+            else
+                content.Replace("Listing Photo", string.Empty);
+            content.Replace("Listing Title", Title);
+            content.Replace("Listing Description", listing.Description);
+
+            if (Days <= 1)
+                content.Replace("Date", StartDate.ToString("d MMMM yyyy"));
+            else
+                content.Replace("Date", StartDate.ToString("d MMMM yyyy") + " - " + EndDate.ToString("d MMMM yyyy"));
+
+            if (Days > 1)
+                content.Replace("Duration", $"{Days} days");
+            else
+                content.Replace("Duration", $"1 day");
+
+            if (TransportDistance > 0)
+                content.Replace("Distance", $"{TransportDistance}km");
+            else
+                content.Replace("Distance", $"-");
+
+            if (listing.CategoryId == Category.LorriesId)
+                content.Replace("Size", $"{Size} tonnes");
+            else if (listing.CategoryId == Category.ProcessingId)
+                content.Replace("Size", $"{Size} kgs");
+            else if (listing.CategoryId == Category.TractorsId)
+                content.Replace("Size", $"{Size} ha");
+            if (listing.CategoryId == Category.BusId)
+                content.Replace("Size", $"-");
+
+            content.Replace("Total Cost", HireCost.ToString("N2"));
+
+            return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
+
+        }
     }
 }
