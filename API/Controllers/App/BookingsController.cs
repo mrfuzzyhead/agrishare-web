@@ -344,9 +344,9 @@ namespace Agrishare.API.Controllers.App
             });
         }
 
-        [Route("result/pdf")]
+        [Route("bookings/invoice/pdf")]
         [AcceptVerbs("GET")]
-        public HttpResponseMessage ResultPDF(int BookingId)
+        public HttpResponseMessage InvoicePDF(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
             if (booking == null || (booking.UserId != CurrentUser.Id && booking.Listing.UserId != CurrentUser.Id))

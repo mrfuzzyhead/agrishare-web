@@ -365,7 +365,48 @@ namespace Agrishare.Core.Entities
             content.Replace("Total Cost", HireCost.ToString("N2"));
 
             return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
+        }
 
+        public static byte[] ListingPDF(Listing Listing, DateTime StartDate, DateTime EndDate, decimal Days, decimal TransportDistance, decimal Size, decimal HireCost)
+        {
+
+            var content = Template.Find(Title: "Listing PDF");
+            content.Replace("Listing ID", Listing.Id.ToString());
+
+            if (Listing.Photos.Count > 0)
+                content.Replace("Listing Photo", $"{Config.CDNURL}/{Listing.Photos.First().ThumbName}");
+            else
+                content.Replace("Listing Photo", string.Empty);
+            content.Replace("Listing Title", Listing.Title);
+            content.Replace("Listing Description", Listing.Description);
+
+            if (Days <= 1)
+                content.Replace("Date", StartDate.ToString("d MMMM yyyy"));
+            else
+                content.Replace("Date", StartDate.ToString("d MMMM yyyy") + " - " + EndDate.ToString("d MMMM yyyy"));
+
+            if (Days > 1)
+                content.Replace("Duration", $"{Days.ToString("N0")} days");
+            else
+                content.Replace("Duration", $"1 day");
+
+            if (TransportDistance > 0)
+                content.Replace("Distance", $"{TransportDistance.ToString("N0")}km");
+            else
+                content.Replace("Distance", $"-");
+
+            if (Listing.CategoryId == Category.LorriesId)
+                content.Replace("Size", $"{Size.ToString("N2")} tonnes");
+            else if (Listing.CategoryId == Category.ProcessingId)
+                content.Replace("Size", $"{Size.ToString("N2")} kgs");
+            else if (Listing.CategoryId == Category.TractorsId)
+                content.Replace("Size", $"{Size.ToString("N2")} ha");
+            if (Listing.CategoryId == Category.BusId)
+                content.Replace("Size", $"-");
+
+            content.Replace("Total Cost", HireCost.ToString("N2"));
+
+            return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
         }
     }
 }
