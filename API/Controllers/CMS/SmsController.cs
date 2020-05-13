@@ -56,5 +56,6 @@ namespace Agrishare.API.Controllers.CMS
         public string Message { get; set; }
         public int RecipientCount { get; set; }
         public bool Sent { get; set; }
+        public int UserId { get; set; }
     }
 }

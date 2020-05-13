@@ -117,6 +117,7 @@
     <Content Include="Pages\Faqs\Detail.html" />
     <Content Include="Pages\Faqs\Edit.html" />
     <Content Include="Pages\Faqs\List.html" />
+    <Content Include="Pages\Users\SMS.html" />
     <Content Include="Pages\Users\Detail.html" />
     <Content Include="Pages\Users\Edit.html" />
     <Content Include="Pages\Users\Unverified.html" />
