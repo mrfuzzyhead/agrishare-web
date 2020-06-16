@@ -43,10 +43,8 @@
         <AssociationConnector Association="AgrishareModel.bookingusers_ibfk_2" ManuallyRouted="true" >
           <ConnectorPoint PointX="17.125" PointY="4" />
           <ConnectorPoint PointX="17.125" PointY="3.5" />
-          <ConnectorPoint PointX="13.583333833333333" PointY="3.4999999999999996" />
-          <ConnectorPoint PointX="13.416667166666665" PointY="3.5" />
-          <ConnectorPoint PointX="12.333333333333334" PointY="3.4999999999999996" />
-          <ConnectorPoint PointX="12.166666666666666" PointY="3.5" />
+          <ConnectorPoint PointX="12.427087083333335" PointY="3.4999999999999987" />
+          <ConnectorPoint PointX="12.072916666666666" PointY="3.5" />
           <ConnectorPoint PointX="11.708333333333334" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="11.541666666666666" PointY="3.5" />
           <ConnectorPoint PointX="7.375" PointY="3.5" />
@@ -62,6 +60,7 @@
         <EntityTypeShape EntityType="AgrishareModel.Agent" Width="1.5" PointX="14.875" PointY="0.75" />
         <AssociationConnector Association="AgrishareModel.users_ibfk_1" />
         <EntityTypeShape EntityType="AgrishareModel.TransactionFee" Width="1.5" PointX="3.375" PointY="13.75" />
+        <AssociationConnector Association="AgrishareModel.counters_ibfk_4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

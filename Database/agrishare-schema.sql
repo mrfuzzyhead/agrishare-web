@@ -150,6 +150,7 @@ CREATE TABLE `Counters` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) DEFAULT NULL,
   `ServiceId` int(11) DEFAULT NULL,
+  `CategoryId` int(11) DEFAULT NULL,
   `BookingId` int(11) DEFAULT NULL,
   `Event` varchar(32) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -159,10 +160,12 @@ CREATE TABLE `Counters` (
   KEY `ServiceId` (`ServiceId`),
   KEY `UserId` (`UserId`),
   KEY `BookingId` (`BookingId`),
+  KEY `CategoryId` (`CategoryId`),
   CONSTRAINT `counters_ibfk_1` FOREIGN KEY (`ServiceId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `counters_ibfk_4` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
 
@@ -268,7 +271,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1184 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1199 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -399,7 +402,7 @@ CREATE TABLE `TransactionFees` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Transactions` */
 

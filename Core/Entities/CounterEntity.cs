@@ -67,7 +67,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.Booking.ForId == For.Value);
 
                 if (CategoryId > 0)
-                    query = query.Where(o => o.Service.ParentId == CategoryId);
+                    query = query.Where(o => o.ServiceId == CategoryId || o.Service.ParentId == CategoryId || o.CategoryId == CategoryId);
 
                 if (UniqueUser)
                     return query.Select(e => e.UserId).Distinct().Count();
@@ -88,6 +88,10 @@ namespace Agrishare.Core.Entities
             if (service != null) ServiceId = service.Id;
             Service = null;
 
+            var category = Category;
+            if (category != null) CategoryId = category.Id;
+            Category = null;
+
             if (Id == 0)
                 success = Add();
             else
@@ -95,6 +99,7 @@ namespace Agrishare.Core.Entities
 
             User = user;
             Service = service;
+            Category = category;
 
             return success;
         }
@@ -153,11 +158,11 @@ namespace Agrishare.Core.Entities
 
         // TODO update this method to use caching so that we only write to the db once every minute instead of once every hit
         // Using caching will limit the disk IO which will become an issue
-        public static bool Hit(int UserId, Counters Event, int ServiceId = 0, int BookingId = 0)
+        public static bool Hit(int UserId, Counters Event, int ServiceId = 0, int BookingId = 0, int CategoryId = 0)
         {
-            return Hit(UserId, $"{Event}".ExplodeCamelCase(), ServiceId, BookingId);
+            return Hit(UserId, $"{Event}".ExplodeCamelCase(), ServiceId, BookingId, CategoryId);
         }
-        public static bool Hit(int UserId, string Event, int ServiceId = 0, int BookingId = 0)
+        public static bool Hit(int UserId, string Event, int ServiceId = 0, int BookingId = 0, int CategoryId = 0)
         {
             var textInfo = new CultureInfo("en-US", false).TextInfo;
             Event = textInfo.ToTitleCase(Event.ToLower());
@@ -169,6 +174,8 @@ namespace Agrishare.Core.Entities
                 hit.ServiceId = ServiceId;
             if (BookingId > 0)
                 hit.BookingId = BookingId;
+            if (CategoryId > 0)
+                hit.CategoryId = CategoryId;
 
             return hit.Save();
         }

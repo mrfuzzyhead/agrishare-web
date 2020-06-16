@@ -501,6 +501,10 @@
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
     <EntitySet Name="TransactionFees" EntityType="AgrishareModel.TransactionFee" />
+    <AssociationSet Name="counters_ibfk_4" Association="AgrishareModel.counters_ibfk_4">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Counter" EntitySet="Counters" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -640,6 +644,8 @@
     <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
     <Property Name="BookingId" Type="Int32" />
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
+    <Property Name="CategoryId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="AgrishareModel.counters_ibfk_4" FromRole="Counter" ToRole="Category" />
   </EntityType>
   <EnumType Name="ListingStatus" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
@@ -954,4 +960,18 @@
     <Member Name="Fixed" Value="1" />
     <Member Name="Percentage" Value="2" />
   </EnumType>
+  <Association Name="counters_ibfk_4">
+    <End Type="AgrishareModel.Category" Role="Category" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.Counter" Role="Counter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Counter">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
