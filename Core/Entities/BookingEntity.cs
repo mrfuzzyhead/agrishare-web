@@ -411,6 +411,18 @@ namespace Agrishare.Core.Entities
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<BookingData>(sql).ToList();
         }
+
+        public byte[] InvoicePDF()
+        {
+            var content = Template.Find(Title: "Invoice PDF");
+            content.Replace("Invoice Number", $"INV-{Id.ToString().PadLeft(8, '0')}");
+            content.Replace("Recipient Name", User.Title);
+            content.Replace("Recipient Telephone", User.Telephone);
+            content.Replace("Invoice Date", DateCreated.ToString("d MMMM yyyy"));
+            content.Replace("Service Title", Listing.Title);
+            content.Replace("Hire Cost", Price.ToString("N2"));
+            return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
+        }
     }
 
     public class BookingCounter

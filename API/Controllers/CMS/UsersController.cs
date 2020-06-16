@@ -221,5 +221,48 @@ namespace Agrishare.API.Controllers.CMS
 
             return Success(data);
         }
+
+        /* SMS */
+
+        [Route("users/sms/find")]
+        [AcceptVerbs("GET")]
+        public object SMSFind(int Id = 0)
+        {
+            var entity = new SmsModel
+            {
+                UserId = Id,
+                RecipientCount = 1,
+                Sent = false
+            };
+
+            var data = new
+            {
+                Entity = entity
+            };
+
+            return Success(data);
+        }
+
+        [Route("users/sms/save")]
+        [AcceptVerbs("POST")]
+        public object SMSSave(SmsModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            var user = Entities.User.Find(Model.UserId);
+            if (Core.Utils.SMS.SendMessage(user.Telephone, Model.Message))
+            {
+                Model.Sent = true;
+
+                return Success(new
+                {
+                    Entity = Model,
+                    Feedback = "SMS sent"
+                });
+            }
+
+            return Error();
+        }
     }
 }

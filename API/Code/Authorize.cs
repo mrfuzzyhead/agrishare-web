@@ -37,6 +37,12 @@ namespace Agrishare.API
                 token = Encryption.DecryptWithRC4(cookie.Cookies.First().Value, Config.EncryptionSalt);
             else if (actionContext.Request.Headers.TryGetValues("Authorization", out var authorizationValues))
                 token = authorizationValues.First();
+            else
+            {
+                var queryString = actionContext.Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+                if (queryString != null && queryString.Keys.Contains("Authorization"))
+                    token = queryString["Authorization"];
+            }
 
             var user = User.Find(AuthToken: token);
             if (user?.Roles.Intersect(allowedRoles).Count() > 0)

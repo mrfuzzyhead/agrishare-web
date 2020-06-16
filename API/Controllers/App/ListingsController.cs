@@ -175,7 +175,13 @@ namespace Agrishare.API.Controllers.App
                 foreach (var photo in Model.Photos)
                 {
                     if (photo.Filename.IsEmpty())
-                        photos.Add(Entities.File.SaveBase64Image(photo.Base64));
+                    {
+                        var filename = Entities.File.SaveBase64Image(photo.Base64);
+                        var file = new Entities.File(filename);
+                        file.Resize(200, 200, file.ThumbName);
+                        file.Resize(800, 800, file.ZoomName);
+                        photos.Add(filename);
+                    }
                     else
                         photos.Add(photo.Filename);
                 }
