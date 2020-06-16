@@ -280,6 +280,7 @@
     <EntitySetMapping Name="Counters">
       <EntityTypeMapping TypeName="AgrishareModel.Counter">
         <MappingFragment StoreEntitySet="Counters">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="BookingId" ColumnName="BookingId" />
           <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
