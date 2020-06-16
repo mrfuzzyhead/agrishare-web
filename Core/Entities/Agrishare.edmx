@@ -115,6 +115,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="ServiceId" Type="int" />
+          <Property Name="CategoryId" Type="int" />
           <Property Name="BookingId" Type="int" />
           <Property Name="Event" Type="varchar" MaxLength="32" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -444,6 +445,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="counters_ibfk_4">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Counters" Type="Self.Counters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Counters">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="devices_ibfk_1">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -713,6 +728,10 @@
           </AssociationSet>
           <AssociationSet Name="counters_ibfk_3" Association="Self.counters_ibfk_3">
             <End Role="Bookings" EntitySet="Bookings" />
+            <End Role="Counters" EntitySet="Counters" />
+          </AssociationSet>
+          <AssociationSet Name="counters_ibfk_4" Association="Self.counters_ibfk_4">
+            <End Role="Categories" EntitySet="Categories" />
             <End Role="Counters" EntitySet="Counters" />
           </AssociationSet>
           <AssociationSet Name="devices_ibfk_1" Association="Self.devices_ibfk_1">
@@ -1285,6 +1304,10 @@
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="TransactionFees" EntityType="AgrishareModel.TransactionFee" />
+          <AssociationSet Name="counters_ibfk_4" Association="AgrishareModel.counters_ibfk_4">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Counter" EntitySet="Counters" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rating">
           <Key>
@@ -1424,6 +1447,8 @@
           <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
           <Property Name="BookingId" Type="Int32" />
           <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
+          <Property Name="CategoryId" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="AgrishareModel.counters_ibfk_4" FromRole="Counter" ToRole="Category" />
         </EntityType>
         <EnumType Name="ListingStatus" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
@@ -1738,6 +1763,20 @@
           <Member Name="Fixed" Value="1" />
           <Member Name="Percentage" Value="2" />
         </EnumType>
+        <Association Name="counters_ibfk_4">
+          <End Type="AgrishareModel.Category" Role="Category" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AgrishareModel.Counter" Role="Counter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Counter">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2023,6 +2062,7 @@
           <EntitySetMapping Name="Counters">
             <EntityTypeMapping TypeName="AgrishareModel.Counter">
               <MappingFragment StoreEntitySet="Counters">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

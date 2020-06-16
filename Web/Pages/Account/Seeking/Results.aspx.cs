@@ -33,14 +33,14 @@ namespace Agrishare.Web.Pages.Account.Seeking
             var destinationLongitude = Convert.ToDecimal(Request.QueryString["dlo"]);
             var totalVolume = Convert.ToDecimal(Request.QueryString["vol"]);
 
-            Core.Entities.Counter.Hit(Master.CurrentUser.Id, Core.Entities.Counters.Search, serviceId);
+            Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Search, ServiceId: serviceId, CategoryId: categoryId);
 
             SearchResults.RecordCount = Core.Entities.ListingSearchResult.Count(categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume);
             SearchResults.DataSource = Core.Entities.ListingSearchResult.List(SearchResults.CurrentPageIndex, SearchResults.PageSize, "Distance", categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume);
             SearchResults.DataBind();
 
             if (SearchResults.CurrentPageIndex == 0 && SearchResults.RecordCount > 0)
-                Core.Entities.Counter.Hit(Master.CurrentUser.Id, Core.Entities.Counters.Match, serviceId);
+                Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Match, ServiceId: serviceId, CategoryId: categoryId);
         }
 
         public void BindSearchResult(object s, RepeaterItemEventArgs e)
