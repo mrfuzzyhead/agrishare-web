@@ -1,0 +1,208 @@
+﻿<html>
+<head>
+    <style>
+
+        body {
+            margin: 0;
+            font-family: arial;
+            line-height: 1.5;
+        }
+
+        /* Content */
+
+        div.content {
+            margin: 0 50px;
+        }
+
+        div.content h1 {
+            color: #393;
+            text-transform: uppercase;
+        }
+
+        div.content table.service {
+            width: 100%;
+            border: solid 1px #999;
+            border-collapse: collapse;
+        }
+
+        div.content table.service td {
+            padding: 10px;
+        }
+
+        div.content table.service td:first-child {
+            width: 150px;
+        }
+
+        div.content table.service img {
+            display: block;
+            width: 150px;
+        }
+
+        div.content table.service strong {
+            color: #393;
+        }
+
+        div.content table.booking {
+            width: 100%;
+            border: solid 1px #999;
+            border-collapse: collapse;
+        }
+
+        div.content table.booking th {
+            width: 150px;
+            background: #ccc;
+            text-align: left;
+            padding: 10px;
+        }
+
+        div.content table.booking td {
+            padding: 10px;
+            border: solid 1px #999;
+            text-align: right;
+        }
+
+        div.content table.booking tr.total {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Header */
+        div.header {
+            margin: 50px;
+            background: #393;
+            padding: 20px;
+            color: white;
+        }
+
+        div.header table {
+            width: 100%;
+        }
+
+        div.header img {
+            width: 100px;
+        }
+
+        div.header td:nth-child(1) {
+            width: 120px;
+            border-right: solid 1px white;
+        }
+
+        div.header td:nth-child(2) {
+            padding-left: 20px;
+        }
+
+        div.header td:nth-child(3) {
+            text-align: right;
+        }
+
+        div.header strong {
+            display: block;
+            font-size: 28px;
+            font-weight: normal;
+            color: white;
+        }
+
+        div.header small {
+            display: block;
+            font-size: 12px;
+            font-weight: normal;
+            color: white;
+        }
+
+        /* Footer */
+
+        div.footer {
+            margin: 50px;
+        }
+
+        div.footer table {
+            width: 100%;
+        }
+
+        div.footer td {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        div.footer td, div.footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!--Header-Start-->
+    <div class="header">
+        <table>
+            <tr>
+                <td>
+                    <img src="/Resources/Images/WHH-Logo.svg" />
+                </td>
+                <td>
+                    <strong>AgriShare</strong>
+                    <small>Connecting you to farm equipment</small>
+                </td>
+                <td>
+                    <small>LISTING</small>
+                    <strong>#{{Listing ID}}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Header-End-->
+    <!--Content-Start-->
+    <div class="content">
+        <h1>Quotation</h1>
+        <table class="service">
+            <tr>
+                <td>
+                    <img src="{{Listing Photo}}" />
+                </td>
+                <td>
+                    <strong>{{Listing Title}}</strong><br />
+                    {{Listing Description}}
+                </td>
+            </tr>
+        </table>
+        <table class="booking">
+            <tr>
+                <th>Date</th>
+                <td>{{Date}}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{Duration}}</td>
+            </tr>
+            <tr>
+                <th>Distance</th>
+                <td>{{Distance}}</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>{{Size}}</td>
+            </tr>
+            <tr class="total">
+                <th>Total Cost</th>
+                <td>ZWL${{Total Cost}}</td>
+            </tr>
+        </table>
+
+    </div>
+    <!--Content-End-->
+    <!--Footer-Start-->
+    <div class="footer">
+        <table>
+            <tr>
+                <td>
+                    <strong>AgriShare</strong> &mdash; Connecting you to farm equipment<br />
+                    <a>www.agrishare.app</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Footer-End-->
+
+</body>
+</html>

@@ -193,7 +193,7 @@ namespace Agrishare.Core.Entities
             if (!LivePayments)
             {
                 ServerReference = "DEMO-" + Guid.NewGuid().ToString();
-                StatusId = TransactionStatus.PendingSubscriberValidation;
+                StatusId = TransactionStatus.PendingSubscriberValidation; // Updated when polled
                 Save();
 
                 return true;
