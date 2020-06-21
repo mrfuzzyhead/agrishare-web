@@ -18,12 +18,12 @@ namespace Agrishare.API.Controllers.App
             DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For = BookingFor.Me, 
             decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "")
         {
-            Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, ServiceId: ServiceId, CategoryId: CategoryId);
+            Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
             var list = ListingSearchResult.List(PageIndex, PageSize, Sort, CategoryId, ServiceId, Latitude, Longitude, StartDate, Size, IncludeFuel, Mobile, For, DestinationLatitude, DestinationLongitude, TotalVolume, 0, Keywords);
 
             if (list.Count() > 0)
-                Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, ServiceId: ServiceId, CategoryId: CategoryId);
+                Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);
 
             return Success(new
             {

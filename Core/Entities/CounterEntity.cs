@@ -158,9 +158,9 @@ namespace Agrishare.Core.Entities
 
         // TODO update this method to use caching so that we only write to the db once every minute instead of once every hit
         // Using caching will limit the disk IO which will become an issue
-        public static bool Hit(int UserId, Counters Event, int ServiceId = 0, int BookingId = 0, int CategoryId = 0)
+        public static bool Hit(int UserId, Counters Event, int BookingId = 0, int CategoryId = 0)
         {
-            return Hit(UserId, $"{Event}".ExplodeCamelCase(), ServiceId, BookingId, CategoryId);
+            return Hit(UserId, $"{Event}".ExplodeCamelCase(), 0, BookingId, CategoryId);
         }
         public static bool Hit(int UserId, string Event, int ServiceId = 0, int BookingId = 0, int CategoryId = 0)
         {
