@@ -248,7 +248,7 @@ namespace Agrishare.Web.Pages.Account.Booking
             SelectedBooking.StatusId = Core.Entities.BookingStatus.Pending;
             if (SelectedBooking.Save())
             {
-                Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Book, ServiceId: SelectedBooking.Service.Id, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+                Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Book, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
 
                 new Core.Entities.Notification
                 {
@@ -301,7 +301,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                         User = Core.Entities.User.Find(Id: SelectedBooking.UserId)
                     }.Save(Notify: true);
 
-                    Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.ConfirmBooking, ServiceId: SelectedBooking.Service.Id, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+                    Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.ConfirmBooking, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
 
                     Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
                 }
@@ -376,7 +376,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                             User = Core.Entities.User.Find(Id: SelectedBooking.Listing.UserId)
                         }.Save(Notify: true);
 
-                        Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.CompleteBooking, ServiceId: SelectedBooking.Service.Id, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+                        Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.CompleteBooking, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
 
                         var listing = Core.Entities.Listing.Find(Id: rating.ListingId);
                         listing.AverageRating = ((listing.AverageRating * listing.RatingCount) + rating.Stars) / (listing.RatingCount + 1);
@@ -437,7 +437,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                         User = Core.Entities.User.Find(Id: SelectedBooking.UserId)
                     }.Save(Notify: true);
 
-                    Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.IncompleteBooking, ServiceId: SelectedBooking.Service.Id, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+                    Core.Entities.Counter.Hit(UserId: SelectedBooking.UserId, Event: Core.Entities.Counters.IncompleteBooking, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
 
                     Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
                 }
@@ -557,7 +557,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                     transaction.RequestEcoCashPayment();
                     transactions.Add(transaction);
 
-                    Core.Entities.Counter.Hit(UserId: SelectedBookingUser.UserId ?? 0, Event: Core.Entities.Counters.InitiatePayment, ServiceId: SelectedBooking.Service.Id, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+                    Core.Entities.Counter.Hit(UserId: SelectedBookingUser.UserId ?? 0, Event: Core.Entities.Counters.InitiatePayment, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
 
                     if (transaction.StatusId != Core.Entities.TransactionStatus.PendingSubscriberValidation)
                     {

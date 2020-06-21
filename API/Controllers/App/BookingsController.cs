@@ -57,7 +57,7 @@ namespace Agrishare.API.Controllers.App
 
             if (booking.Save())
             {
-                Entities.Counter.Hit(UserId: CurrentUser.Id, Event: Entities.Counters.Book, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: CurrentUser.Id, Event: Entities.Counters.Book, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 new Entities.Notification
                 {
@@ -113,7 +113,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.ConfirmBooking, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.ConfirmBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -158,7 +158,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.DeclineBooking, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.DeclineBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -196,7 +196,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.Listing.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CompleteBooking, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CompleteBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -244,7 +244,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.IncompleteBooking, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.IncompleteBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -437,7 +437,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.Listing.UserId)
                 }.Save(Notify: false);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CancelBooking, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CancelBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {

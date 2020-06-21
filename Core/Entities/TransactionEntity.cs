@@ -409,7 +409,7 @@ namespace Agrishare.Core.Entities
                         User = User.Find(Id: booking.UserId)
                     }.Save(Notify: false);
 
-                    Counter.Hit(UserId: BookingUser.UserId ?? 0, Event: Counters.CompletePayment, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                    Counter.Hit(UserId: BookingUser.UserId ?? 0, Event: Counters.CompletePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
                     SendPaymentNotification();
                 }
             }

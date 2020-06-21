@@ -143,7 +143,7 @@ namespace Agrishare.API.Controllers.App
                     transaction.RequestEcoCashPayment();
                     transactions.Add(transaction);
 
-                    Entities.Counter.Hit(UserId: bookingUser.UserId ?? 0, Event: Entities.Counters.InitiatePayment, ServiceId: booking.Service.Id, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                    Entities.Counter.Hit(UserId: bookingUser.UserId ?? 0, Event: Entities.Counters.InitiatePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
                     if (transaction.StatusId != Entities.TransactionStatus.PendingSubscriberValidation)
                     {
