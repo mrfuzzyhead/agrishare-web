@@ -213,7 +213,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Agrishare.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Entities\AgriShare.Views.cs" />
     <Compile Include="Entities\Blog.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -395,6 +394,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"%25windir%25\Microsoft.NET\Framework64\v4.0.30319\EdmGen.exe" /targetversion:4.5 /nologo /language:CSharp /mode:ViewGeneration "/inssdl:$(TargetDir)Entities/AgriShare.ssdl" "/incsdl:$(TargetDir)Entities/AgriShare.csdl" "/inmsl:$(TargetDir)Entities/AgriShare.msl" "/outviews:$(ProjectDir)Entities/AgriShare.Views.cs"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
