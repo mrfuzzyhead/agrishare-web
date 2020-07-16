@@ -78,16 +78,31 @@ namespace Agrishare.Core.Utils
 
             try
             {
-                var url = $"https://www.txt.co.zw/Remote/SendMessage";
-                var client = new RestClient(url);
+                var client = new RestClient("https://www.txt.co.zw/Remote/SendMessage");
+                client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
-                request.AddHeader("Cache-Control", "no-cache");
-                request.AddParameter("undefined", $"username={Username}&Recipients={recipientList}&Body={Message}&sending_number={Sender}", ParameterType.RequestBody);
-
+                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.AddParameter("Username", Username);
+                request.AddParameter("Recipients", recipientList);
+                request.AddParameter("Body", Message);
+                request.AddParameter("Sending_Number", Sender);
                 var response = client.Execute(request);
+                //Console.WriteLine(response.Content);
+
+
+                //var url = $"https://www.txt.co.zw/Remote/SendMessage";
+                //var client = new RestClient(url);
+                //var request = new RestRequest(Method.POST);
+                //request.AddHeader("Cache-Control", "no-cache");
+                //request.AddParameter("undefined", $"username={Username}&Recipients={recipientList}&Body={Message}&sending_number={Sender}", ParameterType.RequestBody);
+
+                //var response = client.Execute(request);
+
+                //if (Log)
+                //    Entities.Log.Debug("SMS.SendMessages", url + Environment.NewLine + JsonConvert.SerializeObject(response));
 
                 if (Log)
-                    Entities.Log.Debug("SMS.SendMessages", url + Environment.NewLine + JsonConvert.SerializeObject(response));
+                    Entities.Log.Debug("SMS.SendMessages", JsonConvert.SerializeObject(request) + Environment.NewLine + JsonConvert.SerializeObject(response));
 
                 if (response.Content.StartsWith("SUCCESS"))
                     return true;
