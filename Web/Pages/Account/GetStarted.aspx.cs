@@ -32,6 +32,10 @@ namespace Agrishare.Web.Pages.Account
         {
             if (Page.IsValid)
             {
+                DateTime? dob = null;
+                try { dob = DateTime.Parse(DateOfBirth.Text); }
+                catch { }
+
                 var user = new Core.Entities.User
                 {
                     FirstName = FirstName.Text,
@@ -40,7 +44,7 @@ namespace Agrishare.Web.Pages.Account
                     Telephone = Telephone.Text,
                     ClearPassword = PIN.Text,
                     GenderId = (Core.Entities.Gender)Enum.Parse(typeof(Core.Entities.Gender), Gender.SelectedValue),
-                    DateOfBirth = DateTime.Parse(DateOfBirth.Text),
+                    DateOfBirth = dob,
                     Roles = new List<Core.Entities.Role> { Core.Entities.Role.User },
                     AuthToken = Guid.NewGuid().ToString(),
                     StatusId = Core.Entities.UserStatus.Verified

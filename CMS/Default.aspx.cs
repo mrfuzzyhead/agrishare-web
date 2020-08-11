@@ -1,4 +1,5 @@
-﻿using Agrishare.Core.Entities;
+﻿using Agrishare.CMS.Code;
+using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,35 +9,9 @@ using System.Web.UI.WebControls;
 
 namespace Agrishare.CMS
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class Default : BasePage
     {
         public DateTime Today = DateTime.Today;
-
-        public User CurrentUser
-        {
-            get
-            {
-                if (currentUser == null)
-                {
-                    try
-                    {
-                        string encryptedToken = Request.Cookies[Core.Entities.User.AuthCookieName].Value;
-                        string authToken = Core.Utils.Encryption.DecryptWithRC4(encryptedToken, Config.EncryptionSalt);
-                        currentUser = Core.Entities.User.Find(AuthToken: authToken);
-                    }
-                    catch
-                    {
-                        currentUser = new User();
-                    }
-
-                    if (currentUser == null)
-                        currentUser = new User();
-                }
-
-                return currentUser;
-            }
-        }
-        private User currentUser;
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -61,10 +36,11 @@ namespace Agrishare.CMS
                 user.AuthToken = string.Empty;
                 user.Save();
 
-                currentUser = null;
+                CurrentUser = null;
 
                 var cookie = HttpContext.Current.Request.Cookies[Core.Entities.User.AuthCookieName];
                 cookie.Value = string.Empty;
+                cookie.Expires = DateTime.Now.AddDays(-1);
                 cookie.Domain = Config.DomainName;
                 HttpContext.Current.Response.Cookies.Add(cookie);
 

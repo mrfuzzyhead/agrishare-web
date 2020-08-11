@@ -1,25 +1,18 @@
-﻿using Agrishare.API;
-using Agrishare.Core;
+﻿using Agrishare.CMS.Code;
+using Agrishare.Core.Entities;
 using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Web.Http;
-using Entities = Agrishare.Core.Entities;
 
-namespace Agrishare.API.Controllers.CMS
+namespace Agrishare.CMS.Pages
 {
-    [@Authorize(Roles="Administrator")]
-    [RoutePrefix("cms")]
-    public class CMSSettlementController : BaseApiController
+    public partial class SettlementReport : BasePage
     {
-        [Route("settlement/report")]
-        [AcceptVerbs("GET")]
-        public HttpResponseMessage SettlementReport()
+        protected void Page_Load(object sender, EventArgs e)
         {
-            var bookings = Entities.Booking.SettlementReport(StartDate: DateTime.Now.AddDays(-7), EndDate: DateTime.Now);
+            if (!CurrentUser.Roles.Contains(Role.Administrator))
+                Response.Redirect("/");
+
+            var bookings = Booking.SettlementReport(StartDate: DateTime.Now.AddDays(-7), EndDate: DateTime.Now);
 
             var csv = new StringBuilder();
             csv.AppendLine("Date,Booking,User,Telephone,Amount,Type,EcoCash Reference");
@@ -35,8 +28,8 @@ namespace Agrishare.API.Controllers.CMS
                     csv.Append("Supplier,");
                     csv.AppendLine();
 
-                    var recipientName = booking.User.Agent.TypeId == Entities.AgentType.Personal ? booking.User.Title : booking.User.Agent.Title;
-                    var recipientTelephone = booking.User.Agent.TypeId == Entities.AgentType.Personal ? booking.User.Telephone : booking.User.Agent.Telephone;
+                    var recipientName = booking.User.Agent.TypeId == AgentType.Personal ? booking.User.Title : booking.User.Agent.Title;
+                    var recipientTelephone = booking.User.Agent.TypeId == AgentType.Personal ? booking.User.Telephone : booking.User.Agent.Telephone;
 
                     csv.Append(booking.StartDate.ToString("yyyy-MM-dd") + ",");
                     csv.Append(booking.Id.ToString() + ",");
@@ -58,11 +51,12 @@ namespace Agrishare.API.Controllers.CMS
                 }
             }
 
-            var result = new HttpResponseMessage(HttpStatusCode.OK);
-            result.Content = new StringContent(csv.ToString());
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = $"Settlement Report {DateTime.Now.ToString("yyyy-MM-dd")}.csv" };
-            return result;
+            var fileName = $"Settlement Report {DateTime.Now.ToString("yyyy-MM-dd")}.csv";
+            var bytes = Encoding.ASCII.GetBytes(csv.ToString());
+            Response.AddHeader("Content-Disposition", "Attachment; Filename=\"" + fileName + "\"");
+            Response.ContentType = "application/octet-stream";
+            Response.BinaryWrite(bytes);
+            Response.End();
         }
     }
 }

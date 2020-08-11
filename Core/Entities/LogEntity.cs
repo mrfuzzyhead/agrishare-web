@@ -175,6 +175,9 @@ namespace Agrishare.Core.Entities
 
         public static void Error(string Title, Exception Exception)
         {
+            if (Exception.Message == "The operation was canceled.")
+                return;
+
             new Log
             {
                 Description = GetExceptionMessage(Exception),
