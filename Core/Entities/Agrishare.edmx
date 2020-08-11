@@ -68,6 +68,7 @@
           <Property Name="SMSCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="TransactionFee" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="IMTT" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="VoucherId" Type="int" />
         </EntityType>
         <EntityType Name="BookingUsers">
           <Key>
@@ -347,6 +348,21 @@
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
         </EntityType>
+        <EntityType Name="Vouchers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="smallint" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="128" />
+          <Property Name="Code" Type="varchar" MaxLength="16" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="RedeemCount" Type="int" Nullable="false" />
+          <Property Name="MaxRedeemCount" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Deleted" Type="bool" Nullable="false" />
+        </EntityType>
         <Association Name="bookings_ibfk_2">
           <End Role="Listings" Type="Self.Listings" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -372,6 +388,18 @@
             </Principal>
             <Dependent Role="Bookings">
               <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="bookings_ibfk_4">
+          <End Role="Vouchers" Type="Self.Vouchers" Multiplicity="0..1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vouchers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="VoucherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -702,12 +730,17 @@
           <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
+          <EntitySet Name="Vouchers" EntityType="Self.Vouchers" Schema="agrishare" store:Type="Tables" />
           <AssociationSet Name="bookings_ibfk_2" Association="Self.bookings_ibfk_2">
             <End Role="Listings" EntitySet="Listings" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
           <AssociationSet Name="bookings_ibfk_3" Association="Self.bookings_ibfk_3">
             <End Role="Services" EntitySet="Services" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="bookings_ibfk_4" Association="Self.bookings_ibfk_4">
+            <End Role="Vouchers" EntitySet="Vouchers" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
           <AssociationSet Name="bookingusers_ibfk_1" Association="Self.bookingusers_ibfk_1">
@@ -849,6 +882,8 @@
           <Property Name="SMSCost" Type="Decimal" Nullable="false" />
           <Property Name="IMTT" Type="Decimal" Nullable="false" />
           <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
+          <Property Name="VoucherId" Type="Int32" />
+          <NavigationProperty Name="Voucher" Relationship="AgrishareModel.bookings_ibfk_4" FromRole="Booking" ToRole="Voucher" />
         </EntityType>
         <EntityType Name="BookingUser">
           <Key>
@@ -1307,6 +1342,11 @@
           <AssociationSet Name="counters_ibfk_4" Association="AgrishareModel.counters_ibfk_4">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Counter" EntitySet="Counters" />
+          </AssociationSet>
+          <EntitySet Name="Vouchers" EntityType="AgrishareModel.Voucher" />
+          <AssociationSet Name="bookings_ibfk_4" Association="AgrishareModel.bookings_ibfk_4">
+            <End Role="Voucher" EntitySet="Vouchers" />
+            <End Role="Booking" EntitySet="Bookings" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rating">
@@ -1777,6 +1817,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="AgrishareModel.VoucherType" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="RedeemCount" Type="Int32" Nullable="false" />
+          <Property Name="MaxRedeemCount" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="bookings_ibfk_4">
+          <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="0..1" />
+          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voucher">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="VoucherType" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="Value" Value="1" />
+          <Member Name="Percentage" Value="2" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1786,6 +1858,7 @@
           <EntitySetMapping Name="Bookings">
             <EntityTypeMapping TypeName="AgrishareModel.Booking">
               <MappingFragment StoreEntitySet="Bookings">
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
                 <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
                 <ScalarProperty Name="IMTT" ColumnName="IMTT" />
                 <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
@@ -2141,6 +2214,22 @@
                 <ScalarProperty Name="Fee" ColumnName="Fee" />
                 <ScalarProperty Name="MaximumValue" ColumnName="MaximumValue" />
                 <ScalarProperty Name="MinimumValue" ColumnName="MinimumValue" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vouchers">
+            <EntityTypeMapping TypeName="AgrishareModel.Voucher">
+              <MappingFragment StoreEntitySet="Vouchers">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="MaxRedeemCount" ColumnName="MaxRedeemCount" />
+                <ScalarProperty Name="RedeemCount" ColumnName="RedeemCount" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

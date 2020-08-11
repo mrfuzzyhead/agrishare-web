@@ -31,7 +31,12 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.User).Include(o => o.Service).Include(o => o.Listing).Where(o => !o.Deleted);
+                var query = ctx.Bookings
+                    .Include(o => o.User)
+                    .Include(o => o.Service)
+                    .Include(o => o.Listing)
+                    .Include(o => o.Voucher)
+                    .Where(o => !o.Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -45,7 +50,12 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.User.Agent).Include(o => o.Service).Include(o => o.Listing).Where(o => !o.Deleted);
+                var query = ctx.Bookings
+                    .Include(o => o.User.Agent)
+                    .Include(o => o.Service)
+                    .Include(o => o.Listing)
+                    .Include(o => o.Voucher)
+                    .Where(o => !o.Deleted);
 
                 if (ListingId > 0)
                     query = query.Where(o => o.ListingId == ListingId);
@@ -223,7 +233,11 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.User.Agent).Include(o => o.Listing.User).Where(o => !o.Deleted);
+                var query = ctx.Bookings
+                    .Include(o => o.Voucher)
+                    .Include(o => o.User.Agent)
+                    .Include(o => o.Listing.User)
+                    .Where(o => !o.Deleted);
 
                 query = query.Where(o => o.StatusId == BookingStatus.Complete && !o.PaidOut);
 
@@ -309,6 +323,7 @@ namespace Agrishare.Core.Entities
                 User = User?.Json(),
                 Listing = Listing?.Json(),
                 Service = Service?.Json(),
+                Voucher = Voucher?.Json(),
                 Location,
                 Latitude,
                 Longitude,

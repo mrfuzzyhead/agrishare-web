@@ -126,6 +126,8 @@
     <Content Include="Pages\Dashboard.html" />
     <Content Include="Pages\Bookings\List.html" />
     <Content Include="Pages\Listings\List.html" />
+    <Content Include="Pages\Vouchers\Edit.html" />
+    <Content Include="Pages\Vouchers\List.html" />
     <Content Include="Resources\Images\Marker-1.png" />
     <Content Include="Resources\Images\Marker-17.png" />
     <Content Include="Resources\Images\Marker-2.png" />

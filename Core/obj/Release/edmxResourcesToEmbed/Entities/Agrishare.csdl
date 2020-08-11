@@ -46,6 +46,8 @@
     <Property Name="SMSCost" Type="Decimal" Nullable="false" />
     <Property Name="IMTT" Type="Decimal" Nullable="false" />
     <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
+    <Property Name="VoucherId" Type="Int32" />
+    <NavigationProperty Name="Voucher" Relationship="AgrishareModel.bookings_ibfk_4" FromRole="Booking" ToRole="Voucher" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -504,6 +506,11 @@
     <AssociationSet Name="counters_ibfk_4" Association="AgrishareModel.counters_ibfk_4">
       <End Role="Category" EntitySet="Categories" />
       <End Role="Counter" EntitySet="Counters" />
+    </AssociationSet>
+    <EntitySet Name="Vouchers" EntityType="AgrishareModel.Voucher" />
+    <AssociationSet Name="bookings_ibfk_4" Association="AgrishareModel.bookings_ibfk_4">
+      <End Role="Voucher" EntitySet="Vouchers" />
+      <End Role="Booking" EntitySet="Bookings" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
@@ -974,4 +981,36 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Voucher">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeId" Type="AgrishareModel.VoucherType" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Name="RedeemCount" Type="Int32" Nullable="false" />
+    <Property Name="MaxRedeemCount" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="bookings_ibfk_4">
+    <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="0..1" />
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Voucher">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="VoucherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="VoucherType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Value" Value="1" />
+    <Member Name="Percentage" Value="2" />
+  </EnumType>
 </Schema>

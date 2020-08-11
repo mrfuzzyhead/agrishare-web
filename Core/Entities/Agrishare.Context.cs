@@ -46,5 +46,6 @@ namespace Agrishare.Core.Entities
         public virtual DbSet<Journal> Journals { get; set; }
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<TransactionFee> TransactionFees { get; set; }
+        public virtual DbSet<Voucher> Vouchers { get; set; }
     }
 }

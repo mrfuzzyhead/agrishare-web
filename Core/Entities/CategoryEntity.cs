@@ -77,6 +77,26 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<Category> ParentListByListingCount()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var idList = ctx.Listings
+                    .GroupBy(e => e.CategoryId)
+                    .Select(e => new { e.FirstOrDefault().CategoryId, Count = e.Count() })
+                    .OrderByDescending(e => e.Count)
+                    .Select(e => e.CategoryId);
+
+                var categories = ctx.Categories.Where(e => !e.ParentId.HasValue && !e.Deleted).ToList();
+
+                var list = new List<Category>();
+                foreach (var id in idList)
+                    list.Add(categories.FirstOrDefault(e => e.Id == id));
+
+                return list;
+            }
+        }
+
         public static int Count(string Keywords = "", int ParentId = 0)
         {
             using (var ctx = new AgrishareEntities())

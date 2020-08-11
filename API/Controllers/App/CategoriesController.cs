@@ -13,8 +13,8 @@ namespace Agrishare.API.Controllers.App
         {
             var list = new List<object>();
 
-            var categories = Entities.Category.List();            
-            var parents = categories.Where(e => !e.Deleted && e.ParentId == null).ToList();
+            var categories = Entities.Category.List();
+            var parents = Entities.Category.ParentListByListingCount();
             foreach(var item in parents)
             {
                 list.Add(new
