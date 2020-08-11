@@ -137,7 +137,6 @@
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />
-    <Compile Include="Controllers\CMS\SettlementController.cs" />
     <Compile Include="Controllers\CMS\DashboardController.cs" />
     <Compile Include="Controllers\CMS\BlogsController.cs" />
     <Compile Include="Controllers\CMS\RatingsController.cs" />

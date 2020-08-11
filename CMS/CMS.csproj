@@ -88,6 +88,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Pages\Bookings\TransactionLog.html" />
+    <Content Include="Pages\SettlementReport.aspx" />
     <Content Include="Pages\TransactionFees\Edit.html" />
     <Content Include="Pages\TransactionFees\List.html" />
     <Content Include="Pages\Agents\Edit.html" />
@@ -234,6 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AgrishareHttpModule.cs" />
+    <Compile Include="Code\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -250,6 +254,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettlementReport.aspx.cs">
+      <DependentUpon>SettlementReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SettlementReport.aspx.designer.cs">
+      <DependentUpon>SettlementReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
