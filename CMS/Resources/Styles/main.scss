@@ -83,9 +83,18 @@ ui-view {
     padding: 50px;
     display: flex;
 
+    @media all and (max-width: $mobile-breakpoint) {
+        padding: 10px;
+        flex-direction: column;
+    }
+
     div, ul {
         flex: 1;
         margin: 0 5px;
+
+        @media all and (max-width: $mobile-breakpoint) {
+            margin: 5px 0;
+        }
     }
 
     div {
@@ -125,5 +134,12 @@ ui-view {
         margin-left: 20px;
         list-style: none;
         border-left: solid 3px #999;
+
+        @media all and (max-width: $mobile-breakpoint) {
+            margin: 5px 0;
+            border-radius: 10px;
+            padding: 10px;
+            border: solid 1px #999;
+        }
     }
 }
