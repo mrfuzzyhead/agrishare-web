@@ -15,13 +15,15 @@ namespace Agrishare.API.Controllers.App
 
             var categories = Entities.Category.List();
             var parents = Entities.Category.ParentListByListingCount();
+            var sortOrder = 1;
             foreach(var item in parents)
             {
                 list.Add(new
                 {
                     item.Id,
                     item.Title,
-                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title })
+                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title }),
+                    SortOrder = sortOrder++
                 });
             }
 

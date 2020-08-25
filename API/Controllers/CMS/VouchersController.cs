@@ -7,7 +7,7 @@ namespace Agrishare.API.Controllers.CMS
 {
     [@Authorize(Roles="Administrator")]
     [RoutePrefix("cms")]
-    public class VouchersController : BaseApiController
+    public class CMSVouchersController : BaseApiController
     {
         [Route("vouchers/list")]
         [AcceptVerbs("GET")]

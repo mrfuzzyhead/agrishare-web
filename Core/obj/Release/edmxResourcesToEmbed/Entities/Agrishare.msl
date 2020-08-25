@@ -4,6 +4,8 @@
     <EntitySetMapping Name="Bookings">
       <EntityTypeMapping TypeName="AgrishareModel.Booking">
         <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="VoucherTotal" ColumnName="VoucherTotal" />
+          <ScalarProperty Name="SupplierServiceId" ColumnName="SupplierServiceId" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
           <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
           <ScalarProperty Name="IMTT" ColumnName="IMTT" />
@@ -212,6 +214,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
           <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
           <ScalarProperty Name="AgentId" ColumnName="AgentId" />
           <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
@@ -376,6 +379,46 @@
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Suppliers">
+      <EntityTypeMapping TypeName="AgrishareModel.Supplier">
+        <MappingFragment StoreEntitySet="Suppliers">
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Logo" ColumnName="Logo" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SupplierServices">
+      <EntityTypeMapping TypeName="AgrishareModel.SupplierService">
+        <MappingFragment StoreEntitySet="SupplierServices">
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserVouchers">
+      <EntityTypeMapping TypeName="AgrishareModel.UserVoucher">
+        <MappingFragment StoreEntitySet="UserVouchers">
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -121,6 +121,10 @@
                         <strong>Transport Cost</strong>
                         <span>{{detail.entity.TransportCost | currency}}</span>
                     </li>
+                    <li ng-if="detail.entity.Voucher">
+                        <strong>Voucher: {{detail.entity.Voucher.Title}}</strong>
+                        <span>({{detail.entity.VoucherTotal | currency}})</span>
+                    </li>
                     <li style="background-color: #fafafa">
                         <strong>Total</strong>
                         <span>{{detail.entity.Price | currency}}</span>

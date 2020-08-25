@@ -22,7 +22,7 @@
                 </icon>
                 <row ng-click="app.go('/vouchers/edit/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.Title}}</strong><br />
-                    <small ng-if="item.TypeId===1">{{item.Amount | currency : 2}} &bull; </small>
+                    <small ng-if="item.TypeId===1">{{item.Amount | currency}} &bull; </small>
                     <small ng-if="item.TypeId===2">{{item.Amount * 100 | number : 2}}% &bull; </small>
                     <small>Max redeems: {{item.MaxRedeemCount}}</small>
                     <small> &bull; Redeemed: {{item.RedeemCount}}</small>

@@ -10,6 +10,8 @@ namespace Agrishare.API.Models
         [Required]
         public int BookingId { get; set; }
 
+        public int VoucherId { get; set; }
+
         [Required]
         public List<BookingUserModel> Users { get; set; }
     }

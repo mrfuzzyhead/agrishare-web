@@ -57,6 +57,22 @@
                 </ul>
             </div>
 
+            <div class="box">
+                <h2>Advanced</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Failed Login Count</strong>
+                        <span>{{detail.entity.FailedLoginAttempts}}</span>
+                        <i class="material-icons" ng-click="detail.async('/cms/api/users/failedloginattempts/reset?id='+detail.entity.Id)">refresh</i>
+                    </li>
+                    <li>
+                        <strong>Failed Voucher Count</strong>
+                        <span>{{detail.entity.FailedVoucherAttempts}}</span>
+                        <i class="material-icons" ng-click="detail.async('/cms/api/users/failedvoucherattempts/reset?id='+detail.entity.Id)">refresh</i>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
 </ag-section>

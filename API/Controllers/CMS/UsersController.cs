@@ -124,7 +124,9 @@ namespace Agrishare.API.Controllers.CMS
                 Languages = EnumInfo.ToList<Entities.Language>(),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
                 Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
-                Types = EnumInfo.ToList<AgentUserType>()
+                Types = EnumInfo.ToList<AgentUserType>(),
+                Entities.User.MaxFailedLoginAttempts,
+                Entities.User.MaxFailedVoucherAttempts
             };
 
             return Success(data);
@@ -186,6 +188,28 @@ namespace Agrishare.API.Controllers.CMS
             {
                 Entity = user.AdminJson()
             });
+        }
+
+        [Route("users/failedloginattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedLoginAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedLoginAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
+        [Route("users/failedvoucherattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedVoucherAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedVoucherAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
         }
 
         /* Deleted */

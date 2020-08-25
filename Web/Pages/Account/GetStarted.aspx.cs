@@ -58,13 +58,12 @@ namespace Agrishare.Web.Pages.Account
 
         public void AuthenticateUser(object s, EventArgs e)
         {
-            var maxFailedLoginAttempts = 5;
             if (Page.IsValid)
             {
                 var user = Core.Entities.User.Find(Telephone: LoginTelephone.Text);
                 if (user != null && user.Id > 0)
                 {
-                    if (user.FailedLoginAttempts > maxFailedLoginAttempts)
+                    if (user.FailedLoginAttempts > Core.Entities.User.MaxFailedLoginAttempts)
                     {
                         Master.Feedback = "Your account has been locked - please reset your password";
                     }

@@ -10,8 +10,6 @@ namespace Agrishare.API.Controllers.App
 {
     public class UserController : BaseApiController
     {
-        private const int MaxFailedLoginAttempts = 5;
-
         [Route("register/telephone/lookup")]
         [AcceptVerbs("GET")]
         public object FindTelephone(string Telephone)
@@ -98,7 +96,7 @@ namespace Agrishare.API.Controllers.App
         {
             var user = Entities.User.Find(Id: UserId);
 
-            if (user?.FailedLoginAttempts > MaxFailedLoginAttempts)
+            if (user?.FailedLoginAttempts > Entities.User.MaxFailedLoginAttempts)
                 return Error("Your account has been locked - please reset your PIN.");
 
             if (user?.VerificationCode == Code)
@@ -138,7 +136,7 @@ namespace Agrishare.API.Controllers.App
             if (user?.StatusId == Entities.UserStatus.Pending)
                 return Error("Your account has not been verified - please reset your PIN.");
 
-            if (user.FailedLoginAttempts > MaxFailedLoginAttempts)
+            if (user.FailedLoginAttempts > Entities.User.MaxFailedLoginAttempts)
                 return Error("Your account has been locked - please reset your PIN.");
 
             if (user.ValidatePassword(PIN))

@@ -59,6 +59,8 @@ namespace Agrishare.Core.Entities
         public decimal IMTT { get; set; }
         public decimal TransactionFee { get; set; }
         public Nullable<int> VoucherId { get; set; }
+        public Nullable<int> SupplierServiceId { get; set; }
+        public decimal VoucherTotal { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,5 +76,6 @@ namespace Agrishare.Core.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Counter> Counters { get; set; }
         public virtual Voucher Voucher { get; set; }
+        public virtual SupplierService SupplierService { get; set; }
     }
 }

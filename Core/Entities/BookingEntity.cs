@@ -345,6 +345,7 @@ namespace Agrishare.Core.Entities
                 SMSCount,
                 HireCost,
                 FuelCost,
+                VoucherTotal,
                 TransportCost,
                 TransportDistance,
                 AdditionalInformation,

@@ -12,6 +12,9 @@ namespace Agrishare.Core.Entities
 {
     public partial class User : IEntity
     {
+        public static int MaxFailedLoginAttempts = 5;
+        public static int MaxFailedVoucherAttempts = 10;
+
         public static bool VerificationRequired => Convert.ToBoolean(Config.Find(Key: "User Verification Required")?.Value ?? "True");
 
         public static string AuthCookieName = "agrishare-pp";
@@ -490,6 +493,7 @@ namespace Agrishare.Core.Entities
                 Gender,
                 AuthToken,
                 FailedLoginAttempts,
+                FailedVoucherAttempts,
                 VerificationCode,
                 VerificationCodeExpiry,
                 NotificationPreferences,
