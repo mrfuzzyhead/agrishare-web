@@ -51,7 +51,7 @@ namespace Agrishare.API.Controllers.CMS
                 male = Entities.User.Count(Gender: Gender.Male);
                 female = Entities.User.Count(Gender: Gender.Female);
                 deleted = Entities.User.Count(Deleted: true);
-                lockedout = Entities.User.Count(FailedLoginAttempts: 1);
+                lockedout = Entities.User.Count(FailedLoginAttempts: Entities.User.MaxFailedLoginAttempts);
                 active = Entities.Counter.Count(UniqueUser: true);
                 unverified = Entities.User.Count(Status: Entities.UserStatus.Pending);
             }
