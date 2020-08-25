@@ -152,7 +152,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.GenderId == Gender);
 
                 if (FailedLoginAttempts > 0)
-                    query = query.Where(o => o.FailedLoginAttempts > 0);
+                    query = query.Where(o => o.FailedLoginAttempts > FailedLoginAttempts);
 
                 if (AgentId > 0)
                     query = query.Where(o => o.AgentId == AgentId);

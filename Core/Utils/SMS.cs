@@ -40,6 +40,12 @@ namespace Agrishare.Core.Utils
                 return true;
             }
 
+            if (string.IsNullOrEmpty(Message))
+            {
+                Entities.Log.Error("SMS.SendMessage", "Empty message");
+                return false;
+            }
+
             try
             {
                 var url = $"https://www.txt.co.zw/Remote/SendMessage?Username={Username}&Recipients={Recipient}&Body={Message}&sending_number={Sender}";

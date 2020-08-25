@@ -234,12 +234,21 @@ gl-list {
     display: flex;
     padding: 10px 40px;
 
+    @media all and (max-width: $mobile-breakpoint) {
+        padding: 10px;
+        flex-direction: column;
+    }
+
     > div {
         flex: 1;
         margin-right: 10px;
 
         &:last-child {
             margin-right: 0;
+        }
+
+        @media all and (max-width: $mobile-breakpoint) {
+            margin: 5px 0;
         }
     }
 }
