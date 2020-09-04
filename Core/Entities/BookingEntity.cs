@@ -18,7 +18,25 @@ namespace Agrishare.Core.Entities
         public string Title => Id.ToString() ?? "00000";
         public string For => $"{ForId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
+        public string PaymentStatus => $"{PaymentStatusId}".ExplodeCamelCase();
         public decimal AgriShareCommission => Math.Round(Price - (Price / (1 + Commission)));
+
+        private List<Tag> _tags;
+        public List<Tag> Tags
+        {
+            get
+            {
+                if (_tags == null && !string.IsNullOrEmpty(TagsJson))
+                    _tags = JsonConvert.DeserializeObject<List<Tag>>(TagsJson);
+                if (_tags == null)
+                    _tags = new List<Tag>();
+                return _tags;
+            }
+            set
+            {
+                _tags = value;
+            }
+        }
 
         public static Booking Find(int Id = 0)
         {
@@ -46,7 +64,8 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, int AgentId = 0,
-            int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
+            int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0,
+            bool? PaidOut = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -90,13 +109,17 @@ namespace Agrishare.Core.Entities
                 if (CategoryId > 0)
                     query = query.Where(e => e.Listing.CategoryId == CategoryId);
 
+                if (PaidOut.HasValue)
+                    query = query.Where(e => e.PaidOut == PaidOut.Value);
+
                 query = query.OrderBy(Sort.Coalesce(DefaultSort));
 
                 return query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(int ListingId = 0, int UserId = 0, int AgentId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0)
+        public static int Count(int ListingId = 0, int UserId = 0, int AgentId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, 
+            BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0, bool? PaidOut = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -134,6 +157,9 @@ namespace Agrishare.Core.Entities
 
                 if (CategoryId > 0)
                     query = query.Where(e => e.Listing.CategoryId == CategoryId);
+
+                if (PaidOut.HasValue)
+                    query = query.Where(e => e.PaidOut == PaidOut.Value);
 
                 return query.Count();
             }
@@ -256,6 +282,8 @@ namespace Agrishare.Core.Entities
         {
             var success = false;
 
+            TagsJson = JsonConvert.SerializeObject(Tags.Select(e => e.Json()));
+
             var service = Service;
             if (service != null)
                 ServiceId = service.Id;
@@ -352,6 +380,10 @@ namespace Agrishare.Core.Entities
                 TotalVolume,
                 StatusId,
                 Status,
+                PaymentStatusId,
+                PaymentStatus,
+                PaidOut,
+                Tags = Tags.Select(e => e.Json()),
                 DateCreated
             };
         }

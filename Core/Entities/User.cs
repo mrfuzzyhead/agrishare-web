@@ -19,6 +19,7 @@ namespace Agrishare.Core.Entities
         {
             this.Journals = new HashSet<Journal>();
             this.UserVouchers = new HashSet<UserVoucher>();
+            this.BookingComments = new HashSet<BookingComment>();
         }
     
         public int Id { get; set; }
@@ -52,5 +53,7 @@ namespace Agrishare.Core.Entities
         public virtual Agent Agent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserVoucher> UserVouchers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingComment> BookingComments { get; set; }
     }
 }

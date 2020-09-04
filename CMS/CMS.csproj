@@ -87,6 +87,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\Tags\Edit.html" />
+    <Content Include="Pages\Tags\List.html" />
     <Content Include="Pages\Bookings\TransactionLog.html" />
     <Content Include="Pages\SettlementReport.aspx" />
     <Content Include="Pages\TransactionFees\Edit.html" />

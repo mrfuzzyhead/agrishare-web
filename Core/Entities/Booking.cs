@@ -22,6 +22,8 @@ namespace Agrishare.Core.Entities
             this.Ratings = new HashSet<Rating>();
             this.Journals = new HashSet<Journal>();
             this.Counters = new HashSet<Counter>();
+            this.BookingComments = new HashSet<BookingComment>();
+            this.BookingTags = new HashSet<BookingTag>();
         }
     
         public int Id { get; set; }
@@ -61,6 +63,8 @@ namespace Agrishare.Core.Entities
         public Nullable<int> VoucherId { get; set; }
         public Nullable<int> SupplierServiceId { get; set; }
         public decimal VoucherTotal { get; set; }
+        public BookingPaymentStatus PaymentStatusId { get; set; }
+        public string TagsJson { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -77,5 +81,9 @@ namespace Agrishare.Core.Entities
         public virtual ICollection<Counter> Counters { get; set; }
         public virtual Voucher Voucher { get; set; }
         public virtual SupplierService SupplierService { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingComment> BookingComments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingTag> BookingTags { get; set; }
     }
 }

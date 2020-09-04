@@ -65,10 +65,17 @@
                 <row class="booking" ng-click="app.go('/bookings/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <div>
                         <strong>{{item.User.FirstName}} {{item.User.LastName}}</strong><br />
-                        <small>{{item.Listing.Category.Title}} &gt; {{item.Listing.Title}}</small>
+                        <small>{{item.Listing.Category.Title}} &gt; {{item.Listing.Title}} &nbsp; &bull; &nbsp; Created: {{item.DateCreated | date : 'd MMMM yyyy h:mma'}}</small><br/>
+                        <small class="tag" ng-repeat="tag in item.Tags">
+                            <i class="material-icons md-16">local_offer</i>
+                            <span>{{tag.Title}}</span>
+                        </small>
                     </div>
                     <div>
-                        {{item.Price | currency}}<br />
+                        <span style="display: inline-flex; align-items: center">
+                            {{item.Price | currency}}
+                            <i class="material-icons md-16" ng-if="item.PaidOut" style="color: green; margin-left: 5px">check_circle</i>
+                        </span><br/>
                         <small>Commission: {{item.AgriShareCommission | currency}}</small>
                         <small ng-if="item.AgentCommission">&bull; AgriShare: {{item.AgriShareCommission * (1 - item.AgentCommission)  | currency}}</small>
                         <small ng-if="item.AgentCommission">&bull; Agent: {{item.AgriShareCommission * item.AgentCommission | currency}}</small>

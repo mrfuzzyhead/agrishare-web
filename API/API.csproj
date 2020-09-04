@@ -135,6 +135,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\App\ConfigController.cs" />
     <Compile Include="Controllers\App\VouchersController.cs" />
+    <Compile Include="Controllers\CMS\TagsController.cs" />
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />

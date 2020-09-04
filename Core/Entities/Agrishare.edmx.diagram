@@ -72,6 +72,13 @@
         <AssociationConnector Association="AgrishareModel.supplierservices_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_2" />
+        <EntityTypeShape EntityType="AgrishareModel.BookingComment" Width="1.5" PointX="23" PointY="8" />
+        <EntityTypeShape EntityType="AgrishareModel.BookingTag" Width="1.5" PointX="10.25" PointY="10" />
+        <EntityTypeShape EntityType="AgrishareModel.Tag" Width="1.5" PointX="8" PointY="16.25" />
+        <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_1" />
+        <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_2" />
+        <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_1" />
+        <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

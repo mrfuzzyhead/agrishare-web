@@ -17,8 +17,17 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, [FromUri] BookingFilterModel Filter)
         {
-            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
-            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category);
+            var status = Entities.BookingStatus.None;
+            bool? paidOut = null;
+            if (Filter.Status == 998)
+                paidOut = false;
+            else if (Filter.Status == 999)
+                paidOut = true;
+            else
+                status = (Entities.BookingStatus)Enum.ToObject(typeof(Entities.BookingStatus), Filter.Status);
+
+            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut);
+            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, Sort: "DateCreated DESC");
             var title = "Bookings";
 
             if (Filter.UserId > 0)
@@ -35,7 +44,7 @@ namespace Agrishare.API.Controllers.CMS
                     title = agent.Title;
             }
 
-            if (Filter.Status != Entities.BookingStatus.None)
+            if (status != Entities.BookingStatus.None)
                 title = $"{Filter.Status}".ExplodeCamelCase();
 
             if (Filter.Category > 0)
@@ -48,12 +57,14 @@ namespace Agrishare.API.Controllers.CMS
             var summary = Entities.Booking.Summary();
 
             var Statuses = EnumInfo.ToList<Entities.BookingStatus>().Where(s => s.Id != (int)Entities.BookingStatus.None).ToList();
-            Statuses.Insert(0, new EnumDescriptor { Id = -1, Title = "All" });
+            Statuses.Insert(0, new EnumDescriptor { Id = 0, Title = "All" });
+            Statuses.Add(new EnumDescriptor { Id = 998, Title = "Supplier Payment Pending" });
+            Statuses.Add(new EnumDescriptor { Id = 999, Title = "Supplier Paid" });
 
             var Categories = Entities.Category.List(ParentId: 0);
             Categories.Insert(0, new Entities.Category { Id = 0, Title = "All" });
 
-            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: Filter.Status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
+            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
             var Graph = new List<object>();
             foreach(var item in graphData)
             {
@@ -112,10 +123,19 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Find(int Id = 0)
         {
+            var booking = Entities.Booking.Find(Id: Id);
+            var supplier = Entities.User.Find(booking.Listing.UserId);
+            var transactions = Entities.Transaction.List(BookingId: Id);
+            var tags = Entities.Tag.List();
+            var comments = Entities.BookingComment.List(BookingId: booking.Id);
+
             var data = new
             {
-                Entity = Entities.Booking.Find(Id: Id).Json(),
-                Transactions = Entities.Transaction.List(BookingId: Id).Select(e => e.Json())
+                Entity = booking.Json(),
+                Supplier = supplier.Json(),
+                Transactions = transactions.Select(e => e.Json()),
+                Tags = tags.Select(e => e.Json()),
+                Comments = comments.Select(e => e.Json())
             };
 
             return Success(data);
@@ -137,26 +157,19 @@ namespace Agrishare.API.Controllers.CMS
             return Error();
         }
 
-        [Route("bookings/transactions/poll")]
+        [Route("bookings/paidout")]
         [AcceptVerbs("GET")]
-        public object PollEcoCash(int BookingId)
+        public object PaidOut(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.UserId != CurrentUser.Id)
-                return Error("Transaction not found");
+            if (booking == null)
+                return Error("Booking not found");
 
-            var transactions = Entities.Transaction.List(BookingId: booking.Id);
-            foreach (var transaction in transactions)
-                transaction.RequestEcoCashStatus();
+            booking.PaidOut = true;
+            if (booking.Save())
+                return Find(BookingId);
 
-            var data = new
-            {
-                Entity = booking.Json(),
-                Transactions = Entities.Transaction.List(BookingId: booking.Id).Select(e => e.Json()),
-                Feedback = $"Finished updating transaction statuses"
-            };
-
-            return Success(data);
+            return Error();
         }
 
         [Route("bookings/cancel")]
@@ -218,6 +231,30 @@ namespace Agrishare.API.Controllers.CMS
             return Error("An unknown error occurred");
         }
 
+        /* Transactions */
+
+        [Route("bookings/transactions/poll")]
+        [AcceptVerbs("GET")]
+        public object PollEcoCash(int BookingId)
+        {
+            var booking = Entities.Booking.Find(Id: BookingId);
+            if (booking == null)
+                return Error("Booking not found");
+
+            var transactions = Entities.Transaction.List(BookingId: booking.Id);
+            foreach (var transaction in transactions)
+                transaction.RequestEcoCashStatus();
+
+            var data = new
+            {
+                Entity = booking.Json(),
+                Transactions = Entities.Transaction.List(BookingId: booking.Id).Select(e => e.Json()),
+                Feedback = $"Finished updating transaction statuses"
+            };
+
+            return Success(data);
+        }
+
         [Route("bookings/transactions/refund")]
         [AcceptVerbs("GET")]
         public object RefundTransaction(int Id = 0)
@@ -252,6 +289,59 @@ namespace Agrishare.API.Controllers.CMS
             };
 
             return Success(data);
+        }
+
+        /* Tags */
+
+        [Route("bookings/tags/remove")]
+        [AcceptVerbs("GET")]
+        public object RemoveTag(int TagId, int BookingId)
+        {
+            if (Entities.BookingTag.Remove(TagId, BookingId))
+                return Find(BookingId);
+            return Error();
+        }
+
+        [Route("bookings/tags/add")]
+        [AcceptVerbs("GET")]
+        public object AddTag(int TagId, int BookingId)
+        {
+            if (Entities.BookingTag.Add(TagId, BookingId))
+                return Find(BookingId);
+            return Error();
+        }
+
+        /* Comments */
+
+        [Route("bookings/comments/remove")]
+        [AcceptVerbs("GET")]
+        public object RemoveComment(int CommentId, int BookingId)
+        {
+            var comment = Entities.BookingComment.Find(CommentId);
+            if (comment.Id == 0 || comment.UserId != CurrentUser.Id)
+                return Error("Comment not found");
+
+            if (comment.Delete())
+                return Find(BookingId);
+
+            return Error();
+        }
+
+        [Route("bookings/comments/add")]
+        [AcceptVerbs("GET")]
+        public object AddComment(string Text, int BookingId)
+        {
+            var comment = new Entities.BookingComment
+            {
+                User = CurrentUser,
+                BookingId = BookingId,
+                Text = Text
+            };
+
+            if (comment.Save())
+                return Find(BookingId);
+
+            return Error();
         }
     }
 }

@@ -46,6 +46,15 @@
     <Property Name="SMSCost" Type="Decimal" Nullable="false" />
     <Property Name="IMTT" Type="Decimal" Nullable="false" />
     <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
+    <Property Name="VoucherId" Type="Int32" />
+    <NavigationProperty Name="Voucher" Relationship="AgrishareModel.bookings_ibfk_4" FromRole="Booking" ToRole="Voucher" />
+    <Property Name="SupplierServiceId" Type="Int32" />
+    <NavigationProperty Name="SupplierService" Relationship="AgrishareModel.bookings_ibfk_5" FromRole="Booking" ToRole="SupplierService" />
+    <Property Name="VoucherTotal" Type="Decimal" Nullable="false" />
+    <Property Name="PaymentStatusId" Type="AgrishareModel.BookingPaymentStatus" Nullable="false" />
+    <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_1" FromRole="Booking" ToRole="BookingComment" />
+    <NavigationProperty Name="BookingTags" Relationship="AgrishareModel.bookingtags_ibfk_1" FromRole="Booking" ToRole="BookingTag" />
+    <Property Name="TagsJson" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -243,6 +252,9 @@
     <Property Name="AgentId" Type="Int32" />
     <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
     <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
+    <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
+    <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="User" ToRole="BookingComment" />
   </EntityType>
   <Association Name="bookings_ibfk_1">
     <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -501,6 +513,53 @@
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
     <EntitySet Name="TransactionFees" EntityType="AgrishareModel.TransactionFee" />
+    <AssociationSet Name="counters_ibfk_4" Association="AgrishareModel.counters_ibfk_4">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Counter" EntitySet="Counters" />
+    </AssociationSet>
+    <EntitySet Name="Vouchers" EntityType="AgrishareModel.Voucher" />
+    <AssociationSet Name="bookings_ibfk_4" Association="AgrishareModel.bookings_ibfk_4">
+      <End Role="Voucher" EntitySet="Vouchers" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <EntitySet Name="Suppliers" EntityType="AgrishareModel.Supplier" />
+    <EntitySet Name="SupplierServices" EntityType="AgrishareModel.SupplierService" />
+    <EntitySet Name="UserVouchers" EntityType="AgrishareModel.UserVoucher" />
+    <AssociationSet Name="bookings_ibfk_5" Association="AgrishareModel.bookings_ibfk_5">
+      <End Role="SupplierService" EntitySet="SupplierServices" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="supplierservices_ibfk_1" Association="AgrishareModel.supplierservices_ibfk_1">
+      <End Role="Supplier" EntitySet="Suppliers" />
+      <End Role="SupplierService" EntitySet="SupplierServices" />
+    </AssociationSet>
+    <AssociationSet Name="uservouchers_ibfk_1" Association="AgrishareModel.uservouchers_ibfk_1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserVoucher" EntitySet="UserVouchers" />
+    </AssociationSet>
+    <AssociationSet Name="uservouchers_ibfk_2" Association="AgrishareModel.uservouchers_ibfk_2">
+      <End Role="Voucher" EntitySet="Vouchers" />
+      <End Role="UserVoucher" EntitySet="UserVouchers" />
+    </AssociationSet>
+    <EntitySet Name="BookingComments" EntityType="AgrishareModel.BookingComment" />
+    <EntitySet Name="BookingTags" EntityType="AgrishareModel.BookingTag" />
+    <EntitySet Name="Tags" EntityType="AgrishareModel.Tag" />
+    <AssociationSet Name="bookingcomments_ibfk_1" Association="AgrishareModel.bookingcomments_ibfk_1">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="BookingComment" EntitySet="BookingComments" />
+    </AssociationSet>
+    <AssociationSet Name="bookingcomments_ibfk_2" Association="AgrishareModel.bookingcomments_ibfk_2">
+      <End Role="User" EntitySet="Users" />
+      <End Role="BookingComment" EntitySet="BookingComments" />
+    </AssociationSet>
+    <AssociationSet Name="bookingtags_ibfk_1" Association="AgrishareModel.bookingtags_ibfk_1">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="BookingTag" EntitySet="BookingTags" />
+    </AssociationSet>
+    <AssociationSet Name="bookingtags_ibfk_2" Association="AgrishareModel.bookingtags_ibfk_2">
+      <End Role="Tag" EntitySet="Tags" />
+      <End Role="BookingTag" EntitySet="BookingTags" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -640,6 +699,8 @@
     <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
     <Property Name="BookingId" Type="Int32" />
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
+    <Property Name="CategoryId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="AgrishareModel.counters_ibfk_4" FromRole="Counter" ToRole="Category" />
   </EntityType>
   <EnumType Name="ListingStatus" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
@@ -953,5 +1014,247 @@
     <Member Name="None" Value="0" />
     <Member Name="Fixed" Value="1" />
     <Member Name="Percentage" Value="2" />
+  </EnumType>
+  <Association Name="counters_ibfk_4">
+    <End Type="AgrishareModel.Category" Role="Category" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.Counter" Role="Counter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Counter">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Voucher">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeId" Type="AgrishareModel.VoucherType" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Name="RedeemCount" Type="Int32" Nullable="false" />
+    <Property Name="MaxRedeemCount" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="bookings_ibfk_4">
+    <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="0..1" />
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Voucher">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="VoucherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="VoucherType" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Value" Value="1" />
+    <Member Name="Percentage" Value="2" />
+  </EnumType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Logo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="SupplierServices" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="Supplier" ToRole="SupplierService" />
+  </EntityType>
+  <EntityType Name="SupplierService">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="Cost" Type="Decimal" Nullable="false" />
+    <Property Name="Photo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Bookings" Relationship="AgrishareModel.bookings_ibfk_5" FromRole="SupplierService" ToRole="Booking" />
+    <NavigationProperty Name="Supplier" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="SupplierService" ToRole="Supplier" />
+    <Property Name="Stock" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserVoucher">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="VoucherId" Type="Int32" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Voucher" Relationship="AgrishareModel.uservouchers_ibfk_2" FromRole="UserVoucher" ToRole="Voucher" />
+  </EntityType>
+  <Association Name="bookings_ibfk_5">
+    <End Type="AgrishareModel.SupplierService" Role="SupplierService" Multiplicity="0..1" />
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SupplierService">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="SupplierServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="supplierservices_ibfk_1">
+    <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.SupplierService" Role="SupplierService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SupplierService">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="uservouchers_ibfk_1">
+    <End Type="AgrishareModel.User" Role="User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.UserVoucher" Role="UserVoucher" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserVoucher">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="uservouchers_ibfk_2">
+    <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.UserVoucher" Role="UserVoucher" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Voucher">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserVoucher">
+        <PropertyRef Name="VoucherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BookingComment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookingId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Text" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Booking" Relationship="AgrishareModel.bookingcomments_ibfk_1" FromRole="BookingComment" ToRole="Booking" />
+    <NavigationProperty Name="User" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="BookingComment" ToRole="User" />
+  </EntityType>
+  <EntityType Name="BookingTag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookingId" Type="Int32" Nullable="false" />
+    <Property Name="TagId" Type="Int32" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Booking" Relationship="AgrishareModel.bookingtags_ibfk_1" FromRole="BookingTag" ToRole="Booking" />
+    <NavigationProperty Name="Tag" Relationship="AgrishareModel.bookingtags_ibfk_2" FromRole="BookingTag" ToRole="Tag" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="BookingTags" Relationship="AgrishareModel.bookingtags_ibfk_2" FromRole="Tag" ToRole="BookingTag" />
+  </EntityType>
+  <Association Name="bookingcomments_ibfk_1">
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.BookingComment" Role="BookingComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookingComment">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="bookingcomments_ibfk_2">
+    <End Type="AgrishareModel.User" Role="User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.BookingComment" Role="BookingComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookingComment">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="bookingtags_ibfk_1">
+    <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.BookingTag" Role="BookingTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookingTag">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="bookingtags_ibfk_2">
+    <End Type="AgrishareModel.Tag" Role="Tag" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AgrishareModel.BookingTag" Role="BookingTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tag">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookingTag">
+        <PropertyRef Name="TagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="BookingPaymentStatus" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Pending" Value="1" />
+    <Member Name="Paid" Value="2" />
+    <Member Name="Exported" Value="3" />
+    <Member Name="Settled" Value="4" />
   </EnumType>
 </Schema>

@@ -79,6 +79,16 @@ var agrishareApp =
                 return (value * 100) + '%';
             };
         })
+        .filter('newLines', function () {
+            return function (value) {
+                try {
+                    return value.replace(/(?:\r\n|\r|\n)/gi, '<br/>');
+                }
+                catch (ex) {
+                    return value;
+                }
+            };
+        })
         .directive('glEnterKeypress', function () {
             return function (scope, element, attrs) {
                 element.bind("keydown keypress", function (event) {

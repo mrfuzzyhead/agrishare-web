@@ -66,3 +66,6 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\CMS.csproj.Cor
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\CMS.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\Agrishare.CMS.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\Agrishare.CMS.pdb
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\epengine.dll

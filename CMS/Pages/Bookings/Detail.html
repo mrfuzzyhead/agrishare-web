@@ -91,7 +91,7 @@
 
             <div class="box">
 
-                <h2>User</h2>
+                <h2>Booking User</h2>
                 <ul class="details">
                     <li>
                         <strong>Name</strong>
@@ -133,6 +133,31 @@
 
             </div>
 
+            <div class="box">
+
+                <h2>Supplier Payment</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Amount</strong>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency}}</span>
+                    </li>
+                    <li style="align-items: center">
+                        <strong>Status</strong>
+                        <span ng-if="!detail.entity.PaidOut" style="font-size: 11px; margin-right: 5px">PENDING</span>
+                        <i class="material-icons md-16" ng-if="!detail.entity.PaidOut" style="color: grey">access_time</i>
+                        <span ng-if="detail.entity.PaidOut" style="font-size: 11px; margin-right: 5px">PAID</span>
+                        <i class="material-icons md-16" ng-if="detail.entity.PaidOut" style="color: green">check_circle</i>
+                    </li>
+                    <li>
+                        <strong>Telephone</strong>
+                        <span>{{detail.data.Supplier.Telephone || '-'}}</span>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; text-align: right" ng-if="!detail.entity.PaidOut">
+                    <gl-icon-button gl-icon="payments" class="border" ng-click="detail.async('/cms/bookings/paidout?BookingId='+detail.entity.Id)">Paid</gl-icon-button>
+                </div>
+
+            </div>
 
             <div class="box">
 
@@ -194,6 +219,46 @@
                         <gl-icon-button gl-icon="delete_sweep" ng-click="detail.async('/cms/bookings/transactions/refund?Id='+item.Id)" ng-if="item.StatusId==4 && item.Amount>0"></gl-icon-button>
                     </li>
                 </ul>
+
+            </div>
+
+            <div class="box">
+
+                <h2>Tags</h2>
+                <ul class="details">
+                    <li ng-repeat="tag in detail.entity.Tags">
+                        <strong>{{tag.Title}}</strong>
+                        <span><a class="material-icons md-16" ng-click="detail.async('/cms/bookings/tags/remove?TagId='+tag.Id+'&BookingId='+detail.entity.Id)">delete</a></span>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; display: flex; align-items: center">
+                    <div style="flex: 1; margin: -20px 10px -20px 0">
+                        <gl-dropdown-list gl-source="detail.data.Tags" ng-model="addTagId" gl-placeholder="Add Tag" gl-selection="Id"></gl-dropdown-list>
+                    </div>
+                    <div>
+                        <gl-icon-button gl-icon="add" class="border" ng-click="detail.async('/cms/bookings/tags/add?TagId='+addTagId+'&BookingId='+detail.entity.Id)">Add</gl-icon-button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="box">
+
+                <h2>Comments</h2>
+                <ul class="comments" ng-if="detail.data.Comments.length">
+                    <li ng-repeat="comment in detail.data.Comments">                        
+                        <span ng-bind-html="comment.Text | newLines | trustAsHtml"></span>
+                        <small>{{comment.User.Title}} &bull; {{comment.DateCreated | date : 'd MMMM yyyy h:mma'}}</small>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; display: flex; align-items: center">
+                    <div style="flex: 1; margin: -20px 10px -20px 0">
+                        <gl-textarea ng-model="comment" gl-placeholder="Comment"></gl-textarea>
+                    </div>
+                    <div>
+                        <gl-icon-button gl-icon="send" class="border" ng-click="detail.async('/cms/bookings/comments/add?Text='+comment+'&BookingId='+detail.entity.Id);comment='';">Add</gl-icon-button>
+                    </div>
+                </div>
 
             </div>
 
