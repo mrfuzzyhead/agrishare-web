@@ -7,6 +7,7 @@
 
         <gl-popup-menu gl-position="top right" class="responsive">
             <gl-menu-item gl-icon="done_all" ng-click="app.go('/journals/reconcile?'+app.returnUrlQs())">Reconcile</gl-menu-item>
+            <gl-menu-item gl-icon="assignment_returned" ng-click="app.go('/journals/export?'+app.returnUrlQs())">Export</gl-menu-item>
             <gl-menu-item gl-icon="search" ng-click="list.showSearch()">Search</gl-menu-item>
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>

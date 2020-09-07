@@ -167,7 +167,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContactModel.cs" />
-    <Compile Include="Models\ReconcileModel.cs" />
+    <Compile Include="Models\ExportLedgerModel.cs" />
+    <Compile Include="Models\ReconcileLedgerModel.cs" />
     <Compile Include="Models\ListingModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\BookingModel.cs" />

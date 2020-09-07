@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Agrishare.API.Models
 {
-    public class ReconcileModel
+    public class ExportLedgerModel
     {
-        public File ExcelFile { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

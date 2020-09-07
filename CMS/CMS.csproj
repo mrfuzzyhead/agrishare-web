@@ -87,6 +87,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\Journals\Export.html" />
+    <Content Include="Pages\Journals\Ledger.aspx" />
     <Content Include="Pages\Tags\Edit.html" />
     <Content Include="Pages\Tags\List.html" />
     <Content Include="Pages\Bookings\TransactionLog.html" />
@@ -258,6 +260,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Journals\Ledger.aspx.cs">
+      <DependentUpon>Ledger.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Journals\Ledger.aspx.designer.cs">
+      <DependentUpon>Ledger.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettlementReport.aspx.cs">
       <DependentUpon>SettlementReport.aspx</DependentUpon>
