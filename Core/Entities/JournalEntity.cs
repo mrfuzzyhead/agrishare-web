@@ -268,7 +268,11 @@ namespace Agrishare.Core.Entities
                     Error += Required(Data);
                     Error += Decimal(Data);
                     break;
-                case 6: // EcoCash Reference
+                case 6: // Type (Agent or Supplier)
+                    Error += Required(Data);
+                    Error += Decimal(Data);
+                    break;
+                case 7: // EcoCash Reference
                     Error += Required(Data);
                     Error += MaxLength(Data, 128);
                     break;
@@ -279,8 +283,10 @@ namespace Agrishare.Core.Entities
 
         public override void ExtractRow(List<string> Row)
         {
+            var ecoCashReference = Row[6];
+
             var booking = Bookings.FirstOrDefault(o => o.Id == Convert.ToInt32(Row[1]));
-            if (booking != null)
+            if (booking != null && !string.IsNullOrEmpty(ecoCashReference))
             {
                 booking.PaidOut = true;
                 booking.Save();
@@ -289,7 +295,7 @@ namespace Agrishare.Core.Entities
                 {
                     Amount = Convert.ToDecimal(Row[4]),
                     Booking = booking,
-                    EcoCashReference = Row[5],
+                    EcoCashReference = ecoCashReference,
                     Reconciled = false,
                     Title = $"Pay out to {Row[2]} {Row[3]}",
                     TypeId = JournalType.Settlement,
