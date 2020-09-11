@@ -17,12 +17,18 @@ agrishareApp.controller('DashboardViewController', function ($attrs, $controller
     dashboard.map = null;
     dashboard.heatmap = null;
 
+    dashboard.graph = {
+        colors: ['#1b75bc', '#6ebef2', '#4cbc5c', '#e9dd46'],
+        datasetOverride: [{ fill: false }, { fill: false }, { fill: false }, { fill: false }],
+        options: { scales: { yAxes: [{ ticks: { beginAtZero: true } }] } }
+    };
+
     dashboard.activity = {
         filter: {
             type: 'User',
             timespan: 7,
             category: 0,
-            startDate: new moment().add(-7, 'days').toDate(),
+            startDate: new moment().add(-6, 'days').toDate(),
             endDate: new Date()
         }
     };

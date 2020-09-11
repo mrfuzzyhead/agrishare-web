@@ -911,6 +911,7 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
     <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
+    <Property Name="Date" Type="DateTime" Nullable="false" />
   </EntityType>
   <Association Name="journals_ibfk_2">
     <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -946,6 +947,8 @@
     <Member Name="Refund" Value="2" />
     <Member Name="Settlement" Value="3" />
     <Member Name="Fee" Value="4" />
+    <Member Name="Expense" Value="5" />
+    <Member Name="Income" Value="6" />
   </EnumType>
   <Association Name="counters_ibfk_3">
     <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">

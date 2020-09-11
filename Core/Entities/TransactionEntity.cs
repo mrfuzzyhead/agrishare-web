@@ -365,7 +365,8 @@ namespace Agrishare.Core.Entities
                     Reconciled = false,
                     Title = $"Payment received from {BookingUser.Name} {BookingUser.Telephone}",
                     TypeId = JournalType.Payment,
-                    UserId = BookingUser.UserId ?? Booking.UserId
+                    UserId = BookingUser.UserId ?? Booking.UserId,
+                    Date = DateTime.UtcNow
                 }.Save();
                                 
                 var bookingUsers = BookingUser.List(BookingId: BookingId);
@@ -441,7 +442,8 @@ namespace Agrishare.Core.Entities
                     Reconciled = false,
                     Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
                     TypeId = JournalType.Refund,
-                    UserId = BookingUser.Id
+                    UserId = BookingUser.Id,
+                    Date = DateTime.UtcNow
                 }.Save();
 
                 return true;
@@ -539,7 +541,8 @@ namespace Agrishare.Core.Entities
                             Reconciled = false,
                             Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
                             TypeId = JournalType.Refund,
-                            UserId = BookingUser.Id
+                            UserId = BookingUser.Id,
+                            Date = DateTime.UtcNow
                         }.Save();
                     }
 

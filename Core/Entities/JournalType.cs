@@ -17,6 +17,8 @@ namespace Agrishare.Core.Entities
         Payment = 1,
         Refund = 2,
         Settlement = 3,
-        Fee = 4
+        Fee = 4,
+        Expense = 5,
+        Income = 6
     }
 }

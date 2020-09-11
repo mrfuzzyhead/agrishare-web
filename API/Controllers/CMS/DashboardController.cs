@@ -3,6 +3,7 @@ using Agrishare.Core;
 using Agrishare.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -18,7 +19,13 @@ namespace Agrishare.API.Controllers.CMS
         public object Summary(string Type = "", DateTime? StartDate = null, DateTime? EndDate = null, int Category = 0)
         {
             var startDate = (StartDate ?? DateTime.MinValue).StartOfDay();
+            if (startDate.Year < 2019)
+                startDate = new DateTime(2019, 1, 1);
             var endDate = (EndDate ?? DateTime.MaxValue).EndOfDay();
+            if (endDate > DateTime.Now)
+                endDate = DateTime.Now;
+
+            var timeSpan = endDate - startDate;
             var uniqueUser = Type.Equals("User");
 
             var totalBookingAmount = Entities.Booking.TotalAmountPaid(startDate, endDate);
@@ -29,16 +36,62 @@ namespace Agrishare.API.Controllers.CMS
             var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate);
 
             var graphData = Entities.Booking.Graph(StartDate: DateTime.Now.AddMonths(-12), EndDate: DateTime.Now, Count: 12);
-            var Graph = new List<object>();
+            var bookingsGraph = new List<object>();
             foreach (var item in graphData)
             {
-                Graph.Add(new
+                bookingsGraph.Add(new
                 {
                     Label = new DateTime(item.Year, item.Month, 1).ToString("MMM yy"),
                     item.Count,
                     Height = (decimal)item.Count / (decimal)graphData.Max(d => d.Count) * 100M
                 });
             }
+
+            var dateLabels = new List<string>();
+            var profitAmounts = new List<decimal>();
+
+            var profitView = Entities.Journal.GraphView.Month;
+            if (timeSpan.TotalDays <= 7)
+                profitView = Entities.Journal.GraphView.Day;
+            else if (timeSpan.TotalDays <= 90)
+                profitView = Entities.Journal.GraphView.Week;
+
+            var profitData = Entities.Journal.Graph(StartDate: startDate, EndDate: endDate, View: profitView);
+
+            var currentDate = startDate;
+            while (currentDate < endDate)
+            {
+                var amount = 0M;
+
+                if (profitView == Entities.Journal.GraphView.Day)
+                {
+                    dateLabels.Add(currentDate.ToString("d MMM"));
+                    amount = profitData.FirstOrDefault(e => e.Day == currentDate.Day && e.Month == currentDate.Month && e.Year == currentDate.Year)?.Amount ?? 0;
+                    currentDate = currentDate.AddDays(1);
+                }
+                else if (profitView == Entities.Journal.GraphView.Week)
+                {
+                    dateLabels.Add(currentDate.ToString("d MMM yy"));
+                    var week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(currentDate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+                    amount = profitData.FirstOrDefault(e => e.Week == week && e.Year == currentDate.Year)?.Amount ?? 0;
+                    currentDate = currentDate.AddDays(7);
+                }
+                else if (profitView == Entities.Journal.GraphView.Month)
+                {
+                    dateLabels.Add(currentDate.ToString("MMM yy"));
+                    amount = profitData.FirstOrDefault(e => e.Month == currentDate.Month && e.Year == currentDate.Year)?.Amount ?? 0;
+                    currentDate = currentDate.AddMonths(1);
+                }
+
+                profitAmounts.Add(amount);
+            }
+
+            var profitGraph = new
+            {
+                Labels = dateLabels,
+                Data = new List<object> { profitAmounts },
+                Series = new List<string> { "Profit" }
+            };
 
             var data = new
             {
@@ -82,7 +135,8 @@ namespace Agrishare.API.Controllers.CMS
                 },
                 locations = locations.Select(o => new { o.Latitude, o.Longitude }),
                 smsBalance = SMS.GetBalance(),
-                bookingsGraph = Graph
+                bookingsGraph,
+                profitGraph
             };
 
             return Success(data);

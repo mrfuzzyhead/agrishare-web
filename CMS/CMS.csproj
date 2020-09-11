@@ -87,6 +87,9 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\Journals\Detail.html" />
+    <Content Include="Pages\Journals\Income.html" />
+    <Content Include="Pages\Journals\Expense.html" />
     <Content Include="Pages\Journals\Export.html" />
     <Content Include="Pages\Journals\Ledger.aspx" />
     <Content Include="Pages\Tags\Edit.html" />
@@ -137,6 +140,7 @@
     <Content Include="Resources\Images\Marker-2.png" />
     <Content Include="Resources\Images\Marker-3.png" />
     <Content Include="Resources\Javascript\1. jQuery\jquery.2.1.0.min.js" />
+    <Content Include="Resources\Javascript\2. Angular\angular-charts.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-map.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-round-progress.min.js" />
     <Content Include="Resources\Javascript\3. App\controller\DashboardView.js" />

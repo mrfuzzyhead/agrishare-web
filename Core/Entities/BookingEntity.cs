@@ -434,7 +434,7 @@ namespace Agrishare.Core.Entities
                 return ctx.Database.SqlQuery<BookingCounter>("SELECT StatusId AS `Status`, ForId AS `For`, COUNT(Id) AS `Count` FROM Bookings GROUP BY StatusId, ForId").ToList();
         }
 
-        public static List<BookingData> Graph(DateTime StartDate, DateTime EndDate, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6, int AgentId = 0)
+        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6, int AgentId = 0)
         {
             var sql = $@"SELECT MONTH(Bookings.StartDate) AS `Month`, YEAR(Bookings.StartDate) AS `Year`, COUNT(Bookings.Id) AS 'Count' 
                             FROM Bookings
@@ -457,7 +457,14 @@ namespace Agrishare.Core.Entities
             sql += $@"GROUP BY MONTH(Bookings.StartDate), YEAR(Bookings.StartDate) ORDER BY YEAR(Bookings.StartDate), MONTH(Bookings.StartDate) LIMIT {Count}";
 
             using (var ctx = new AgrishareEntities())
-                return ctx.Database.SqlQuery<BookingData>(sql).ToList();
+                return ctx.Database.SqlQuery<GraphData>(sql).ToList();
+        }
+
+        public class GraphData
+        {
+            public int Month { get; set; }
+            public int Year { get; set; }
+            public int Count { get; set; }
         }
 
         public byte[] InvoicePDF()
@@ -477,13 +484,6 @@ namespace Agrishare.Core.Entities
     {
         public BookingStatus Status { get; set; }
         public BookingFor For { get; set; }
-        public int Count { get; set; }
-    }
-
-    public class BookingData
-    {
-        public int Month { get; set; }
-        public int Year { get; set; }
         public int Count { get; set; }
     }
 }

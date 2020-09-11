@@ -327,6 +327,7 @@
     <EntitySetMapping Name="Journals">
       <EntityTypeMapping TypeName="AgrishareModel.Journal">
         <MappingFragment StoreEntitySet="Journals">
+          <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

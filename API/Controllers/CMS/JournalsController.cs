@@ -38,6 +38,125 @@ namespace Agrishare.API.Controllers.CMS
             return Success(data);
         }
 
+        [Route("journals/find")]
+        [AcceptVerbs("GET")]
+        public object Find(int Id = 0)
+        {
+            var entity = Entities.Journal.Find(Id);
+
+            return Success(new
+            {
+                Entity = entity.Json()
+            });
+        }
+
+        [Route("journals/delete")]
+        [AcceptVerbs("GET")]
+        public object Delete(int Id)
+        {
+            var entity = Entities.Journal.Find(Id);
+
+            if (entity.TypeId != Entities.JournalType.Expense && entity.TypeId != Entities.JournalType.Income)
+                return Error("You can not delete this journal");
+
+            if (entity.Delete())                
+                return Success(new
+                {
+                    Entity = entity.Json()
+                });
+
+            return Error();
+        }
+
+        /* Income */
+
+        [Route("journals/income/find")]
+        [AcceptVerbs("GET")]
+        public object FindIncome(int Id = 0)
+        {
+            var entity = Entities.Journal.Find(Id);
+
+            if (entity.Id > 0 && entity.TypeId != Entities.JournalType.Income)
+                return Error("You can not edit this journal");
+
+            if (entity.Id == 0)
+            {
+                entity.User = CurrentUser;
+                entity.Reconciled = true;
+                entity.TypeId = Entities.JournalType.Income;
+            }
+
+            return Success(new
+            {
+                Entity = entity.Json()
+            });
+        }
+
+        [Route("journals/income/save")]
+        [AcceptVerbs("POST")]
+        public object SaveIncome(Entities.Journal Journal)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            Journal.Date = Journal.Date.AddMinutes(UTCOffset);
+
+            if (Journal.Save())
+                return Success(new
+                {
+                    Entity = Journal.Json()
+                });
+
+            return Error();
+        }
+
+        /* Expense */
+
+        [Route("journals/expense/find")]
+        [AcceptVerbs("GET")]
+        public object FindExpense(int Id = 0)
+        {
+            var entity = Entities.Journal.Find(Id);
+
+            if (entity.Id > 0 && entity.TypeId != Entities.JournalType.Expense)
+                return Error("You can not edit this journal");
+
+            if (entity.Id == 0)
+            {
+                entity.User = CurrentUser;
+                entity.Reconciled = true;
+                entity.TypeId = Entities.JournalType.Expense;
+            }
+
+            entity.Amount = Math.Abs(entity.Amount);
+
+            return Success(new
+            {
+                Entity = entity.Json()
+            });
+        }
+
+        [Route("journals/expense/save")]
+        [AcceptVerbs("POST")]
+        public object SaveExpense(Entities.Journal Journal)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            Journal.Date = Journal.Date.AddMinutes(UTCOffset);
+            Journal.Amount = Math.Abs(Journal.Amount) * -1;
+
+            if (Journal.Save())
+                return Success(new
+                {
+                    Entity = Journal.Json()
+                });
+
+            return Error();
+        }
+
+        /* Reconcile */
+
         [Route("journals/reconcile/find")]
         [AcceptVerbs("GET")]
         public object FindReconcile(int Id = 0)
@@ -67,6 +186,8 @@ namespace Agrishare.API.Controllers.CMS
             return Error(feedback);
         }
 
+        /* Export */
+
         [Route("journals/export/find")]
         [AcceptVerbs("GET")]
         public object FindExport(int Id = 0)
@@ -89,7 +210,7 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("journals/export/save")]
         [AcceptVerbs("POST")]
-        public object Save(ExportLedgerModel Model)
+        public object SaveExport(ExportLedgerModel Model)
         {
             if (!ModelState.IsValid)
                 return Error(ModelState);

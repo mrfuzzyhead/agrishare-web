@@ -14,7 +14,7 @@ namespace Agrishare.Core.Entities
 {
     public partial class Journal : IEntity
     {
-        public static string DefaultSort = "DateCreated DESC";
+        public static string DefaultSort = "Date DESC";
         public string Type => $"{TypeId}".ExplodeCamelCase();
         public decimal Balance { get; set; }
         public decimal Debit => Amount < 0 ? Math.Abs(Amount) : 0;
@@ -25,6 +25,7 @@ namespace Agrishare.Core.Entities
             if (Id == 0)
                 return new Journal
                 {
+                    Date = DateTime.UtcNow,
                     DateCreated = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow,
                 };
@@ -110,7 +111,7 @@ namespace Agrishare.Core.Entities
             using (var ctx = new AgrishareEntities())
             {
                 var query = ctx.Journals.Where(o => !o.Deleted);
-                query = query.Where(o => o.DateCreated <= Date);
+                query = query.Where(o => o.Date <= Date);
                 try
                 {
                     return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
@@ -221,11 +222,58 @@ namespace Agrishare.Core.Entities
                 EcoCashReference,
                 TypeId,
                 Type,
+                Date,
                 DateCreated,
                 LastModified,
                 Deleted,
                 Balance
             };
+        }
+
+        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, GraphView View)
+        {
+            var sql = string.Empty;
+
+            if (View == GraphView.Day)
+            {
+                sql = $@"SELECT DAY(Journals.Date) AS `Day`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY DAY(Journals.Date), MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date), DAY(Journals.Date)";
+            }
+            else if (View == GraphView.Week)
+            {
+                sql = $@"SELECT WEEK(Journals.Date) AS `Week`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY WEEK(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), WEEK(Journals.Date)";
+            }
+            else
+            {
+                sql = $@"SELECT MONTH(Journals.Date) AS `Month`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date)";
+            }
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<GraphData>(sql).ToList();
+        }
+
+        public enum GraphView
+        {
+            Day = 1,
+            Week = 2,
+            Month = 3
+        }
+
+        public class GraphData
+        {
+            public int Day { get; set; }
+            public int Week { get; set; }
+            public int Month { get; set; }
+            public int Year { get; set; }
+            public decimal Amount { get; set; }
         }
     }
 
@@ -299,7 +347,8 @@ namespace Agrishare.Core.Entities
                     Reconciled = false,
                     Title = $"Pay out to {Row[2]} {Row[3]}",
                     TypeId = JournalType.Settlement,
-                    UserId = booking.Listing.UserId
+                    UserId = booking.Listing.UserId,
+                    Date = DateTime.UtcNow
                 }.Save();
             }
         }

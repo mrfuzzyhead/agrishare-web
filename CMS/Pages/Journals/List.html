@@ -8,6 +8,8 @@
         <gl-popup-menu gl-position="top right" class="responsive">
             <gl-menu-item gl-icon="done_all" ng-click="app.go('/journals/reconcile?'+app.returnUrlQs())">Reconcile</gl-menu-item>
             <gl-menu-item gl-icon="assignment_returned" ng-click="app.go('/journals/export?'+app.returnUrlQs())">Export</gl-menu-item>
+            <gl-menu-item gl-icon="add" ng-click="app.go('/journals/expense?'+app.returnUrlQs())">Add Expense</gl-menu-item>
+            <gl-menu-item gl-icon="add" ng-click="app.go('/journals/income?'+app.returnUrlQs())">Add Income</gl-menu-item>
             <gl-menu-item gl-icon="search" ng-click="list.showSearch()">Search</gl-menu-item>
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>
@@ -19,10 +21,10 @@
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
                 <calendar>
-                    <small>{{item.DateCreated | date : 'MMM'}}</small>
-                    <big>{{item.DateCreated | date : 'dd'}}</big>
+                    <small>{{item.Date | date : 'MMM'}}</small>
+                    <big>{{item.Date | date : 'dd'}}</big>
                 </calendar>
-                <row class="booking" ng-click="app.go('/bookings/detail/'+item.Id+'?'+app.returnUrlQs())">
+                <row class="booking">
                     <div>
                         <strong>{{item.Title}}</strong><br />
                         <small>
@@ -31,7 +33,7 @@
                         </small>
                     </div>
                     <div style="width: 100px; text-align: right">
-                        <span ng-if="item.Debit>0">{{item.Debit | currency}}</span><br/>
+                        <span ng-if="item.Debit>0">{{item.Debit | currency}}</span><br />
                         <small>&nbsp;</small>
                     </div>
                     <div style="width: 100px; text-align: right">
@@ -43,6 +45,14 @@
                         <small>&nbsp;</small>
                     </div>
                 </row>
+                <action>
+                    <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="visibility" ng-click="app.go('/journals/detail/'+item.Id+'?'+app.returnUrlQs())">View</gl-menu-item>
+                        <gl-menu-item gl-icon="edit" ng-click="app.go('/journals/income/'+item.Id+'?'+app.returnUrlQs())" ng-if="[6].includes(item.TypeId)">Edit</gl-menu-item>
+                        <gl-menu-item gl-icon="edit" ng-click="app.go('/journals/expense/'+item.Id+'?'+app.returnUrlQs())" ng-if="[5].includes(item.TypeId)">Edit</gl-menu-item>
+                        <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/journals/delete?id=' + item.Id)" ng-if="[5,6].includes(item.TypeId)">Delete</gl-menu-item>
+                    </gl-popup-menu>
+                </action>
             </div>
         </gl-list>
     </ag-section>

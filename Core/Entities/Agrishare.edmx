@@ -187,6 +187,7 @@
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
+          <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -1966,6 +1967,7 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
           <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
         </EntityType>
         <Association Name="journals_ibfk_2">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2001,6 +2003,8 @@
           <Member Name="Refund" Value="2" />
           <Member Name="Settlement" Value="3" />
           <Member Name="Fee" Value="4" />
+          <Member Name="Expense" Value="5" />
+          <Member Name="Income" Value="6" />
         </EnumType>
         <Association Name="counters_ibfk_3">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2644,6 +2648,7 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

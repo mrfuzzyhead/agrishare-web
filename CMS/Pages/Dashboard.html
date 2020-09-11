@@ -36,6 +36,17 @@
                 </ul>
             </div>
 
+            <div class="chart-view">
+                <canvas class="chart chart-line"
+                        chart-data="dashboard.data.profitGraph.Data"
+                        chart-labels="dashboard.data.profitGraph.Labels"
+                        chart-series="dashboard.data.profitGraph.Series"
+                        chart-dataset-override="dashboard.graph.datasetOverride"
+                        chart-colors="dashboard.graph.colors"
+                        chart-options="dashboard.graph.options"
+                        height="100"></canvas>
+            </div>
+
             <div class="activity">
                 <h2 class="filter">
                     <a ng-click="dashboard.activity.filter.type='User'" ng-class="{'active':dashboard.activity.filter.type=='User'}">User</a>

@@ -6,7 +6,7 @@
 
 var agrishareApp =
     angular
-        .module('agrishareApp', ['ui.router', '720kb.tooltips', 'ngToast', 'ngAnimate', 'ngFileUpload', 'cp.ngConfirm', 'ngMap', 'angular-svg-round-progressbar'])
+        .module('agrishareApp', ['ui.router', '720kb.tooltips', 'ngToast', 'ngAnimate', 'ngFileUpload', 'cp.ngConfirm', 'ngMap', 'angular-svg-round-progressbar', 'chart.js'])
         .config(function ($sceDelegateProvider, ngToastProvider, $stateProvider, $locationProvider, $urlRouterProvider) {
 
             $sceDelegateProvider.resourceUrlWhitelist([
@@ -114,7 +114,8 @@ var agrishareApp =
         })
         .config(["$httpProvider", function ($httpProvider) {
 
-            var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+\+[\d]{2}:[\d]{2})?$/;
+            //var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+\+[\d]{2}:[\d]{2})?$/;
+            var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+)?(\+[\d]{2}:[\d]{2})?([Z])?$/;
 
             var convertDateStringsToDates = function (input) {
                 if (typeof input !== "object") return input;
