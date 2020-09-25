@@ -26,8 +26,8 @@ namespace Agrishare.API
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            User currentUser;
-            Region currentRegion;
+            User currentUser = null;
+            Region currentRegion = null;
 
             #region Find current user
 
@@ -55,7 +55,7 @@ namespace Agrishare.API
             var regionId = regionCookies?.Cookies.FirstOrDefault(e => e.Name == "region")?.Value ?? string.Empty;
             if (!string.IsNullOrEmpty(regionId))
                 currentRegion = Region.Find(Convert.ToInt32(regionId));
-            else
+            if (currentRegion == null || currentRegion.Id == 0)
                 currentRegion = currentUser.Region;
 
             #endregion

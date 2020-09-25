@@ -11,6 +11,7 @@ agrishareApp.factory('App', function ($location, Utils) {
         user: {},
         region: {},
         regions: [],
+        cookieDomain: '',
 
         title: '',
         status: '',
@@ -81,7 +82,7 @@ agrishareApp.factory('App', function ($location, Utils) {
 
         setRegion: function (region) {
             this.region = region;
-            Utils.cookie.create('region', region.Id);
+            Utils.cookie.create('region', region.Id, 365, this.cookieDomain);
             location.reload();
         },
 

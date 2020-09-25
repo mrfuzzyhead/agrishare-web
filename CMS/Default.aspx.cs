@@ -21,7 +21,7 @@ namespace Agrishare.CMS
             Page.Header.Controls.Add(new Literal { Text = $@"<script type=""text/javascript"" src=""/script-{version}.js""></script>" });
 
             Body.Attributes.Add("ag-api-url", Config.APIURL);
-            Body.Attributes.Add("ng-init", $"app.user={CurrentUser.CmsJsonString()};app.region={CurrentRegion.CmsJsonString()};app.regions={Region.CmsListJsonString()}");
+            Body.Attributes.Add("ng-init", $"app.user={CurrentUser.CmsJsonString()};app.region={CurrentRegion.CmsJsonString()};app.regions={Region.CmsListJsonString()};app.cookieDomain='{Config.DomainName}';");
 
             base.OnPreRender(e);
         }
