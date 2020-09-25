@@ -17,8 +17,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, [FromUri] ListingFilterModel Filter)
         {
-            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
             var title = "Listings";
 
             if (Filter.UserId > 0)
@@ -38,17 +38,17 @@ namespace Agrishare.API.Controllers.CMS
             decimal averageRating = 0M;
             if (PageIndex == 0)
             {
-                total = Entities.Listing.Count();
-                tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId);
-                lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId);
-                processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId);
-                buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId);
-                reviews = Entities.Rating.Count();
-                onestar = Entities.Rating.Count(Stars: 1);
-                averageRating = Entities.Rating.AverageRating();
+                total = Entities.Listing.Count(RegionId: CurrentRegion.Id);
+                tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId, RegionId: CurrentRegion.Id);
+                lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId, RegionId: CurrentRegion.Id);
+                processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId, RegionId: CurrentRegion.Id);
+                buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId, RegionId: CurrentRegion.Id);
+                reviews = Entities.Rating.Count(RegionId: CurrentRegion.Id);
+                onestar = Entities.Rating.Count(Stars: 1, RegionId: CurrentRegion.Id);
+                averageRating = Entities.Rating.AverageRating(RegionId: CurrentRegion.Id);
             }
 
-            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId);
+            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
             var Graph = new List<object>();
             foreach (var item in graphData)
             {

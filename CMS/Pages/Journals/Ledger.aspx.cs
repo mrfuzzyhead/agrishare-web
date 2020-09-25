@@ -15,8 +15,8 @@ namespace Agrishare.CMS.Pages.Journals
 
             var startDate = DateTime.Parse(Request.QueryString["StartDate"]);
             var endDate = DateTime.Parse(Request.QueryString["EndDate"]);
-            var list = Journal.List(StartDate: startDate, EndDate: endDate);
-            var balance = list.Count > 0 ? Journal.BalanceAt(list.First().Id) : 0;
+            var list = Journal.List(StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id);
+            var balance = list.Count > 0 ? Journal.BalanceAt(list.First().Id, RegionId: CurrentRegion.Id) : 0;
 
             var csv = new StringBuilder();
             csv.AppendLine("Date,Description,Amount,Balance");

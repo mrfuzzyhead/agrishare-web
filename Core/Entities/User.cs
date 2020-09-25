@@ -47,6 +47,7 @@ namespace Agrishare.Core.Entities
         public Nullable<int> AgentId { get; set; }
         public AgentUserType AgentTypeId { get; set; }
         public int FailedVoucherAttempts { get; set; }
+        public int RegionId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }
@@ -55,5 +56,6 @@ namespace Agrishare.Core.Entities
         public virtual ICollection<UserVoucher> UserVouchers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingComment> BookingComments { get; set; }
+        public virtual Region Region { get; set; }
     }
 }

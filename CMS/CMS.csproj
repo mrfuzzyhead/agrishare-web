@@ -92,6 +92,8 @@
     <Content Include="Pages\Journals\Expense.html" />
     <Content Include="Pages\Journals\Export.html" />
     <Content Include="Pages\Journals\Ledger.aspx" />
+    <Content Include="Pages\Regions\Edit.html" />
+    <Content Include="Pages\Regions\List.html" />
     <Content Include="Pages\Tags\Edit.html" />
     <Content Include="Pages\Tags\List.html" />
     <Content Include="Pages\Bookings\TransactionLog.html" />
@@ -139,6 +141,8 @@
     <Content Include="Resources\Images\Marker-17.png" />
     <Content Include="Resources\Images\Marker-2.png" />
     <Content Include="Resources\Images\Marker-3.png" />
+    <Content Include="Resources\Images\Region-1.png" />
+    <Content Include="Resources\Images\Region-2.png" />
     <Content Include="Resources\Javascript\1. jQuery\jquery.2.1.0.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-charts.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-map.min.js" />

@@ -36,7 +36,9 @@ namespace Agrishare.Core.Entities
         public static string DefaultSort = "Date";
         public string Title => $"{Event}";
 
-        public static int Count(Counters Event = Counters.None, DateTime? StartDate = null, DateTime? EndDate = null, Gender Gender = Gender.None, int ServiceId = 0, bool UniqueUser = false, int CategoryId = 0, BookingFor? For = null)
+        public static int Count(Counters Event = Counters.None, DateTime? StartDate = null, DateTime? EndDate = null, 
+            Gender Gender = Gender.None, int ServiceId = 0, bool UniqueUser = false, int CategoryId = 0, 
+            BookingFor? For = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -68,6 +70,9 @@ namespace Agrishare.Core.Entities
 
                 if (CategoryId > 0)
                     query = query.Where(o => o.ServiceId == CategoryId || o.Service.ParentId == CategoryId || o.CategoryId == CategoryId);
+
+                if (RegionId > 0)
+                    query = query.Where(e => e.User.RegionId == RegionId);
 
                 if (UniqueUser)
                     return query.Select(e => e.UserId).Distinct().Count();
@@ -147,11 +152,16 @@ namespace Agrishare.Core.Entities
             };
         }
 
-        public static int ActiveUsers(DateTime StartDate, DateTime EndDate)
+        public static int ActiveUsers(DateTime StartDate, DateTime EndDate, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var sql = $"SELECT COUNT(DISTINCT(UserId)) FROM Counters WHERE DATE(DateCreated) >= DATE('{SQL.Safe(StartDate)}') AND DATE(DateCreated) <= ('{SQL.Safe(EndDate)}')";
+                var sql = $"SELECT COUNT(DISTINCT(Counters.UserId)) FROM Counters ";
+                if (RegionId > 0)
+                    sql += "INNER JOIN Users ON Counters.UserId = Users.Id ";
+                sql += $"WHERE DATE(Counters.DateCreated) >= DATE('{SQL.Safe(StartDate)}') AND DATE(Counters.DateCreated) <= ('{SQL.Safe(EndDate)}') ";
+                if (RegionId > 0)
+                    sql += $"AND Users.RegionId = {RegionId}";
                 return ctx.Database.SqlQuery<int>(sql).DefaultIfEmpty(0).FirstOrDefault();
             }
         }

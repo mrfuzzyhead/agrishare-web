@@ -16,11 +16,11 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, string Query = "")
         {
-            var recordCount = Entities.Journal.Count();
-            var list = Entities.Journal.List(PageIndex: PageIndex, PageSize: PageSize);
+            var recordCount = Entities.Journal.Count(RegionId: CurrentRegion.Id);
+            var list = Entities.Journal.List(PageIndex: PageIndex, PageSize: PageSize, RegionId: CurrentRegion.Id);
             var title = "Ledger";
 
-            var balance = list.Count > 0 ? Entities.Journal.BalanceAt(list.First().Id) : 0;
+            var balance = list.Count > 0 ? Entities.Journal.BalanceAt(list.First().Id, RegionId: CurrentRegion.Id) : 0;
             foreach (var item in list)
             {
                 item.Balance = balance;
@@ -84,6 +84,7 @@ namespace Agrishare.API.Controllers.CMS
                 entity.User = CurrentUser;
                 entity.Reconciled = true;
                 entity.TypeId = Entities.JournalType.Income;
+                entity.Region = CurrentRegion;
             }
 
             return Success(new
@@ -126,6 +127,7 @@ namespace Agrishare.API.Controllers.CMS
                 entity.User = CurrentUser;
                 entity.Reconciled = true;
                 entity.TypeId = Entities.JournalType.Expense;
+                entity.Region = CurrentRegion;
             }
 
             entity.Amount = Math.Abs(entity.Amount);

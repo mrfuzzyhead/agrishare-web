@@ -26,8 +26,8 @@ namespace Agrishare.API.Controllers.CMS
             else
                 status = (Entities.BookingStatus)Enum.ToObject(typeof(Entities.BookingStatus), Filter.Status);
 
-            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut);
-            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, Sort: "DateCreated DESC");
+            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, RegionId: CurrentRegion.Id);
+            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, Sort: "DateCreated DESC", RegionId: CurrentRegion.Id);
             var title = "Bookings";
 
             if (Filter.UserId > 0)
@@ -54,7 +54,7 @@ namespace Agrishare.API.Controllers.CMS
                     title = category.Title;
             }
 
-            var summary = Entities.Booking.Summary();
+            var summary = Entities.Booking.Summary(RegionId: CurrentRegion.Id);
 
             var Statuses = EnumInfo.ToList<Entities.BookingStatus>().Where(s => s.Id != (int)Entities.BookingStatus.None).ToList();
             Statuses.Insert(0, new EnumDescriptor { Id = 0, Title = "All" });
@@ -64,7 +64,7 @@ namespace Agrishare.API.Controllers.CMS
             var Categories = Entities.Category.List(ParentId: 0);
             Categories.Insert(0, new Entities.Category { Id = 0, Title = "All" });
 
-            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category);
+            var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category, RegionId: CurrentRegion.Id);
             var Graph = new List<object>();
             foreach(var item in graphData)
             {

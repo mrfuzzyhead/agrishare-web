@@ -44,6 +44,17 @@ namespace Agrishare.API
             }
         }
 
+        protected Entities.Region CurrentRegion
+        {
+            get
+            {
+                if (!Request.Properties.TryGetValue("CurrentRegion", out object currentRegion))
+                    return Entities.Region.Find(Id: 1);
+                else
+                    return (Entities.Region)currentRegion;
+            }
+        }
+
         public object Error(string Message = "")
         {
             if (LogAPI && !HttpContext.Current.Request.Path.StartsWith("/cms/"))

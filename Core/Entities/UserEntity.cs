@@ -72,7 +72,10 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
+                var query = ctx.Users
+                    .Include(o => o.Region)
+                    .Include(o => o.Agent)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -90,11 +93,17 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", 
+            string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, 
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, 
+            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
+                var query = ctx.Users
+                    .Include(o => o.Region)
+                    .Include(o => o.Agent)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -135,11 +144,16 @@ namespace Agrishare.Core.Entities
                 if (Administrator.HasValue && Administrator.Value == false)
                     query = query.Where(o => !o.RoleList.Contains("Administrator"));
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Administrator = null)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, 
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, 
+            DateTime? RegisterToDate = null, bool? Administrator = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -184,29 +198,34 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.DateCreated <= toDate);
                 }
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
+
                 return query.Count();
             }
         }
 
-        public static List<User> BulkSMSList()
+        public static List<User> BulkSMSList(int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.ToList();
             }
         }
         
-        public static int BulkSMSCount()
+        public static int BulkSMSCount(int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.Count();
             }
         }
 
-        public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, 
+            int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, 
+            DateTime? FilterEndDate = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -268,11 +287,17 @@ namespace Agrishare.Core.Entities
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
+
                 return query.Count();
             }
         }
 
-        public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue, 
+            string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, 
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, 
+            DateTime? FilterEndDate = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -334,6 +359,9 @@ namespace Agrishare.Core.Entities
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
@@ -356,12 +384,18 @@ namespace Agrishare.Core.Entities
                 AgentId = agent.Id;
             Agent = null;
 
+            var region = Region;
+            if (region != null && region.Id > 0)
+                RegionId = region.Id;
+            Region = null;
+
             if (Id == 0)
                 success = Add();
             else
                 success = Update();
 
             Agent = agent;
+            Region = region;
 
             if (!AuthToken.IsEmpty())
                 Cache.Instance.Add(CacheKey(AuthToken), this.AdminJson());
@@ -414,7 +448,8 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json()
             };
         }
 
@@ -444,7 +479,8 @@ namespace Agrishare.Core.Entities
                 Status,
                 StatusId,
                 Telephone,
-                Language
+                Language,
+                Region = Region?.Json()
             };
         }
 
@@ -475,7 +511,8 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json()
             };
         }
 
@@ -509,7 +546,8 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json()
             };
         }
 

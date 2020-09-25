@@ -53,5 +53,6 @@ namespace Agrishare.Core.Entities
         public virtual DbSet<BookingComment> BookingComments { get; set; }
         public virtual DbSet<BookingTag> BookingTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<Region> Regions { get; set; }
     }
 }

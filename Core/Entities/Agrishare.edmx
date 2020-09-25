@@ -180,6 +180,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
           <Property Name="UserId" Type="int" />
           <Property Name="BookingId" Type="int" />
@@ -197,6 +198,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
@@ -277,6 +279,16 @@
           <Property Name="BookingId" Type="int" Nullable="false" />
           <Property Name="Comments" Type="varchar" MaxLength="1024" />
           <Property Name="Rating" Type="decimal" Precision="10" Scale="1" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Deleted" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="64" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -388,6 +400,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="256" />
           <Property Name="LastName" Type="varchar" MaxLength="256" />
           <Property Name="EmailAddress" Type="varchar" MaxLength="1024" />
@@ -669,6 +682,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="journals_ibfk_3">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="Journals" Type="Self.Journals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Journals">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="listings_ibfk_1">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -694,6 +719,18 @@
             </Principal>
             <Dependent Role="Listings">
               <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="listings_ibfk_3">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="Listings" Type="Self.Listings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Listings">
+              <PropertyRef Name="RegionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -863,6 +900,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="users_ibfk_2">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="uservouchers_ibfk_1">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -909,6 +958,7 @@
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="agrishare" store:Type="Tables" />
           <EntitySet Name="SupplierServices" EntityType="Self.SupplierServices" Schema="agrishare" store:Type="Tables" />
@@ -987,12 +1037,20 @@
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Journals" EntitySet="Journals" />
           </AssociationSet>
+          <AssociationSet Name="journals_ibfk_3" Association="Self.journals_ibfk_3">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Journals" EntitySet="Journals" />
+          </AssociationSet>
           <AssociationSet Name="listings_ibfk_1" Association="Self.listings_ibfk_1">
             <End Role="Users" EntitySet="Users" />
             <End Role="Listings" EntitySet="Listings" />
           </AssociationSet>
           <AssociationSet Name="listings_ibfk_2" Association="Self.listings_ibfk_2">
             <End Role="Categories" EntitySet="Categories" />
+            <End Role="Listings" EntitySet="Listings" />
+          </AssociationSet>
+          <AssociationSet Name="listings_ibfk_3" Association="Self.listings_ibfk_3">
+            <End Role="Regions" EntitySet="Regions" />
             <End Role="Listings" EntitySet="Listings" />
           </AssociationSet>
           <AssociationSet Name="notifications_ibfk_1" Association="Self.notifications_ibfk_1">
@@ -1041,6 +1099,10 @@
           </AssociationSet>
           <AssociationSet Name="users_ibfk_1" Association="Self.users_ibfk_1">
             <End Role="Agents" EntitySet="Agents" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="users_ibfk_2" Association="Self.users_ibfk_2">
+            <End Role="Regions" EntitySet="Regions" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="uservouchers_ibfk_1" Association="Self.uservouchers_ibfk_1">
@@ -1195,6 +1257,8 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.listings_ibfk_1" FromRole="Listings" ToRole="Users" />
           <NavigationProperty Name="Services" Relationship="AgrishareModel.services_ibfk_1" FromRole="Listing" ToRole="Service" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1311,6 +1375,8 @@
           <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
           <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="User" ToRole="BookingComment" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
         </EntityType>
         <Association Name="bookings_ibfk_1">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -1615,6 +1681,19 @@
           <AssociationSet Name="bookingtags_ibfk_2" Association="AgrishareModel.bookingtags_ibfk_2">
             <End Role="Tag" EntitySet="Tags" />
             <End Role="BookingTag" EntitySet="BookingTags" />
+          </AssociationSet>
+          <EntitySet Name="Regions" EntityType="AgrishareModel.Region" />
+          <AssociationSet Name="journals_ibfk_3" Association="AgrishareModel.journals_ibfk_3">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="Journal" EntitySet="Journals" />
+          </AssociationSet>
+          <AssociationSet Name="listings_ibfk_3" Association="AgrishareModel.listings_ibfk_3">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="Listing" EntitySet="Listings" />
+          </AssociationSet>
+          <AssociationSet Name="users_ibfk_2" Association="AgrishareModel.users_ibfk_2">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="User" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rating">
@@ -1968,6 +2047,8 @@
           <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
           <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
         </EntityType>
         <Association Name="journals_ibfk_2">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2316,6 +2397,52 @@
           <Member Name="Exported" Value="3" />
           <Member Name="Settled" Value="4" />
         </EnumType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          </EntityType>
+        <Association Name="journals_ibfk_3">
+          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="AgrishareModel.Journal" Role="Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="listings_ibfk_3">
+          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="AgrishareModel.Listing" Role="Listing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Listing">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="users_ibfk_2">
+          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="AgrishareModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2426,6 +2553,7 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="AvailableWithFuel" ColumnName="AvailableWithFuel" />
                 <ScalarProperty Name="AvailableWithoutFuel" ColumnName="AvailableWithoutFuel" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
@@ -2537,6 +2665,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AgrishareModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
                 <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
                 <ScalarProperty Name="AgentId" ColumnName="AgentId" />
@@ -2648,6 +2777,7 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
@@ -2775,6 +2905,17 @@
           <EntitySetMapping Name="Tags">
             <EntityTypeMapping TypeName="AgrishareModel.Tag">
               <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="AgrishareModel.Region">
+              <MappingFragment StoreEntitySet="Regions">
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

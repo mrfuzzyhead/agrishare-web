@@ -79,6 +79,10 @@
         <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_2" />
         <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_2" />
+        <EntityTypeShape EntityType="AgrishareModel.Region" Width="1.5" PointX="10.375" PointY="14.75" />
+        <AssociationConnector Association="AgrishareModel.journals_ibfk_3" />
+        <AssociationConnector Association="AgrishareModel.listings_ibfk_3" />
+        <AssociationConnector Association="AgrishareModel.users_ibfk_2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

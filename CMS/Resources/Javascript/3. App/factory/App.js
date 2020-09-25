@@ -8,7 +8,9 @@ agrishareApp.factory('App', function ($location, Utils) {
 
     var App = {
         apiUrl: '',
-        user: {},        
+        user: {},
+        region: {},
+        regions: [],
 
         title: '',
         status: '',
@@ -34,6 +36,7 @@ agrishareApp.factory('App', function ($location, Utils) {
                     { title: "Broadcast SMS", url: "#/sms/broadcast", roles: 'Administrator' },
                     { title: "FAQs", url: "#/faqs/list", roles: 'Administrator' },
                     { title: "Log", url: "#/log/list", roles: 'Administrator' },
+                    { title: "Regions", url: "#/regions/list", roles: 'Administrator' },
                     { title: "Settings", url: "#/settings/list", roles: 'Administrator' },
                     { title: "Tags", url: "#/tags/list", roles: 'Administrator' },
                     { title: "Templates", url: "#/templates/list", roles: 'Administrator' },
@@ -74,6 +77,12 @@ agrishareApp.factory('App', function ($location, Utils) {
 
         go: function (url) {
             location.hash = url;
+        },
+
+        setRegion: function (region) {
+            this.region = region;
+            Utils.cookie.create('region', region.Id);
+            location.reload();
         },
 
         slideshow: {

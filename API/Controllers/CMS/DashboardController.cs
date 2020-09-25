@@ -28,14 +28,14 @@ namespace Agrishare.API.Controllers.CMS
             var timeSpan = endDate - startDate;
             var uniqueUser = Type.Equals("User");
 
-            var totalBookingAmount = Entities.Booking.TotalAmountPaid(startDate, endDate);
-            var agrishareCommission = Entities.Booking.TotalAgriShareCommission(startDate, endDate);
-            var agentsCommission = Entities.Booking.TotalAgentsCommission(startDate, endDate);
-            var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate);
+            var totalBookingAmount = Entities.Booking.TotalAmountPaid(startDate, endDate, RegionId: CurrentRegion.Id);
+            var agrishareCommission = Entities.Booking.TotalAgriShareCommission(startDate, endDate, RegionId: CurrentRegion.Id);
+            var agentsCommission = Entities.Booking.TotalAgentsCommission(startDate, endDate, RegionId: CurrentRegion.Id);
+            var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate, RegionId: CurrentRegion.Id);
 
-            var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate);
+            var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id);
 
-            var graphData = Entities.Booking.Graph(StartDate: DateTime.Now.AddMonths(-12), EndDate: DateTime.Now, Count: 12);
+            var graphData = Entities.Booking.Graph(StartDate: DateTime.Now.AddMonths(-12), EndDate: DateTime.Now, Count: 12, RegionId: CurrentRegion.Id);
             var bookingsGraph = new List<object>();
             foreach (var item in graphData)
             {
@@ -56,7 +56,7 @@ namespace Agrishare.API.Controllers.CMS
             else if (timeSpan.TotalDays <= 90)
                 profitView = Entities.Journal.GraphView.Week;
 
-            var profitData = Entities.Journal.Graph(StartDate: startDate, EndDate: endDate, View: profitView);
+            var profitData = Entities.Journal.Graph(StartDate: startDate, EndDate: endDate, View: profitView, RegionId: CurrentRegion.Id);
 
             var currentDate = startDate;
             while (currentDate < endDate)
@@ -95,43 +95,43 @@ namespace Agrishare.API.Controllers.CMS
 
             var data = new
             {
-                activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live),
-                activeUsers = Entities.Counter.ActiveUsers(startDate, endDate), //Entities.Counter.Count(UniqueUser: true),
-                completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete),
+                activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id),
+                activeUsers = Entities.Counter.ActiveUsers(startDate, endDate, RegionId: CurrentRegion.Id), //Entities.Counter.Count(UniqueUser: true),
+                completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete, RegionId: CurrentRegion.Id),
                 totalBookingAmount,
-                totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate),
+                totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
                 agrishareCommission,
                 agentsCommission,
                 feesIncurred,
                 searchCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 matchCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.Match, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.Match, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.Match, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.Match, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 bookingCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.Book, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.Book, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.Book, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.Book, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 confirmCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.ConfirmBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 paidCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.CompletePayment, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 completeCount = new
                 {
-                    Male = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate),
-                    Female = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate)
+                    Male = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
+                    Female = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 locations = locations.Select(o => new { o.Latitude, o.Longitude }),
                 smsBalance = SMS.GetBalance(),

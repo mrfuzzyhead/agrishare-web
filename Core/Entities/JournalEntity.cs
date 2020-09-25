@@ -42,7 +42,7 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Journal> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int BookingId = 0, int UserId = 0, 
-            DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None)
+            DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -50,6 +50,9 @@ namespace Agrishare.Core.Entities
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -75,7 +78,8 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(int BookingId = 0, int UserId = 0, DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None)
+        public static int Count(int BookingId = 0, int UserId = 0, DateTime? StartDate = null, DateTime? EndDate = null, 
+            JournalType Type = JournalType.None, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -83,6 +87,9 @@ namespace Agrishare.Core.Entities
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -106,12 +113,13 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static decimal BalanceAt(DateTime Date)
+        public static decimal BalanceAt(DateTime Date, int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
                 var query = ctx.Journals.Where(o => !o.Deleted);
                 query = query.Where(o => o.Date <= Date);
+                query = query.Where(o => o.RegionId == RegionId);
                 try
                 {
                     return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
@@ -124,7 +132,7 @@ namespace Agrishare.Core.Entities
 
         }
 
-        public static decimal BalanceAt(int Id)
+        public static decimal BalanceAt(int Id, int RegionId)
         {
             if (Id == 0)
                 return 0;
@@ -133,6 +141,7 @@ namespace Agrishare.Core.Entities
             {
                 var query = ctx.Journals.Where(o => !o.Deleted);
                 query = query.Where(o => o.Id <= Id);
+                query = query.Where(o => o.RegionId == RegionId);
                 try
                 {
                     return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
@@ -158,6 +167,11 @@ namespace Agrishare.Core.Entities
                 UserId = user.Id;
             User = null;
 
+            var region = Region;
+            if (region != null)
+                RegionId = region.Id;
+            Region = null;
+
             if (Id == 0)
                 success = Add();
             else
@@ -165,6 +179,7 @@ namespace Agrishare.Core.Entities
 
             Booking = booking;
             User = user;
+            Region = region;
 
             return success;
         }
@@ -215,6 +230,7 @@ namespace Agrishare.Core.Entities
                 Title,
                 User = User?.Json(),
                 Booking = Booking?.Json(),
+                Region = Region?.Json(),
                 Amount,
                 Credit,
                 Debit,
@@ -230,7 +246,7 @@ namespace Agrishare.Core.Entities
             };
         }
 
-        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, GraphView View)
+        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, GraphView View, int RegionId)
         {
             var sql = string.Empty;
 
@@ -238,21 +254,21 @@ namespace Agrishare.Core.Entities
             {
                 sql = $@"SELECT DAY(Journals.Date) AS `Day`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
                             FROM Journals
-                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
                             GROUP BY DAY(Journals.Date), MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date), DAY(Journals.Date)";
             }
             else if (View == GraphView.Week)
             {
                 sql = $@"SELECT WEEK(Journals.Date) AS `Week`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
                             FROM Journals
-                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
                             GROUP BY WEEK(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), WEEK(Journals.Date)";
             }
             else
             {
                 sql = $@"SELECT MONTH(Journals.Date) AS `Month`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
                             FROM Journals
-                            WHERE DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
                             GROUP BY MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date)";
             }
 
@@ -280,6 +296,7 @@ namespace Agrishare.Core.Entities
     public partial class JournalImport : ImportExcel
     {
         private List<Booking> Bookings;
+        public Region Region;
 
         public JournalImport()
         {
@@ -348,7 +365,8 @@ namespace Agrishare.Core.Entities
                     Title = $"Pay out to {Row[2]} {Row[3]}",
                     TypeId = JournalType.Settlement,
                     UserId = booking.Listing.UserId,
-                    Date = DateTime.UtcNow
+                    Date = DateTime.UtcNow,
+                    Region = Region
                 }.Save();
             }
         }

@@ -139,6 +139,8 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="User" Relationship="Self.listings_ibfk_1" FromRole="Listings" ToRole="Users" />
     <NavigationProperty Name="Services" Relationship="AgrishareModel.services_ibfk_1" FromRole="Listing" ToRole="Service" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
   </EntityType>
   <EntityType Name="Log">
     <Key>
@@ -255,6 +257,8 @@
     <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
     <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
     <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="User" ToRole="BookingComment" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
   </EntityType>
   <Association Name="bookings_ibfk_1">
     <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -559,6 +563,19 @@
     <AssociationSet Name="bookingtags_ibfk_2" Association="AgrishareModel.bookingtags_ibfk_2">
       <End Role="Tag" EntitySet="Tags" />
       <End Role="BookingTag" EntitySet="BookingTags" />
+    </AssociationSet>
+    <EntitySet Name="Regions" EntityType="AgrishareModel.Region" />
+    <AssociationSet Name="journals_ibfk_3" Association="AgrishareModel.journals_ibfk_3">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="Journal" EntitySet="Journals" />
+    </AssociationSet>
+    <AssociationSet Name="listings_ibfk_3" Association="AgrishareModel.listings_ibfk_3">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="Listing" EntitySet="Listings" />
+    </AssociationSet>
+    <AssociationSet Name="users_ibfk_2" Association="AgrishareModel.users_ibfk_2">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="User" EntitySet="Users" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
@@ -912,6 +929,8 @@
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
     <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
     <Property Name="Date" Type="DateTime" Nullable="false" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
   </EntityType>
   <Association Name="journals_ibfk_2">
     <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -1260,4 +1279,50 @@
     <Member Name="Exported" Value="3" />
     <Member Name="Settled" Value="4" />
   </EnumType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="journals_ibfk_3">
+    <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="AgrishareModel.Journal" Role="Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Journal">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="listings_ibfk_3">
+    <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="AgrishareModel.Listing" Role="Listing" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Listing">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="users_ibfk_2">
+    <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="AgrishareModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

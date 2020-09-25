@@ -114,6 +114,8 @@ var agrishareApp =
         })
         .config(["$httpProvider", function ($httpProvider) {
 
+            $httpProvider.defaults.withCredentials = true;
+
             //var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+\+[\d]{2}:[\d]{2})?$/;
             var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+)?(\+[\d]{2}:[\d]{2})?([Z])?$/;
 

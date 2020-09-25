@@ -201,10 +201,14 @@
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingCommentEntity.cs" />
+    <Compile Include="Entities\Region.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Tag.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingTagEntity.cs" />
+    <Compile Include="Entities\RegionEntity.cs" />
     <Compile Include="Entities\TagEntity.cs" />
     <Compile Include="Entities\Supplier.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>

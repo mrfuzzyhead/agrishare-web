@@ -105,6 +105,7 @@
     <EntitySetMapping Name="Listings">
       <EntityTypeMapping TypeName="AgrishareModel.Listing">
         <MappingFragment StoreEntitySet="Listings">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="AvailableWithFuel" ColumnName="AvailableWithFuel" />
           <ScalarProperty Name="AvailableWithoutFuel" ColumnName="AvailableWithoutFuel" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
@@ -216,6 +217,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
           <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
           <ScalarProperty Name="AgentId" ColumnName="AgentId" />
@@ -327,6 +329,7 @@
     <EntitySetMapping Name="Journals">
       <EntityTypeMapping TypeName="AgrishareModel.Journal">
         <MappingFragment StoreEntitySet="Journals">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
@@ -454,6 +457,17 @@
     <EntitySetMapping Name="Tags">
       <EntityTypeMapping TypeName="AgrishareModel.Tag">
         <MappingFragment StoreEntitySet="Tags">
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Regions">
+      <EntityTypeMapping TypeName="AgrishareModel.Region">
+        <MappingFragment StoreEntitySet="Regions">
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

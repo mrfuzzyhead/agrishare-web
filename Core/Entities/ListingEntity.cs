@@ -48,7 +48,11 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Listings.Include(o => o.Services).Include(o => o.User).Where(o => o.Deleted == Deleted);
+                var query = ctx.Listings
+                    .Include(o => o.Region)
+                    .Include(o => o.Services)
+                    .Include(o => o.User)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -58,17 +62,23 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Listing> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", 
-            string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, bool Deleted = false)
+            string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, 
+            bool Deleted = false, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Listings.Where(o => o.Deleted == Deleted);
+                var query = ctx.Listings
+                    .Include(o => o.Region)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
 
                 if (!StartsWith.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().StartsWith(Keywords.ToLower()));
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -83,7 +93,8 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, bool Deleted = false)
+        public static int Count(string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, 
+            ListingStatus Status = ListingStatus.None, bool Deleted = false, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -98,6 +109,9 @@ namespace Agrishare.Core.Entities
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
 
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
+
                 if (CategoryId > 0)
                     query = query.Where(o => o.CategoryId == CategoryId);
 
@@ -108,19 +122,22 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude, List<int> CategoryIds)
+        public static List<Listing> MapList(double NorthEastLatitude, double NorthEastLongitude, double SouthWestLatitude, double SouthWestLongitude, 
+            List<int> CategoryIds, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
                 var sql = $"SELECT *, Photos AS PhotoPaths FROM Listings WHERE Listings.Deleted = 0 AND (Latitude BETWEEN {SouthWestLatitude} AND {NorthEastLatitude}) ";
                 if (NorthEastLongitude < SouthWestLongitude)
-                    sql += $"AND NOT (Longitude BETWEEN {NorthEastLongitude} AND {SouthWestLongitude})";
+                    sql += $"AND NOT (Longitude BETWEEN {NorthEastLongitude} AND {SouthWestLongitude}) ";
                 else
-                    sql += $"AND (Longitude BETWEEN {SouthWestLongitude} AND {NorthEastLongitude})";
+                    sql += $"AND (Longitude BETWEEN {SouthWestLongitude} AND {NorthEastLongitude}) ";
                 if (CategoryIds.Count > 0)
-                    sql += $"AND Listings.CategoryId IN ({String.Join(",", CategoryIds)})";
+                    sql += $"AND Listings.CategoryId IN ({String.Join(",", CategoryIds)}) ";
                 else
-                    sql += $"AND Listings.CategoryId = -1";
+                    sql += $"AND Listings.CategoryId = -1 ";
+                if (RegionId > 0)
+                    sql += $"AND Listings.RegionId = {RegionId} ";
 
                 return ctx.Database.SqlQuery<Listing>(sql).ToList();
             }
@@ -143,17 +160,22 @@ namespace Agrishare.Core.Entities
                 CategoryId = category.Id;
             Category = null;
 
+            var region = Region;
+            if (region != null)
+                RegionId = region.Id;
+            Region = null;
+
             if (Id == 0)
                 success = Add();
             else
                 success = Update();
 
             Category = category;
+            Region = region;
             User = user;
 
             if (success)
             {
-
                 var current = Service.List(ListingId: Id);
                 var remove = current.Where(e => !services.Any(s => s.Id == e.Id));
                 foreach (var item in remove)
@@ -207,6 +229,7 @@ namespace Agrishare.Core.Entities
                 Id,
                 UserId,
                 Category = Category?.Json(),
+                Region = Region?.Json(),
                 Title,
                 Description,
                 Location,
@@ -235,7 +258,7 @@ namespace Agrishare.Core.Entities
 
         /* Reports */
 
-        public static List<ListingData> Graph(DateTime StartDate, DateTime EndDate, int CategoryId = 0)
+        public static List<ListingData> Graph(DateTime StartDate, DateTime EndDate, int CategoryId = 0, int RegionId = 0)
         {
             var sql = $@"SELECT MONTH(Listings.DateCreated) AS `Month`, YEAR(Listings.DateCreated) AS `Year`, COUNT(Listings.Id) AS 'Count' 
                             FROM Listings
@@ -245,6 +268,9 @@ namespace Agrishare.Core.Entities
 
             if (CategoryId > 0)
                 sql += $"AND Listings.CategoryId = {CategoryId} ";
+
+            if (RegionId > 0)
+                sql += $"AND Listings.RegionId = {RegionId} ";
 
             sql += $@"GROUP BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) ORDER BY MONTH(Listings.DateCreated), YEAR(Listings.DateCreated) LIMIT 6";
 
