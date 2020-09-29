@@ -33,15 +33,15 @@
                         </small>
                     </div>
                     <div style="width: 100px; text-align: right">
-                        <span ng-if="item.Debit>0">{{item.Debit | currency}}</span><br />
+                        <span ng-if="item.Debit>0">{{item.Debit | currency : app.region.Currency}}</span><br />
                         <small>&nbsp;</small>
                     </div>
                     <div style="width: 100px; text-align: right">
-                        <span ng-if="item.Credit>0">{{item.Credit | currency}}</span><br />
+                        <span ng-if="item.Credit>0">{{item.Credit | currency : app.region.Currency}}</span><br />
                         <small>&nbsp;</small>
                     </div>
                     <div style="width: 100px; text-align: right">
-                        <strong>{{item.Balance | currency}}</strong><br />
+                        <strong>{{item.Balance | currency : app.region.Currency}}</strong><br />
                         <small>&nbsp;</small>
                     </div>
                 </row>

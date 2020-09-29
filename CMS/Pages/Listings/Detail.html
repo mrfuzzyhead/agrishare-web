@@ -103,11 +103,11 @@
                     </li>
                     <li>
                         <strong>Fuel Price</strong>
-                        <span>{{service.FuelPrice | currency}}</span>
+                        <span>{{service.FuelPrice | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Price / Quantity Unit</strong>
-                        <span>{{service.PricePerQuantityUnit | currency}}</span>
+                        <span>{{service.PricePerQuantityUnit | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Time / Quantity Unit</strong>
@@ -119,7 +119,7 @@
                     </li>
                     <li>
                         <strong>Price / Distance Unit</strong>
-                        <span>{{service.PricePerDistanceUnit | currency}}</span>
+                        <span>{{service.PricePerDistanceUnit | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Total Volume</strong>

@@ -15,8 +15,8 @@
                         <em class="status outline">{{detail.entity.Status}}</em>
                     </div>
                     <div>
-                        <strong>{{detail.entity.Price | currency}}</strong><br />
-                        <small>{{detail.entity.AgriShareCommission | currency}}</small>
+                        <strong>{{detail.entity.Price | currency : app.region.Currency}}</strong><br />
+                        <small>{{detail.entity.AgriShareCommission | currency : app.region.Currency}}</small>
                     </div>
                 </div>
 
@@ -111,23 +111,23 @@
                 <ul class="details">
                     <li>
                         <strong>Hire Cost</strong>
-                        <span>{{detail.entity.HireCost | currency}}</span>
+                        <span>{{detail.entity.HireCost | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Fuel Cost</strong>
-                        <span>{{detail.entity.FuelCost | currency}}</span>
+                        <span>{{detail.entity.FuelCost | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Transport Cost</strong>
-                        <span>{{detail.entity.TransportCost | currency}}</span>
+                        <span>{{detail.entity.TransportCost | currency : app.region.Currency}}</span>
                     </li>
                     <li ng-if="detail.entity.Voucher">
                         <strong>Voucher: {{detail.entity.Voucher.Title}}</strong>
-                        <span>({{detail.entity.VoucherTotal | currency}})</span>
+                        <span>({{detail.entity.VoucherTotal | currency : app.region.Currency}})</span>
                     </li>
                     <li style="background-color: #fafafa">
                         <strong>Total</strong>
-                        <span>{{detail.entity.Price | currency}}</span>
+                        <span>{{detail.entity.Price | currency : app.region.Currency}}</span>
                     </li>
                 </ul>
 
@@ -139,7 +139,7 @@
                 <ul class="details">
                     <li>
                         <strong>Amount</strong>
-                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency : app.region.Currency}}</span>
                     </li>
                     <li style="align-items: center">
                         <strong>Status</strong>
@@ -165,35 +165,35 @@
                 <ul class="details">
                     <li>
                         <strong>Supplier Fee</strong>
-                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency : app.region.Currency}}</span>
                     </li>
                     <li ng-if="detail.entity.AgentCommission">
                         <strong>AgriShare Commission ({{1 - detail.entity.AgentCommission | percent}})</strong>
-                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) | currency : app.region.Currency}}</span>
                     </li>
                     <li ng-if="detail.entity.AgentCommission">
                         <strong>Agent Commission ({{detail.entity.AgentCommission | percent}})</strong>
-                        <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency : app.region.Currency}}</span>
                     </li>
                     <li ng-if="!detail.entity.AgentCommission">
                         <strong>AgriShare Commission ({{detail.entity.Commission | percent : 2}})</strong>
-                        <span>{{detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> SMS Costs ({{detail.entity.SMSCount}})</strong>
-                        <span>{{detail.entity.SMSCost | currency}}</span>
+                        <span>{{detail.entity.SMSCost | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> IMTT</strong>
-                        <span>{{detail.entity.IMTT | currency}}</span>
+                        <span>{{detail.entity.IMTT | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> Transaction Fee</strong>
-                        <span>{{detail.entity.TransactionFee | currency}}</span>
+                        <span>{{detail.entity.TransactionFee | currency : app.region.Currency}}</span>
                     </li>
                     <li>
                         <strong>Profit</strong>
-                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) - detail.entity.SMSCost - detail.entity.IMTT - detail.entity.TransactionFee | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) - detail.entity.SMSCost - detail.entity.IMTT - detail.entity.TransactionFee | currency : app.region.Currency}}</span>
                     </li>
                 </ul>
 
@@ -205,7 +205,7 @@
                 <ul class="transactions">
                     <li ng-repeat="item in detail.data.Transactions">
                         <strong>
-                            {{item.Amount | currency}}<br />
+                            {{item.Amount | currency : app.region.Currency}}<br />
                             <small>{{item.BookingUser.Name}} &bull; {{item.BookingUser.Telephone}}</small>
                         </strong>
                         <span>
