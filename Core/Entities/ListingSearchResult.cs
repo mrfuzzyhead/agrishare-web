@@ -147,7 +147,7 @@ namespace Agrishare.Core.Entities
 
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, 
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude, 
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "")
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0)
         {
             var sort = ListingSearchResultSort.Distance;
             try { sort = (ListingSearchResultSort)Enum.Parse(typeof(ListingSearchResultSort), Sort); }
@@ -244,6 +244,7 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine("FROM Listings");
                 sql.AppendLine("INNER JOIN Services ON Listings.Id = Services.ListingId");
                 sql.AppendLine("WHERE Listings.Deleted = 0 AND Services.Deleted = 0 AND Listings.StatusId = 1");
+                sql.AppendLine($"AND Listings.RegionId = {RegionId}");
                 sql.AppendLine($"AND Listings.CategoryId = {CategoryId}");
                 sql.AppendLine($"AND Services.Mobile = {SQL.Safe(Mobile)}");
                 sql.AppendLine($"AND Services.CategoryId = {ServiceId}");

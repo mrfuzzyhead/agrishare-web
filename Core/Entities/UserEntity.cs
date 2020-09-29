@@ -568,7 +568,10 @@ namespace Agrishare.Core.Entities
         public bool UniqueTelephone()
         {
             using (var ctx = new AgrishareEntities())
-                return ctx.Users.Count(o => !o.Deleted && o.Id != Id && o.Telephone == Telephone) == 0;
+            {
+                var regionId = Region?.Id ?? RegionId;
+                return ctx.Users.Count(o => !o.Deleted && o.Id != Id && o.Telephone == Telephone && o.RegionId == regionId) == 0;
+            }
         }
 
         public bool UniqueEmailAddress()

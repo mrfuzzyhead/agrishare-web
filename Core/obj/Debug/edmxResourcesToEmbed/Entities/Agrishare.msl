@@ -468,6 +468,7 @@
     <EntitySetMapping Name="Regions">
       <EntityTypeMapping TypeName="AgrishareModel.Region">
         <MappingFragment StoreEntitySet="Regions">
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

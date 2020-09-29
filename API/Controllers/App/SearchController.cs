@@ -20,7 +20,7 @@ namespace Agrishare.API.Controllers.App
         {
             Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
-            var list = ListingSearchResult.List(PageIndex, PageSize, Sort, CategoryId, ServiceId, Latitude, Longitude, StartDate, Size, IncludeFuel, Mobile, For, DestinationLatitude, DestinationLongitude, TotalVolume, 0, Keywords);
+            var list = ListingSearchResult.List(PageIndex, PageSize, Sort, CategoryId, ServiceId, Latitude, Longitude, StartDate, Size, IncludeFuel, Mobile, For, DestinationLatitude, DestinationLongitude, TotalVolume, 0, Keywords, CurrentUser.RegionId);
 
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);

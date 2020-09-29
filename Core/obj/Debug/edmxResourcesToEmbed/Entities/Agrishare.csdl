@@ -1288,6 +1288,7 @@
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <Property Name="Currency" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="journals_ibfk_3">
     <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />

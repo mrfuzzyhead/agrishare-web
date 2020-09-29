@@ -66,7 +66,8 @@ namespace Agrishare.API.Controllers.App
                 StatusId = Entities.ListingStatus.Live,
                 Title = Model.Title,
                 UserId = CurrentUser.Id,
-                Year = Model.Year
+                Year = Model.Year,
+                Region = CurrentUser.Region
             };
 
             listing.Services = new List<Entities.Service>();

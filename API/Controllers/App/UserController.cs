@@ -36,7 +36,7 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            var user = new Entities.User
+            var user = new User
             {
                 FirstName = User.FirstName,
                 LastName = User.LastName,
@@ -45,8 +45,17 @@ namespace Agrishare.API.Controllers.App
                 DateOfBirth = User.DateOfBirth,
                 GenderId = User.GenderId,
                 ClearPassword = User.PIN,
-                LanguageId = User.LanguageId ?? Entities.Language.English
+                LanguageId = User.LanguageId ?? Language.English
             };
+
+            try
+            {
+                user.Region = Region.Find(User.RegionId.Value);
+            }
+            catch
+            {
+                user.Region = Region.Find((int)Regions.Zimbabwe);
+            }
 
             if (!Regex.IsMatch(user.Telephone, @"^07[\d]{8}"))
                 return Error($"{user.Telephone} is not a valid cell number. The number should start with 07 and contain 10 digits.");
@@ -57,9 +66,9 @@ namespace Agrishare.API.Controllers.App
             if (!user.EmailAddress.IsEmpty() && !user.UniqueEmailAddress())
                 return Error($"{user.EmailAddress} has already been registered");
 
-            user.RoleList = $"{Entities.Role.User}";
+            user.RoleList = $"{Role.User}";
             user.NotificationPreferences = (int)Entities.NotificationPreferences.PushNotifications + (int)Entities.NotificationPreferences.SMS + (int)Entities.NotificationPreferences.BulkSMS;
-            user.StatusId = Entities.UserStatus.Pending;
+            user.StatusId = UserStatus.Pending;
 
             if (!Entities.User.VerificationRequired)
             {
@@ -70,7 +79,7 @@ namespace Agrishare.API.Controllers.App
 
             if (user.Save())
             {
-                Entities.Counter.Hit(CurrentUser.Id, Entities.Counters.Register);
+                Counter.Hit(CurrentUser.Id, Counters.Register);
 
                 if (Entities.User.VerificationRequired)
                 {
@@ -228,6 +237,15 @@ namespace Agrishare.API.Controllers.App
             CurrentUser.DateOfBirth = User.DateOfBirth;
             CurrentUser.GenderId = User.GenderId;
             CurrentUser.LanguageId = User.LanguageId ?? Entities.Language.English;
+
+            try
+            {
+                CurrentUser.Region = Region.Find(User.RegionId.Value);
+            }
+            catch
+            {
+                CurrentUser.Region = Region.Find((int)Regions.Zimbabwe);
+            }
 
             if (newTelephone)
                 CurrentUser.StatusId = Entities.UserStatus.Pending;

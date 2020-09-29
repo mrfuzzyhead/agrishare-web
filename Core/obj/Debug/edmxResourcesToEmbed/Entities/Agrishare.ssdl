@@ -284,6 +284,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="varchar" MaxLength="64" />
+    <Property Name="Currency" Type="varchar" MaxLength="8" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />

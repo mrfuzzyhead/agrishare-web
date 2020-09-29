@@ -5,6 +5,7 @@
  */
 
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -48,10 +49,15 @@ namespace Agrishare.API
         {
             get
             {
-                if (!Request.Properties.TryGetValue("CurrentRegion", out object currentRegion))
-                    return Entities.Region.Find(Id: 1);
-                else
-                    return (Entities.Region)currentRegion;
+                Region region = null;
+
+                if (Request.Properties.TryGetValue("CurrentRegion", out object currentRegion))
+                    region = (Region)currentRegion;
+
+                if (region == null)
+                    region = Region.Find(Id: (int)Regions.Zimbabwe);
+
+                return region;
             }
         }
 

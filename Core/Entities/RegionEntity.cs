@@ -10,6 +10,12 @@ using System.Web;
 
 namespace Agrishare.Core.Entities
 {
+    public enum Regions: int
+    {
+        Zimbabwe = 1,
+        Uganda = 2
+    }
+
     public partial class Region : IEntity
     {
         public static string DefaultSort = "Title";
@@ -111,7 +117,8 @@ namespace Agrishare.Core.Entities
             return new
             {
                 Id,
-                Title
+                Title,
+                Currency
             };
         }
 
