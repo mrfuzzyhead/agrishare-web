@@ -21,9 +21,16 @@ agrishareApp.controller('FormViewController', function ($attrs, $controller, $ht
         form.loading = true;
         App.status = "Loading...";
 
-        var url = form.apiUrl + 'find';
+        var url = form.apiUrl + 'find?';
         if ($scope.entityId)
-            url += '?Id=' + $scope.entityId;
+            url += 'Id=' + $scope.entityId + '&';
+
+        var qs = $location.search();
+        for (var key in qs)
+            if (key !== 'return')
+                url += key + '=' + qs[key] + '&';
+
+        url = url.replace(/&$/gi, '');
 
         $http({
             url: url,

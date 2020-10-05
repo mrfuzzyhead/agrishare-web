@@ -136,6 +136,7 @@
     <Compile Include="Controllers\App\ConfigController.cs" />
     <Compile Include="Controllers\App\VouchersController.cs" />
     <Compile Include="Controllers\CMS\RegionsController.cs" />
+    <Compile Include="Controllers\CMS\SupplierServicesController.cs" />
     <Compile Include="Controllers\CMS\TagsController.cs" />
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Controllers\CMS\TemplatesController.cs" />
     <Compile Include="Controllers\CMS\FaqsController.cs" />
     <Compile Include="Controllers\CMS\SmsController.cs" />
+    <Compile Include="Controllers\CMS\SuppliersController.cs" />
     <Compile Include="Controllers\CMS\VouchersController.cs" />
     <Compile Include="Controllers\CMS\UsersController.cs" />
     <Compile Include="Controllers\App\NotificationsController.cs" />

@@ -577,6 +577,10 @@
       <End Role="Region" EntitySet="Regions" />
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
+    <AssociationSet Name="suppliers_ibfk_1" Association="AgrishareModel.suppliers_ibfk_1">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="Supplier" EntitySet="Suppliers" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -1089,11 +1093,13 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-    <Property Name="Logo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="LogoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="SupplierServices" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="Supplier" ToRole="SupplierService" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Region" Relationship="AgrishareModel.suppliers_ibfk_1" FromRole="Supplier" ToRole="Region" />
   </EntityType>
   <EntityType Name="SupplierService">
     <Key>
@@ -1104,13 +1110,13 @@
     <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
     <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
     <Property Name="Cost" Type="Decimal" Nullable="false" />
-    <Property Name="Photo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="PhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="Stock" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Bookings" Relationship="AgrishareModel.bookings_ibfk_5" FromRole="SupplierService" ToRole="Booking" />
     <NavigationProperty Name="Supplier" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="SupplierService" ToRole="Supplier" />
-    <Property Name="Stock" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="UserVoucher">
     <Key>
@@ -1322,6 +1328,18 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="User">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="suppliers_ibfk_1">
+    <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Supplier">
         <PropertyRef Name="RegionId" />
       </Dependent>
     </ReferentialConstraint>

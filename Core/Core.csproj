@@ -204,6 +204,7 @@
     <Compile Include="Entities\Region.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\SupplierServiceEntity.cs" />
     <Compile Include="Entities\Tag.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -219,6 +220,7 @@
     <Compile Include="Entities\UserVoucher.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\SupplierEntity.cs" />
     <Compile Include="Entities\VoucherEntity.cs" />
     <Compile Include="Entities\FeeType.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>

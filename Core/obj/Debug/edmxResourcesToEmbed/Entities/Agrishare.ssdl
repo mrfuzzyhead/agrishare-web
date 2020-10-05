@@ -317,6 +317,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RegionId" Type="int" Nullable="false" />
     <Property Name="Title" Type="varchar" MaxLength="128" />
     <Property Name="Logo" Type="varchar" MaxLength="1024" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -842,6 +843,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="suppliers_ibfk_1">
+    <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+    <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Regions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Suppliers">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="supplierservices_ibfk_1">
     <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -1080,6 +1093,10 @@
     <AssociationSet Name="services_ibfk_2" Association="Self.services_ibfk_2">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="Services" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="suppliers_ibfk_1" Association="Self.suppliers_ibfk_1">
+      <End Role="Regions" EntitySet="Regions" />
+      <End Role="Suppliers" EntitySet="Suppliers" />
     </AssociationSet>
     <AssociationSet Name="supplierservices_ibfk_1" Association="Self.supplierservices_ibfk_1">
       <End Role="Suppliers" EntitySet="Suppliers" />

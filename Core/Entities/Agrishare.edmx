@@ -322,6 +322,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="128" />
           <Property Name="Logo" Type="varchar" MaxLength="1024" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -847,6 +848,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="suppliers_ibfk_1">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Suppliers">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="supplierservices_ibfk_1">
           <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1085,6 +1098,10 @@
           <AssociationSet Name="services_ibfk_2" Association="Self.services_ibfk_2">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="suppliers_ibfk_1" Association="Self.suppliers_ibfk_1">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Suppliers" EntitySet="Suppliers" />
           </AssociationSet>
           <AssociationSet Name="supplierservices_ibfk_1" Association="Self.supplierservices_ibfk_1">
             <End Role="Suppliers" EntitySet="Suppliers" />
@@ -1696,6 +1713,10 @@
             <End Role="Region" EntitySet="Regions" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="suppliers_ibfk_1" Association="AgrishareModel.suppliers_ibfk_1">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="Supplier" EntitySet="Suppliers" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rating">
           <Key>
@@ -2208,11 +2229,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Logo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="LogoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="SupplierServices" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="Supplier" ToRole="SupplierService" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="AgrishareModel.suppliers_ibfk_1" FromRole="Supplier" ToRole="Region" />
         </EntityType>
         <EntityType Name="SupplierService">
           <Key>
@@ -2223,13 +2246,13 @@
           <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="Cost" Type="Decimal" Nullable="false" />
-          <Property Name="Photo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="PhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Bookings" Relationship="AgrishareModel.bookings_ibfk_5" FromRole="SupplierService" ToRole="Booking" />
           <NavigationProperty Name="Supplier" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="SupplierService" ToRole="Supplier" />
-          <Property Name="Stock" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="UserVoucher">
           <Key>
@@ -2441,6 +2464,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="User">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="suppliers_ibfk_1">
+          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Supplier">
               <PropertyRef Name="RegionId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2842,10 +2877,11 @@
           <EntitySetMapping Name="Suppliers">
             <EntityTypeMapping TypeName="AgrishareModel.Supplier">
               <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="LogoPath" ColumnName="Logo" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -2858,7 +2894,7 @@
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="PhotoPath" ColumnName="Photo" />
                 <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

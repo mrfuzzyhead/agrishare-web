@@ -392,10 +392,11 @@
     <EntitySetMapping Name="Suppliers">
       <EntityTypeMapping TypeName="AgrishareModel.Supplier">
         <MappingFragment StoreEntitySet="Suppliers">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-          <ScalarProperty Name="Logo" ColumnName="Logo" />
+          <ScalarProperty Name="LogoPath" ColumnName="Logo" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -408,7 +409,7 @@
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="PhotoPath" ColumnName="Photo" />
           <ScalarProperty Name="Cost" ColumnName="Cost" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Title" ColumnName="Title" />
