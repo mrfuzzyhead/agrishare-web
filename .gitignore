@@ -6,3 +6,11 @@
 /CDN
 CMS/obj/
 Web/obj/Release/build.force
+API/bin/
+API/obj/
+CMS/bin/
+Core/bin/
+Core/obj/
+packages/
+Web/bin/
+Web/obj/
