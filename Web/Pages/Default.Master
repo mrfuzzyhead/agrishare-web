@@ -10,6 +10,16 @@
     <title>AgriShare</title>    
     <meta name="viewport" content="width=device-width" />
     <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6FC12KLCM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('consent', 'default', { 'ad_storage': 'denied', 'analytics_storage': 'denied' });
+        gtag('config', 'G-J6FC12KLCM');
+    </script>
 </head>
 <body id="Body" runat="server" ng-controller="AppController">
     <form id="form1" runat="server">
@@ -59,6 +69,54 @@
                 </p>
             </div>
         </footer>
+
+        <div class="cookie-consent" id="cookieConsent">
+            <p>This site would like to use cookies to measure and improve performance. <a href="/about/privacy#cookies">Learn more</a></p>
+            <p>
+                <a onclick="allowCookies()" class="allow">Allow</a>
+                <a onclick="denyCookies()" class="deny">Deny</a>
+            </p>
+            <p><em>Note: if you login to AgriShare an authentication cookie will be stored in your browser - this is required for the website to work. 
+                You can change your preferences on the <a href="/about/privacy#cookies">privacy</a> page.</em></p>
+        </div>
+
+        <script>
+
+            function setCookie (name, value, days) {
+                var date = new Date(); date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value + '; expires=' + date.toGMTString() + '; path=/; domain=.agrishare.app';
+            }
+            function getCookie (name) {
+                var nameEQ = name + "="; var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i]; while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+            function deleteCookie (name) { setCookie(name, "", -1); }
+
+            var cookieConsentName = "cookie_consent";
+            function allowCookies() {
+                setCookie(cookieConsentName, 'allow', 365);
+                gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                document.getElementById('cookieConsent').style.display = 'none';
+            }            
+            function denyCookies() {
+                setCookie(cookieConsentName, 'deny', 365);
+                gtag('consent', 'update', { 'analytics_storage': 'denied' });
+                document.getElementById('cookieConsent').style.display = 'none';
+                deleteCookie('_ga');
+                deleteCookie('_ga_J6FC12KLCM');
+            }       
+            function chooseCookies() {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }
+            var consentCookie = getCookie(cookieConsentName);
+            if (!consentCookie) chooseCookies();
+            else if (consentCookie === 'allow') gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            
+        </script>
 
     </form>
 </body>
