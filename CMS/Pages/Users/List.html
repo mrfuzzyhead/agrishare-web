@@ -43,10 +43,10 @@
         </div>
 
         <div class="filter-view">
-            <gl-dropdown-list gl-placeholder="View" ng-model="list.filter.View" gl-source="list.response.Views" gl-selection="Id"></gl-dropdown-list>
-            <gl-dropdown-list gl-placeholder="Gender" ng-model="list.filter.Gender" gl-source="list.response.Genders" gl-selection="Id"></gl-dropdown-list>
-            <gl-date gl-placeholder="From" ng-model="list.filter.StartDate"></gl-date>
-            <gl-date gl-placeholder="To" ng-model="list.filter.EndDate"></gl-date>
+            <gl-dropdown-list gl-placeholder="View" ng-model="list.filter.view" gl-source="list.response.Views" gl-selection="Id"></gl-dropdown-list>
+            <gl-dropdown-list gl-placeholder="Gender" ng-model="list.filter.gender" gl-source="list.response.Genders" gl-selection="Id"></gl-dropdown-list>
+            <gl-date gl-placeholder="From" ng-model="list.filter.startdate"></gl-date>
+            <gl-date gl-placeholder="To" ng-model="list.filter.enddate"></gl-date>
         </div>
 
         <gl-list gl-controller="list" gl-infinite="list.next()">

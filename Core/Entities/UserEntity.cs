@@ -241,8 +241,66 @@ namespace Agrishare.Core.Entities
                             counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
+                    case UserFilterView.CompletedSearchNoMatch:
+                    case UserFilterView.MatchedSearchNoBooking:
+
+                        var counter3 = ctx.Counters.Include(c => c.User.Agent);
+
+                        if (FilterStartDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated <= FilterEndDate);
+
+                        var searchEvent = $"{Counters.Search}".ExplodeCamelCase();
+                        var matchEvent = $"{Counters.Match}".ExplodeCamelCase();
+                        var bookEvent = $"{Counters.Book}".ExplodeCamelCase();
+
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearchNoMatch:
+                                counter3 = counter3.Where(c => c.Event == searchEvent || c.Event == matchEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == matchEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+
+                            case UserFilterView.MatchedSearchNoBooking:
+                                counter3 = counter3.Where(c => c.Event == matchEvent || c.Event == bookEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == bookEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+                        }
+
+                        break;
+
+                    case UserFilterView.CompletedSearch:
+                    case UserFilterView.MatchedSearch:
+                    case UserFilterView.MadeBooking:
+                    case UserFilterView.BookingConfirmed:
+                    case UserFilterView.PaidBooking:
                     case UserFilterView.CompletedBooking:
-                        var eventName = $"{Counters.CompleteBooking}";
+
+                        var eventName = "";
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearch: eventName = $"{Counters.Search}".ExplodeCamelCase(); break;
+                            case UserFilterView.MatchedSearch: eventName = $"{Counters.Match}".ExplodeCamelCase(); break;
+                            case UserFilterView.MadeBooking: eventName = $"{Counters.Book}".ExplodeCamelCase(); break;
+                            case UserFilterView.BookingConfirmed: eventName = $"{Counters.ConfirmBooking}".ExplodeCamelCase(); break;
+                            case UserFilterView.PaidBooking: eventName = $"{Counters.CompletePayment}".ExplodeCamelCase(); break;
+                            case UserFilterView.CompletedBooking: eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase(); break;
+                        }
+
                         var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
                         if (FilterStartDate.HasValue)
                             counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
@@ -250,6 +308,7 @@ namespace Agrishare.Core.Entities
                             counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
                     case UserFilterView.EquipmentOwner:
                         var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
                         if (FilterStartDate.HasValue)
@@ -313,8 +372,66 @@ namespace Agrishare.Core.Entities
                             counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
+                    case UserFilterView.CompletedSearchNoMatch:
+                    case UserFilterView.MatchedSearchNoBooking:
+
+                        var counter3 = ctx.Counters.Include(c => c.User.Agent);
+
+                        if (FilterStartDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated <= FilterEndDate);
+
+                        var searchEvent = $"{Counters.Search}".ExplodeCamelCase();
+                        var matchEvent = $"{Counters.Match}".ExplodeCamelCase();
+                        var bookEvent = $"{Counters.Book}".ExplodeCamelCase();
+
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearchNoMatch:
+                                counter3 = counter3.Where(c => c.Event == searchEvent || c.Event == matchEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == matchEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+
+                            case UserFilterView.MatchedSearchNoBooking:
+                                counter3 = counter3.Where(c => c.Event == matchEvent || c.Event == bookEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == bookEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+                        }
+
+                        break;
+
+                    case UserFilterView.CompletedSearch:
+                    case UserFilterView.MatchedSearch:
+                    case UserFilterView.MadeBooking:
+                    case UserFilterView.BookingConfirmed:
+                    case UserFilterView.PaidBooking:
                     case UserFilterView.CompletedBooking:
-                        var eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase();
+
+                        var eventName = "";
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearch: eventName = $"{Counters.Search}".ExplodeCamelCase(); break;
+                            case UserFilterView.MatchedSearch: eventName = $"{Counters.Match}".ExplodeCamelCase(); break;
+                            case UserFilterView.MadeBooking: eventName = $"{Counters.Book}".ExplodeCamelCase(); break;
+                            case UserFilterView.BookingConfirmed: eventName = $"{Counters.ConfirmBooking}".ExplodeCamelCase(); break;
+                            case UserFilterView.PaidBooking: eventName = $"{Counters.CompletePayment}".ExplodeCamelCase(); break;
+                            case UserFilterView.CompletedBooking: eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase(); break;
+                        }
+
                         var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
                         if (FilterStartDate.HasValue)
                             counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
@@ -322,6 +439,7 @@ namespace Agrishare.Core.Entities
                             counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
                     case UserFilterView.EquipmentOwner:
                         var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
                         if (FilterStartDate.HasValue)
@@ -613,16 +731,66 @@ namespace Agrishare.Core.Entities
         }
 
         #endregion
+
+        public static List<AgeGenderData> GetAgeGenderData(int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var sql = $@"SELECT 
+	                            CASE 
+                                WHEN Age IS NULL THEN 0
+	                            WHEN Age <= 17 THEN 0
+	                            WHEN Age BETWEEN 18 AND 24 THEN 1
+	                            WHEN Age BETWEEN 25 AND 34 THEN 2
+	                            WHEN Age BETWEEN 35 AND 44 THEN 3
+	                            WHEN Age BETWEEN 45 AND 54 THEN 4
+	                            WHEN Age BETWEEN 55 AND 64 THEN 5
+	                            WHEN Age >= 65 THEN 6
+	                            END AS AgeRangeIndex,
+	                            GenderId AS Gender,
+	                            IFNULL(COUNT(GenderId), 0) AS `Count`
+                            FROM (SELECT FLOOR(DATEDIFF(NOW(), DateOfBirth) / 365) AS Age, GenderId FROM Users WHERE RegionId = {RegionId}) AS `Data`                    
+                            GROUP BY AgeRangeIndex, GenderId";
+
+                return ctx.Database.SqlQuery<AgeGenderData>(sql).ToList();
+            }
+        }
+
+        public class AgeGenderData
+        {
+            public string AgeRange => AgeRanges[AgeRangeIndex];
+            public int AgeRangeIndex { get; set; }
+            public Gender Gender { get; set; }
+            public int Count { get; set; }
+
+            public static List<string> AgeRanges = new List<string>
+        {
+            "13 - 17",
+            "18 - 24",
+            "25 - 34",
+            "35 - 44",
+            "45 - 54",
+            "55 - 64",
+            "65 - 99"
+        };
+        }
     }
 
     public enum UserFilterView
     {
         All = 0,
-        Active = 1,
-        CompletedBooking = 2,
-        EquipmentOwner = 3,
+        Active = 21,
+        EquipmentOwner = 22,
         Agent = 4,
-        Administrator = 5
+        Administrator = 5,
+        CompletedSearch = 11,
+        MatchedSearch = 12,
+        MadeBooking = 13,
+        BookingConfirmed = 14,
+        PaidBooking = 15,
+        CompletedBooking = 16,
+        MatchedSearchNoBooking = 51,
+        CompletedSearchNoMatch = 52
     }
 
 }

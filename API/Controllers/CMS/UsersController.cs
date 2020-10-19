@@ -31,7 +31,7 @@ namespace Agrishare.API.Controllers.CMS
             int recordCount = 0;
             List<User> list = new List<User>();
 
-            if (Filter.View == UserFilterView.Active || Filter.View == UserFilterView.CompletedBooking || Filter.View == UserFilterView.EquipmentOwner)
+            if ((int)Filter.View > 10)
             {
                 recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
                 list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
@@ -61,12 +61,19 @@ namespace Agrishare.API.Controllers.CMS
 
             var Views = new List<EnumDescriptor>
             {
-                new EnumDescriptor{ Id = 0, Title = "All" },
-                new EnumDescriptor{ Id = 1, Title = "Active" },
-                new EnumDescriptor{ Id = 2, Title = "Completed a booking" },
-                new EnumDescriptor{ Id = 3, Title = "Equipment Owner" },
-                new EnumDescriptor{ Id = 4, Title = "Agent" },
-                new EnumDescriptor{ Id = 5, Title = "Administrator" }
+                new EnumDescriptor{ Id = (int)UserFilterView.All, Title = "All" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Active, Title = "Active" },
+                new EnumDescriptor{ Id = (int)UserFilterView.EquipmentOwner, Title = "Equipment Owner" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Agent, Title = "Agent" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Administrator, Title = "Administrator" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedSearch, Title = "Completed a search" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MatchedSearch, Title = "Matched a search" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MadeBooking, Title = "Made a booking" },
+                new EnumDescriptor{ Id = (int)UserFilterView.BookingConfirmed, Title = "Booking confirmed" },
+                new EnumDescriptor{ Id = (int)UserFilterView.PaidBooking, Title = "Paid for booking" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedBooking, Title = "Booking completed" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedSearchNoMatch, Title = "Search no matches" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MatchedSearchNoBooking, Title = "Matched search no booking" }
             };
 
             var data = new

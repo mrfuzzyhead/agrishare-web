@@ -33,6 +33,22 @@ agrishareApp.controller('DashboardViewController', function ($attrs, $controller
         }
     };
 
+    dashboard.userActionFilter = function (view) {
+
+        var url = '/users/list/filter/view/' + view;
+
+        var startDate = new moment(dashboard.activity.filter.startDate);
+        if (startDate.isValid())
+            url += '/startdate/' + startDate.format('YYYY-MM-DD');
+
+        var endDate = new moment(dashboard.activity.filter.endDate);
+        if (endDate.isValid())
+            url += '/enddate/' + endDate.format('YYYY-MM-DD');
+
+        App.go(url);
+
+    };
+
     dashboard.fetch = function () {
 
         App.status = "Loading...";

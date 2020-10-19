@@ -19,8 +19,8 @@ namespace Agrishare.API.Controllers.CMS
         public object Summary(string Type = "", DateTime? StartDate = null, DateTime? EndDate = null, int Category = 0)
         {
             var startDate = (StartDate ?? DateTime.MinValue).StartOfDay();
-            if (startDate.Year < 2019)
-                startDate = new DateTime(2019, 1, 1);
+            if (startDate.Year < 2018)
+                startDate = new DateTime(2018, 1, 1);
             var endDate = (EndDate ?? DateTime.MaxValue).EndOfDay();
             if (endDate > DateTime.Now)
                 endDate = DateTime.Now;
@@ -93,6 +93,22 @@ namespace Agrishare.API.Controllers.CMS
                 Series = new List<string> { "Profit" }
             };
 
+            var ageGenderData = Entities.User.GetAgeGenderData(RegionId: CurrentRegion.Id);
+            decimal max = ageGenderData.Count > 0 ? ageGenderData.Max(e => e.Count) : 1;
+            decimal total = ageGenderData.Count > 0 ? ageGenderData.Sum(e => e.Count) : 1;
+            var ageGenderGraph = new List<object>();
+            for (var i = 0; i < Entities.User.AgeGenderData.AgeRanges.Count; i++)
+                ageGenderGraph.Add(new
+                {
+                    range = Entities.User.AgeGenderData.AgeRanges[i],
+                    male = ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Male)?.Count ?? 0,
+                    malePercent = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Male)?.Count ?? 0) / total,
+                    maleHeight = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Male)?.Count ?? 0) / max * 100M,
+                    female = ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Female)?.Count ?? 0,
+                    femalePercent = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Female)?.Count ?? 0) / total,
+                    femaleHeight = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Female)?.Count ?? 0) / max * 100M
+                });
+
             var data = new
             {
                 activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id),
@@ -136,7 +152,8 @@ namespace Agrishare.API.Controllers.CMS
                 locations = locations.Select(o => new { o.Latitude, o.Longitude }),
                 smsBalance = SMS.GetBalance(),
                 bookingsGraph,
-                profitGraph
+                profitGraph,
+                ageGenderGraph
             };
 
             return Success(data);

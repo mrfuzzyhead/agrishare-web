@@ -42,7 +42,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Counters.Include(o => o.User).Include(o => o.Service).Include(o => o.Booking).Where(o => !o.Deleted);
+                var query = ctx.Counters.Where(o => !o.Deleted);
 
                 if (Event != Counters.None)
                 {
