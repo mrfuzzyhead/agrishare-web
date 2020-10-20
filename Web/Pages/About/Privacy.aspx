@@ -38,5 +38,11 @@
     
     <h3>What if we change this privacy policy or any of our privacy notices?</h3>
     <p>We may need to change this policy and our notices. The updates will be posted online. Your continued use of the product or service after the effective date of such changes constitutes your acceptance of such changes. To make your review more convenient, we will post an effective date at the top of the page.</p>
+    
+    <p id="cookies"><small>COOKIES</small></p>
+
+    <p>Coming soon...</p>
+
+    <p><a class="button" onclick="chooseCookies()">Update your cookie preferences</a></p>
 
 </asp:Content>
