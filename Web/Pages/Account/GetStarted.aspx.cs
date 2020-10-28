@@ -47,12 +47,25 @@ namespace Agrishare.Web.Pages.Account
                     DateOfBirth = dob,
                     Roles = new List<Core.Entities.Role> { Core.Entities.Role.User },
                     AuthToken = Guid.NewGuid().ToString(),
-                    StatusId = Core.Entities.UserStatus.Verified
+                    StatusId = Core.Entities.UserStatus.Verified,
+                    LanguageId = Core.Entities.Language.English
                 };
-                user.Save();
-                Master.DropCookie(user.AuthToken);
-                Master.Feedback = "Your account has been created and you are now logged in.";
-                Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
+
+                if (!user.UniqueEmailAddress())
+                {
+                    Master.Feedback = "Your email address has already been registered";
+                }
+                else if (!user.UniqueTelephone())
+                {
+                    Master.Feedback = "Your telephone number has already been registered";
+                }
+                else
+                {
+                    user.Save();
+                    Master.DropCookie(user.AuthToken);
+                    Master.Feedback = "Your account has been created and you are now logged in.";
+                    Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
+                }
             }
         }
 

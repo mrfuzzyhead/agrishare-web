@@ -1,4 +1,5 @@
 ﻿using Agrishare.Core;
+using Agrishare.Core.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,6 @@ namespace Agrishare.Web.Pages.Account.Booking
             Master.SelectedUrl = SelectedBooking.UserId == Master.CurrentUser.Id ? "/account/seeking" : "/account/offering";
 
             ShowDetails();
-
         }
 
         private void SetupRequest()
@@ -104,7 +104,8 @@ namespace Agrishare.Web.Pages.Account.Booking
                 TransportCost = (decimal)result.TransportCost,
                 TransportDistance = (decimal)result.TransportDistance,
                 User = Master.CurrentUser,
-                UserId = Master.CurrentUser.Id
+                UserId = Master.CurrentUser.Id,
+                Commission = Core.Entities.Transaction.AgriShareCommission
             };
 
             ShowDetails(result.Available);
@@ -152,6 +153,9 @@ namespace Agrishare.Web.Pages.Account.Booking
                 FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit + "s";
             FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
 
+            HireCostRow.Visible = SelectedBooking.Listing.CategoryId != (int)Core.Entities.Category.BusId;
+            FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != (int)Core.Entities.Category.BusId;
+
             CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
             Commission.Text = "$" + SelectedBooking.AgriShareCommission.ToString("N2");
 
@@ -198,10 +202,29 @@ namespace Agrishare.Web.Pages.Account.Booking
                 
             }
 
-            if (PaymentPanel.Visible && SelectedBooking.ForId == Core.Entities.BookingFor.Me)
+            if (PaymentPanel.Visible && SelectedBooking.ForId == BookingFor.Me)
             {
-                PayerMobileNumber.Text = Master.CurrentUser.Title;
-                PayerMobileNumber.Text = Master.CurrentUser.Telephone;
+                //PayerMobileNumber.Text = Master.CurrentUser.Title;
+                //PayerMobileNumber.Text = Master.CurrentUser.Telephone;
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash))
+                {
+                    PaymentCashPanel.Visible = true;
+                    CashDeliveryAddress.Text = Config.AgriShareOfficeLocation.Replace(@"\n", "<br/>");
+                }
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.BankTransfer))
+                {
+                    PaymentBankPanel.Visible = true;
+                    BankDetails.Text = Config.AgriShareBankDetails.Replace(@"\n", "<br/>");
+                }
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash) &&
+                    SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.BankTransfer))
+                {
+                    PaymentOrPanel.Visible = true;
+                }
+
             }
 
             if (CompletePanel.Visible)
@@ -216,8 +239,6 @@ namespace Agrishare.Web.Pages.Account.Booking
                     ReviewDate.Text = rating.DateCreated.ToString("d MMMM yyyy");
                 }
             }
-
-
         }
 
         public void BindReview(object s, RepeaterItemEventArgs e)
@@ -448,130 +469,142 @@ namespace Agrishare.Web.Pages.Account.Booking
 
         public void InitiatePayment(object s, EventArgs e)
         {
-            if (SelectedBooking == null || SelectedBooking.UserId != Master.CurrentUser.Id)
+        //    if (SelectedBooking == null || SelectedBooking.UserId != Master.CurrentUser.Id)
+        //    {
+        //        Master.Feedback = "Booking not found";
+        //        return;
+        //    }
+
+        //    var users = new List<BookingUserModel>();
+
+        //    if (!PayerMobileNumber.Text.IsEmpty())
+        //    {
+        //        users.Add(new BookingUserModel
+        //        {
+        //            Name = PayerName.Text,
+        //            Telephone = PayerMobileNumber.Text,
+        //            Quantity = SelectedBooking.Quantity
+        //        });
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            users = JsonConvert.DeserializeObject<List<BookingUserModel>>(BookingUsers.Text);
+        //        }
+        //        catch { }
+        //    }
+
+        //    if (users.Count == 0)
+        //    {
+        //        Master.Feedback = "No payment details were submitted - please try again";
+        //        return;
+        //    }
+
+        //    SelectedBooking.BookingUsers = Core.Entities.BookingUser.List(BookingId: SelectedBooking.Id);
+
+        //    var SelectedBookingUsers = new List<Core.Entities.BookingUser>();
+        //    foreach (var user in users)
+        //    {
+        //        if (user.Quantity == 0)
+        //            user.Quantity = 1;
+        //        if (SelectedBooking.Quantity == 0)
+        //            SelectedBooking.Quantity = 1;
+
+        //        var SelectedBookingUser = SelectedBooking.BookingUsers.FirstOrDefault(o => o.Telephone == user.Telephone);
+        //        if (SelectedBookingUser == null)
+        //        {
+        //            SelectedBookingUser = new Core.Entities.BookingUser
+        //            {
+        //                Booking = SelectedBooking,
+        //                Name = user.Name,
+        //                Ratio = user.Quantity / SelectedBooking.Quantity,
+        //                StatusId = Core.Entities.BookingUserStatus.Pending,
+        //                Telephone = user.Telephone
+        //            };
+
+        //            var registeredUser = Core.Entities.User.Find(Telephone: user.Telephone);
+        //            if (registeredUser.Id > 0)
+        //                SelectedBookingUser.User = registeredUser;
+
+        //            SelectedBookingUser.Save();
+        //            SelectedBooking.BookingUsers.Add(SelectedBookingUser);
+        //        }
+        //        else
+        //        {
+        //            SelectedBookingUser.Ratio = user.Quantity / SelectedBooking.Quantity;
+
+        //            var registeredUser = Core.Entities.User.Find(Telephone: user.Telephone);
+        //            if (registeredUser.Id > 0)
+        //                SelectedBookingUser.User = registeredUser;
+
+        //            SelectedBookingUser.Save();
+        //        }
+
+        //        SelectedBookingUsers.Add(SelectedBookingUser);
+        //    }
+
+        //    foreach (var SelectedBookingUser in SelectedBooking.BookingUsers)
+        //        if (SelectedBookingUsers.Count(o => o.Id == SelectedBookingUser.Id) == 0)
+        //            SelectedBookingUser.Delete();
+
+        //    var success = true;
+        //    var errorMessage = string.Empty;
+        //    var transactions = Core.Entities.Transaction.List(BookingId: SelectedBooking.Id);
+        //    foreach (var transaction in transactions.Where(o => o.StatusId == Core.Entities.TransactionStatus.Failed))
+        //    {
+        //        transaction.StatusId = Core.Entities.TransactionStatus.Error;
+        //        transaction.Save();
+        //    }
+
+        //    foreach (var SelectedBookingUser in SelectedBookingUsers)
+        //    {
+        //        var transaction = transactions.FirstOrDefault(o =>
+        //            o.BookingUserId == SelectedBookingUser.Id &&
+        //            o.StatusId != Core.Entities.TransactionStatus.Error &&
+        //            o.StatusId != Core.Entities.TransactionStatus.Failed);
+
+        //        if (transaction == null)
+        //        {
+        //            transaction = new Core.Entities.Transaction
+        //            {
+        //                Amount = SelectedBooking.Price * SelectedBookingUser.Ratio,
+        //                Booking = SelectedBooking,
+        //                BookingUser = SelectedBookingUser,
+        //                StatusId = Core.Entities.TransactionStatus.Pending
+        //            };
+
+        //            transaction.Save();
+        //            transaction.RequestEcoCashPayment();
+        //            transactions.Add(transaction);
+
+        //            Core.Entities.Counter.Hit(UserId: SelectedBookingUser.UserId ?? 0, Event: Core.Entities.Counters.InitiatePayment, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
+
+        //            if (transaction.StatusId != Core.Entities.TransactionStatus.PendingSubscriberValidation)
+        //            {
+        //                success = false;
+        //                errorMessage = $"{SelectedBookingUser.Telephone}: {transaction.Error}";
+        //                SelectedBookingUser.Delete();
+        //            }
+        //        }
+        //    }
+
+        //    if (success && transactions.Count > 0)
+        //        Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
+        //    else
+        //        Master.Feedback = errorMessage.Coalesce("No transactions were created");
+        }
+
+        public void SavePop(object s, EventArgs e)
+        {
+            Master.Feedback = "Please upload your proof of payment";
+            if (PopUpload.Photos.Count == 1)
             {
-                Master.Feedback = "Booking not found";
-                return;
+                SelectedBooking.ReceiptPhoto = PopUpload.Photos.First();
+                if (SelectedBooking.PopReceived())
+                    Master.Feedback = "Thank you for the proof of payment. The AgriShare team have been notified and will verify payment.";
             }
-
-            var users = new List<BookingUserModel>();
-
-            if (!PayerMobileNumber.Text.IsEmpty())
-            {
-                users.Add(new BookingUserModel
-                {
-                    Name = PayerName.Text,
-                    Telephone = PayerMobileNumber.Text,
-                    Quantity = SelectedBooking.Quantity
-                });
-            }
-            else
-            {
-                try
-                {
-                    users = JsonConvert.DeserializeObject<List<BookingUserModel>>(BookingUsers.Text);
-                }
-                catch { }
-            }
-
-            if (users.Count == 0)
-            {
-                Master.Feedback = "No payment details were submitted - please try again";
-                return;
-            }
-
-            SelectedBooking.BookingUsers = Core.Entities.BookingUser.List(BookingId: SelectedBooking.Id);
-
-            var SelectedBookingUsers = new List<Core.Entities.BookingUser>();
-            foreach (var user in users)
-            {
-                if (user.Quantity == 0)
-                    user.Quantity = 1;
-                if (SelectedBooking.Quantity == 0)
-                    SelectedBooking.Quantity = 1;
-
-                var SelectedBookingUser = SelectedBooking.BookingUsers.FirstOrDefault(o => o.Telephone == user.Telephone);
-                if (SelectedBookingUser == null)
-                {
-                    SelectedBookingUser = new Core.Entities.BookingUser
-                    {
-                        Booking = SelectedBooking,
-                        Name = user.Name,
-                        Ratio = user.Quantity / SelectedBooking.Quantity,
-                        StatusId = Core.Entities.BookingUserStatus.Pending,
-                        Telephone = user.Telephone
-                    };
-
-                    var registeredUser = Core.Entities.User.Find(Telephone: user.Telephone);
-                    if (registeredUser.Id > 0)
-                        SelectedBookingUser.User = registeredUser;
-
-                    SelectedBookingUser.Save();
-                    SelectedBooking.BookingUsers.Add(SelectedBookingUser);
-                }
-                else
-                {
-                    SelectedBookingUser.Ratio = user.Quantity / SelectedBooking.Quantity;
-
-                    var registeredUser = Core.Entities.User.Find(Telephone: user.Telephone);
-                    if (registeredUser.Id > 0)
-                        SelectedBookingUser.User = registeredUser;
-
-                    SelectedBookingUser.Save();
-                }
-
-                SelectedBookingUsers.Add(SelectedBookingUser);
-            }
-
-            foreach (var SelectedBookingUser in SelectedBooking.BookingUsers)
-                if (SelectedBookingUsers.Count(o => o.Id == SelectedBookingUser.Id) == 0)
-                    SelectedBookingUser.Delete();
-
-            var success = true;
-            var errorMessage = string.Empty;
-            var transactions = Core.Entities.Transaction.List(BookingId: SelectedBooking.Id);
-            foreach (var transaction in transactions.Where(o => o.StatusId == Core.Entities.TransactionStatus.Failed))
-            {
-                transaction.StatusId = Core.Entities.TransactionStatus.Error;
-                transaction.Save();
-            }
-
-            foreach (var SelectedBookingUser in SelectedBookingUsers)
-            {
-                var transaction = transactions.FirstOrDefault(o =>
-                    o.BookingUserId == SelectedBookingUser.Id &&
-                    o.StatusId != Core.Entities.TransactionStatus.Error &&
-                    o.StatusId != Core.Entities.TransactionStatus.Failed);
-
-                if (transaction == null)
-                {
-                    transaction = new Core.Entities.Transaction
-                    {
-                        Amount = SelectedBooking.Price * SelectedBookingUser.Ratio,
-                        Booking = SelectedBooking,
-                        BookingUser = SelectedBookingUser,
-                        StatusId = Core.Entities.TransactionStatus.Pending
-                    };
-
-                    transaction.Save();
-                    transaction.RequestEcoCashPayment();
-                    transactions.Add(transaction);
-
-                    Core.Entities.Counter.Hit(UserId: SelectedBookingUser.UserId ?? 0, Event: Core.Entities.Counters.InitiatePayment, CategoryId: SelectedBooking.Service.CategoryId, BookingId: SelectedBooking.Id);
-
-                    if (transaction.StatusId != Core.Entities.TransactionStatus.PendingSubscriberValidation)
-                    {
-                        success = false;
-                        errorMessage = $"{SelectedBookingUser.Telephone}: {transaction.Error}";
-                        SelectedBookingUser.Delete();
-                    }
-                }
-            }
-
-            if (success && transactions.Count > 0)
-                Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
-            else
-                Master.Feedback = errorMessage.Coalesce("No transactions were created");
+            Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿@import "global";
 
 .home {
+
+    header, footer { z-index: 5; }
     background: white;
 
     main {

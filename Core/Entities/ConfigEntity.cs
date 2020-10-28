@@ -91,6 +91,9 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static string AgriShareBankDetails => Find(Key: "AgriShare Bank Details").Value;
+        public static string AgriShareOfficeLocation => Find(Key: "AgriShare Office Location").Value;
+
         #endregion
 
         public static string EncryptionPassword = "@DzaRtTxBBCTwG&53Ryh*t#x#m87Kg%$aH7P";

@@ -79,6 +79,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Booking Paid Email.html" />
     <Content Include="Data\Invoice PDF.html" />
     <Content Include="Data\Listing PDF.html" />
     <Content Include="Data\Email Template.html" />

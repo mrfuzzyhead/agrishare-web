@@ -19,33 +19,6 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="EquipmentTitle" Text="Title is required" Display="Dynamic" />
             </div>
 
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Description" Text="Additional Information" />
-                <asp:TextBox runat="server" ID="Description" TextMode="MultiLine" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Brand" Text="Brand *" />
-                <asp:TextBox runat="server" ID="Brand" MaxLength="256" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Brand" Text="Brand is required" Display="Dynamic" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Horsepower" Text="Horsepower *" />
-                <asp:TextBox runat="server" ID="Horsepower" MaxLength="64" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Horsepower" Text="Horsepower is required" Display="Dynamic" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Year" Text="Year *" />
-                <asp:TextBox runat="server" ID="Year" MaxLength="4" TextMode="Number" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Year" Text="Year is required" Display="Dynamic" />
-            </div>
-
-            <div class="checkbox-row">
-                <asp:CheckBox runat="server" ID="GroupHire" Text="Allow group hire" />
-            </div>
-
             <h3>Booking Details</h3>
     
             <div class="form-row">
@@ -62,12 +35,8 @@
                 <asp:RegularExpressionValidator runat="server" ControlToValidate="TimePerQuantityUnit" Text="Hours required per 100KM is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
             </div>
 
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="PricePerQuantityUnit" Text="Hire Cost *" />
-                <div><asp:TextBox runat="server" ID="PricePerQuantityUnit" MaxLength="8" /><span>$/LOAD</span></div>
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost is required" Display="Dynamic" />
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
-            </div>
+            <h3>Photos</h3>
+            <web:PhotoUpload runat="server" ID="Gallery" />
 
         </div>
 
@@ -93,9 +62,6 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="MaximumDistance" Text="Maximum distance is required" Display="Dynamic" />
                 <asp:RegularExpressionValidator runat="server" ControlToValidate="MaximumDistance" Text="Maximum distance is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
             </div>
-
-            <h3>Photos</h3>
-            <web:PhotoUpload runat="server" ID="Gallery" />
 
         </div>
 

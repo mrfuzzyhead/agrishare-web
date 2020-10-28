@@ -44,6 +44,8 @@ namespace Agrishare.Core.Entities
         public Language LanguageId { get; set; }
         public Nullable<int> AgentId { get; set; }
         public AgentUserType AgentTypeId { get; set; }
+        public short PaymentMethod { get; set; }
+        public string BankAccountJson { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }

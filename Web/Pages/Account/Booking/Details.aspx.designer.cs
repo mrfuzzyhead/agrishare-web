@@ -85,6 +85,15 @@ namespace Agrishare.Web.Pages.Account.Booking {
         protected global::System.Web.UI.WebControls.Literal TransportCost;
         
         /// <summary>
+        /// HireCostRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HireCostRow;
+        
+        /// <summary>
         /// HireSize control.
         /// </summary>
         /// <remarks>
@@ -101,6 +110,15 @@ namespace Agrishare.Web.Pages.Account.Booking {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal HireCost;
+        
+        /// <summary>
+        /// FuelCostRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FuelCostRow;
         
         /// <summary>
         /// FuelSize control.
@@ -256,22 +274,58 @@ namespace Agrishare.Web.Pages.Account.Booking {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl PaymentPanel;
         
         /// <summary>
-        /// PayerName control.
+        /// PaymentCashPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PayerName;
+        protected global::System.Web.UI.WebControls.PlaceHolder PaymentCashPanel;
         
         /// <summary>
-        /// PayerMobileNumber control.
+        /// CashDeliveryAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PayerMobileNumber;
+        protected global::System.Web.UI.WebControls.Literal CashDeliveryAddress;
+        
+        /// <summary>
+        /// PaymentOrPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder PaymentOrPanel;
+        
+        /// <summary>
+        /// PaymentBankPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder PaymentBankPanel;
+        
+        /// <summary>
+        /// BankDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal BankDetails;
+        
+        /// <summary>
+        /// PopUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Agrishare.Web.Controls.PhotoUpload PopUpload;
         
         /// <summary>
         /// GroupPaymentPanel control.

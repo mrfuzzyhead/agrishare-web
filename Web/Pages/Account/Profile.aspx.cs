@@ -48,6 +48,18 @@ namespace Agrishare.Web.Pages.Account
                         Email.Checked = (Master.CurrentUser.NotificationPreferences & (int)Core.Entities.NotificationPreferences.Email) > 0;
                     }
                     break;
+                case "payments":
+                    PaymentDetailsForm.Visible = true;
+                    if (!Page.IsPostBack)
+                    {
+                        Cash.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.Cash);
+                        BankTransfer.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.BankTransfer);
+                        Bank.Text = Master.CurrentUser.BankAccount.Bank;
+                        Branch.Text = Master.CurrentUser.BankAccount.Branch;
+                        AccountName.Text = Master.CurrentUser.BankAccount.AccountName;
+                        AccountNumber.Text = Master.CurrentUser.BankAccount.AccountNumber;
+                    }
+                    break;
                 case "resetpin":
                     ResetForm.Visible = true;
                     if (!Page.IsPostBack)
@@ -70,6 +82,9 @@ namespace Agrishare.Web.Pages.Account
 
                 default:
                     Introduction.Visible = true;
+
+                    if (Master.CurrentUser.PaymentMethods.Count == 0)
+                        PaymentsPrompt.Visible = true;
 
                     AgentName.Text = Master.CurrentUser.Agent?.Title ?? "";
                     AgentDetails.Visible = Master.CurrentUser.AgentId.HasValue && Master.CurrentUser.AgentTypeId == Core.Entities.AgentUserType.Admin;
@@ -120,6 +135,30 @@ namespace Agrishare.Web.Pages.Account
             {
                 Master.Feedback = "Your notification preferences have been updated";
                 Response.Redirect("/account/profile");
+            }
+            else
+                Master.Feedback = "An unknown error occured";
+        }
+
+        public void UpdatePaymentDetails(object s, EventArgs e)
+        {
+            Master.CurrentUser.PaymentMethods = new List<Core.Entities.PaymentMethod>();
+            if (Cash.Checked)
+                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.Cash);
+            if (BankTransfer.Checked)
+                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.BankTransfer);
+            Master.CurrentUser.BankAccount.Bank = Bank.Text;
+            Master.CurrentUser.BankAccount.Branch = Branch.Text;
+            Master.CurrentUser.BankAccount.AccountName = AccountName.Text;
+            Master.CurrentUser.BankAccount.AccountNumber = AccountNumber.Text;
+
+            if (Master.CurrentUser.Save())
+            {
+                Master.Feedback = "Your payment details have been updated";
+                var redir = Request.QueryString["r"];
+                if (string.IsNullOrEmpty(redir))
+                    redir = "/account/profile/payments";
+                Response.Redirect(redir);
             }
             else
                 Master.Feedback = "An unknown error occured";

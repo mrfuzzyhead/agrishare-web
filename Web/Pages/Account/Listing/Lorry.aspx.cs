@@ -12,6 +12,12 @@ namespace Agrishare.Web.Pages.Account.Listing
             Master.RequiresAuthentication = true;
             Master.Body.Attributes["class"] += " account ";
 
+            if (Master.CurrentUser.PaymentMethods.Count == 0)
+            {
+                Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
+                Response.Redirect("/account/profile/payments?r=/account/listing/bus");
+            }
+
             if (!Page.IsPostBack)
             {
                 var id = Convert.ToInt32(Request.QueryString["id"]);
@@ -19,11 +25,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                 if (listing.Id > 0)
                 {
                     EquipmentTitle.Text = listing.Title;
-                    Description.Text = listing.Description;
-                    Brand.Text = listing.Brand;
-                    Horsepower.Text = listing.HorsePower?.ToString();
-                    Year.Text = listing.Year?.ToString();
-                    GroupHire.Checked = listing.GroupServices;
                     Location.Latitude = listing.Latitude;
                     Location.Longitude = listing.Longitude;
                     Gallery.Photos = listing.Photos;
@@ -32,12 +33,10 @@ namespace Agrishare.Web.Pages.Account.Listing
                     {
                         TotalVolume.Text = listing.Services.First().TotalVolume.ToString();
                         TimePerQuantityUnit.Text = listing.Services.First().TimePerQuantityUnit.ToString();
-                        PricePerQuantityUnit.Text = listing.Services.First().PricePerQuantityUnit.ToString();
                         DistanceCharge.Text = listing.Services.First().PricePerDistanceUnit.ToString();
                         MaximumDistance.Text = listing.Services.First().MaximumDistance.ToString();
                     }
                 }
-
             }
         }
 
@@ -57,11 +56,6 @@ namespace Agrishare.Web.Pages.Account.Listing
             }
 
             listing.Title = EquipmentTitle.Text;
-            listing.Description = Description.Text;
-            listing.Brand = Brand.Text;
-            listing.HorsePower = Convert.ToInt32(Horsepower.Text);
-            listing.Year = Convert.ToInt32(Year.Text);
-            listing.GroupServices = GroupHire.Checked;
             listing.Latitude = Location.Latitude;
             listing.Longitude = Location.Longitude;
             listing.AvailableWithFuel = true;
@@ -74,7 +68,6 @@ namespace Agrishare.Web.Pages.Account.Listing
             service.MinimumQuantity = 0;
             service.Mobile = true;
             service.PricePerDistanceUnit = Convert.ToDecimal(DistanceCharge.Text);
-            service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
             service.QuantityUnitId = Core.Entities.QuantityUnit.None;
             service.CategoryId = Core.Entities.Category.LorriesServiceId;
             service.TimePerQuantityUnit = Convert.ToDecimal(TimePerQuantityUnit.Text);

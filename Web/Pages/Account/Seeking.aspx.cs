@@ -20,10 +20,10 @@ namespace Agrishare.Web.Pages.Account.Seeking
             Notifications.DataSource = notificationsData;
             Notifications.DataBind();
 
-            var bookingData = Core.Entities.Booking.List(PageSize: 10, UserId: Master.CurrentUser.Id);
-            Bookings.RecordCount = bookingData.Count;
-            Bookings.DataSource = bookingData;
-            Bookings.DataBind();
+            //var bookingData = Core.Entities.Booking.List(PageSize: 10, UserId: Master.CurrentUser.Id);
+            //Bookings.RecordCount = bookingData.Count;
+            //Bookings.DataSource = bookingData;
+            //Bookings.DataBind();
 
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
 

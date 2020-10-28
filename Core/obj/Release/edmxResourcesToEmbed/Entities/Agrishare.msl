@@ -4,6 +4,8 @@
     <EntitySetMapping Name="Bookings">
       <EntityTypeMapping TypeName="AgrishareModel.Booking">
         <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="PaymentMethodId" ColumnName="PaymentMethodId" />
+          <ScalarProperty Name="ReceiptPhotoPath" ColumnName="ReceiptPhoto" />
           <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
           <ScalarProperty Name="IMTT" ColumnName="IMTT" />
           <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
@@ -211,6 +213,8 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="BankAccountJson" ColumnName="BankAccount" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
           <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
           <ScalarProperty Name="AgentId" ColumnName="AgentId" />
           <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />

@@ -26,12 +26,12 @@
                         <span><asp:Literal runat="server" ID="TransportDistance" /></span>
                         <span><asp:Literal runat="server" ID="TransportCost" /></span>
                     </li>
-                    <li>
+                    <li runat="server" id="HireCostRow">
                         <strong>Hire Cost</strong>
                         <span><asp:Literal runat="server" ID="HireSize" /></span>
                         <span><asp:Literal runat="server" ID="HireCost" /></span>
                     </li>
-                    <li>
+                    <li runat="server" id="FuelCostRow">
                         <strong>Fuel Cost</strong>
                         <span><asp:Literal runat="server" ID="FuelSize" /></span>
                         <span><asp:Literal runat="server" ID="FuelCost" /></span>
@@ -48,22 +48,26 @@
                     </li>
                 </ul>
         
-                <div ng-show="calendar.visible">
-
-                    <asp:TextBox runat="server" ID="AvailabilityDays" ng-model="calendar.days" CssClass="hidden" />
-                    <asp:TextBox runat="server" ID="ListingId" ng-model="calendar.listingId" CssClass="hidden" />
-                    <asp:TextBox runat="server" ID="StartDate" ng-model="calendar.startDate" CssClass="hidden" />
-
+                <div ng-show="calendar.visible" class="availability-calendar">
                     <div>
-                        <a ng-click="calendar.previous()">Prev</a>
-                        <strong>{{calendar.month}}</strong>
-                        <a ng-click="calendar.next()">Next</a>
+                        <div>
+
+                            <asp:TextBox runat="server" ID="AvailabilityDays" ng-model="calendar.days" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="ListingId" ng-model="calendar.listingId" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="StartDate" ng-model="calendar.startDate" CssClass="hidden" />
+
+                            <div>
+                                <a ng-click="calendar.previous()">Prev</a>
+                                <strong>{{calendar.month}}</strong>
+                                <a ng-click="calendar.next()">Next</a>
+                            </div>
+
+                            <ul>
+                                <li ng-repeat="item in calendar.dates" ng-click="calendar.setStartDate(item.Available, item.Date)" ng-class="{'available' : item.Available}">{{item.Date | date : 'd MMMM yyyy'}}</li>
+                            </ul>
+
+                        </div>
                     </div>
-
-                    <ul ng-repeat="item in calendar.dates">
-                        <li ng-click="calendar.setStartDate(item.Available, item.Date)" ng-class="{'available' : item.Available}">{{item.Date | date : 'd MMMM yyyy'}}</li>
-                    </ul>
-
                 </div>
 
             </div>
@@ -95,6 +99,36 @@
 
                     <p><strong>Make payment</strong></p>
 
+                    <asp:PlaceHolder runat="server" ID="PaymentCashPanel" Visible="false">
+                        <p>Please deliver a cash payment to the AgriShare offices at:<br />
+                            <br />
+                            <asp:Literal runat="server" Id="CashDeliveryAddress" /></p>
+                    </asp:PlaceHolder>
+
+                    <asp:PlaceHolder runat="server" ID="PaymentOrPanel" Visible="false">
+                        <p><strong>-OR-</strong></p>
+                    </asp:PlaceHolder>
+
+                    <asp:PlaceHolder runat="server" ID="PaymentBankPanel" Visible="false">
+
+                        <p>Pay via bank transfer to:<br />
+                            <br />
+                            <asp:Literal runat="server" Id="BankDetails" /></p>
+                        
+                        <p><strong>Upload your proof of payment:</strong></p>      
+                        
+                        <web:PhotoUpload runat="server" ID="PopUpload" />
+
+                        <p>
+                            <asp:Button runat="server" OnClick="SavePop" Text="Submit" CssClass="button" />
+                        </p>
+
+                    </asp:PlaceHolder>
+
+                    <%--
+                            
+                    ----OLD EcoCash Payments-----
+
                     <p>Please enter the EcoCash number below and then check phone for further instructions.</p>
 
                     <div class="form-row">
@@ -112,6 +146,8 @@
                     <p>
                         <asp:Button runat="server" OnClick="InitiatePayment" Text="Submit" CssClass="button" ValidationGroup="Payment" />
                     </p>
+
+                    --%>
 
                 </div>
 
@@ -248,7 +284,7 @@
 
             <p><asp:Literal runat="server" ID="Description" /></p>
 
-            <ul class="details">
+            <ul class="details" style="display: none">
                 <li><strong>Brand</strong><span><asp:Literal runat="server" ID="Brand" /></span></li>
                 <li><strong>Horse Power</strong><span><asp:Literal runat="server" ID="HorsePower" /></span></li>
                 <li><strong>Year</strong><span><asp:Literal runat="server" ID="Year" /></span></li>

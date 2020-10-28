@@ -51,9 +51,9 @@
     <Property Name="TransportCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TransportDistance" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="AdditionalInformation" Type="varchar" MaxLength="4096" />
+    <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="Commission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-    <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="PaidOut" Type="bool" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -63,14 +63,16 @@
     <Property Name="SMSCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="TransactionFee" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="IMTT" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="ReceiptPhoto" Type="varchar" MaxLength="1024" />
+    <Property Name="PaymentMethodId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="BookingUsers">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="BookingId" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" />
+    <Property Name="BookingId" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="256" />
     <Property Name="Telephone" Type="varchar" MaxLength="16" />
     <Property Name="Ratio" Type="decimal" Precision="10" Scale="3" Nullable="false" />
@@ -168,16 +170,16 @@
     <Property Name="Title" Type="varchar" MaxLength="256" />
     <Property Name="Description" Type="varchar" MaxLength="2048" />
     <Property Name="Location" Type="varchar" MaxLength="256" />
-    <Property Name="Latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-    <Property Name="Longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+    <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
+    <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
     <Property Name="Brand" Type="varchar" MaxLength="256" />
     <Property Name="HorsePower" Type="int" />
     <Property Name="Year" Type="int" />
     <Property Name="ConditionId" Type="smallint" Nullable="false" />
     <Property Name="GroupServices" Type="bool" Nullable="false" />
-    <Property Name="Photos" Type="text" />
     <Property Name="AvailableWithoutFuel" Type="bool" Nullable="false" />
     <Property Name="AvailableWithFuel" Type="bool" Nullable="false" />
+    <Property Name="Photos" Type="text" />
     <Property Name="AverageRating" Type="decimal" Precision="10" Scale="3" Nullable="false" />
     <Property Name="RatingCount" Type="int" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
@@ -334,14 +336,30 @@
     <Property Name="InterestId" Type="smallint" Nullable="false" />
     <Property Name="LanguageId" Type="smallint" Nullable="false" />
     <Property Name="AgentId" Type="int" />
-    <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
     <Property Name="SignalRConnectionId" Type="varchar" MaxLength="256" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="RoleList" Type="varchar" MaxLength="1024" />
+    <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
+    <Property Name="PaymentMethod" Type="smallint" Nullable="false" />
+    <Property Name="BankAccount" Type="varchar" MaxLength="2048" />
   </EntityType>
+  <Association Name="bookings_ibfk_1">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bookings">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="bookings_ibfk_2">
     <End Role="Listings" Type="Self.Listings" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -677,26 +695,30 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="AgrishareModelStoreContainer">
-    <EntitySet Name="Agents" EntityType="Self.Agents" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Config" EntityType="Self.Config" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Counters" EntityType="Self.Counters" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Devices" EntityType="Self.Devices" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Journals" EntityType="Self.Journals" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Listings" EntityType="Self.Listings" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Log" EntityType="Self.Log" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare" store:Type="Tables" />
-    <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
+    <EntitySet Name="Agents" EntityType="Self.Agents" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Config" EntityType="Self.Config" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Counters" EntityType="Self.Counters" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Devices" EntityType="Self.Devices" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Journals" EntityType="Self.Journals" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Listings" EntityType="Self.Listings" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Log" EntityType="Self.Log" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare_live" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare_live" store:Type="Tables" />
+    <AssociationSet Name="bookings_ibfk_1" Association="Self.bookings_ibfk_1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Bookings" EntitySet="Bookings" />
+    </AssociationSet>
     <AssociationSet Name="bookings_ibfk_2" Association="Self.bookings_ibfk_2">
       <End Role="Listings" EntitySet="Listings" />
       <End Role="Bookings" EntitySet="Bookings" />

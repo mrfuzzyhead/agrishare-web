@@ -16,6 +16,12 @@ namespace Agrishare.Web.Pages.Account.Listing
             Master.RequiresAuthentication = true;
             Master.Body.Attributes["class"] += " account ";
 
+            if (Master.CurrentUser.PaymentMethods.Count == 0)
+            {
+                Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
+                Response.Redirect("/account/profile/payments?r=/account/listing/bus");
+            }
+
             var id = Convert.ToInt32(Request.QueryString["id"]);
             SelectedListing = Core.Entities.Listing.Find(Id: id);
 
@@ -28,10 +34,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                 if (listing.Id > 0)
                 {
                     EquipmentTitle.Text = listing.Title;
-                    Description.Text = listing.Description;
-                    Brand.Text = listing.Brand;
-                    Horsepower.Text = listing.HorsePower?.ToString();
-                    Year.Text = listing.Year?.ToString();
                     GroupHire.Checked = listing.GroupServices;
                     Location.Latitude = listing.Latitude;
                     Location.Longitude = listing.Longitude;
@@ -85,10 +87,6 @@ namespace Agrishare.Web.Pages.Account.Listing
             }
 
             listing.Title = EquipmentTitle.Text;
-            listing.Description = Description.Text;
-            listing.Brand = Brand.Text;
-            listing.HorsePower = Convert.ToInt32(Horsepower.Text);
-            listing.Year = Convert.ToInt32(Year.Text);
             listing.GroupServices = GroupHire.Checked;
             listing.Latitude = Location.Latitude;
             listing.Longitude = Location.Longitude;
@@ -113,7 +111,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                 service.CategoryId = categoryId;
                 service.TimePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("TimePerQuantityUnit")).Text);
                 service.PricePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("PricePerQuantityUnit")).Text);
-                service.FuelPerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("FuelPerQuantityUnit")).Text);
                 service.MinimumQuantity = Convert.ToDecimal(((TextBox)item.FindControl("MinimumQuantity")).Text);
                 listing.Services.Add(service);
             }

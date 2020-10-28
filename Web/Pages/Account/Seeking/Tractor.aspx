@@ -4,8 +4,6 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     
     <h1>Seeking a tractor</h1>
-     
-    <p>Lorem ipsum dolores sit amet.</p>
 
     <div ng-controller="SearchController">
 

@@ -413,3 +413,67 @@
         }
     }
 }
+
+.availability-calendar {
+    background: rgba(0, 0, 0, .8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        > div {
+            background: white;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, .2) 0 3px 3px;
+            width: 400px;
+            overflow: hidden;
+
+            > div {
+                background: $green;
+                color: white;
+                display: flex;
+                padding: 10px;
+                align-items: center;
+
+                a {
+                    color: white;
+                    font-size: 11px;
+                    text-transform: uppercase;
+                }
+
+                strong {
+                    flex: 1;
+                    text-align: center;
+                }
+            }
+
+            > ul {
+                height: 400px;
+                overflow-y: scroll;
+
+                li {
+                    padding: 10px !important;
+                    cursor: pointer;
+                    transition: all .4s ease;
+                    color: #ccc;
+
+                    &.available {
+                        color: $green;
+                    }
+
+                    &:hover {
+                        background: #eee;
+                    }
+                }
+            }
+        }
+    }
+}

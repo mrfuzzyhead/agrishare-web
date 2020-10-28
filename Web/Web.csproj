@@ -94,6 +94,8 @@
     <Content Include="Pages\About\Contact.aspx" />
     <Content Include="Pages\About\Rules.aspx" />
     <Content Include="Pages\Account\Commission\Report.aspx" />
+    <Content Include="Pages\Account\Listing\Bus.aspx" />
+    <Content Include="Pages\Account\Seeking\Bus.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
     <Content Include="Pages\About\Privacy.aspx" />
@@ -169,6 +171,20 @@
     </Compile>
     <Compile Include="Pages\Account\Commission\Report.aspx.designer.cs">
       <DependentUpon>Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Bus.aspx.cs">
+      <DependentUpon>Bus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Bus.aspx.designer.cs">
+      <DependentUpon>Bus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Bus.aspx.cs">
+      <DependentUpon>Bus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Bus.aspx.designer.cs">
+      <DependentUpon>Bus.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>

@@ -19,29 +19,6 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="EquipmentTitle" Text="Title is required" Display="Dynamic" />
             </div>
 
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Description" Text="Additional Information" />
-                <asp:TextBox runat="server" ID="Description" TextMode="MultiLine" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Brand" Text="Brand *" />
-                <asp:TextBox runat="server" ID="Brand" MaxLength="64" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Brand" Text="Brand is required" Display="Dynamic" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Horsepower" Text="Horsepower *" />
-                <asp:TextBox runat="server" ID="Horsepower" MaxLength="16" TextMode="Number" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Horsepower" Text="Horsepower is required" Display="Dynamic" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Year" Text="Year *" />
-                <asp:TextBox runat="server" ID="Year" MaxLength="4" TextMode="Number" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Year" Text="Year is required" Display="Dynamic" />
-            </div>
-
             <div class="checkbox-row">
                 <asp:CheckBox runat="server" ID="AvailableWithFuel" Text="Available with fuel"  />        
             </div>
@@ -80,13 +57,6 @@
                                 <div><asp:TextBox runat="server" ID="PricePerQuantityUnit" MaxLength="8" /><span>$/HA</span></div>
                                 <asp:CustomValidator runat="server" ControlToValidate="TimePerQuantityUnit" ValidateEmptyText="true" ClientValidationFunction="validateServiceField" OnServerValidate="ValidateServiceField" Text="Hire cost is required" Display="Dynamic" />
                                 <asp:RegularExpressionValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost  is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
-                            </div>
-
-                            <div class="form-row">
-                                <asp:Label runat="server" AssociatedControlID="FuelPerQuantityUnit" Text="Fuel Cost *" />
-                                <div><asp:TextBox runat="server" ID="FuelPerQuantityUnit" MaxLength="8" /><span>$/HA</span></div>
-                                <asp:CustomValidator runat="server" ControlToValidate="TimePerQuantityUnit" ValidateEmptyText="true" ClientValidationFunction="validateServiceField" OnServerValidate="ValidateServiceField" Text="Fuel cost is required" Display="Dynamic" />
-                                <asp:RegularExpressionValidator runat="server" ControlToValidate="FuelPerQuantityUnit" Text="Fuel cost is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
                             </div>
 
                             <div class="form-row">

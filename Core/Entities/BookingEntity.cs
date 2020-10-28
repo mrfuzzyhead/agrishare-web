@@ -20,6 +20,21 @@ namespace Agrishare.Core.Entities
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public decimal AgriShareCommission => Math.Round(Price - (Price / (1 + Commission)));
 
+        private File receiptPhoto;
+        public File ReceiptPhoto
+        {
+            get
+            {
+                if (receiptPhoto == null && !string.IsNullOrEmpty(ReceiptPhotoPath))
+                    receiptPhoto = new File(ReceiptPhotoPath);
+                return receiptPhoto;
+            }
+            set
+            {
+                receiptPhoto = value;
+            }
+        }
+
         public static Booking Find(int Id = 0)
         {
             if (Id == 0)
@@ -31,7 +46,7 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.User).Include(o => o.Service).Include(o => o.Listing).Where(o => !o.Deleted);
+                var query = ctx.Bookings.Include(o => o.User).Include(o => o.Service).Include(o => o.Listing.User).Where(o => !o.Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -242,6 +257,9 @@ namespace Agrishare.Core.Entities
         {
             var success = false;
 
+            if (ReceiptPhoto != null)
+                ReceiptPhotoPath = ReceiptPhoto.Filename;
+
             var service = Service;
             if (service != null)
                 ServiceId = service.Id;
@@ -336,7 +354,10 @@ namespace Agrishare.Core.Entities
                 TotalVolume,
                 StatusId,
                 Status,
-                DateCreated
+                DateCreated,
+                ReceiptPhoto = ReceiptPhoto?.JSON(),
+                PaymentMethodId,
+                PaymentMethod = $"{PaymentMethodId}".ExplodeCamelCase()
             };
         }
 
@@ -422,6 +443,30 @@ namespace Agrishare.Core.Entities
             content.Replace("Service Title", Listing.Title);
             content.Replace("Hire Cost", Price.ToString("N2"));
             return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
+        }
+
+        public bool PopReceived()
+        {
+            StatusId = BookingStatus.Paid;
+            if (Save())
+            {
+                var template = Template.Find(Title: "Booking Paid");
+                template.Replace("User", User.Title);
+                template.Replace("Booking", $"Booking #{Id}");
+                template.Replace("Booking URL", $"{Config.CMSURL}/#/bookings/detail/{Id}");
+
+                new Email
+                {
+                    Message = template.EmailHtml(),
+                    RecipientEmail = Config.ApplicationEmailAddress,
+                    SenderEmail = Config.ApplicationEmailAddress,
+                    Subject = $"Booking Payment #{Id}"
+                }.Send();
+
+                return true;
+            }
+
+            return false;
         }
     }
 

@@ -124,7 +124,8 @@ namespace Agrishare.API.Controllers.CMS
                 Languages = EnumInfo.ToList<Entities.Language>(),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
                 Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
-                Types = EnumInfo.ToList<AgentUserType>()
+                Types = EnumInfo.ToList<AgentUserType>(),
+                PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0)
             };
 
             return Success(data);

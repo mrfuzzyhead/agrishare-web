@@ -37,6 +37,7 @@
                 <li><a href="/account/listings?cid=1">Tractors</a></li>
                 <li><a href="/account/listings?cid=2">Lorries</a></li>
                 <li><a href="/account/listings?cid=3">Processing</a></li>
+                <li><a href="/account/listings?cid=17">Buses</a></li>
             </ul>
         </div>
     </div>

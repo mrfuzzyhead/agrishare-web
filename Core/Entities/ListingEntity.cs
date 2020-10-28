@@ -153,7 +153,6 @@ namespace Agrishare.Core.Entities
 
             if (success)
             {
-
                 var current = Service.List(ListingId: Id);
                 var remove = current.Where(e => !services.Any(s => s.Id == e.Id));
                 foreach (var item in remove)

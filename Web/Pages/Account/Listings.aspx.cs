@@ -24,6 +24,8 @@ namespace Agrishare.Web.Pages.Account
                         return "tractor";
                     case Core.Entities.Category.ProcessingId:
                         return "processing";
+                    case Core.Entities.Category.BusId:
+                        return "bus";
                 }
                 return string.Empty;
             }
@@ -46,6 +48,8 @@ namespace Agrishare.Web.Pages.Account
                     ListTitle.Text = "Tractors"; break;
                 case Core.Entities.Category.ProcessingId:
                     ListTitle.Text = "Processing"; break;
+                case Core.Entities.Category.BusId:
+                    ListTitle.Text = "Buses"; break;
             }
 
             List.RecordCount = Core.Entities.Listing.Count(UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);

@@ -41,6 +41,7 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\EntityFramework.SqlS
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\MySql.Data.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\MySql.Data.Entity.EF6.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\StackExchange.Redis.StrongName.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\EPPlus.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\RestSharp.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\AWSSDK.dll
@@ -57,15 +58,14 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\EntityFramework.SqlS
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\MySql.Data.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\MySql.Data.Entity.EF6.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\StackExchange.Redis.StrongName.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\EPPlus.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\AWSSDK.pdb
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\Newtonsoft.Json.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\epengine.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\CMS.csprojAssemblyReference.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\CMS.csproj.CoreCompileInputs.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\CMS.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\Agrishare.CMS.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\obj\Debug\Agrishare.CMS.pdb
-C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\ephtmltopdf.xml
-C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\epengine.dll
