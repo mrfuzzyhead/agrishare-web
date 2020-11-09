@@ -15,7 +15,6 @@
                     <span>
                         <small><asp:Literal runat="server" ID="Distance" /></small>
                         <strong><asp:Literal runat="server" ID="Title" /></strong>
-                        <span>Year: <asp:Literal runat="server" ID="Year" /></span>
                         <b><asp:Literal runat="server" ID="Price" /> <em class="status"><asp:Literal runat="server" ID="Status" /></em></b>                        
                     </span>
                 </asp:HyperLink>

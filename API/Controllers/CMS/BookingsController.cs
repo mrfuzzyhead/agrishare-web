@@ -263,7 +263,7 @@ namespace Agrishare.API.Controllers.CMS
             if (booking == null || booking.Id == 0)
                 return Error("Booking not found");
 
-            if (booking.StatusId != Entities.BookingStatus.Approved)
+            if (booking.StatusId != BookingStatus.Approved && booking.StatusId != BookingStatus.Paid)
                 return Error("Booking has already been updated");
 
             booking.StatusId = Entities.BookingStatus.InProgress;

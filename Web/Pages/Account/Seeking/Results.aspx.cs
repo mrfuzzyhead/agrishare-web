@@ -52,9 +52,8 @@ namespace Agrishare.Web.Pages.Account.Seeking
                 if ((result.Photos?.Count ?? 0) > 0)
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{result.Photos.FirstOrDefault().ThumbName})");
 
-                ((Literal)e.Item.FindControl("Distance")).Text = $"{Math.Round(result.Distance)}kms away";
+                ((Literal)e.Item.FindControl("Distance")).Text = Math.Round(result.Distance) == 0 ? "Nearby" : $"{Math.Round(result.Distance)}kms away";
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(result.Title);
-                ((Literal)e.Item.FindControl("Year")).Text = HttpUtility.HtmlEncode(result.Year);
                 ((Literal)e.Item.FindControl("Price")).Text = "$" + result.Price.ToString("N2");
                 ((Literal)e.Item.FindControl("Status")).Text = result.Available ? "Available" : "Not available";
 

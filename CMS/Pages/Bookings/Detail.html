@@ -132,15 +132,15 @@
 
                 <h2>Fee</h2>
                 <ul class="details">
-                    <li>
+                    <li ng-if="detail.entity.HireCost">
                         <strong>Hire Cost</strong>
                         <span>{{detail.entity.HireCost | currency}}</span>
                     </li>
-                    <li>
+                    <li ng-if="detail.entity.FuelCost">
                         <strong>Fuel Cost</strong>
                         <span>{{detail.entity.FuelCost | currency}}</span>
                     </li>
-                    <li>
+                    <li ng-if="detail.entity.TransportCost">
                         <strong>Transport Cost</strong>
                         <span>{{detail.entity.TransportCost | currency}}</span>
                     </li>

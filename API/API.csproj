@@ -175,6 +175,7 @@
     <Compile Include="Models\ListingFilterModel.cs" />
     <Compile Include="Models\BookingFilterModel.cs" />
     <Compile Include="Models\UserFilterModel.cs" />
+    <Compile Include="Models\PaymentPreferencesModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

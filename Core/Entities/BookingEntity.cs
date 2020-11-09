@@ -447,7 +447,9 @@ namespace Agrishare.Core.Entities
 
         public bool PopReceived()
         {
-            StatusId = BookingStatus.Paid;
+            if (StatusId == BookingStatus.Approved)
+                StatusId = BookingStatus.Paid;
+
             if (Save())
             {
                 var template = Template.Find(Title: "Booking Paid");

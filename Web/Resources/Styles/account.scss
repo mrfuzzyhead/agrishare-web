@@ -89,6 +89,18 @@
         }
     }
 
+    .results-list {
+        > a {
+            height: 100px;
+            > span:last-child {
+                height: 100%;
+                > strong {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
     .bookings-list, .listings-list, .results-list, .notifications-list {
 
         > a {

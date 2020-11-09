@@ -225,6 +225,7 @@ namespace Agrishare.Core.Entities
                 Services = Services?.Select(e => e.Json()),
                 StatusId,
                 Status,
+                User?.PaymentMethods,
                 User = IncludeUser ? User?.Json() : null,
                 Url = $"{Config.WebURL}{UrlPath}",
                 DateCreated,

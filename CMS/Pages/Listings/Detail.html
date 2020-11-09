@@ -61,7 +61,7 @@
 
                 <h2>Details</h2>
                 <ul class="details">
-                    <li>
+                    <!--<li>
                         <strong>Brand</strong>
                         <span>{{detail.entity.Brand}}</span>
                     </li>
@@ -72,7 +72,7 @@
                     <li>
                         <strong>Year</strong>
                         <span>{{detail.entity.Year}}</span>
-                    </li>
+                    </li>-->
                     <li>
                         <strong>Allow Group Services</strong>
                         <span>{{detail.entity.GroupServices ? 'Yes' : 'No'}}</span>
@@ -93,35 +93,35 @@
 
                 <h2>{{service.Category.Title}}</h2>
                 <ul class="details">
-                    <li>
+                    <li ng-if="service.MinimumQuantity">
                         <strong>Minimum Quantity</strong>
                         <span>{{service.MinimumQuantity}} {{service.QuantityUnit}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.FuelPerQuantityUnit">
                         <strong>Fuel / Quantity Unit</strong>
                         <span>{{service.FuelPerQuantityUnit}} litres</span>
                     </li>
-                    <li>
+                    <li ng-if="service.FuelPrice">
                         <strong>Fuel Price</strong>
                         <span>{{service.FuelPrice | currency}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.PricePerQuantityUnit">
                         <strong>Price / Quantity Unit</strong>
                         <span>{{service.PricePerQuantityUnit | currency}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.TimePerQuantityUnit">
                         <strong>Time / Quantity Unit</strong>
                         <span>{{service.TimePerQuantityUnit}} {{service.TimeUnit}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.MaximumDistance">
                         <strong>Maximum Distance</strong>
                         <span>{{service.MaximumDistance}} {{service.DistanceUnit}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.PricePerDistanceUnit">
                         <strong>Price / Distance Unit</strong>
                         <span>{{service.PricePerDistanceUnit | currency}}</span>
                     </li>
-                    <li>
+                    <li ng-if="service.TotalVolume">
                         <strong>Total Volume</strong>
                         <span>{{service.TotalVolume}}</span>
                     </li>
