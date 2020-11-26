@@ -1,6 +1,7 @@
 ﻿using Agrishare.API;
 using Agrishare.API.Models;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -291,6 +292,7 @@ namespace Agrishare.API.Controllers.CMS
             return Success(data);
         }
 
+<<<<<<< HEAD
         /* Tags */
 
         [Route("bookings/tags/remove")]
@@ -342,6 +344,82 @@ namespace Agrishare.API.Controllers.CMS
                 return Find(BookingId);
 
             return Error();
+=======
+        [Route("bookings/paid")]
+        [AcceptVerbs("GET")]
+        public object BookingPaid(int Id = 0)
+        {
+            var booking = Entities.Booking.Find(Id: Id);
+            if (booking == null || booking.Id == 0)
+                return Error("Booking not found");
+
+            if (booking.StatusId != BookingStatus.Approved && booking.StatusId != BookingStatus.Paid)
+                return Error("Booking has already been updated");
+
+            booking.StatusId = Entities.BookingStatus.InProgress;
+            if (booking.Save())
+            {
+                new Journal
+                {
+                    Amount = booking.Price,
+                    BookingId = booking.Id,
+                    EcoCashReference = string.Empty,
+                    Reconciled = true,
+                    Title = $"Payment received from {booking.User.Title} {booking.User.Telephone}",
+                    TypeId = JournalType.Payment,
+                    UserId = booking.UserId
+                }.Save();
+
+
+                var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
+                if (transactionFee != null)
+                {
+                    if (transactionFee.FeeType == FeeType.Fixed)
+                        booking.TransactionFee = transactionFee.Fee;
+                    else
+                        booking.TransactionFee = (booking.Price - booking.AgriShareCommission) * transactionFee.Fee;
+                }
+
+                booking.IMTT = (booking.Price - booking.AgriShareCommission) * Transaction.IMTT;
+                booking.Save();
+
+                var notifications = Notification.List(BookingId: booking.Id, Type: NotificationType.BookingConfirmed);
+                foreach (var notification in notifications)
+                {
+                    notification.StatusId = NotificationStatus.Complete;
+                    notification.Save();
+                }
+
+                new Notification
+                {
+                    Booking = booking,
+                    GroupId = NotificationGroup.Offering,
+                    TypeId = NotificationType.PaymentReceived,
+                    User = Entities.User.Find(Id: booking.Listing.UserId)
+                }.Save(Notify: true);
+
+                new Notification
+                {
+                    Booking = booking,
+                    GroupId = NotificationGroup.Seeking,
+                    TypeId = NotificationType.PaymentReceived,
+                    User = Entities.User.Find(Id: booking.UserId)
+                }.Save(Notify: false);
+
+                Counter.Hit(UserId: booking.UserId, Event: Counters.CompletePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+
+                var data = new
+                {
+                    Entity = booking.Json(),
+                    Transactions = Entities.Transaction.List(BookingId: booking.Id).Select(e => e.Json()),
+                    Feedback = $"Booking updated"
+                };
+
+                return Success(data);
+            }
+
+            return Error("An unknown error occurred");
+>>>>>>> feature/bank_cash_payment
         }
     }
 }

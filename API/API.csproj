@@ -170,8 +170,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContactModel.cs" />
+<<<<<<< HEAD
     <Compile Include="Models\ExportLedgerModel.cs" />
     <Compile Include="Models\ReconcileLedgerModel.cs" />
+=======
+    <Compile Include="Models\PopModel.cs" />
+    <Compile Include="Models\ReconcileModel.cs" />
+>>>>>>> feature/bank_cash_payment
     <Compile Include="Models\ListingModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
@@ -181,6 +186,7 @@
     <Compile Include="Models\ListingFilterModel.cs" />
     <Compile Include="Models\BookingFilterModel.cs" />
     <Compile Include="Models\UserFilterModel.cs" />
+    <Compile Include="Models\PaymentPreferencesModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

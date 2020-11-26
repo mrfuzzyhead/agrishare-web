@@ -340,7 +340,9 @@ namespace Agrishare.API.Controllers.App
             {
                 Booking = booking.Json(),
                 Users = bookingUsers.Select(e => e.Json()),
-                Rated = ratingCount > 0
+                Rated = ratingCount > 0,
+                Entities.Config.AgriShareBankDetails,
+                Entities.Config.AgriShareOfficeLocation
             });
         }
 
@@ -451,6 +453,30 @@ namespace Agrishare.API.Controllers.App
             }
 
             return Error("An unknown error occurred");
+        }
+
+        [Route("bookings/pop")]
+        [AcceptVerbs("POST")]
+        public object Add(PopModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            var booking = Entities.Booking.Find(Model.BookingId);
+
+            if (booking == null || booking.UserId != CurrentUser.Id)
+                return Error("Booking not found");
+
+            var photoFilename = Entities.File.SaveBase64Image(Model.Photo.Base64);
+            var photo = new Entities.File(photoFilename);
+            photo.Resize(200, 200, photo.ThumbName);
+            photo.Resize(800, 800, photo.ZoomName);
+
+            booking.ReceiptPhoto = photo;
+            if (booking.PopReceived())
+                return BookingDetail(Model.BookingId);
+
+            return Error();
         }
     }
 }

@@ -25,27 +25,6 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="EquipmentTitle" Text="Title is required" Display="Dynamic" />
             </div>
 
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Description" Text="Additional Information" />
-                <asp:TextBox runat="server" ID="Description" TextMode="MultiLine" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Brand" Text="Brand *" />
-                <asp:TextBox runat="server" ID="Brand" MaxLength="64" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Brand" Text="Brand is required" Display="Dynamic" />
-            </div>
-
-            <div class="form-row">
-                <asp:Label runat="server" AssociatedControlID="Year" Text="Year *" />
-                <asp:TextBox runat="server" ID="Year" MaxLength="4" TextMode="Number" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="Year" Text="Year is required" Display="Dynamic" />
-            </div>
-
-            <div class="checkbox-row">
-                <asp:CheckBox runat="server" ID="GroupHire" Text="Allow group hire" />
-            </div>
-
             <h3>Booking Details</h3>
 
             <div class="form-row">

@@ -35,7 +35,13 @@ namespace Agrishare.CMS
             }
 
             var user = Core.Entities.User.Find(Telephone: LoginMobileNumber.Text);
-            if (user.Id == 0 || !user.ValidatePassword(LoginPin.Text))
+            if (user == null)
+            {
+                Feedback.InnerText = "Invalid mobile number or PIN";
+                Feedback.Visible = true;
+                return;
+            }
+            else if (user.Id == 0 || !user.ValidatePassword(LoginPin.Text))
             {
                 if (user.Id > 0)
                 {

@@ -39,21 +39,20 @@ namespace Agrishare.Core.Entities
 
         public static int Count(int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, int Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0)
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "")
         {
             using (var ctx = new AgrishareEntities())
             {
                 var sql = new StringBuilder();
-                sql.AppendLine("SELECT Services.Id");
 
-                //sql.AppendLine("SELECT");
-                //sql.AppendLine("Services.Id AS ServiceId,");
-                //sql.AppendLine("Listings.Id AS ListingId,");
-                //sql.AppendLine("Listings.Title AS Title,");
-                //sql.AppendLine("Listings.Year AS YEAR,");
-                //sql.AppendLine("Listings.ConditionId AS ConditionId,");
-                //sql.AppendLine("Listings.AverageRating AS AverageRating,");
-                //sql.AppendLine("Listings.Photos AS PhotoPaths,");
+                sql.AppendLine("SELECT");
+                sql.AppendLine("Services.Id AS ServiceId,");
+                sql.AppendLine("Listings.Id AS ListingId,");
+                sql.AppendLine("Listings.Title AS Title,");
+                sql.AppendLine("Listings.Year AS YEAR,");
+                sql.AppendLine("Listings.ConditionId AS ConditionId,");
+                sql.AppendLine("Listings.AverageRating AS AverageRating,");
+                sql.AppendLine("Listings.Photos AS PhotoPaths,");
 
                 // distances
                 var distance = SQL.Distance(Latitude, Longitude, "Listings");
@@ -67,6 +66,8 @@ namespace Agrishare.Core.Entities
                 var transportDistance = $"0";
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
+                else if (CategoryId == Category.BusId)
+                    transportDistance = $"({depotToPickup} + {dropoffToDepot} + {pickupToDropoff})";
                 else if (Mobile)
                     transportDistance = $"{distance} * 2";
 
@@ -75,12 +76,17 @@ namespace Agrishare.Core.Entities
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     sizeField = $"({trips})";
-                    //sql.AppendLine($"{sizeField} AS Size,");
+                    sql.AppendLine($"{sizeField} AS Size,");
+                }
+                else if (CategoryId == Category.BusId)
+                {
+                    sizeField = $"1";
+                    sql.AppendLine($"{sizeField} AS Size,");
                 }
                 else
                 {
                     sizeField = $"({Size})";
-                    //sql.AppendLine($"{sizeField} AS Size,");
+                    sql.AppendLine($"{sizeField} AS Size,");
                 }
 
                 // time
@@ -90,42 +96,50 @@ namespace Agrishare.Core.Entities
                     var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * (({trips} * 2) - 1))) / 100)";
                     days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
                 }
+                else if (CategoryId == Category.BusId)
+                {
+                    var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + {pickupToDropoff}) / 100)";
+                    days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
+                }
                 else if (CategoryId == Category.ProcessingId)
                 {
                     days = $"CEIL(({sizeField} / Services.TimePerQuantityUnit) / 8)";
                 }
 
-                
+                // availability
+                sql.AppendLine($"IF((SELECT COUNT(Id) FROM Bookings WHERE Bookings.Deleted = 0 AND Bookings.StatusId IN (0, 1, 3, 6) AND Bookings.ListingId = Listings.Id AND Bookings.StartDate <= DATE_ADD(DATE('{SQL.Safe(StartDate)}'), INTERVAL {days} DAY) AND Bookings.EndDate >= DATE('{SQL.Safe(StartDate)}')) = 0, 1, 0) AS Available,");
+
                 // costs
-                var hireCost = $"(Services.PricePerQuantityUnit * {Size})";
+                var hireCost = $"(Services.PricePerQuantityUnit * {Size} * {1 + Transaction.AgriShareCommission})";
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
-                    hireCost = $"(Services.PricePerQuantityUnit * {trips})";
+                    hireCost = $"(Services.PricePerQuantityUnit * {trips} * {1 + Transaction.AgriShareCommission})";
                 var fuelCost = $"0";
                 if ((CategoryId != Category.LorriesId || ServiceId == Category.TractorTransportServiceId) && IncludeFuel)
-                    fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice)";
-                var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit)";
+                    fuelCost = $"(Services.FuelPerQuantityUnit * {Size} * Services.FuelPrice * {1 + Transaction.AgriShareCommission})";
+                var transportCost = $"({transportDistance} * Services.PricePerDistanceUnit * {1 + Transaction.AgriShareCommission})";
 
-                //sql.AppendLine($"ROUND({transportCost}) AS TransportCost,");
-                //sql.AppendLine($"ROUND({fuelCost}) AS FuelCost,");
-                //sql.AppendLine($"ROUND({hireCost}) AS HireCost,");
-                //sql.AppendLine($"ROUND({hireCost}) + ROUND({fuelCost}) + ROUND({transportCost}) AS Price,");
-                //sql.AppendLine($"{transportDistance} AS TransportDistance,");
-                //sql.AppendLine($"{distance} AS Distance,");
-                //sql.AppendLine($"{trips} AS Trips,");
-                //sql.AppendLine($"{days} AS Days,");
+                sql.AppendLine($"ROUND({transportCost}) AS TransportCost,");
+                sql.AppendLine($"ROUND({fuelCost}) AS FuelCost,");
+                sql.AppendLine($"ROUND({hireCost}) AS HireCost,");
+                sql.AppendLine($"ROUND({hireCost}) + ROUND({fuelCost}) + ROUND({transportCost}) AS Price,");
+                sql.AppendLine($"{transportDistance} AS TransportDistance,");
+                sql.AppendLine($"{distance} AS Distance,");
+                sql.AppendLine($"{trips} AS Trips,");
+                sql.AppendLine($"{days} AS Days,");
 
-                //sql.AppendLine($"DATE('{SQL.Safe(StartDate)}') AS StartDate,");
-                //sql.AppendLine($"DATE_ADD('{SQL.Safe(StartDate)}', INTERVAL ({days} - 1) DAY) AS EndDate");
+                sql.AppendLine($"DATE('{SQL.Safe(StartDate)}') AS StartDate,");
+                sql.AppendLine($"DATE_ADD('{SQL.Safe(StartDate)}', INTERVAL ({days} - 1) DAY) AS EndDate");
                 sql.AppendLine("FROM Listings");
                 sql.AppendLine("INNER JOIN Services ON Listings.Id = Services.ListingId");
                 sql.AppendLine("WHERE Listings.Deleted = 0 AND Services.Deleted = 0 AND Listings.StatusId = 1");
                 sql.AppendLine($"AND Listings.CategoryId = {CategoryId}");
                 sql.AppendLine($"AND Services.Mobile = {SQL.Safe(Mobile)}");
                 sql.AppendLine($"AND Services.CategoryId = {ServiceId}");
-                sql.AppendLine($"AND {Size} >= MinimumQuantity");
 
-                if (Mobile)
-                    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
+                //BS: 2020-02-26 removed limitation checks
+                //sql.AppendLine($"AND {Size} >= MinimumQuantity");
+                //if (Mobile)
+                //    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
 
                 if (For == BookingFor.Group)
                     sql.AppendLine($"AND Listings.GroupServices = 1");
@@ -138,10 +152,10 @@ namespace Agrishare.Core.Entities
                 if (ListingId > 0)
                     sql.AppendLine($"AND Listings.Id = {ListingId}");
 
-                //sql.AppendLine($"GROUP BY Services.Id ORDER BY {sort} LIMIT {PageIndex * PageSize}, {PageSize}");
-                sql.AppendLine($"GROUP BY Services.Id");
+                if (!string.IsNullOrEmpty(Keywords))
+                    sql.AppendLine($@"AND Listings.Title LIKE '%{Keywords.SqlSafe()}%'");
 
-                return ctx.Database.SqlQuery<int>(sql.ToString()).DefaultIfEmpty(0).FirstOrDefault();
+                return ctx.Database.SqlQuery<ListingSearchResult>(sql.ToString()).Count();
             }
         }
 

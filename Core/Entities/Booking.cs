@@ -60,11 +60,16 @@ namespace Agrishare.Core.Entities
         public decimal SMSCost { get; set; }
         public decimal IMTT { get; set; }
         public decimal TransactionFee { get; set; }
+<<<<<<< HEAD
         public Nullable<int> VoucherId { get; set; }
         public Nullable<int> SupplierServiceId { get; set; }
         public decimal VoucherTotal { get; set; }
         public BookingPaymentStatus PaymentStatusId { get; set; }
         public string TagsJson { get; set; }
+=======
+        public string ReceiptPhotoPath { get; set; }
+        public PaymentMethod PaymentMethodId { get; set; }
+>>>>>>> feature/bank_cash_payment
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

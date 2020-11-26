@@ -14,6 +14,12 @@ namespace Agrishare.Web.Pages.Account.Listing
             Master.RequiresAuthentication = true;
             Master.Body.Attributes["class"] += " account ";
 
+            if (Master.CurrentUser.PaymentMethods.Count == 0)
+            {
+                Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
+                Response.Redirect("/account/profile/payments?r=/account/listing/bus");
+            }
+
             if (!Page.IsPostBack)
             {
                 Service.Items.Add(new ListItem { Text = "Select...", Value = "" });
@@ -26,10 +32,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                 if (listing.Id > 0)
                 {
                     EquipmentTitle.Text = listing.Title;
-                    Description.Text = listing.Description;
-                    Brand.Text = listing.Brand;
-                    Year.Text = listing.Year?.ToString();
-                    GroupHire.Checked = listing.GroupServices;
                     Location.Latitude = listing.Latitude;
                     Location.Longitude = listing.Longitude;
                     Gallery.Photos = listing.Photos;
@@ -70,11 +72,6 @@ namespace Agrishare.Web.Pages.Account.Listing
             }
 
             listing.Title = EquipmentTitle.Text;
-            listing.Description = Description.Text;
-            listing.Brand = Brand.Text;
-            listing.HorsePower = 0;
-            listing.Year = Convert.ToInt32(Year.Text);
-            listing.GroupServices = GroupHire.Checked;
             listing.Latitude = Location.Latitude;
             listing.Longitude = Location.Longitude;
             listing.AvailableWithFuel = true;

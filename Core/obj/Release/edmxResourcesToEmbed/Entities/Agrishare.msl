@@ -4,11 +4,16 @@
     <EntitySetMapping Name="Bookings">
       <EntityTypeMapping TypeName="AgrishareModel.Booking">
         <MappingFragment StoreEntitySet="Bookings">
+<<<<<<< HEAD
           <ScalarProperty Name="TagsJson" ColumnName="Tags" />
           <ScalarProperty Name="PaymentStatusId" ColumnName="PaymentStatus" />
           <ScalarProperty Name="VoucherTotal" ColumnName="VoucherTotal" />
           <ScalarProperty Name="SupplierServiceId" ColumnName="SupplierServiceId" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+=======
+          <ScalarProperty Name="PaymentMethodId" ColumnName="PaymentMethodId" />
+          <ScalarProperty Name="ReceiptPhotoPath" ColumnName="ReceiptPhoto" />
+>>>>>>> feature/bank_cash_payment
           <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
           <ScalarProperty Name="IMTT" ColumnName="IMTT" />
           <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
@@ -216,7 +221,12 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+<<<<<<< HEAD
           <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
+=======
+          <ScalarProperty Name="BankAccountJson" ColumnName="BankAccount" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+>>>>>>> feature/bank_cash_payment
           <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
           <ScalarProperty Name="AgentId" ColumnName="AgentId" />
           <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />

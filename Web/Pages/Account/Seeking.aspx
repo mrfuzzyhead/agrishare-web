@@ -26,6 +26,12 @@
                 <span>Processing</span>
             </a>
         </li>
+        <li>
+            <a href="/account/seeking/bus">
+                <img src="/Resources/Images/Bus.svg" />
+                <span>Buses</span>
+            </a>
+        </li>
     </ul>
 
     <br />
@@ -68,7 +74,7 @@
                     <small>All Time</small>
                     <span><asp:Literal runat="server" Id="AllTimeSummary" /></span>
                 </div>
-            </asp:Panel>
+            </asp:Panel>            
 
             <web:PagedRepeater runat="server" ID="Bookings" OnItemDataBound="BindBooking">
                 <HeaderTemplate>
@@ -88,6 +94,7 @@
                     </div>
                 </FooterTemplate>
             </web:PagedRepeater>
+            
 
         </div>
 

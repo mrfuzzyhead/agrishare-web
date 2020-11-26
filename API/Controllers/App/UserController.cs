@@ -2,6 +2,7 @@
 using Agrishare.Core;
 using Agrishare.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -304,6 +305,30 @@ namespace Agrishare.API.Controllers.App
         public object UpdateLanguagePreference(Language LanguageId)
         {
             CurrentUser.LanguageId = LanguageId;
+            if (CurrentUser.Save())
+                return Success(new
+                {
+                    User = CurrentUser.ProfileJson()
+                });
+
+            return Error("Could not update preferences");
+        }
+
+        [@Authorize(Roles = "User")]
+        [Route("profile/preferences/payments/update")]
+        [AcceptVerbs("GET")]
+        public object UpdatePaymentPreferences([FromUri] PaymentPreferencesModel Preferences)
+        {
+            CurrentUser.PaymentMethods = new List<PaymentMethod>();
+            if (Preferences.Cash)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.Cash);
+            if (Preferences.BankTransfer)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.BankTransfer);
+            CurrentUser.BankAccount.Bank = Preferences.BankName;
+            CurrentUser.BankAccount.Branch = Preferences.BranchName;
+            CurrentUser.BankAccount.AccountName = Preferences.AccountName;
+            CurrentUser.BankAccount.AccountNumber = Preferences.AccountNumber;
+
             if (CurrentUser.Save())
                 return Success(new
                 {

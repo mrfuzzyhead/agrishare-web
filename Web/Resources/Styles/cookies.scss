@@ -1,0 +1,35 @@
+﻿@import "global";
+
+.cookie-consent {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: white;
+    z-index: 999;
+    box-shadow: rgba(0,0,0,0.15) 0 -5px 5px;
+    text-align: center;
+
+    a {
+        color: black;
+    }
+
+    a.allow, a.deny {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 3px;
+        color: white;
+        font-size: 11px;
+        text-transform: uppercase;
+    }
+
+    a.allow {
+        background: $green;
+    }
+
+    a.deny {
+        background-color: gray;
+    }
+}

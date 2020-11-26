@@ -225,6 +225,9 @@
     <Compile Include="Entities\FeeType.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PaymentMethod.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TransactionFee.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

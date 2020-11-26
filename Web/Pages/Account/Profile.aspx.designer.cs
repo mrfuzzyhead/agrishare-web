@@ -22,6 +22,15 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.PlaceHolder Introduction;
         
         /// <summary>
+        /// PaymentsPrompt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PaymentsPrompt;
+        
+        /// <summary>
         /// DisplayName control.
         /// </summary>
         /// <remarks>
@@ -155,6 +164,69 @@ namespace Agrishare.Web.Pages.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Agrishare.Web.Controls.Date DateOfBirth;
+        
+        /// <summary>
+        /// PaymentDetailsForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder PaymentDetailsForm;
+        
+        /// <summary>
+        /// Cash control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cash;
+        
+        /// <summary>
+        /// BankTransfer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox BankTransfer;
+        
+        /// <summary>
+        /// Bank control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Bank;
+        
+        /// <summary>
+        /// Branch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Branch;
+        
+        /// <summary>
+        /// AccountName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AccountName;
+        
+        /// <summary>
+        /// AccountNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AccountNumber;
         
         /// <summary>
         /// NotificationPreferencesForm control.

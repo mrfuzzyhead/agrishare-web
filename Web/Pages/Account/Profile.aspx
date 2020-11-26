@@ -11,6 +11,12 @@
 
             <asp:PlaceHolder runat="server" ID="Introduction" Visible="false">
 
+                <asp:Panel runat="server" ID="PaymentsPrompt" Visible="false">
+                    <p style="padding: 5px 10px; border-radius: 5px; background: #eee">
+                        If you would like to offer equipment, please <a href="/account/profile/payments">set your payment preferences</a>.
+                    </p>
+                </asp:Panel>
+
                 <p><strong><asp:Literal runat="server" ID="DisplayName" /></strong></p>
 
                 <p>
@@ -95,6 +101,62 @@
 
             </asp:PlaceHolder>
 
+            <asp:PlaceHolder runat="server" ID="PaymentDetailsForm" Visible="false">
+
+                <h2>Update Payment Details</h2>
+                <p>If you are supplying equipment, please select the payment methods you accept and enter your bank details if necessary.</p>
+        
+                <div class="checkbox-row">
+                    <asp:CheckBox runat="server" ID="Cash" Text="Cash" />
+                </div>
+                <div class="checkbox-row">
+                    <asp:CheckBox runat="server" ID="BankTransfer" Text="Bank Transfer" />
+                </div>  
+
+                <div class="form-cols bank-details">
+
+                    <div class="form-row">
+                        <asp:Label runat="server" AssociatedControlID="Bank" Text="Bank" />
+                        <asp:TextBox runat="server" ID="Bank" />
+                    </div>
+
+                    <div class="form-row">
+                        <asp:Label runat="server" AssociatedControlID="Branch" Text="Branch" />
+                        <asp:TextBox runat="server" ID="Branch" />
+                    </div>
+
+                </div>
+
+                <div class="form-cols bank-details">
+
+                    <div class="form-row">
+                        <asp:Label runat="server" AssociatedControlID="AccountName" Text="Account Name" />
+                        <asp:TextBox runat="server" ID="AccountName" />
+                    </div>
+
+                    <div class="form-row">
+                        <asp:Label runat="server" AssociatedControlID="AccountNumber" Text="Account Number" />
+                        <asp:TextBox runat="server" ID="AccountNumber" />
+                    </div>
+
+                </div>     
+
+                <p>
+                    <asp:Button runat="server" Text="Update" CssClass="button" OnClick="UpdatePaymentDetails" ValidationGroup="Payments" />
+                </p>
+
+                <script type="text/javascript">
+                    $('#Content_BankTransfer').change(function () {
+                        if (this.checked)
+                            $('.bank-details').show();
+                        else
+                            $('.bank-details').hide();
+                    }).change();
+
+                </script>
+
+            </asp:PlaceHolder>
+
             <asp:PlaceHolder runat="server" ID="NotificationPreferencesForm" Visible="false">
 
                 <h2>Update Notification Preferences</h2>
@@ -166,6 +228,7 @@
 
             <ul class="menu">
                 <li><a href="/account/profile/edit">Edit Profile</a></li>
+                <li><a href="/account/profile/payments">Payment Details</a></li>
                 <li><a href="/account/profile/notifications">Notification Preferences</a></li>
                 <li><a href="/account/profile/resetpin">Reset PIN</a></li>
                 <li><asp:LinkButton runat="server" OnClick="Logout">Logout</asp:LinkButton></li>

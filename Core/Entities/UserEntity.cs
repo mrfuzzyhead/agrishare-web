@@ -45,6 +45,44 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public BankAccount bankAccount { get; set; }
+        public BankAccount BankAccount
+        {
+            get
+            {
+                if (bankAccount == null && !string.IsNullOrEmpty(BankAccountJson))
+                    bankAccount = JsonConvert.DeserializeObject<BankAccount>(BankAccountJson);
+                if (bankAccount == null)
+                    bankAccount = new BankAccount();
+                return bankAccount;
+            }
+            set
+            {
+                bankAccount = value;
+            }
+        }
+
+        private List<PaymentMethod> paymentMethods;
+        public List<PaymentMethod> PaymentMethods
+        {
+            get
+            {                
+                if (paymentMethods == null)
+                {
+                    paymentMethods = new List<PaymentMethod>();
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.BankTransfer) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.BankTransfer);
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.Cash) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.Cash);
+                }
+                return paymentMethods;
+            }
+            set
+            {
+                paymentMethods = value;
+            }
+        }
+
         private static string CacheKey(string AuthToken)
         {
             return $"User:{AuthToken}";
@@ -169,7 +207,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.GenderId == Gender);
 
                 if (FailedLoginAttempts > 0)
-                    query = query.Where(o => o.FailedLoginAttempts > 0);
+                    query = query.Where(o => o.FailedLoginAttempts > FailedLoginAttempts);
 
                 if (AgentId > 0)
                     query = query.Where(o => o.AgentId == AgentId);
@@ -497,6 +535,15 @@ namespace Agrishare.Core.Entities
             if (Roles != null)
                 RoleList = string.Join(",", Roles);
 
+            PaymentMethod = 0;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.BankTransfer))
+                PaymentMethod += (int)Entities.PaymentMethod.BankTransfer;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.Cash))
+                PaymentMethod += (int)Entities.PaymentMethod.Cash;
+
+            if (BankAccount != null)
+                BankAccountJson = JsonConvert.SerializeObject(BankAccount);
+
             var agent = Agent;
             if (agent != null && agent.Id > 0)
                 AgentId = agent.Id;
@@ -630,7 +677,12 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
+<<<<<<< HEAD
                 Region = Region?.Json()
+=======
+                BankAccount,
+                PaymentMethods
+>>>>>>> feature/bank_cash_payment
             };
         }
 
@@ -665,7 +717,12 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
+<<<<<<< HEAD
                 Region = Region?.Json()
+=======
+                BankAccount,
+                PaymentMethods
+>>>>>>> feature/bank_cash_payment
             };
         }
 
@@ -791,6 +848,14 @@ namespace Agrishare.Core.Entities
         CompletedBooking = 16,
         MatchedSearchNoBooking = 51,
         CompletedSearchNoMatch = 52
+    }
+
+    public class BankAccount
+    {
+        public string Bank { get; set; }
+        public string Branch { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
     }
 
 }
