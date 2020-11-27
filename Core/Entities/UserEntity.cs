@@ -677,12 +677,9 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
-<<<<<<< HEAD
-                Region = Region?.Json()
-=======
+                Region = Region?.Json(),
                 BankAccount,
                 PaymentMethods
->>>>>>> feature/bank_cash_payment
             };
         }
 
@@ -717,12 +714,9 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
-<<<<<<< HEAD
-                Region = Region?.Json()
-=======
+                Region = Region?.Json(),
                 BankAccount,
                 PaymentMethods
->>>>>>> feature/bank_cash_payment
             };
         }
 

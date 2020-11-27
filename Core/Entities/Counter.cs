@@ -17,12 +17,12 @@ namespace Agrishare.Core.Entities
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> ServiceId { get; set; }
+        public Nullable<int> BookingId { get; set; }
+        public Nullable<int> CategoryId { get; set; }
         public string Event { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public Nullable<int> BookingId { get; set; }
-        public Nullable<int> CategoryId { get; set; }
     
         public virtual Category Service { get; set; }
         public virtual User User { get; set; }

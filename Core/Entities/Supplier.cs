@@ -21,12 +21,12 @@ namespace Agrishare.Core.Entities
         }
     
         public int Id { get; set; }
+        public int RegionId { get; set; }
         public string Title { get; set; }
         public string LogoPath { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public int RegionId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SupplierService> SupplierServices { get; set; }

@@ -292,7 +292,6 @@ namespace Agrishare.API.Controllers.CMS
             return Success(data);
         }
 
-<<<<<<< HEAD
         /* Tags */
 
         [Route("bookings/tags/remove")]
@@ -344,7 +343,8 @@ namespace Agrishare.API.Controllers.CMS
                 return Find(BookingId);
 
             return Error();
-=======
+        }
+
         [Route("bookings/paid")]
         [AcceptVerbs("GET")]
         public object BookingPaid(int Id = 0)
@@ -419,7 +419,6 @@ namespace Agrishare.API.Controllers.CMS
             }
 
             return Error("An unknown error occurred");
->>>>>>> feature/bank_cash_payment
         }
     }
 }

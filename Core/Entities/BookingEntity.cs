@@ -21,7 +21,6 @@ namespace Agrishare.Core.Entities
         public string PaymentStatus => $"{PaymentStatusId}".ExplodeCamelCase();
         public decimal AgriShareCommission => Math.Round(Price - (Price / (1 + Commission)));
 
-<<<<<<< HEAD
         private List<Tag> _tags;
         public List<Tag> Tags
         {
@@ -36,7 +35,9 @@ namespace Agrishare.Core.Entities
             set
             {
                 _tags = value;
-=======
+            }
+        }
+
         private File receiptPhoto;
         public File ReceiptPhoto
         {
@@ -49,7 +50,6 @@ namespace Agrishare.Core.Entities
             set
             {
                 receiptPhoto = value;
->>>>>>> feature/bank_cash_payment
             }
         }
 
@@ -64,16 +64,13 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-<<<<<<< HEAD
                 var query = ctx.Bookings
                     .Include(o => o.User)
                     .Include(o => o.Service)
                     .Include(o => o.Listing.Region)
                     .Include(o => o.Voucher)
                     .Where(o => !o.Deleted);
-=======
-                var query = ctx.Bookings.Include(o => o.User).Include(o => o.Service).Include(o => o.Listing.User).Where(o => !o.Deleted);
->>>>>>> feature/bank_cash_payment
+
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -308,12 +305,10 @@ namespace Agrishare.Core.Entities
         {
             var success = false;
 
-<<<<<<< HEAD
             TagsJson = JsonConvert.SerializeObject(Tags.Select(e => e.Json()));
-=======
+
             if (ReceiptPhoto != null)
                 ReceiptPhotoPath = ReceiptPhoto.Filename;
->>>>>>> feature/bank_cash_payment
 
             var service = Service;
             if (service != null)
@@ -411,18 +406,14 @@ namespace Agrishare.Core.Entities
                 TotalVolume,
                 StatusId,
                 Status,
-<<<<<<< HEAD
                 PaymentStatusId,
                 PaymentStatus,
                 PaidOut,
                 Tags = Tags.Select(e => e.Json()),
-                DateCreated
-=======
                 DateCreated,
                 ReceiptPhoto = ReceiptPhoto?.JSON(),
                 PaymentMethodId,
                 PaymentMethod = $"{PaymentMethodId}".ExplodeCamelCase()
->>>>>>> feature/bank_cash_payment
             };
         }
 

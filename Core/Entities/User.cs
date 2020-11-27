@@ -39,20 +39,17 @@ namespace Agrishare.Core.Entities
         public string VerificationCode { get; set; }
         public Nullable<System.DateTime> VerificationCodeExpiry { get; set; }
         public string SignalRConnectionId { get; set; }
+        public Language LanguageId { get; set; }
+        public Nullable<int> AgentId { get; set; }
+        public AgentUserType AgentTypeId { get; set; }
+        public int FailedVoucherAttempts { get; set; }
+        public int RegionId { get; set; }
+        public short PaymentMethod { get; set; }
+        public string BankAccountJson { get; set; }
         public UserStatus StatusId { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public Language LanguageId { get; set; }
-        public Nullable<int> AgentId { get; set; }
-        public AgentUserType AgentTypeId { get; set; }
-<<<<<<< HEAD
-        public int FailedVoucherAttempts { get; set; }
-        public int RegionId { get; set; }
-=======
-        public short PaymentMethod { get; set; }
-        public string BankAccountJson { get; set; }
->>>>>>> feature/bank_cash_payment
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }

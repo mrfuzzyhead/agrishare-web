@@ -75,6 +75,7 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Agrishare.C
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\AWSSDK.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EntityFramework.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\ephtmltopdf.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EPPlus.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Google.Protobuf.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Mandrill.net.dll
@@ -89,6 +90,8 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.E
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Extensions.Options.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Extensions.Primitives.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Win32.Primitives.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.Entity.EF6.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Newtonsoft.Json.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Remotion.Linq.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\RestSharp.dll
@@ -116,6 +119,7 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\System.Xml.
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\AWSSDK.pdb
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EntityFramework.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\ephtmltopdf.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\EPPlus.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Google.Protobuf.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.EntityFrameworkCore.xml
@@ -128,6 +132,8 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.E
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Extensions.Logging.Abstractions.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Extensions.Options.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Microsoft.Extensions.Primitives.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.Entity.EF6.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Newtonsoft.Json.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\Remotion.Linq.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\StackExchange.Redis.StrongName.xml
@@ -135,20 +141,9 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\System.Coll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\System.Diagnostics.DiagnosticSource.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\System.Interactive.Async.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\epengine.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csprojAssemblyReference.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csproj.CoreCompileInputs.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Agrishare.Core.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Agrishare.Core.pdb
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csprojAssemblyReference.cache
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\ephtmltopdf.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\ephtmltopdf.xml
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\epengine.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.dll
-<<<<<<< HEAD
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.xml
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.Entity.EF6.dll
-=======
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.Entity.EF6.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.xml
->>>>>>> feature/bank_cash_payment
-C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\MySql.Data.Entity.EF6.xml

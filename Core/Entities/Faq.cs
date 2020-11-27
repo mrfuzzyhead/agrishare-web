@@ -15,12 +15,12 @@ namespace Agrishare.Core.Entities
     public partial class Faq
     {
         public int Id { get; set; }
+        public Language LanguageId { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
         public int SortOrder { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public Language LanguageId { get; set; }
     }
 }

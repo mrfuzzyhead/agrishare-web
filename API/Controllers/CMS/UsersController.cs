@@ -45,7 +45,6 @@ namespace Agrishare.API.Controllers.CMS
             int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
             if (PageIndex == 0)
             {
-<<<<<<< HEAD
                 total = Entities.User.Count(RegionId: CurrentRegion.Id);
                 totalAgents = Entities.User.Count(Agent: true, RegionId: CurrentRegion.Id);
                 totalRegular = Entities.User.Count(Agent: false, RegionId: CurrentRegion.Id);
@@ -55,17 +54,6 @@ namespace Agrishare.API.Controllers.CMS
                 lockedout = Entities.User.Count(FailedLoginAttempts: Entities.User.MaxFailedLoginAttempts, RegionId: CurrentRegion.Id);
                 active = Entities.Counter.Count(UniqueUser: true, RegionId: CurrentRegion.Id);
                 unverified = Entities.User.Count(Status: Entities.UserStatus.Pending, RegionId: CurrentRegion.Id);
-=======
-                total = Entities.User.Count();
-                totalAgents = Entities.User.Count(Agent: true);
-                totalRegular = Entities.User.Count(Agent: false);
-                male = Entities.User.Count(Gender: Gender.Male);
-                female = Entities.User.Count(Gender: Gender.Female);
-                deleted = Entities.User.Count(Deleted: true);
-                lockedout = Entities.User.Count(FailedLoginAttempts: 5);
-                active = Entities.Counter.Count(UniqueUser: true);
-                unverified = Entities.User.Count(Status: Entities.UserStatus.Pending);
->>>>>>> feature/bank_cash_payment
             }
 
             var Genders = EnumInfo.ToList<Gender>().Where(g => g.Title != "None").ToList();
@@ -144,12 +132,9 @@ namespace Agrishare.API.Controllers.CMS
                 Agents = Entities.Agent.List().Select(a => a.Json()),
                 Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
                 Types = EnumInfo.ToList<AgentUserType>(),
-<<<<<<< HEAD
                 Entities.User.MaxFailedLoginAttempts,
-                Entities.User.MaxFailedVoucherAttempts
-=======
+                Entities.User.MaxFailedVoucherAttempts,
                 PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0)
->>>>>>> feature/bank_cash_payment
             };
 
             return Success(data);

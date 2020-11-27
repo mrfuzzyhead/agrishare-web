@@ -15,18 +15,18 @@ namespace Agrishare.Core.Entities
     public partial class Journal
     {
         public int Id { get; set; }
+        public int RegionId { get; set; }
+        public JournalType TypeId { get; set; }
         public string Title { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> BookingId { get; set; }
         public decimal Amount { get; set; }
         public bool Reconciled { get; set; }
         public string EcoCashReference { get; set; }
-        public JournalType TypeId { get; set; }
+        public System.DateTime Date { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public System.DateTime Date { get; set; }
-        public int RegionId { get; set; }
     
         public virtual Booking Booking { get; set; }
         public virtual User User { get; set; }
