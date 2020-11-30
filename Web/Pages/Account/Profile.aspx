@@ -110,6 +110,9 @@
                     <asp:CheckBox runat="server" ID="Cash" Text="Cash" />
                 </div>
                 <div class="checkbox-row">
+                    <asp:CheckBox runat="server" ID="MobileMoney" Text="Mobile Money" />
+                </div>  
+                <div class="checkbox-row">
                     <asp:CheckBox runat="server" ID="BankTransfer" Text="Bank Transfer" />
                 </div>  
 

@@ -130,13 +130,30 @@ namespace Agrishare.API.Controllers.CMS
             var tags = Entities.Tag.List();
             var comments = Entities.BookingComment.List(BookingId: booking.Id);
 
+            var Currencies = new List<EnumDescriptor>();
+            if (booking.Listing.RegionId == (int)Regions.Zimbabwe)
+            {
+                Currencies.Add(new EnumDescriptor { Id = (int)Currency.USD, Title = $"{Currency.USD}" });
+                Currencies.Add(new EnumDescriptor { Id = (int)Currency.ZWL, Title = $"{Currency.ZWL}" });
+            }
+            else if (booking.Listing.RegionId == (int)Regions.Uganda)
+            {
+                Currencies.Add(new EnumDescriptor { Id = (int)Currency.USh, Title = $"{Currency.USh}" });
+            }
+
             var data = new
             {
                 Entity = booking.Json(),
                 Supplier = supplier.Json(),
                 Transactions = transactions.Select(e => e.Json()),
                 Tags = tags.Select(e => e.Json()),
-                Comments = comments.Select(e => e.Json())
+                Comments = comments.Select(e => e.Json()),
+                Currencies,
+                Payment = new
+                {
+                    Amount = booking.Price,
+                    Currency = Currencies.First().Id
+                }
             };
 
             return Success(data);
@@ -345,31 +362,40 @@ namespace Agrishare.API.Controllers.CMS
             return Error();
         }
 
+        /* Payment */
+
         [Route("bookings/paid")]
         [AcceptVerbs("GET")]
-        public object BookingPaid(int Id = 0)
+        public object BookingPaid(int Id, Currency Currency, decimal Amount)
         {
-            var booking = Entities.Booking.Find(Id: Id);
+            var booking = Booking.Find(Id: Id);
             if (booking == null || booking.Id == 0)
                 return Error("Booking not found");
 
             if (booking.StatusId != BookingStatus.Approved && booking.StatusId != BookingStatus.Paid)
                 return Error("Booking has already been updated");
 
-            booking.StatusId = Entities.BookingStatus.InProgress;
+            booking.StatusId = BookingStatus.InProgress;
             if (booking.Save())
             {
+                decimal rate = 1;
+                if (booking.Listing.Region.Id == (int)Regions.Zimbabwe && Currency == Currency.ZWL)
+                    rate = Amount / booking.Price;
+
                 new Journal
                 {
                     Amount = booking.Price,
                     BookingId = booking.Id,
+                    Date = DateTime.UtcNow,
                     EcoCashReference = string.Empty,
                     Reconciled = true,
+                    Region = booking.Listing.Region,
                     Title = $"Payment received from {booking.User.Title} {booking.User.Telephone}",
                     TypeId = JournalType.Payment,
+                    Rate = rate,
+                    Currency = Currency,
                     UserId = booking.UserId
                 }.Save();
-
 
                 var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
                 if (transactionFee != null)

@@ -190,6 +190,8 @@
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
+          <Property Name="Rate" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -291,7 +293,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="64" />
-          <Property Name="Currency" Type="varchar" MaxLength="8" />
+          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -2074,6 +2076,8 @@
           <Property Name="Reconciled" Type="Boolean" Nullable="false" />
           <Property Name="EcoCashReference" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Rate" Type="Decimal" Nullable="false" />
+          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
@@ -2436,7 +2440,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="Currency" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
@@ -2493,6 +2497,13 @@
           <Member Name="None" Value="0" />
           <Member Name="Cash" Value="1" />
           <Member Name="BankTransfer" Value="2" />
+          <Member Name="MobileMoney" Value="4" />
+        </EnumType>
+        <EnumType Name="Currency" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="USD" Value="1" />
+          <Member Name="ZWL" Value="2" />
+          <Member Name="USh" Value="3" />
         </EnumType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2832,6 +2843,8 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />

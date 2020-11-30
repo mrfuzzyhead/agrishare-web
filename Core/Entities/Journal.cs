@@ -24,6 +24,8 @@ namespace Agrishare.Core.Entities
         public bool Reconciled { get; set; }
         public string EcoCashReference { get; set; }
         public System.DateTime Date { get; set; }
+        public decimal Rate { get; set; }
+        public Currency Currency { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }

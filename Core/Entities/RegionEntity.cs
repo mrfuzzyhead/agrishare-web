@@ -118,7 +118,8 @@ namespace Agrishare.Core.Entities
             {
                 Id,
                 Title,
-                Currency
+                Currency,
+                CurrencyCode = $"{Currency}"
             };
         }
 

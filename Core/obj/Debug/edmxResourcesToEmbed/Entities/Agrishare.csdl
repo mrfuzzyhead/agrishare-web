@@ -35,9 +35,6 @@
     <NavigationProperty Name="Ratings" Relationship="AgrishareModel.ratings_ibfk_3" FromRole="Booking" ToRole="Rating" />
     <Property Name="StatusId" Type="AgrishareModel.BookingStatus" Nullable="false" />
     <Property Name="PaidOut" Type="Boolean" Nullable="false" />
-    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-    <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Booking" ToRole="Journal" />
     <NavigationProperty Name="Counters" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Booking" ToRole="Counter" />
     <Property Name="Commission" Type="Decimal" Nullable="false" />
@@ -46,7 +43,6 @@
     <Property Name="SMSCost" Type="Decimal" Nullable="false" />
     <Property Name="IMTT" Type="Decimal" Nullable="false" />
     <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
-<<<<<<< HEAD
     <Property Name="VoucherId" Type="Int32" />
     <NavigationProperty Name="Voucher" Relationship="AgrishareModel.bookings_ibfk_4" FromRole="Booking" ToRole="Voucher" />
     <Property Name="SupplierServiceId" Type="Int32" />
@@ -56,10 +52,11 @@
     <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_1" FromRole="Booking" ToRole="BookingComment" />
     <NavigationProperty Name="BookingTags" Relationship="AgrishareModel.bookingtags_ibfk_1" FromRole="Booking" ToRole="BookingTag" />
     <Property Name="TagsJson" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-=======
     <Property Name="ReceiptPhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-    <Property Name="PaymentMethodId" Type="AgrishareModel.PaymentMethod" Nullable="false" />
->>>>>>> feature/bank_cash_payment
+    <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="BookingUser">
     <Key>
@@ -108,19 +105,20 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
     <Property Name="Question" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
     <Property Name="Answer" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
     <Property Name="SortOrder" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
-    <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
   </EntityType>
   <EntityType Name="Listing">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
     <Property Name="CategoryId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
@@ -144,7 +142,6 @@
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="User" Relationship="Self.listings_ibfk_1" FromRole="Listings" ToRole="Users" />
     <NavigationProperty Name="Services" Relationship="AgrishareModel.services_ibfk_1" FromRole="Listing" ToRole="Service" />
-    <Property Name="RegionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
   </EntityType>
   <EntityType Name="Log">
@@ -170,12 +167,12 @@
     <Property Name="TypeId" Type="AgrishareModel.NotificationType" Nullable="false" />
     <Property Name="StatusId" Type="AgrishareModel.NotificationStatus" Nullable="false" />
     <Property Name="GroupId" Type="AgrishareModel.NotificationGroup" Nullable="false" />
+    <Property Name="Message" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Booking" Relationship="Self.notifications_ibfk_2" FromRole="Notifications" ToRole="Bookings" />
     <NavigationProperty Name="User" Relationship="Self.notifications_ibfk_1" FromRole="Notifications" ToRole="Users" />
-    <Property Name="Message" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Page">
     <Key>
@@ -250,25 +247,22 @@
     <Property Name="VerificationCode" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
     <Property Name="VerificationCodeExpiry" Type="DateTime" />
     <Property Name="SignalRConnectionId" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-    <Property Name="StatusId" Type="AgrishareModel.UserStatus" Nullable="false" />
-    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
     <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_1" FromRole="User" ToRole="Journal" />
     <Property Name="AgentId" Type="Int32" />
     <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
     <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
-<<<<<<< HEAD
     <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
     <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
     <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="User" ToRole="BookingComment" />
     <Property Name="RegionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
-=======
     <Property Name="PaymentMethod" Type="Int16" Nullable="false" />
     <Property Name="BankAccountJson" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
->>>>>>> feature/bank_cash_payment
+    <Property Name="StatusId" Type="AgrishareModel.UserStatus" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+    <Property Name="Deleted" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="bookings_ibfk_1">
     <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -531,7 +525,6 @@
       <End Role="Category" EntitySet="Categories" />
       <End Role="Counter" EntitySet="Counters" />
     </AssociationSet>
-<<<<<<< HEAD
     <EntitySet Name="Vouchers" EntityType="AgrishareModel.Voucher" />
     <AssociationSet Name="bookings_ibfk_4" Association="AgrishareModel.bookings_ibfk_4">
       <End Role="Voucher" EntitySet="Vouchers" />
@@ -592,8 +585,6 @@
       <End Role="Region" EntitySet="Regions" />
       <End Role="Supplier" EntitySet="Suppliers" />
     </AssociationSet>
-=======
->>>>>>> feature/bank_cash_payment
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -725,15 +716,15 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserId" Type="Int32" />
     <Property Name="ServiceId" Type="Int32" />
+    <Property Name="BookingId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
     <Property Name="Event" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Service" Relationship="AgrishareModel.counters_ibfk_1" FromRole="Counter" ToRole="Category" />
     <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
-    <Property Name="BookingId" Type="Int32" />
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
-    <Property Name="CategoryId" Type="Int32" />
     <NavigationProperty Name="Category" Relationship="AgrishareModel.counters_ibfk_4" FromRole="Counter" ToRole="Category" />
   </EntityType>
   <EnumType Name="ListingStatus" UnderlyingType="Int16">
@@ -934,20 +925,22 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <Property Name="TypeId" Type="AgrishareModel.JournalType" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="UserId" Type="Int32" />
     <Property Name="BookingId" Type="Int32" />
     <Property Name="Amount" Type="Decimal" Nullable="false" />
     <Property Name="Reconciled" Type="Boolean" Nullable="false" />
     <Property Name="EcoCashReference" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-    <Property Name="TypeId" Type="AgrishareModel.JournalType" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" />
+    <Property Name="Rate" Type="Decimal" Nullable="false" />
+    <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
     <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
-    <Property Name="Date" Type="DateTime" Nullable="false" />
-    <Property Name="RegionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
   </EntityType>
   <Association Name="journals_ibfk_2">
@@ -1006,14 +999,14 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="Commission" Type="Decimal" Nullable="false" />
+    <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_1" FromRole="Agent" ToRole="User" />
-    <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
-    <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="users_ibfk_1">
     <End Type="AgrishareModel.Agent" Role="Agent" Multiplicity="0..1" />
@@ -1069,7 +1062,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-<<<<<<< HEAD
   <EntityType Name="Voucher">
     <Key>
       <PropertyRef Name="Id" />
@@ -1107,13 +1099,13 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
     <Property Name="LogoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="SupplierServices" Relationship="AgrishareModel.supplierservices_ibfk_1" FromRole="Supplier" ToRole="SupplierService" />
-    <Property Name="RegionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Region" Relationship="AgrishareModel.suppliers_ibfk_1" FromRole="Supplier" ToRole="Region" />
   </EntityType>
   <EntityType Name="SupplierService">
@@ -1306,10 +1298,10 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
-    <Property Name="Currency" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="journals_ibfk_3">
     <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
@@ -1359,11 +1351,16 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-=======
   <EnumType Name="PaymentMethod" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
     <Member Name="Cash" Value="1" />
     <Member Name="BankTransfer" Value="2" />
+    <Member Name="MobileMoney" Value="4" />
   </EnumType>
->>>>>>> feature/bank_cash_payment
+  <EnumType Name="Currency" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="USD" Value="1" />
+    <Member Name="ZWL" Value="2" />
+    <Member Name="USh" Value="3" />
+  </EnumType>
 </Schema>

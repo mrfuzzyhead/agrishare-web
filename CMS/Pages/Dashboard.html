@@ -3,6 +3,7 @@
 
     <ag-title-bar>
         <gl-icon-button gl-icon="receipt" ng-click="app.redirect('/pages/settlementreport.aspx')" ng-if="app.hasRole('Administrator')">Download Settlement Report</gl-icon-button>
+        <gl-icon-button gl-icon="insights" ng-click="app.go('#/settings/edit/39?'+app.returnUrlQs())" ng-if="app.hasRole('Administrator')&&app.region.Id===1">USD1.00 = {{dashboard.data.currentUsdRate | currency : 'ZWL'}}</gl-icon-button>
     </ag-title-bar>
 
     <ag-section ag-controller="dashboard">

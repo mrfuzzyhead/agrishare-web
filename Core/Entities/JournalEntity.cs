@@ -14,6 +14,8 @@ namespace Agrishare.Core.Entities
 {
     public partial class Journal : IEntity
     {
+        public static decimal CurrentRate => Convert.ToDecimal(Config.Find(Key: "Current USD Rate").Value);
+
         public static string DefaultSort = "Date DESC";
         public string Type => $"{TypeId}".ExplodeCamelCase();
         public decimal Balance { get; set; }
@@ -234,6 +236,9 @@ namespace Agrishare.Core.Entities
                 Amount,
                 Credit,
                 Debit,
+                Rate,
+                Currency,
+                CurrencyCode = $"{Currency}".ExplodeCamelCase(),
                 Reconciled,
                 EcoCashReference,
                 TypeId,

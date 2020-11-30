@@ -74,6 +74,8 @@ namespace Agrishare.Core.Entities
                         paymentMethods.Add(Entities.PaymentMethod.BankTransfer);
                     if ((PaymentMethod & (int)Entities.PaymentMethod.Cash) > 0)
                         paymentMethods.Add(Entities.PaymentMethod.Cash);
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.MobileMoney) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.MobileMoney);
                 }
                 return paymentMethods;
             }
@@ -540,6 +542,8 @@ namespace Agrishare.Core.Entities
                 PaymentMethod += (int)Entities.PaymentMethod.BankTransfer;
             if (PaymentMethods.Contains(Entities.PaymentMethod.Cash))
                 PaymentMethod += (int)Entities.PaymentMethod.Cash;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.MobileMoney))
+                PaymentMethod += (int)Entities.PaymentMethod.MobileMoney;
 
             if (BankAccount != null)
                 BankAccountJson = JsonConvert.SerializeObject(BankAccount);

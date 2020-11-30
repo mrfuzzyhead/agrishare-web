@@ -341,6 +341,7 @@ namespace Agrishare.API.Controllers.App
                 Booking = booking.Json(),
                 Users = bookingUsers.Select(e => e.Json()),
                 Rated = ratingCount > 0,
+                Entities.Journal.CurrentRate,
                 Entities.Config.AgriShareBankDetails,
                 Entities.Config.AgriShareOfficeLocation
             });

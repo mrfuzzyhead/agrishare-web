@@ -201,6 +201,9 @@
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingCommentEntity.cs" />
+    <Compile Include="Entities\Currency.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Region.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

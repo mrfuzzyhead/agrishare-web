@@ -54,6 +54,7 @@ namespace Agrishare.Web.Pages.Account
                     {
                         Cash.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.Cash);
                         BankTransfer.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.BankTransfer);
+                        MobileMoney.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.MobileMoney);
                         Bank.Text = Master.CurrentUser.BankAccount.Bank;
                         Branch.Text = Master.CurrentUser.BankAccount.Branch;
                         AccountName.Text = Master.CurrentUser.BankAccount.AccountName;
@@ -147,6 +148,8 @@ namespace Agrishare.Web.Pages.Account
                 Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.Cash);
             if (BankTransfer.Checked)
                 Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.BankTransfer);
+            if (MobileMoney.Checked)
+                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.MobileMoney);
             Master.CurrentUser.BankAccount.Bank = Bank.Text;
             Master.CurrentUser.BankAccount.Branch = Branch.Text;
             Master.CurrentUser.BankAccount.AccountName = AccountName.Text;

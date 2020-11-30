@@ -153,7 +153,8 @@ namespace Agrishare.API.Controllers.CMS
                 smsBalance = SMS.GetBalance(),
                 bookingsGraph,
                 profitGraph,
-                ageGenderGraph
+                ageGenderGraph,
+                currentUsdRate = Entities.Journal.CurrentRate
             };
 
             return Success(data);

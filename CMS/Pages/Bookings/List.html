@@ -73,12 +73,12 @@
                     </div>
                     <div>
                         <span style="display: inline-flex; align-items: center">
-                            {{item.Price | currency : app.region.Currency}}
+                            {{item.Price | currency : app.region.CurrencyCode}}
                             <i class="material-icons md-16" ng-if="item.PaidOut" style="color: green; margin-left: 5px">check_circle</i>
                         </span><br/>
-                        <small>Commission: {{item.AgriShareCommission | currency : app.region.Currency}}</small>
-                        <small ng-if="item.AgentCommission">&bull; AgriShare: {{item.AgriShareCommission * (1 - item.AgentCommission)  | currency : app.region.Currency}}</small>
-                        <small ng-if="item.AgentCommission">&bull; Agent: {{item.AgriShareCommission * item.AgentCommission | currency : app.region.Currency}}</small>
+                        <small>Commission: {{item.AgriShareCommission | currency : app.region.CurrencyCode}}</small>
+                        <small ng-if="item.AgentCommission">&bull; AgriShare: {{item.AgriShareCommission * (1 - item.AgentCommission)  | currency : app.region.CurrencyCode}}</small>
+                        <small ng-if="item.AgentCommission">&bull; Agent: {{item.AgriShareCommission * item.AgentCommission | currency : app.region.CurrencyCode}}</small>
                     </div>
                     <div>
                         <em class="status outline">{{item.Status}}</em>

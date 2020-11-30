@@ -8,7 +8,7 @@
         <form>
 
             <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
-            <gl-textbox gl-label="Currency" ng-model="form.entity.Currency" gl-required="true"></gl-textbox>
+            <gl-dropdown-list gl-label="Currency" ng-model="form.entity.Currency" gl-required="true" gl-source="form.data.Currencies" gl-selection="Id"></gl-dropdown-list>
 
         </form>
 

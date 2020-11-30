@@ -16,7 +16,7 @@ namespace Agrishare.Core.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Currency { get; set; }
+        public Currency Currency { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }

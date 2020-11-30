@@ -35,7 +35,8 @@ namespace Agrishare.API.Controllers.CMS
         {
             var data = new
             {
-                Entity = Entities.Region.Find(Id: Id).Json()
+                Entity = Entities.Region.Find(Id: Id).Json(),
+                Currencies = EnumInfo.ToList<Entities.Currency>().Where(e => e.Id > 0)
             };
 
             return Success(data);

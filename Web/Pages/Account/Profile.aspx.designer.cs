@@ -184,6 +184,15 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.CheckBox Cash;
         
         /// <summary>
+        /// MobileMoney control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox MobileMoney;
+        
+        /// <summary>
         /// BankTransfer control.
         /// </summary>
         /// <remarks>

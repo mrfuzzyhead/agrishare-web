@@ -324,6 +324,8 @@ namespace Agrishare.API.Controllers.App
                 CurrentUser.PaymentMethods.Add(PaymentMethod.Cash);
             if (Preferences.BankTransfer)
                 CurrentUser.PaymentMethods.Add(PaymentMethod.BankTransfer);
+            if (Preferences.MobileMoney)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.MobileMoney);
             CurrentUser.BankAccount.Bank = Preferences.BankName;
             CurrentUser.BankAccount.Branch = Preferences.BranchName;
             CurrentUser.BankAccount.AccountName = Preferences.AccountName;

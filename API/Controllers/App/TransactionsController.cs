@@ -133,7 +133,7 @@ namespace Agrishare.API.Controllers.App
                 {
                     transaction = new Entities.Transaction
                     {
-                        Amount = booking.Price * bookingUser.Ratio,
+                        Amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate,
                         Booking = booking,
                         BookingUser = bookingUser,
                         StatusId = Entities.TransactionStatus.Pending

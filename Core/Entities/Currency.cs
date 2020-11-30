@@ -11,11 +11,11 @@ namespace Agrishare.Core.Entities
 {
     using System;
     
-    public enum PaymentMethod : short
+    public enum Currency : short
     {
         None = 0,
-        Cash = 1,
-        BankTransfer = 2,
-        MobileMoney = 4
+        USD = 1,
+        ZWL = 2,
+        USh = 3
     }
 }

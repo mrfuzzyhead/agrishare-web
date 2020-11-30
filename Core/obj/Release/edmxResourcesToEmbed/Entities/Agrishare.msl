@@ -333,6 +333,8 @@
     <EntitySetMapping Name="Journals">
       <EntityTypeMapping TypeName="AgrishareModel.Journal">
         <MappingFragment StoreEntitySet="Journals">
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />

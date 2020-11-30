@@ -185,6 +185,8 @@
     <Property Name="Reconciled" Type="bool" Nullable="false" />
     <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
     <Property Name="TypeId" Type="smallint" Nullable="false" />
+    <Property Name="Rate" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+    <Property Name="Currency" Type="smallint" Nullable="false" />
     <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -286,7 +288,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="varchar" MaxLength="64" />
-    <Property Name="Currency" Type="varchar" MaxLength="8" />
+    <Property Name="Currency" Type="smallint" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
