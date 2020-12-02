@@ -21,11 +21,11 @@ namespace Agrishare.Core.Entities
         public Nullable<int> UserId { get; set; }
         public Nullable<int> BookingId { get; set; }
         public decimal Amount { get; set; }
+        public decimal CurrencyAmount { get; set; }
+        public Currency Currency { get; set; }
         public bool Reconciled { get; set; }
         public string EcoCashReference { get; set; }
         public System.DateTime Date { get; set; }
-        public decimal Rate { get; set; }
-        public Currency Currency { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }

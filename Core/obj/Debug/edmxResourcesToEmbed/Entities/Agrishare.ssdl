@@ -182,11 +182,11 @@
     <Property Name="UserId" Type="int" />
     <Property Name="BookingId" Type="int" />
     <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="CurrencyAmount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="Currency" Type="smallint" Nullable="false" />
     <Property Name="Reconciled" Type="bool" Nullable="false" />
     <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
     <Property Name="TypeId" Type="smallint" Nullable="false" />
-    <Property Name="Rate" Type="decimal" Precision="12" Scale="6" Nullable="false" />
-    <Property Name="Currency" Type="smallint" Nullable="false" />
     <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -389,6 +389,7 @@
     <Property Name="ServerReference" Type="varchar" MaxLength="256" />
     <Property Name="EcoCashReference" Type="varchar" MaxLength="256" />
     <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="Currency" Type="smallint" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="Log" Type="text" />
     <Property Name="Error" Type="varchar" MaxLength="1024" />

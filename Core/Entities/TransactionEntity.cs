@@ -153,6 +153,8 @@ namespace Agrishare.Core.Entities
                 ServerReference,
                 EcoCashReference,
                 Amount,
+                Currency,
+                CurrencyCode = $"{Currency}",
                 StatusId,
                 Status,
                 Error,
@@ -357,18 +359,22 @@ namespace Agrishare.Core.Entities
                 BookingUser.StatusId = BookingUserStatus.Paid;
                 BookingUser.Save();
 
+                if (Booking == null)
+                    Booking = Booking.Find(BookingId);
+
                 new Journal
                 {
-                    Amount = Amount,
+                    Amount = Booking.Price,
                     BookingId = BookingId,
                     EcoCashReference = EcoCashReference,
                     Reconciled = false,
                     Title = $"Payment received from {BookingUser.Name} {BookingUser.Telephone}",
                     TypeId = JournalType.Payment,
-                    UserId = BookingUser.UserId ?? Booking.UserId,
+                    UserId = BookingUser.UserId ?? Booking?.UserId,
                     Date = DateTime.UtcNow,
                     Currency = Currency.ZWL,
-                    Rate = Amount / Booking.Price
+                    CurrencyAmount = Amount,
+                    RegionId = Booking.Listing.RegionId
                 }.Save();
                                 
                 var bookingUsers = BookingUser.List(BookingId: BookingId);

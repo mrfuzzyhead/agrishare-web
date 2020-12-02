@@ -200,6 +200,7 @@
     <EntitySetMapping Name="Transactions">
       <EntityTypeMapping TypeName="AgrishareModel.Transaction">
         <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
           <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
           <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />
           <ScalarProperty Name="Error" ColumnName="Error" />
@@ -333,8 +334,8 @@
     <EntitySetMapping Name="Journals">
       <EntityTypeMapping TypeName="AgrishareModel.Journal">
         <MappingFragment StoreEntitySet="Journals">
+          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
           <ScalarProperty Name="Currency" ColumnName="Currency" />
-          <ScalarProperty Name="Rate" ColumnName="Rate" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />

@@ -41,10 +41,18 @@
                         <strong>For</strong>
                         <span>{{detail.entity.For}}</span>
                     </li>
-                    <li ng-if="![17].includes(detail.entity.Listing.Category.Id)">
+                    <li ng-if="![2,17].includes(detail.entity.Listing.Category.Id)">
                         <strong>Quantity</strong>
                         <span>{{detail.entity.Quantity}} {{detail.entity.Service.QuantityUnit}}</span>
-                    </ling-if="[1,3].includes(detail.entity.Listing.Category.Id)">
+                    </li>
+                    <li ng-if="[2].includes(detail.entity.Listing.Category.Id)">
+                        <strong>Trips</strong>
+                        <span>{{detail.entity.Quantity}}</span>
+                    </li>
+                    <li ng-if="detail.entity.TotalVolume">
+                        <strong>Total Volume</strong>
+                        <span>{{detail.entity.TotalVolume}} tonnes</span>
+                    </li>
                     <li>
                         <strong>Distance</strong>
                         <span>{{detail.entity.Distance}}  {{detail.entity.Service.DistanceUnit}}</span>
@@ -180,7 +188,7 @@
                         <span>{{detail.data.Supplier.Telephone || '-'}}</span>
                     </li>
                 </ul>
-                <div style="background: #eee; padding: 20px; text-align: right" ng-if="!detail.entity.PaidOut">
+                <div style="background: #eee; padding: 20px; text-align: right" ng-if="[3,4].includes(detail.entity.StatusId) && !detail.entity.PaidOut">
                     <gl-icon-button gl-icon="payments" class="border" ng-click="detail.async('/cms/bookings/paidout?BookingId='+detail.entity.Id)">Paid</gl-icon-button>
                 </div>
 
@@ -254,7 +262,7 @@
                 <ul class="transactions">
                     <li ng-repeat="item in detail.data.Transactions">
                         <strong>
-                            {{item.Amount | currency : app.region.CurrencyCode}}<br />
+                            {{item.Amount | currency : item.CurrencyCode}}<br />
                             <small>{{item.BookingUser.Name}} &bull; {{item.BookingUser.Telephone}}</small>
                         </strong>
                         <span>

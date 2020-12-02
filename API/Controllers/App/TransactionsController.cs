@@ -34,7 +34,10 @@ namespace Agrishare.API.Controllers.App
 
             foreach (var transaction in transactions)
                 if (transaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
+                {
+                    transaction.Booking = booking;
                     transaction.RequestEcoCashStatus();
+                }                    
 
             var bookingUsers = Entities.BookingUser.List(BookingId: BookingId);
             if (bookingUsers.Count(e => e.StatusId != Entities.BookingUserStatus.Paid) == 0)
@@ -134,6 +137,7 @@ namespace Agrishare.API.Controllers.App
                     transaction = new Entities.Transaction
                     {
                         Amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate,
+                        Currency = Entities.Currency.ZWL,
                         Booking = booking,
                         BookingUser = bookingUser,
                         StatusId = Entities.TransactionStatus.Pending

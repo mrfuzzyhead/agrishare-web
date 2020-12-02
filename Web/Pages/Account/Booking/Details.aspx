@@ -125,29 +125,27 @@
 
                     </asp:PlaceHolder>
 
-                    <%--
-                            
-                    ----OLD EcoCash Payments-----
+                    <asp:PlaceHolder runat="server" ID="MobileMoneyPanel" Visible="false">
 
-                    <p>Please enter the EcoCash number below and then check phone for further instructions.</p>
+                        <p>Please enter the EcoCash number below and then check phone for further instructions.</p>
 
-                    <div class="form-row">
-                        <asp:Label runat="server" AssociatedControlID="PayerName" Text="Name" />
-                        <asp:TextBox runat="server" ID="PayerName" MaxLength="64" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerName" Text="Name is required" ValidationGroup="Payment" />
-                    </div>
+                        <div class="form-row">
+                            <asp:Label runat="server" AssociatedControlID="PayerName" Text="Name" />
+                            <asp:TextBox runat="server" ID="PayerName" MaxLength="64" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerName" Text="Name is required" ValidationGroup="Payment" />
+                        </div>
 
-                    <div class="form-row">
-                        <asp:Label runat="server" AssociatedControlID="PayerMobileNumber" Text="EcoCash Number" />
-                        <asp:TextBox runat="server" ID="PayerMobileNumber" MaxLength="10" placeholder="07" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerMobileNumber" Text="EcoCash Number is required" ValidationGroup="Payment" />
-                    </div>
+                        <div class="form-row">
+                            <asp:Label runat="server" AssociatedControlID="PayerMobileNumber" Text="EcoCash Number" />
+                            <asp:TextBox runat="server" ID="PayerMobileNumber" MaxLength="10" placeholder="07" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerMobileNumber" Text="EcoCash Number is required" ValidationGroup="Payment" />
+                        </div>
 
-                    <p>
-                        <asp:Button runat="server" OnClick="InitiatePayment" Text="Submit" CssClass="button" ValidationGroup="Payment" />
-                    </p>
+                        <p>
+                            <asp:Button runat="server" OnClick="InitiatePayment" Text="Submit" CssClass="button" ValidationGroup="Payment" />
+                        </p>
 
-                    --%>
+                    </asp:PlaceHolder>
 
                 </div>
 

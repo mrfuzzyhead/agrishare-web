@@ -328,6 +328,33 @@ namespace Agrishare.Web.Pages.Account.Booking {
         protected global::Agrishare.Web.Controls.PhotoUpload PopUpload;
         
         /// <summary>
+        /// MobileMoneyPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder MobileMoneyPanel;
+        
+        /// <summary>
+        /// PayerName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PayerName;
+        
+        /// <summary>
+        /// PayerMobileNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PayerMobileNumber;
+        
+        /// <summary>
         /// GroupPaymentPanel control.
         /// </summary>
         /// <remarks>

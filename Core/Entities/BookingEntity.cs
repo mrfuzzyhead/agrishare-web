@@ -527,7 +527,7 @@ namespace Agrishare.Core.Entities
             content.Replace("Recipient Telephone", User.Telephone);
             content.Replace("Invoice Date", DateCreated.ToString("d MMMM yyyy"));
             content.Replace("Service Title", Listing.Title);
-            content.Replace("Hire Cost", Price.ToString("N2"));
+            content.Replace("Hire Cost", $"{User.Region.Currency}" + Price.ToString("N2"));
             return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
         }
 

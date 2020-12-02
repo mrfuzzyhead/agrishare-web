@@ -21,6 +21,7 @@ namespace Agrishare.Core.Entities
         public string ServerReference { get; set; }
         public string EcoCashReference { get; set; }
         public decimal Amount { get; set; }
+        public Currency Currency { get; set; }
         public TransactionStatus StatusId { get; set; }
         public string Log { get; set; }
         public string Error { get; set; }

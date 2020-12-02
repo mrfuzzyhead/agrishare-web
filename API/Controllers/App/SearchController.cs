@@ -20,7 +20,10 @@ namespace Agrishare.API.Controllers.App
         {
             Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
-            var list = ListingSearchResult.List(PageIndex, PageSize, Sort, CategoryId, ServiceId, Latitude, Longitude, StartDate, Size, IncludeFuel, Mobile, For, DestinationLatitude, DestinationLongitude, TotalVolume, 0, Keywords, CurrentUser.RegionId);
+            var list = ListingSearchResult.List(PageIndex: PageIndex, PageSize: PageSize, Sort: Sort, CategoryId: CategoryId,
+                ServiceId: ServiceId, Latitude: Latitude, Longitude: Longitude, StartDate: StartDate, Size: Size, IncludeFuel: IncludeFuel, 
+                Mobile: Mobile, For: For, DestinationLatitude: DestinationLatitude, DestinationLongitude: DestinationLongitude, 
+                TotalVolume: TotalVolume, Keywords: Keywords, RegionId: CurrentRegion.Id);
 
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);
@@ -53,7 +56,7 @@ namespace Agrishare.API.Controllers.App
         {
             var listing = Listing.Find(ListingId);
             var httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
-            var bytes = ListingSearchResult.ListingPDF(listing, StartDate, EndDate, Days, TransportDistance, Size, HireCost);
+            var bytes = ListingSearchResult.ListingPDF(Listing: listing, StartDate: StartDate, EndDate: EndDate, Days: Days, TransportDistance: TransportDistance, Size: Size, HireCost: HireCost, Region: CurrentRegion);
             var dataStream = new MemoryStream(bytes);
             httpResponseMessage.Content = new StreamContent(dataStream);
             httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")

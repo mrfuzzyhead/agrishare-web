@@ -170,8 +170,8 @@ namespace Agrishare.Core.Entities
         private void SendEmail(string RecipientName = "", string RecipientEmailAddress = "")
         {
             var template = Template.Find(Title: Type);
-            template.Replace("Service", Booking.Service.Category.Title);
-            template.Replace("Supplier", Booking.Service.Listing.Title);
+            template.Replace("Service", Booking.Service?.Category?.Title);
+            template.Replace("Supplier", Booking.Service?.Listing?.Title);
             template.Replace("Message", Message);
             template.Replace("Start Date", Booking.StartDate.ToString("d MMMM yyyy"));
             template.Replace("End Date", Booking.EndDate.ToString("d MMMM yyyy"));

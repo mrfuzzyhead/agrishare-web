@@ -302,7 +302,7 @@ namespace Agrishare.API.Controllers.CMS
             var data = new
             {
                 Entity = transaction.Json(),
-                Log = transaction.Log.Trim(),
+                Log = transaction.Log?.Trim(),
                 transaction.ClientCorrelator
             };
 
@@ -392,7 +392,7 @@ namespace Agrishare.API.Controllers.CMS
                     Region = booking.Listing.Region,
                     Title = $"Payment received from {booking.User.Title} {booking.User.Telephone}",
                     TypeId = JournalType.Payment,
-                    Rate = rate,
+                    CurrencyAmount = Amount,
                     Currency = Currency,
                     UserId = booking.UserId
                 }.Save();

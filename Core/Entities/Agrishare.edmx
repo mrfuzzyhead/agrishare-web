@@ -187,11 +187,11 @@
           <Property Name="UserId" Type="int" />
           <Property Name="BookingId" Type="int" />
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="CurrencyAmount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
-          <Property Name="Rate" Type="decimal" Precision="12" Scale="6" Nullable="false" />
-          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -394,6 +394,7 @@
           <Property Name="ServerReference" Type="varchar" MaxLength="256" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="256" />
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
           <Property Name="Log" Type="text" />
           <Property Name="Error" Type="varchar" MaxLength="1024" />
@@ -1359,6 +1360,7 @@
           <Property Name="ServerReference" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="EcoCashReference" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="StatusId" Type="AgrishareModel.TransactionStatus" Nullable="false" />
           <Property Name="Log" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Error" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
@@ -2073,11 +2075,11 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="BookingId" Type="Int32" />
           <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="CurrencyAmount" Type="Decimal" Nullable="false" />
+          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="Reconciled" Type="Boolean" Nullable="false" />
           <Property Name="EcoCashReference" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
-          <Property Name="Rate" Type="Decimal" Nullable="false" />
-          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
@@ -2710,6 +2712,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="AgrishareModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
                 <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />
                 <ScalarProperty Name="Error" ColumnName="Error" />
@@ -2843,8 +2846,8 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />

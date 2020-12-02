@@ -236,7 +236,7 @@ namespace Agrishare.Core.Entities
                 Amount,
                 Credit,
                 Debit,
-                Rate,
+                CurrencyAmount,
                 Currency,
                 CurrencyCode = $"{Currency}".ExplodeCamelCase(),
                 Reconciled,

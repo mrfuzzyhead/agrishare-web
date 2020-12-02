@@ -14,7 +14,8 @@
                         <strong>{{detail.entity.Title}}</strong>
                     </div>
                     <div>
-                        <strong>{{detail.entity.Amount | currency : app.region.CurrencyCode}}</strong>
+                        <strong>{{detail.entity.Amount | currency : app.region.CurrencyCode}}</strong><br/>
+                        <small ng-if="detail.entity.Currency!==app.region.Currency">{{detail.entity.CurrencyAmount | currency : detail.entity.CurrencyCode}}</small>
                     </div>
                 </div>
 

@@ -26,6 +26,7 @@ namespace Agrishare.Core.Entities
         public double Distance { get; set; }
         public bool Available { get; set; }
         public double Price { get; set; }
+        public double TotalVolume { get; set; }
         public double Size { get; set; }
         public double TransportDistance { get; set; }
         public double TransportCost { get; set; }
@@ -179,6 +180,7 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine("Listings.ConditionId AS ConditionId,");
                 sql.AppendLine("Listings.AverageRating AS AverageRating,");
                 sql.AppendLine("Listings.Photos AS PhotoPaths,");
+                sql.AppendLine($"{TotalVolume} AS TotalVolume,");
 
                 // distances
                 var distance = SQL.Distance(Latitude, Longitude, "Listings");
@@ -305,6 +307,7 @@ namespace Agrishare.Core.Entities
                 Photos = Photos?.Select(e => e.JSON()),
                 Distance,
                 Price,
+                TotalVolume,
                 Size,
                 Trips,
                 TransportDistance,
@@ -326,6 +329,7 @@ namespace Agrishare.Core.Entities
                 ListingId,
                 Distance,
                 Price,
+                TotalVolume,
                 Size,
                 Trips,
                 TransportDistance,
@@ -369,7 +373,7 @@ namespace Agrishare.Core.Entities
                 content.Replace("Distance", $"-");
 
             if (listing.CategoryId == Category.LorriesId)
-                content.Replace("Size", $"{Size} tonnes");
+                content.Replace("Size", $"{TotalVolume} tonnes");
             else if (listing.CategoryId == Category.ProcessingId)
                 content.Replace("Size", $"{Size} kgs");
             else if (listing.CategoryId == Category.TractorsId)
@@ -382,9 +386,8 @@ namespace Agrishare.Core.Entities
             return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
         }
 
-        public static byte[] ListingPDF(Listing Listing, DateTime StartDate, DateTime EndDate, decimal Days, decimal TransportDistance, decimal Size, decimal HireCost)
+        public static byte[] ListingPDF(Listing Listing, DateTime StartDate, DateTime EndDate, decimal Days, decimal TransportDistance, decimal Size, decimal HireCost, Region Region)
         {
-
             var content = Template.Find(Title: "Listing PDF");
             content.Replace("Listing ID", Listing.Id.ToString());
 
@@ -419,7 +422,7 @@ namespace Agrishare.Core.Entities
             if (Listing.CategoryId == Category.BusId)
                 content.Replace("Size", $"-");
 
-            content.Replace("Total Cost", HireCost.ToString("N2"));
+            content.Replace("Total Cost", $"{Region.Currency}{HireCost.ToString("N2")}");
 
             return PDF.ConvertHtmlToPdf(content.HTML, Config.WebURL);
         }
