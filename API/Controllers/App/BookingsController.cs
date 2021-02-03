@@ -2,6 +2,7 @@
 using Agrishare.Core;
 using Agrishare.Core.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -59,13 +60,15 @@ namespace Agrishare.API.Controllers.App
             {
                 Entities.Counter.Hit(UserId: CurrentUser.Id, Event: Entities.Counters.Book, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
 
-                new Entities.Notification
-                {
-                    Booking = booking,
-                    GroupId = Entities.NotificationGroup.Offering,
-                    TypeId = Entities.NotificationType.NewBooking,
-                    User = Entities.User.Find(Id: booking.Listing.UserId)
-                }.Save(Notify: true);
+                var users = booking.ProviderUsers();
+                foreach(var user in users)
+                    new Entities.Notification
+                    {
+                        Booking = booking,
+                        GroupId = Entities.NotificationGroup.Offering,
+                        TypeId = Entities.NotificationType.NewBooking,
+                        User = user
+                    }.Save(Notify: true);
 
                 new Entities.Notification
                 {
@@ -89,7 +92,7 @@ namespace Agrishare.API.Controllers.App
         public object ConfirmBooking(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.Listing.UserId != CurrentUser.Id)
+            if (booking == null || !booking.IsProvider(CurrentUser))
                 return Error("Booking not found");
 
             if (booking.StatusId != Entities.BookingStatus.Pending)
@@ -113,7 +116,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.ConfirmBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.ConfirmBooking, CategoryId: booking.Service?.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -134,7 +137,7 @@ namespace Agrishare.API.Controllers.App
         public object DeclineBooking(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.Listing.UserId != CurrentUser.Id)
+            if (booking == null || !booking.IsProvider(CurrentUser))
                 return Error("Booking not found");
 
             if (booking.StatusId != Entities.BookingStatus.Pending)
@@ -158,7 +161,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.DeclineBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.DeclineBooking, CategoryId: booking.Service?.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -179,7 +182,7 @@ namespace Agrishare.API.Controllers.App
         public object CompleteBooking(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.UserId != CurrentUser.Id)
+            if (booking == null || !booking.IsOwner(CurrentUser))
                 return Error("Booking not found");
 
             if (booking.StatusId == Entities.BookingStatus.Complete)
@@ -188,15 +191,17 @@ namespace Agrishare.API.Controllers.App
             booking.StatusId = Entities.BookingStatus.Complete;
             if (booking.Save())
             {
-                new Entities.Notification
-                {
-                    Booking = booking,
-                    GroupId = Entities.NotificationGroup.Offering,
-                    TypeId = Entities.NotificationType.ServiceComplete,
-                    User = Entities.User.Find(Id: booking.Listing.UserId)
-                }.Save(Notify: true);
+                var users = booking.ProviderUsers();
+                foreach(var user in users)
+                    new Entities.Notification
+                    {
+                        Booking = booking,
+                        GroupId = Entities.NotificationGroup.Offering,
+                        TypeId = Entities.NotificationType.ServiceComplete,
+                        User = user
+                    }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CompleteBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CompleteBooking, CategoryId: booking.Service?.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -217,7 +222,7 @@ namespace Agrishare.API.Controllers.App
         public object IncompleteBooking(int BookingId, string Message)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.UserId != CurrentUser.Id)
+            if (booking == null || !booking.IsOwner(CurrentUser))
                 return Error("Booking not found");
 
             if (booking.StatusId == Entities.BookingStatus.Complete)
@@ -226,14 +231,16 @@ namespace Agrishare.API.Controllers.App
             booking.StatusId = Entities.BookingStatus.Incomplete;
             if (booking.Save())
             {
-                new Entities.Notification
-                {
-                    Booking = booking,
-                    GroupId = Entities.NotificationGroup.Offering,
-                    Message = Message,
-                    TypeId = Entities.NotificationType.ServiceIncomplete,
-                    User = Entities.User.Find(Id: booking.Listing.UserId)
-                }.Save(Notify: true);
+                var users = booking.ProviderUsers();
+                foreach(var user in users)
+                    new Entities.Notification
+                    {
+                        Booking = booking,
+                        GroupId = Entities.NotificationGroup.Offering,
+                        Message = Message,
+                        TypeId = Entities.NotificationType.ServiceIncomplete,
+                        User = user
+                    }.Save(Notify: true);
 
                 new Entities.Notification
                 {
@@ -244,7 +251,7 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.IncompleteBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.IncompleteBooking, CategoryId: booking.Service?.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -290,10 +297,10 @@ namespace Agrishare.API.Controllers.App
         public object OfferingList(int PageIndex = 0, int PageSize = 25)
         {
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
-            var monthlySpend = Entities.Booking.OfferingSummary(CurrentUser.Id, startDate);
-            var totalSpend = Entities.Booking.OfferingSummary(CurrentUser.Id);
+            var monthlySpend = Entities.Booking.OfferingSummary(UserId: CurrentUser.Id, SupplierId: CurrentUser.Supplier?.Id ?? 0, StartDate: startDate);
+            var totalSpend = Entities.Booking.OfferingSummary(UserId: CurrentUser.Id, SupplierId: CurrentUser.Supplier?.Id ?? 0);
             
-            var bookings = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, SupplierId: CurrentUser.Id);
+            var bookings = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, ListingUserId: CurrentUser.Id, ListingSupplierId: CurrentUser.Supplier?.Id ?? 0);
 
             return Success(new
             {
@@ -329,7 +336,7 @@ namespace Agrishare.API.Controllers.App
         public object BookingDetail(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || (booking.UserId != CurrentUser.Id && booking.Listing.UserId != CurrentUser.Id))
+            if (booking == null || (!booking.IsOwner(CurrentUser) && !booking.IsProvider(CurrentUser)))
                 return Error("Booking does not exist");
 
             var ratingCount = Entities.Rating.Count(ListingId: booking.ListingId, UserId: CurrentUser.Id);
@@ -352,7 +359,7 @@ namespace Agrishare.API.Controllers.App
         public HttpResponseMessage InvoicePDF(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || (booking.UserId != CurrentUser.Id && booking.Listing.UserId != CurrentUser.Id))
+            if (booking == null || (!booking.IsOwner(CurrentUser) && !booking.IsProvider(CurrentUser)))
                 return Request.CreateResponse(HttpStatusCode.Forbidden);
 
             var httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
@@ -398,7 +405,7 @@ namespace Agrishare.API.Controllers.App
         public object CancelBooking(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || (booking.Listing.UserId != CurrentUser.Id && booking.UserId != CurrentUser.Id))
+            if (booking == null || (!booking.IsOwner(CurrentUser) && !booking.IsProvider(CurrentUser)))
                 return Error("Booking not found");
 
             if (booking.StatusId == Entities.BookingStatus.Complete)
@@ -432,15 +439,17 @@ namespace Agrishare.API.Controllers.App
                     User = Entities.User.Find(Id: booking.UserId)
                 }.Save(Notify: true);
 
-                new Entities.Notification
-                {
-                    Booking = booking,
-                    GroupId = Entities.NotificationGroup.Offering,
-                    TypeId = Entities.NotificationType.BookingCancelled,
-                    User = Entities.User.Find(Id: booking.Listing.UserId)
-                }.Save(Notify: false);
+                var users = booking.ProviderUsers();
+                foreach(var user in users)
+                    new Entities.Notification
+                    {
+                        Booking = booking,
+                        GroupId = Entities.NotificationGroup.Offering,
+                        TypeId = Entities.NotificationType.BookingCancelled,
+                        User = user
+                    }.Save(Notify: false);
 
-                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CancelBooking, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                Entities.Counter.Hit(UserId: booking.UserId, Event: Entities.Counters.CancelBooking, CategoryId: booking.Service?.CategoryId, BookingId: booking.Id);
 
                 return Success(new
                 {
@@ -465,7 +474,7 @@ namespace Agrishare.API.Controllers.App
 
             var booking = Entities.Booking.Find(Model.BookingId);
 
-            if (booking == null || booking.UserId != CurrentUser.Id)
+            if (booking == null || !booking.IsOwner(CurrentUser))
                 return Error("Booking not found");
 
             var photoFilename = Entities.File.SaveBase64Image(Model.Photo.Base64);
@@ -478,6 +487,95 @@ namespace Agrishare.API.Controllers.App
                 return BookingDetail(Model.BookingId);
 
             return Error();
+        }
+
+        [Route("bookings/products/add")]
+        [AcceptVerbs("POST")]
+        public object AddProductBooking(ProductBookingModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            // get product list and supplier list
+            var supplierList = new List<Entities.Supplier>();
+            var productList = new List<Entities.Product>();
+            foreach (var id in Model.ProductIds)
+            {
+                var product = Entities.Product.Find(id);
+                productList.Add(Entities.Product.Find(id));
+                if (supplierList.Count(e => e.Id == product.SupplierId) == 0)
+                    supplierList.Add(product.Supplier);
+            }
+
+            // create one booking per supplier
+            var bookingList = new List<Entities.Booking>();
+            foreach (var supplier in supplierList)
+            {                
+                var supplierProductList = productList.Where(e => e.SupplierId == supplier.Id).ToList();
+                var dayCount = (int)Math.Ceiling((Model.EndDate - Model.StartDate).TotalDays);
+                var hireCost = supplierProductList.Sum(e => e.DayRate) * dayCount;
+                var transportDistance = (int)Math.Ceiling(Location.GetDistance(supplier.Longitude, supplier.Latitude, Model.Longitude, Model.Latitude) / 1000);
+                var transportCost = transportDistance * Entities.Supplier.TransportCostPerKm;                
+
+                var booking = new Entities.Booking
+                {
+                    ForId = Entities.BookingFor.Me,
+                    IncludeFuel = true,
+                    Latitude = Model.Latitude,
+                    Location = Model.Location,
+                    Longitude = Model.Longitude,
+                    Quantity = 1,
+                    StartDate = Model.StartDate,
+                    EndDate = Model.EndDate,
+                    StatusId = Entities.BookingStatus.Pending,
+                    User = CurrentUser,
+                    AdditionalInformation = Model.AdditionalInformation,
+                    HireCost = hireCost,
+                    TransportCost = transportCost,
+                    Price = hireCost + transportCost,
+                    Distance = transportDistance,
+                    TransportDistance = transportDistance,
+                    Commission = Entities.Transaction.AgriShareCommission,
+                    AgentCommission = CurrentUser.Agent?.Commission ?? 0,
+                    IMTT = Entities.Transaction.IMTT,
+                    Products = supplierProductList,
+                    Supplier = supplier
+                };
+
+                if (booking.Save())
+                {
+                    foreach (var product in booking.Products)
+                        booking.AddProduct(product);
+
+                    var users = Entities.User.List(SupplierId: supplier.Id);
+                    foreach(var user in users)
+                        new Entities.Notification
+                        {
+                            Booking = booking,
+                            GroupId = Entities.NotificationGroup.Offering,
+                            TypeId = Entities.NotificationType.NewBooking,
+                            User = user
+                        }.Save(Notify: true);
+
+                    new Entities.Notification
+                    {
+                        Booking = booking,
+                        GroupId = Entities.NotificationGroup.Seeking,
+                        TypeId = Entities.NotificationType.NewBooking,
+                        User = CurrentUser
+                    }.Save(Notify: false);
+                }
+
+                Entities.Counter.Hit(UserId: CurrentUser.Id, Event: Entities.Counters.Book, CategoryId: 0, BookingId: booking.Id);
+            }
+
+            if (bookingList.Count > 0)
+                return Success(new
+                {
+                    Bookings = bookingList.Select(e => e.Json())
+                });
+
+            return Error("An unknown error occurred");
         }
     }
 }

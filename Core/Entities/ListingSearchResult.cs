@@ -162,7 +162,7 @@ namespace Agrishare.Core.Entities
 
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, 
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude, 
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0)
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, int SupplierServiceId = 0)
         {
             var sort = ListingSearchResultSort.Distance;
             try { sort = (ListingSearchResultSort)Enum.Parse(typeof(ListingSearchResultSort), Sort); }

@@ -28,9 +28,13 @@ namespace Agrishare.API.Controllers.App
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);
 
+            var adverts = Advert.List(Live: true, PageSize: 5, Sort: "Random");
+            Advert.AddImpressions(adverts.Select(e => e.Id).ToList());
+
             return Success(new
             {
-                List = list.Select(e => e.Json())
+                List = list.Select(e => e.Json()),
+                Adverts = adverts.Select(e => e.AppJson())
             });
         }
 

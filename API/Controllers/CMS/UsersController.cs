@@ -123,6 +123,9 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Find(int Id = 0)
         {
+            var Suppliers = Entities.Supplier.List();
+            Suppliers.Insert(0, new Supplier { Id = 0, Title = "None" });
+
             var data = new
             {
                 Entity = Entities.User.Find(Id: Id).AdminJson(),
@@ -134,7 +137,8 @@ namespace Agrishare.API.Controllers.CMS
                 Types = EnumInfo.ToList<AgentUserType>(),
                 Entities.User.MaxFailedLoginAttempts,
                 Entities.User.MaxFailedVoucherAttempts,
-                PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0)
+                PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0),
+                Suppliers = Suppliers.Select(e => new { e.Id, e.Title })
             };
 
             return Success(data);

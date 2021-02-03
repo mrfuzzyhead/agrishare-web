@@ -188,13 +188,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\Redis.cs" />
+    <Compile Include="Entities\Advert.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Agent.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AdvertEntity.cs" />
     <Compile Include="Entities\BookingComment.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingPaymentStatus.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookingProduct.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingTag.cs">
@@ -204,10 +211,13 @@
     <Compile Include="Entities\Currency.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Product.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Region.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SupplierServiceEntity.cs" />
+    <Compile Include="Entities\ProductEntity.cs" />
     <Compile Include="Entities\Tag.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -215,9 +225,6 @@
     <Compile Include="Entities\RegionEntity.cs" />
     <Compile Include="Entities\TagEntity.cs" />
     <Compile Include="Entities\Supplier.cs">
-      <DependentUpon>Agrishare.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\SupplierService.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UserVoucher.cs">

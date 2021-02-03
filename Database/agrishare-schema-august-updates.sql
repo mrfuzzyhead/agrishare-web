@@ -12,7 +12,31 @@ MySQL - 5.7.21-log : Database - agrishare
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `Adverts` */
+
+DROP TABLE IF EXISTS `Adverts`;
+
+CREATE TABLE `Adverts` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Title` varchar(256) DEFAULT NULL,
+  `PhotoPath` varchar(1024) DEFAULT NULL,
+  `LinkUrl` varchar(1024) DEFAULT NULL,
+  `ImpressionCount` int(11) NOT NULL DEFAULT '0',
+  `ClickCount` int(11) NOT NULL DEFAULT '0',
+  `StartDate` date NOT NULL,
+  `EndDate` date NOT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `Title` (`Title`),
+  KEY `StartDate` (`StartDate`),
+  KEY `Deleted` (`Deleted`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
 /*Table structure for table `Agents` */
+
+DROP TABLE IF EXISTS `Agents`;
 
 CREATE TABLE `Agents` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -28,6 +52,8 @@ CREATE TABLE `Agents` (
 
 /*Table structure for table `Blogs` */
 
+DROP TABLE IF EXISTS `Blogs`;
+
 CREATE TABLE `Blogs` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Title` varchar(1024) DEFAULT NULL,
@@ -40,6 +66,8 @@ CREATE TABLE `Blogs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `BookingComments` */
+
+DROP TABLE IF EXISTS `BookingComments`;
 
 CREATE TABLE `BookingComments` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -56,7 +84,27 @@ CREATE TABLE `BookingComments` (
   CONSTRAINT `bookingcomments_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
+/*Table structure for table `BookingProducts` */
+
+DROP TABLE IF EXISTS `BookingProducts`;
+
+CREATE TABLE `BookingProducts` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `BookingId` int(11) NOT NULL,
+  `ProductId` int(11) NOT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `BookingId` (`BookingId`),
+  KEY `ProductId` (`ProductId`),
+  CONSTRAINT `bookingproducts_ibfk_1` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`),
+  CONSTRAINT `bookingproducts_ibfk_2` FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 /*Table structure for table `BookingTags` */
+
+DROP TABLE IF EXISTS `BookingTags`;
 
 CREATE TABLE `BookingTags` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -73,6 +121,8 @@ CREATE TABLE `BookingTags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `BookingUsers` */
+
+DROP TABLE IF EXISTS `BookingUsers`;
 
 CREATE TABLE `BookingUsers` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -96,13 +146,14 @@ CREATE TABLE `BookingUsers` (
 
 /*Table structure for table `Bookings` */
 
+DROP TABLE IF EXISTS `Bookings`;
+
 CREATE TABLE `Bookings` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `ForId` smallint(6) NOT NULL COMMENT 'Enum: Me, Friend, Group',
   `UserId` int(11) NOT NULL,
   `ListingId` int(11) DEFAULT NULL,
   `ServiceId` int(11) DEFAULT NULL,
-  `SupplierServiceId` int(11) DEFAULT NULL,
   `Location` varchar(256) DEFAULT NULL,
   `Latitude` decimal(11,8) NOT NULL DEFAULT '0.00000000',
   `Longitude` decimal(11,8) NOT NULL DEFAULT '0.00000000',
@@ -138,19 +189,24 @@ CREATE TABLE `Bookings` (
   `Tags` varchar(1024) DEFAULT NULL,
   `ReceiptPhoto` varchar(1024) DEFAULT NULL,
   `PaymentMethodId` smallint(6) NOT NULL DEFAULT '0',
+  `ProductListJson` varchar(4096) DEFAULT NULL,
+  `SupplierId` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `VoucherId` (`VoucherId`),
-  KEY `SupplierServiceId` (`SupplierServiceId`),
   KEY `bookings_ibfk_2` (`ListingId`),
   KEY `bookings_ibfk_3` (`ServiceId`),
+  KEY `SupplierId` (`SupplierId`),
+  KEY `Deleted` (`Deleted`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE SET NULL,
   CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`Id`) ON DELETE SET NULL,
   CONSTRAINT `bookings_ibfk_4` FOREIGN KEY (`VoucherId`) REFERENCES `Vouchers` (`Id`) ON DELETE SET NULL,
-  CONSTRAINT `bookings_ibfk_5` FOREIGN KEY (`SupplierServiceId`) REFERENCES `SupplierServices` (`Id`) ON DELETE SET NULL
+  CONSTRAINT `bookings_ibfk_5` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5020 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Categories` */
+
+DROP TABLE IF EXISTS `Categories`;
 
 CREATE TABLE `Categories` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -164,6 +220,8 @@ CREATE TABLE `Categories` (
 
 /*Table structure for table `Config` */
 
+DROP TABLE IF EXISTS `Config`;
+
 CREATE TABLE `Config` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Key` varchar(256) DEFAULT NULL,
@@ -175,6 +233,8 @@ CREATE TABLE `Config` (
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Counters` */
+
+DROP TABLE IF EXISTS `Counters`;
 
 CREATE TABLE `Counters` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -199,6 +259,8 @@ CREATE TABLE `Counters` (
 
 /*Table structure for table `Devices` */
 
+DROP TABLE IF EXISTS `Devices`;
+
 CREATE TABLE `Devices` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) NOT NULL,
@@ -214,6 +276,8 @@ CREATE TABLE `Devices` (
 
 /*Table structure for table `Faqs` */
 
+DROP TABLE IF EXISTS `Faqs`;
+
 CREATE TABLE `Faqs` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `LanguageId` int(11) NOT NULL DEFAULT '1',
@@ -227,6 +291,8 @@ CREATE TABLE `Faqs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Journals` */
+
+DROP TABLE IF EXISTS `Journals`;
 
 CREATE TABLE `Journals` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -254,6 +320,8 @@ CREATE TABLE `Journals` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `Listings` */
+
+DROP TABLE IF EXISTS `Listings`;
 
 CREATE TABLE `Listings` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -290,6 +358,8 @@ CREATE TABLE `Listings` (
 
 /*Table structure for table `Log` */
 
+DROP TABLE IF EXISTS `Log`;
+
 CREATE TABLE `Log` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `User` varchar(256) DEFAULT NULL,
@@ -300,9 +370,11 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1304 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1310 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
+
+DROP TABLE IF EXISTS `Notifications`;
 
 CREATE TABLE `Notifications` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -323,6 +395,8 @@ CREATE TABLE `Notifications` (
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Pages` */
+
+DROP TABLE IF EXISTS `Pages`;
 
 CREATE TABLE `Pages` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -345,7 +419,31 @@ CREATE TABLE `Pages` (
   CONSTRAINT `pages_ibfk_1` FOREIGN KEY (`ParentId`) REFERENCES `Pages` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*Table structure for table `Products` */
+
+DROP TABLE IF EXISTS `Products`;
+
+CREATE TABLE `Products` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `SupplierId` int(11) NOT NULL,
+  `Title` varchar(128) DEFAULT NULL,
+  `Description` varchar(1024) DEFAULT NULL,
+  `DayRate` decimal(10,3) NOT NULL,
+  `Stock` int(11) NOT NULL DEFAULT '0',
+  `Photo` varchar(1024) DEFAULT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `SupplierId` (`SupplierId`),
+  KEY `Deleted` (`Deleted`),
+  KEY `Title` (`Title`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
 /*Table structure for table `Ratings` */
+
+DROP TABLE IF EXISTS `Ratings`;
 
 CREATE TABLE `Ratings` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -368,6 +466,8 @@ CREATE TABLE `Ratings` (
 
 /*Table structure for table `Regions` */
 
+DROP TABLE IF EXISTS `Regions`;
+
 CREATE TABLE `Regions` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Title` varchar(64) DEFAULT NULL,
@@ -381,6 +481,8 @@ CREATE TABLE `Regions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Services` */
+
+DROP TABLE IF EXISTS `Services`;
 
 CREATE TABLE `Services` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -408,41 +510,31 @@ CREATE TABLE `Services` (
   CONSTRAINT `services_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
 
-/*Table structure for table `SupplierServices` */
-
-CREATE TABLE `SupplierServices` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `SupplierId` int(11) NOT NULL,
-  `Title` varchar(128) DEFAULT NULL,
-  `Description` varchar(1024) DEFAULT NULL,
-  `Cost` decimal(10,3) NOT NULL,
-  `Stock` int(11) NOT NULL DEFAULT '0',
-  `Photo` varchar(1024) DEFAULT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Id`),
-  KEY `SupplierId` (`SupplierId`),
-  KEY `Deleted` (`Deleted`),
-  CONSTRAINT `supplierservices_ibfk_1` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-
 /*Table structure for table `Suppliers` */
+
+DROP TABLE IF EXISTS `Suppliers`;
 
 CREATE TABLE `Suppliers` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `RegionId` int(11) NOT NULL DEFAULT '1',
   `Title` varchar(128) DEFAULT NULL,
   `Logo` varchar(1024) DEFAULT NULL,
+  `Location` varchar(256) DEFAULT NULL,
+  `Latitude` decimal(10,6) NOT NULL,
+  `Longitude` decimal(10,6) NOT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   KEY `RegionId` (`RegionId`),
+  KEY `Title` (`Title`),
+  KEY `Deleted` (`Deleted`),
   CONSTRAINT `suppliers_ibfk_1` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Tags` */
+
+DROP TABLE IF EXISTS `Tags`;
 
 CREATE TABLE `Tags` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -454,6 +546,8 @@ CREATE TABLE `Tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Templates` */
+
+DROP TABLE IF EXISTS `Templates`;
 
 CREATE TABLE `Templates` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -468,6 +562,8 @@ CREATE TABLE `Templates` (
 
 /*Table structure for table `TransactionFees` */
 
+DROP TABLE IF EXISTS `TransactionFees`;
+
 CREATE TABLE `TransactionFees` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `MinimumValue` decimal(10,3) NOT NULL DEFAULT '0.000',
@@ -481,6 +577,8 @@ CREATE TABLE `TransactionFees` (
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Transactions` */
+
+DROP TABLE IF EXISTS `Transactions`;
 
 CREATE TABLE `Transactions` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -506,6 +604,8 @@ CREATE TABLE `Transactions` (
 
 /*Table structure for table `UserVouchers` */
 
+DROP TABLE IF EXISTS `UserVouchers`;
+
 CREATE TABLE `UserVouchers` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) NOT NULL,
@@ -521,6 +621,8 @@ CREATE TABLE `UserVouchers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Table structure for table `Users` */
+
+DROP TABLE IF EXISTS `Users`;
 
 CREATE TABLE `Users` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -551,14 +653,19 @@ CREATE TABLE `Users` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `PaymentMethod` smallint(6) NOT NULL DEFAULT '0',
   `BankAccount` varchar(4096) DEFAULT NULL,
+  `SupplierId` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `AgentId` (`AgentId`),
   KEY `RegionId` (`RegionId`),
+  KEY `SupplierId` (`SupplierId`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`AgentId`) REFERENCES `Agents` (`Id`),
-  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`)
+  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`),
+  CONSTRAINT `users_ibfk_3` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10008 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Vouchers` */
+
+DROP TABLE IF EXISTS `Vouchers`;
 
 CREATE TABLE `Vouchers` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -576,6 +683,7 @@ CREATE TABLE `Vouchers` (
 
 /* Function  structure for function  `GetDistance` */
 
+/*!50003 DROP FUNCTION IF EXISTS `GetDistance` */;
 DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` FUNCTION `GetDistance`(a DOUBLE, b DOUBLE, c DOUBLE, d DOUBLE) RETURNS double

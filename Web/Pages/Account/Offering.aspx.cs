@@ -21,13 +21,13 @@ namespace Agrishare.Web.Pages.Account.Offering
             Notifications.DataSource = notificationsData;
             Notifications.DataBind();
 
-            var bookingData = Core.Entities.Booking.List(PageSize: 10, SupplierId: Master.CurrentUser.Id);
+            var bookingData = Core.Entities.Booking.List(PageSize: 10, ListingUserId: Master.CurrentUser.Id, ListingSupplierId: Master.CurrentUser.SupplierId ?? 0);
             Bookings.RecordCount = bookingData.Count;
             Bookings.DataSource = bookingData;
             Bookings.DataBind();
 
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
-            MonthSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
+            MonthSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(UserId: Master.CurrentUser.Id, SupplierId: Master.CurrentUser.SupplierId ?? 0, StartDate: startDate).ToString("N2");
             AllTimeSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(Master.CurrentUser.Id).ToString("N2");
         }
 

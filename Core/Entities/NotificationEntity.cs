@@ -170,8 +170,32 @@ namespace Agrishare.Core.Entities
         private void SendEmail(string RecipientName = "", string RecipientEmailAddress = "")
         {
             var template = Template.Find(Title: Type);
-            template.Replace("Service", Booking.Service?.Category?.Title);
-            template.Replace("Supplier", Booking.Service?.Listing?.Title);
+
+            if (Booking.Service != null)
+                template.Replace("Service", Booking.Service.Category?.Title);
+            else
+                template.ReplaceSectionTemplate("Service", string.Empty);
+
+            if (Booking.Supplier != null)
+                template.Replace("Supplier", Booking.Supplier.Title);
+            else
+                template.ReplaceSectionTemplate("Supplier", string.Empty);
+
+            if (Booking.Products.Count > 0)
+            {
+                var productsHtml = new StringBuilder();
+                var productRowTemplate = template.GetSectionTemplate("Product");
+                foreach(var product in Booking.Products)
+                {
+                    var html = productRowTemplate;
+                    html = Template.Replace(html, "Product Title", product.Title);
+                    productsHtml.AppendLine(html);
+                }
+                template.ReplaceSectionTemplate("Product", productsHtml.ToString());
+            }
+            else
+                template.ReplaceSectionTemplate("Product", string.Empty);
+
             template.Replace("Message", Message);
             template.Replace("Start Date", Booking.StartDate.ToString("d MMMM yyyy"));
             template.Replace("End Date", Booking.EndDate.ToString("d MMMM yyyy"));

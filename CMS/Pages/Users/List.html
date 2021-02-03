@@ -58,6 +58,7 @@
                 </icon>
                 <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.FirstName}} {{item.LastName}}</strong><br />
+                    <small ng-if="item.Supplier">{{item.Supplier.Title}} &bull; </small>
                     <small>{{item.Telephone}} &bull; {{item.Language}}</small>
                 </row>
                 <action>

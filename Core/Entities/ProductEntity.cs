@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Agrishare.Core.Entities
 {
-    public partial class SupplierService : IEntity
+    public partial class Product : IEntity
     {
         public static string DefaultSort = "Title";
 
@@ -30,10 +30,10 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static SupplierService Find(int Id = 0)
+        public static Product Find(int Id = 0)
         {
             if (Id == 0)
-                return new SupplierService
+                return new Product
                 {
                     DateCreated = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow
@@ -41,7 +41,7 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.SupplierServices.Include(o => o.Supplier).Where(o => !o.Deleted && !o.Supplier.Deleted);
+                var query = ctx.Products.Include(o => o.Supplier).Where(o => !o.Deleted && !o.Supplier.Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -50,11 +50,11 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<SupplierService> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int SupplierId = 0)
+        public static List<Product> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int SupplierId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.SupplierServices.Include(o => o.Supplier).Where(o => !o.Deleted && !o.Supplier.Deleted);
+                var query = ctx.Products.Include(o => o.Supplier).Where(o => !o.Deleted && !o.Supplier.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
@@ -70,7 +70,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.SupplierServices.Where(o => !o.Deleted);
+                var query = ctx.Products.Where(o => !o.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
@@ -110,7 +110,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                ctx.SupplierServices.Attach(this);
+                ctx.Products.Attach(this);
                 ctx.Entry(this).State = EntityState.Added;
                 return ctx.SaveChanges() > 0;
             }
@@ -120,7 +120,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                ctx.SupplierServices.Attach(this);
+                ctx.Products.Attach(this);
                 ctx.Entry(this).State = EntityState.Modified;
                 return ctx.SaveChanges() > 0;
             }
@@ -144,11 +144,78 @@ namespace Agrishare.Core.Entities
                 Photo = Photo?.JSON(),
                 Supplier = Supplier?.Json(),
                 Description,
-                Cost,
+                DayRate,
                 Stock,
                 DateCreated,
                 LastModified
             };
         }
+
+        public object ListJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                Photo = $"{Config.CDNURL}/{Photo?.ThumbName}",
+                Supplier = Supplier?.Title,
+                DayRate,
+                Stock
+            };
+        }
+
+        public object BookingJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                PhotoPath,
+                Description,
+                SupplierId,
+                DayRate
+            };
+        }
+
+        public object AppListJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                Description,
+                Photo = Photo == null ? null : $"{Config.CDNURL}/{Photo.ThumbName}",
+                DayRate
+            };
+        }
+
+        public static List<Product> Unavailable(List<int> ProductIds, DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                return ctx.BookingProducts
+                    .AsNoTracking()
+                    .Where(e => e.Booking.StartDate <= EndDate && e.Booking.EndDate >= StartDate && ProductIds.Contains(e.ProductId))
+                    .GroupBy(e => e.Product)
+                    .Where(e => e.Count() >= e.First().Product.Stock)
+                    .Select(e => e.First().Product)
+                    .ToList();                    
+            }
+        }
+
+        public static List<Booking> BookedDates(List<int> ProductIds, DateTime StartDate, DateTime EndDate)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                return ctx.BookingProducts
+                    .AsNoTracking()
+                    .Include(e => e.Booking)
+                    .Where(e => e.Booking.StartDate <= EndDate && e.Booking.EndDate >= StartDate && ProductIds.Contains(e.ProductId))
+                    .GroupBy(e => e.Booking)
+                    .Select(e => e.First().Booking)
+                    .ToList();
+            }
+        }
     }
+
 }

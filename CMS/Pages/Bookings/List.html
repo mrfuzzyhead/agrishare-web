@@ -65,7 +65,9 @@
                 <row class="booking" ng-click="app.go('/bookings/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <div>
                         <strong>{{item.User.FirstName}} {{item.User.LastName}}</strong><br />
-                        <small>{{item.Listing.Category.Title}} &gt; {{item.Listing.Title}} &nbsp; &bull; &nbsp; Created: {{item.DateCreated | date : 'd MMMM yyyy h:mma'}}</small><br/>
+                        <small ng-if="item.Listing">{{item.Listing.Category.Title}} &gt; {{item.Listing.Title}}</small>
+                        <small ng-if="item.Supplier">{{item.Supplier.Title}}</small>
+                        <small> &nbsp; &bull; &nbsp; Created: {{item.DateCreated | date : 'd MMMM yyyy h:mma'}}</small><br />
                         <small class="tag" ng-repeat="tag in item.Tags">
                             <i class="material-icons md-16">local_offer</i>
                             <span>{{tag.Title}}</span>

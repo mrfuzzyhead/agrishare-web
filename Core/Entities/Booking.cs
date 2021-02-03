@@ -24,6 +24,7 @@ namespace Agrishare.Core.Entities
             this.Counters = new HashSet<Counter>();
             this.BookingComments = new HashSet<BookingComment>();
             this.BookingTags = new HashSet<BookingTag>();
+            this.BookingProducts = new HashSet<BookingProduct>();
         }
     
         public int Id { get; set; }
@@ -58,7 +59,6 @@ namespace Agrishare.Core.Entities
         public decimal IMTT { get; set; }
         public decimal TransactionFee { get; set; }
         public Nullable<int> VoucherId { get; set; }
-        public Nullable<int> SupplierServiceId { get; set; }
         public decimal VoucherTotal { get; set; }
         public BookingPaymentStatus PaymentStatusId { get; set; }
         public string TagsJson { get; set; }
@@ -67,6 +67,8 @@ namespace Agrishare.Core.Entities
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+        public string ProductListJson { get; set; }
+        public Nullable<int> SupplierId { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -82,10 +84,12 @@ namespace Agrishare.Core.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Counter> Counters { get; set; }
         public virtual Voucher Voucher { get; set; }
-        public virtual SupplierService SupplierService { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingComment> BookingComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingTag> BookingTags { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingProduct> BookingProducts { get; set; }
+        public virtual Supplier Supplier { get; set; }
     }
 }

@@ -83,11 +83,14 @@
     <Content Include="Data\Invoice PDF.html" />
     <Content Include="Data\Listing PDF.html" />
     <Content Include="Data\Email Template.html" />
+    <Content Include="Data\New Booking.html" />
     <Content Include="Data\WHH-Logo.svg" />
     <Content Include="Login.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\Adverts\Edit.html" />
+    <Content Include="Pages\Adverts\List.html" />
     <Content Include="Pages\Journals\Detail.html" />
     <Content Include="Pages\Journals\Income.html" />
     <Content Include="Pages\Journals\Expense.html" />
@@ -95,8 +98,8 @@
     <Content Include="Pages\Journals\Ledger.aspx" />
     <Content Include="Pages\Regions\Edit.html" />
     <Content Include="Pages\Regions\List.html" />
-    <Content Include="Pages\SupplierServices\Edit.html" />
-    <Content Include="Pages\SupplierServices\List.html" />
+    <Content Include="Pages\Products\Edit.html" />
+    <Content Include="Pages\Products\List.html" />
     <Content Include="Pages\Tags\Edit.html" />
     <Content Include="Pages\Tags\List.html" />
     <Content Include="Pages\Bookings\TransactionLog.html" />

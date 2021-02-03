@@ -53,6 +53,23 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        private List<Product> products;
+        public List<Product> Products
+        {
+            get
+            {
+                if (products == null && !string.IsNullOrEmpty(ProductListJson))
+                    products = JsonConvert.DeserializeObject<List<Product>>(ProductListJson);
+                if (products == null)
+                    products = new List<Product>();
+                return products;
+            }
+            set
+            {
+                products = value;
+            }
+        }
+
         public static Booking Find(int Id = 0)
         {
             if (Id == 0)
@@ -69,6 +86,7 @@ namespace Agrishare.Core.Entities
                     .Include(o => o.Service)
                     .Include(o => o.Listing.Region)
                     .Include(o => o.Voucher)
+                    .Include(o => o.Supplier)
                     .Where(o => !o.Deleted);
 
 
@@ -80,7 +98,7 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, int AgentId = 0,
-            int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0,
+            int ListingUserId = 0, int ListingSupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0,
             bool? PaidOut = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
@@ -90,6 +108,7 @@ namespace Agrishare.Core.Entities
                     .Include(o => o.Service)
                     .Include(o => o.Listing.Region)
                     .Include(o => o.Voucher)
+                    .Include(o => o.Supplier)
                     .Where(o => !o.Deleted);
 
                 if (ListingId > 0)
@@ -104,8 +123,10 @@ namespace Agrishare.Core.Entities
                 if (AgentId > 0)
                     query = query.Where(o => o.User.AgentId == AgentId);
 
-                if (SupplierId > 0)
-                    query = query.Where(o => o.Listing.UserId == SupplierId);
+                if (ListingSupplierId > 0)
+                    query = query.Where(o => o.SupplierId == ListingSupplierId);
+                else if (ListingUserId > 0)
+                    query = query.Where(o => o.Listing.UserId == ListingUserId);
 
                 if (StartDate.HasValue)
                 {
@@ -259,12 +280,20 @@ namespace Agrishare.Core.Entities
 
         }
 
-        public static decimal OfferingSummary(int UserId, DateTime? StartDate = null)
+        public static decimal OfferingSummary(int UserId = 0, int SupplierId = 0, DateTime? StartDate = null)
         {
+            if (UserId == 0 && SupplierId == 0)
+                return 0M;
+
             using (var ctx = new AgrishareEntities())
             {
                 var query = ctx.Bookings.Include(o => o.Listing)
-                        .Where(o => !o.Deleted && o.Listing.UserId == UserId && (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.Complete || o.StatusId == BookingStatus.InProgress));
+                        .Where(o => !o.Deleted && (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.Complete || o.StatusId == BookingStatus.InProgress));
+
+                if (SupplierId > 0)
+                    query = query.Where(o => o.SupplierId == SupplierId);
+                else if (UserId > 0)
+                    query = query.Where(o => o.Listing.UserId == UserId);                
 
                 if (StartDate.HasValue)
                 {
@@ -306,6 +335,7 @@ namespace Agrishare.Core.Entities
             var success = false;
 
             TagsJson = JsonConvert.SerializeObject(Tags.Select(e => e.Json()));
+            ProductListJson = JsonConvert.SerializeObject(Products.Select(e => e.BookingJson()));
 
             if (ReceiptPhoto != null)
                 ReceiptPhotoPath = ReceiptPhoto.Filename;
@@ -325,6 +355,11 @@ namespace Agrishare.Core.Entities
                 UserId = user.Id;
             User = null;
 
+            var supplier = Supplier;
+            if (supplier != null)
+                SupplierId = supplier.Id;
+            Supplier = null;
+
             if (Id == 0)
                 success = Add();
             else
@@ -333,6 +368,7 @@ namespace Agrishare.Core.Entities
             Service = service;
             Listing = listing;
             User = user;
+            Supplier = supplier;
 
             return success;
         }
@@ -413,7 +449,9 @@ namespace Agrishare.Core.Entities
                 DateCreated,
                 ReceiptPhoto = ReceiptPhoto?.JSON(),
                 PaymentMethodId,
-                PaymentMethod = $"{PaymentMethodId}".ExplodeCamelCase()
+                PaymentMethod = $"{PaymentMethodId}".ExplodeCamelCase(),
+                Supplier = Supplier?.Json(),
+                Products = Products?.Select(e => e.Json())
             };
         }
 
@@ -555,6 +593,49 @@ namespace Agrishare.Core.Entities
             }
 
             return false;
+        }
+
+        public void AddProduct(Product Product)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var ent = new BookingProduct
+                {
+                    ProductId = Product.Id,
+                    BookingId = Id
+                };
+
+                ctx.BookingProducts.Attach(ent);
+                ctx.Entry(this).State = EntityState.Added;
+                ctx.SaveChanges();
+            }
+        }
+
+        public bool IsProvider(User User)
+        {
+            if (Listing != null)
+                return Listing.UserId == User.Id;
+
+            if (Supplier != null)
+                return Supplier.Id == User.SupplierId;
+
+            return false;
+        }
+
+        public bool IsOwner(User User)
+        {
+            return UserId == User.Id;
+        }
+
+        public List<User> ProviderUsers()
+        {
+            if (Listing != null)
+                return new List<User> { User.Find(Listing.UserId) };
+
+            if (Supplier != null)
+                return User.List(SupplierId: Supplier.Id);
+
+            return new List<User>();
         }
     }
 

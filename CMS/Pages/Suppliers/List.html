@@ -19,11 +19,12 @@
             <div ng-repeat="item in list.data">
                 <photo style="background-image:url({{item.Logo.Thumb}})"></photo>
                 <row ng-click="app.go('/suppliers/edit/'+item.Id+'?'+app.returnUrlQs())">
-                    <strong>{{item.Title}}</strong>
+                    <strong>{{item.Title}}</strong><br/>
+                    <small>{{item.Location}}</small>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
-                        <gl-menu-item gl-icon="build" ng-click="app.go('/supplierservices/list/filter/supplierid/'+item.Id+'?'+app.returnUrlQs())">Services</gl-menu-item>
+                        <gl-menu-item gl-icon="shopping_basket" ng-click="app.go('/products/list/filter/supplierid/'+item.Id+'?'+app.returnUrlQs())">Products</gl-menu-item>
                         <gl-menu-item gl-icon="edit" ng-click="app.go('/suppliers/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
                         <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/suppliers/delete?id=' + item.Id)">Delete</gl-menu-item>
                     </gl-popup-menu>

@@ -10,19 +10,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Agrishare.API.dll">
-      <publishTime>08/20/2020 14:56:29</publishTime>
+      <publishTime>02/03/2021 16:13:23</publishTime>
     </File>
     <File Include="bin/Agrishare.API.pdb">
-      <publishTime>08/20/2020 14:56:29</publishTime>
+      <publishTime>02/03/2021 16:13:23</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll">
-      <publishTime>08/20/2020 14:56:28</publishTime>
+      <publishTime>02/03/2021 16:13:23</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll.config">
-      <publishTime>08/11/2020 12:38:38</publishTime>
+      <publishTime>11/26/2020 16:24:12</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.pdb">
-      <publishTime>08/20/2020 14:56:28</publishTime>
+      <publishTime>02/03/2021 16:13:23</publishTime>
     </File>
     <File Include="bin/AWSSDK.dll">
       <publishTime>03/16/2019 00:24:03</publishTime>
@@ -265,7 +265,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:23:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/18/2020 17:19:22</publishTime>
+      <publishTime>02/03/2021 15:18:04</publishTime>
     </File>
   </ItemGroup>
 </Project>

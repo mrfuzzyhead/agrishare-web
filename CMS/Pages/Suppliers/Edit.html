@@ -10,6 +10,13 @@
             <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
             <gl-upload gl-label="Logo" ng-model="form.entity" gl-model-attribute="Logo" gl-required="true"></gl-upload>
 
+            <h2>Location</h2>
+            <gl-textbox gl-label="Address" ng-model="form.entity.Location" gl-required="true"></gl-textbox>
+            <div flex>
+                <gl-textbox gl-label="Latitude" ng-model="form.entity.Latitude" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Longitude" ng-model="form.entity.Longitude" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
         </form>
 
     </ag-section>

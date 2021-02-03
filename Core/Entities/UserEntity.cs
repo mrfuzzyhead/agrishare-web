@@ -136,7 +136,7 @@ namespace Agrishare.Core.Entities
         public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", 
             string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, 
             bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, 
-            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0)
+            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0, int SupplierId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -186,6 +186,9 @@ namespace Agrishare.Core.Entities
 
                 if (RegionId > 0)
                     query = query.Where(e => e.RegionId == RegionId);
+
+                if (SupplierId > 0)
+                    query = query.Where(e => e.SupplierId == SupplierId);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -558,6 +561,9 @@ namespace Agrishare.Core.Entities
                 RegionId = region.Id;
             Region = null;
 
+            var supplier = Supplier; Supplier = null;
+            if (supplier != null && supplier.Id != 0) SupplierId = supplier.Id;
+
             if (Id == 0)
                 success = Add();
             else
@@ -565,6 +571,7 @@ namespace Agrishare.Core.Entities
 
             Agent = agent;
             Region = region;
+            Supplier = supplier;
 
             if (!AuthToken.IsEmpty())
                 Cache.Instance.Add(CacheKey(AuthToken), this.AdminJson());
@@ -618,7 +625,8 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
-                Region = Region?.Json()
+                Region = Region?.Json(),
+                Supplier = Supplier?.TitleJson()
             };
         }
 

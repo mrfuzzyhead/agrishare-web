@@ -25,7 +25,8 @@
                     <div map-lazy-load="https://maps.google.com/maps/api/js?key=AIzaSyCEHzltxutIsimd9nZsP6QC2LSHHFIE6PI">
                         <ng-map center="{{detail.entity.Latitude}},{{detail.entity.Longitude}}" zoom="15">
                             <custom-marker position="[{{detail.entity.Latitude}},{{detail.entity.Longitude}}]">Destination</custom-marker>
-                            <custom-marker position="[{{detail.entity.Listing.Latitude}},{{detail.entity.Listing.Longitude}}]">Source</custom-marker>
+                            <custom-marker ng-if="detail.entity.Listing" position="[{{detail.entity.Listing.Latitude}},{{detail.entity.Listing.Longitude}}]">Source</custom-marker>
+                            <custom-marker ng-if="detail.entity.Supplier" position="[{{detail.entity.Supplier.Latitude}},{{detail.entity.Supplier.Longitude}}]">Supplier</custom-marker>
                         </ng-map>
                     </div>
 
@@ -33,7 +34,7 @@
 
             </div>
 
-            <div class="box">
+            <div class="box" ng-if="detail.entity.Listing">
 
                 <h2>Booking Details</h2>
                 <ul class="details">
@@ -76,9 +77,36 @@
                 </ul>
             </div>
 
+            <div class="box" ng-if="detail.entity.Supplier">
+
+                <h2>Booking Details</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Supplier</strong>
+                        <span>{{detail.entity.Supplier.Title}}</span>
+                    </li>
+                    <li>
+                        <strong>Distance</strong>
+                        <span>{{detail.entity.Distance}}km</span>
+                    </li>
+                    <li>
+                        <strong>Start Date</strong>
+                        <span>{{detail.entity.StartDate | date : 'd MMMM yyyy'}}</span>
+                    </li>
+                    <li>
+                        <strong>End Date</strong>
+                        <span>{{detail.entity.EndDate | date : 'd MMMM yyyy'}}</span>
+                    </li>
+                    <li>
+                        <strong>Additional Information</strong>
+                        <span>{{detail.entity.AdditionalInformation || '-'}}</span>
+                    </li>
+                </ul>
+            </div>
+
             <div class="box">
 
-                <h2>Payment Details</h2>
+                <h2>User Payment Details</h2>
                 <ul class="details">
                     <li>
                         <strong>Amount</strong>
@@ -104,7 +132,7 @@
 
             </div>
 
-            <div class="box">
+            <div class="box" ng-if="detail.entity.Listing">
 
                 <h2>Listing</h2>
                 <ul class="details">
@@ -119,6 +147,18 @@
                     <li ng-if="[1,3].includes(detail.entity.Listing.Category.Id)">
                         <strong>Service</strong>
                         <span>{{detail.entity.Service.Category.Title}}</span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="box" ng-if="detail.entity.Supplier">
+
+                <h2>{{detail.entity.Supplier.Title}} Products</h2>
+                <ul class="details">
+                    <li ng-repeat="item in detail.entity.Products">
+                        <strong>{{item.Title}}</strong>
+                        <span>{{item.DayRate | currency}}/day</span>
                     </li>
                 </ul>
 
@@ -303,7 +343,7 @@
 
                 <h2>Comments</h2>
                 <ul class="comments" ng-if="detail.data.Comments.length">
-                    <li ng-repeat="comment in detail.data.Comments">                        
+                    <li ng-repeat="comment in detail.data.Comments">
                         <span ng-bind-html="comment.Text | newLines | trustAsHtml"></span>
                         <small>{{comment.User.Title}} &bull; {{comment.DateCreated | date : 'd MMMM yyyy h:mma'}}</small>
                     </li>
