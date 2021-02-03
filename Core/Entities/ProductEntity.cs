@@ -185,7 +185,8 @@ namespace Agrishare.Core.Entities
                 Title,
                 Description,
                 Photo = Photo == null ? null : $"{Config.CDNURL}/{Photo.ThumbName}",
-                DayRate
+                DayRate,
+                Supplier = Supplier?.AppListJson()
             };
         }
 

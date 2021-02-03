@@ -522,6 +522,8 @@ CREATE TABLE `Suppliers` (
   `Location` varchar(256) DEFAULT NULL,
   `Latitude` decimal(10,6) NOT NULL,
   `Longitude` decimal(10,6) NOT NULL,
+  `TransportCostPerKm` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `MaximumDistance` int(11) NOT NULL DEFAULT '150',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',

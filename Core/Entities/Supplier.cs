@@ -30,6 +30,8 @@ namespace Agrishare.Core.Entities
         public string Location { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        public decimal TransportCostPerKm { get; set; }
+        public int MaximumDistance { get; set; }
     
         public virtual Region Region { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -370,6 +370,8 @@
     <Property Name="Location" Type="varchar" MaxLength="256" />
     <Property Name="Latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
     <Property Name="Longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+    <Property Name="TransportCostPerKm" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="MaximumDistance" Type="int" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />

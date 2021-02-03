@@ -10,6 +10,11 @@
             <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
             <gl-upload gl-label="Logo" ng-model="form.entity" gl-model-attribute="Logo" gl-required="true"></gl-upload>
 
+            <div flex>
+                <gl-textbox gl-label="Transport Cost Per KM" ng-model="form.entity.TransportCostPerKm" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Maximum Distance" ng-model="form.entity.MaximumDistance" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
             <h2>Location</h2>
             <gl-textbox gl-label="Address" ng-model="form.entity.Location" gl-required="true"></gl-textbox>
             <div flex>

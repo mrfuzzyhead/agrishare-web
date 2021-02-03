@@ -11,8 +11,6 @@ namespace Agrishare.Core.Entities
 {
     public partial class Supplier : IEntity
     {
-        public static decimal TransportCostPerKm => Convert.ToDecimal(Config.Find(Key: "Transport Cost Per KM")?.Value ?? "0");
-
         public static string DefaultSort = "Title";
 
         private File _logo;
@@ -146,6 +144,19 @@ namespace Agrishare.Core.Entities
             };
         }
 
+        public object AppListJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                Latitude,
+                Longitude,
+                TransportCostPerKm,
+                MaximumDistance
+            };
+        }
+
         public object Json()
         {
             return new
@@ -157,6 +168,8 @@ namespace Agrishare.Core.Entities
                 Location,
                 Latitude,
                 Longitude,
+                TransportCostPerKm,
+                MaximumDistance,
                 DateCreated,
                 LastModified
             };

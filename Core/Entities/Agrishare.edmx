@@ -375,6 +375,8 @@
           <Property Name="Location" Type="varchar" MaxLength="256" />
           <Property Name="Latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
           <Property Name="Longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+          <Property Name="TransportCostPerKm" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="MaximumDistance" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -2354,6 +2356,8 @@
           <Property Name="Latitude" Type="Decimal" Nullable="false" />
           <Property Name="Longitude" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_3" FromRole="Supplier" ToRole="User" />
+          <Property Name="TransportCostPerKm" Type="Decimal" Nullable="false" />
+          <Property Name="MaximumDistance" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="UserVoucher">
           <Key>
@@ -3080,6 +3084,8 @@
           <EntitySetMapping Name="Suppliers">
             <EntityTypeMapping TypeName="AgrishareModel.Supplier">
               <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="MaximumDistance" ColumnName="MaximumDistance" />
+                <ScalarProperty Name="TransportCostPerKm" ColumnName="TransportCostPerKm" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Location" ColumnName="Location" />

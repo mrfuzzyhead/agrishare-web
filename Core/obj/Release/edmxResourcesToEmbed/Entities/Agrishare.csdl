@@ -1129,6 +1129,8 @@
     <Property Name="Latitude" Type="Decimal" Nullable="false" />
     <Property Name="Longitude" Type="Decimal" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_3" FromRole="Supplier" ToRole="User" />
+    <Property Name="TransportCostPerKm" Type="Decimal" Nullable="false" />
+    <Property Name="MaximumDistance" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="UserVoucher">
     <Key>
