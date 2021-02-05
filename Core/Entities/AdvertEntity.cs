@@ -176,11 +176,12 @@ namespace Agrishare.Core.Entities
 
         public static void AddImpressions(List<int> Id)
         {
-            using (var ctx = new AgrishareEntities())
-            {
-                var sql = string.Join(";", Id.Select(e => $"UPDATE Adverts SET ImpressionCount = ImpressCount + 1 WHERE Id = {e}"));
-                ctx.Database.ExecuteSqlCommand(sql);
-            }
+            if (Id.Count > 0)
+                using (var ctx = new AgrishareEntities())
+                {
+                    var sql = string.Join(";", Id.Select(e => $"UPDATE Adverts SET ImpressionCount = ImpressionCount + 1 WHERE Id = {e}"));
+                    ctx.Database.ExecuteSqlCommand(sql);
+                }
         }
 
         public static void AddClick(int Id)

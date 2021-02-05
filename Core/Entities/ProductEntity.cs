@@ -59,7 +59,7 @@ namespace Agrishare.Core.Entities
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
 
-                if (SupplierId > 0)
+                if (SupplierId != 0)
                     query = query.Where(o => o.SupplierId == SupplierId);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
@@ -75,7 +75,7 @@ namespace Agrishare.Core.Entities
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
 
-                if (SupplierId > 0)
+                if (SupplierId != 0)
                     query = query.Where(o => o.SupplierId == SupplierId);
 
                 return query.Count();
@@ -183,10 +183,23 @@ namespace Agrishare.Core.Entities
             {
                 Id,
                 Title,
-                Description,
-                Photo = Photo == null ? null : $"{Config.CDNURL}/{Photo.ThumbName}",
+                PhotoUrl = Photo == null ? null : $"{Config.CDNURL}/{Photo.ThumbName}",
                 DayRate,
-                Supplier = Supplier?.AppListJson()
+                SupplierName = Supplier?.Title
+            };
+        }
+
+        public object AppDetailJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                PhotoUrl = Photo == null ? null : $"{Config.CDNURL}/{Photo.ZoomName}",
+                Supplier = Supplier?.AppDetailJson(),
+                Description,
+                DayRate,
+                Stock
             };
         }
 

@@ -144,7 +144,7 @@ namespace Agrishare.Core.Entities
             };
         }
 
-        public object AppListJson()
+        public object AppDetailJson()
         {
             return new
             {
@@ -153,7 +153,8 @@ namespace Agrishare.Core.Entities
                 Latitude,
                 Longitude,
                 TransportCostPerKm,
-                MaximumDistance
+                MaximumDistance,
+                LogoUrl = Logo == null ? null : $"{Config.CDNURL}/{Logo.ThumbName}"
             };
         }
 

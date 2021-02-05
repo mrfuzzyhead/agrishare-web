@@ -22,7 +22,7 @@ namespace Agrishare.API.Controllers.App
 
             return Success(new
             {
-                Listing = product.Json()        
+                Listing = product.AppDetailJson ()        
             });
         }
 
@@ -44,7 +44,21 @@ namespace Agrishare.API.Controllers.App
             });
         }
 
-        [Route("products/availabile")]
+        [Route("products/mine")]
+        [AcceptVerbs("GET")]
+        public object MyProductList(int PageIndex, int PageSize, string Query = "")
+        {
+            var count = Entities.Product.Count(SupplierId: CurrentUser.SupplierId ?? -1, Keywords: Query);
+            var list = Entities.Product.List(PageIndex: PageIndex, PageSize: PageSize, SupplierId: CurrentUser.SupplierId ?? -1, Keywords: Query);
+
+            return Success(new
+            {
+                Count = count,
+                List = list.Select(e => e.AppListJson())
+            });
+        }
+
+        [Route("products/available")]
         [AcceptVerbs("POST")]
         public object CheckAvailability(ProductAvailabilityModel Model)
         {
