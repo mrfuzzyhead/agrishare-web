@@ -20,7 +20,7 @@
                 <icon>
                     <i class="material-icons">panorama</i>
                 </icon>
-                <row class="advert" ng-click="app.go('/adverts/edit/'+item.Id+'?'+app.returnUrlQs())" flex>
+                <row class="advert" ng-click="app.go('/adverts/detail/'+item.Id+'?'+app.returnUrlQs())" flex>
                     <div flex="1">
                         <strong>{{item.Title}}</strong><br/>
                         <small>{{item.StartDate | date : 'd MMMM yyyy'}} &mdash; {{item.EndDate | date : 'd MMMM yyyy'}}</small>
@@ -29,6 +29,7 @@
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="visibility" ng-click="app.go('/adverts/detail/'+item.Id+'?'+app.returnUrlQs())">View</gl-menu-item>
                         <gl-menu-item gl-icon="edit" ng-click="app.go('/adverts/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
                         <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/adverts/delete?id=' + item.Id)">Delete</gl-menu-item>
                     </gl-popup-menu>

@@ -50,7 +50,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Advert> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", bool Deleted = false, bool? Live = null)
+        public static List<Advert> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", bool Deleted = false, bool? Live = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -67,6 +67,9 @@ namespace Agrishare.Core.Entities
                         query = query.Where(e => e.StartDate <= DateTime.Now && e.EndDate >= DateTime.Now);
                     else
                         query = query.Where(e => e.StartDate > DateTime.Now || e.EndDate < DateTime.Now);
+
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
 
                 if (Sort == "Random")
                     return query.OrderBy(e => Guid.NewGuid().ToString()).Skip(PageIndex * PageSize).Take(PageSize).ToList();
@@ -75,7 +78,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", bool Deleted = false, bool? Live = null)
+        public static int Count(string Keywords = "", string StartsWith = "", bool Deleted = false, bool? Live = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -92,6 +95,9 @@ namespace Agrishare.Core.Entities
                         query = query.Where(e => e.StartDate <= DateTime.Now && e.EndDate >= DateTime.Now);
                     else
                         query = query.Where(e => e.StartDate > DateTime.Now || e.EndDate < DateTime.Now);
+
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
 
                 return query.Count();
             }
@@ -154,6 +160,7 @@ namespace Agrishare.Core.Entities
                 ClickCount,
                 StartDate,
                 EndDate,
+                RegionId,
                 DateCreated
             };
         }

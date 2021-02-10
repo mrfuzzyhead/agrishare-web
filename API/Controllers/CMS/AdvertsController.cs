@@ -16,8 +16,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex = 0, int PageSize = 25, string Query = "")
         {
-            var recordCount = Entities.Advert.Count(Keywords: Query);
-            var list = Entities.Advert.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
+            var recordCount = Entities.Advert.Count(Keywords: Query, RegionId: CurrentRegion.Id);
+            var list = Entities.Advert.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, RegionId: CurrentRegion.Id);
 
             var data = new
             {
@@ -40,6 +40,7 @@ namespace Agrishare.API.Controllers.CMS
             {
                 advert.StartDate = DateTime.Now;
                 advert.EndDate = DateTime.Now.AddMonths(1);
+                advert.RegionId = CurrentRegion.Id;
             }
 
             var data = new

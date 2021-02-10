@@ -43,12 +43,16 @@
         <AssociationConnector Association="AgrishareModel.bookingusers_ibfk_2" ManuallyRouted="true" >
           <ConnectorPoint PointX="17.125" PointY="4" />
           <ConnectorPoint PointX="17.125" PointY="3.5" />
+          <ConnectorPoint PointX="14.458333333333334" PointY="3.4999999999999996" />
+          <ConnectorPoint PointX="14.291666666666666" PointY="3.5" />
           <ConnectorPoint PointX="13.583333833333333" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="13.416667166666665" PointY="3.5" />
           <ConnectorPoint PointX="12.333333333333334" PointY="3.4999999999999991" />
           <ConnectorPoint PointX="12.041664166666665" PointY="3.5" />
           <ConnectorPoint PointX="11.708333333333334" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="11.541666666666666" PointY="3.5" />
+          <ConnectorPoint PointX="10.112947717948719" PointY="3.4999999999999996" />
+          <ConnectorPoint PointX="9.9462810512820514" PointY="3.5" />
           <ConnectorPoint PointX="7.375" PointY="3.5" />
           <ConnectorPoint PointX="7.375" PointY="8.5" />
           <ConnectorPoint PointX="7" PointY="8.875" />
@@ -89,6 +93,8 @@
         <AssociationConnector Association="AgrishareModel.products_ibfk_1" />
         <EntityTypeShape EntityType="AgrishareModel.Advert" Width="1.5" PointX="15.375" PointY="12.75" />
         <AssociationConnector Association="AgrishareModel.users_ibfk_3" />
+        <AssociationConnector Association="AgrishareModel.bookings_ibfk_6" />
+        <AssociationConnector Association="AgrishareModel.adverts_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

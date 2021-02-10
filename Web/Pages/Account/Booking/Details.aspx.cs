@@ -377,13 +377,16 @@ namespace Agrishare.Web.Pages.Account.Booking
             if (SelectedBooking == null || SelectedBooking.UserId != Master.CurrentUser.Id)
                 Master.Feedback = "Booking not found";
 
+            else if (!SelectedBooking.ListingId.HasValue)
+                Master.Feedback = "Booking does not have a linked listing";
+
             else
             {
                 var rating = new Core.Entities.Rating
                 {
                     BookingId = SelectedBooking.Id,
                     Comments = RatingComments.Text,
-                    ListingId = SelectedBooking.ListingId,
+                    ListingId = SelectedBooking.ListingId.Value,
                     Stars = Convert.ToInt32(RatingStars.Text),
                     User = Master.CurrentUser
                 };

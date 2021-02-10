@@ -29,6 +29,7 @@
                             <custom-marker ng-if="detail.entity.Supplier" position="[{{detail.entity.Supplier.Latitude}},{{detail.entity.Supplier.Longitude}}]">Supplier</custom-marker>
                         </ng-map>
                     </div>
+                    </div>
 
                 </div>
 
@@ -225,7 +226,7 @@
                     </li>
                     <li>
                         <strong>Telephone</strong>
-                        <span>{{detail.data.Supplier.Telephone || '-'}}</span>
+                        <span>{{detail.data.SupplierUser.Telephone || '-'}}</span>
                     </li>
                 </ul>
                 <div style="background: #eee; padding: 20px; text-align: right" ng-if="[3,4].includes(detail.entity.StatusId) && !detail.entity.PaidOut">

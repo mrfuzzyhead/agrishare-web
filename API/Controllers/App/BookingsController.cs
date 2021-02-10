@@ -339,7 +339,9 @@ namespace Agrishare.API.Controllers.App
             if (booking == null || (!booking.IsOwner(CurrentUser) && !booking.IsProvider(CurrentUser)))
                 return Error("Booking does not exist");
 
-            var ratingCount = Entities.Rating.Count(ListingId: booking.ListingId, UserId: CurrentUser.Id);
+            var ratingCount = 0;
+            if (booking.ListingId.HasValue)
+                ratingCount = Entities.Rating.Count(ListingId: booking.ListingId.Value, UserId: CurrentUser.Id);
 
             var bookingUsers = Entities.BookingUser.List(BookingId: booking.Id);
 
@@ -496,10 +498,20 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            // get product list and supplier list
+            var productIds = Model.ProductIds.Split(',').Where(e => !string.IsNullOrEmpty(e)).Select(e => Convert.ToInt32(e)).ToList();
+
+            // check availability
+            var unavailableProducts = Entities.Product.Unavailable(productIds, Model.StartDate, Model.EndDate);
+            if (unavailableProducts.Count > 0)
+            {
+                var errorMessage = "The following items are not available between the selected dates: " + string.Join(", ", unavailableProducts.Select(e => e.Title));
+                return Error(errorMessage);
+            }
+
+            // get product list and supplier list           
             var supplierList = new List<Entities.Supplier>();
             var productList = new List<Entities.Product>();
-            foreach (var id in Model.ProductIds)
+            foreach (var id in productIds)
             {
                 var product = Entities.Product.Find(id);
                 productList.Add(Entities.Product.Find(id));
@@ -512,10 +524,10 @@ namespace Agrishare.API.Controllers.App
             foreach (var supplier in supplierList)
             {                
                 var supplierProductList = productList.Where(e => e.SupplierId == supplier.Id).ToList();
-                var dayCount = (int)Math.Ceiling((Model.EndDate - Model.StartDate).TotalDays);
+                var dayCount = (int)Math.Ceiling((Model.EndDate - Model.StartDate).TotalDays) + 1;
                 var hireCost = supplierProductList.Sum(e => e.DayRate) * dayCount;
                 var transportDistance = (int)Math.Ceiling(Location.GetDistance(supplier.Longitude, supplier.Latitude, Model.Longitude, Model.Latitude) / 1000);
-                var transportCost = transportDistance * supplier.TransportCostPerKm;                
+                var transportCost = transportDistance * 2 * supplier.TransportCostPerKm * dayCount;                
 
                 var booking = new Entities.Booking
                 {
@@ -545,7 +557,7 @@ namespace Agrishare.API.Controllers.App
                 if (booking.Save())
                 {
                     foreach (var product in booking.Products)
-                        booking.AddProduct(product);
+                        booking.AddProduct(product.Id);
 
                     var users = Entities.User.List(SupplierId: supplier.Id);
                     foreach(var user in users)
@@ -564,6 +576,8 @@ namespace Agrishare.API.Controllers.App
                         TypeId = Entities.NotificationType.NewBooking,
                         User = CurrentUser
                     }.Save(Notify: false);
+
+                    bookingList.Add(booking);
                 }
 
                 Entities.Counter.Hit(UserId: CurrentUser.Id, Event: Entities.Counters.Book, CategoryId: 0, BookingId: booking.Id);

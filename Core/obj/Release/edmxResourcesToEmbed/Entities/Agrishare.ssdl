@@ -15,6 +15,7 @@
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
+    <Property Name="RegionId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Agents">
     <Key>
@@ -490,6 +491,18 @@
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
   </EntityType>
+  <Association Name="adverts_ibfk_1">
+    <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+    <End Role="Adverts" Type="Self.Adverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Regions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Adverts">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="bookingcomments_ibfk_1">
     <End Role="Bookings" Type="Self.Bookings" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -1057,6 +1070,10 @@
     <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="UserVouchers" EntityType="Self.UserVouchers" Schema="agrishare" store:Type="Tables" />
     <EntitySet Name="Vouchers" EntityType="Self.Vouchers" Schema="agrishare" store:Type="Tables" />
+    <AssociationSet Name="adverts_ibfk_1" Association="Self.adverts_ibfk_1">
+      <End Role="Regions" EntitySet="Regions" />
+      <End Role="Adverts" EntitySet="Adverts" />
+    </AssociationSet>
     <AssociationSet Name="bookingcomments_ibfk_1" Association="Self.bookingcomments_ibfk_1">
       <End Role="Bookings" EntitySet="Bookings" />
       <End Role="BookingComments" EntitySet="BookingComments" />

@@ -561,8 +561,10 @@ namespace Agrishare.Core.Entities
                 RegionId = region.Id;
             Region = null;
 
-            var supplier = Supplier; Supplier = null;
-            if (supplier != null && supplier.Id != 0) SupplierId = supplier.Id;
+            var supplier = Supplier; 
+            if (supplier != null && supplier.Id != 0)
+                SupplierId = supplier.Id;
+            Supplier = null;
 
             if (Id == 0)
                 success = Add();

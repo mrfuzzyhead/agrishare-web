@@ -18,13 +18,14 @@
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
                 <photo style="background-image:url({{item.Photo}})"></photo>
-                <row ng-click="app.go('/products/edit/'+item.Id+'?'+app.returnUrlQs())">
+                <row ng-click="app.go('/products/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.Title}}</strong><br />
                     <small>{{item.Supplier}} &bull; {{item.DayRate | currency}}/day</small>
                     <small ng-if="item.Stock>1">&bull; {{item.Stock | number}} items</small>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="visibility" ng-click="app.go('/products/detail/'+item.Id+'?'+app.returnUrlQs())">View</gl-menu-item>
                         <gl-menu-item gl-icon="account_balance_wallet" ng-click="app.go('/bookings/list/filter/productid/'+item.Id+'?'+app.returnUrlQs())">Bookings</gl-menu-item>
                         <gl-menu-item gl-icon="edit" ng-click="app.go('/products/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
                         <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/products/delete?id=' + item.Id)">Delete</gl-menu-item>

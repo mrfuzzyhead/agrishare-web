@@ -28,10 +28,13 @@ CREATE TABLE `Adverts` (
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `RegionId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`Id`),
   KEY `Title` (`Title`),
   KEY `StartDate` (`StartDate`),
-  KEY `Deleted` (`Deleted`)
+  KEY `Deleted` (`Deleted`),
+  KEY `RegionId` (`RegionId`),
+  CONSTRAINT `adverts_ibfk_1` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Agents` */

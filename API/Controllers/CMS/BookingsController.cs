@@ -125,18 +125,18 @@ namespace Agrishare.API.Controllers.CMS
         public object Find(int Id = 0)
         {
             var booking = Entities.Booking.Find(Id: Id);
-            var supplier = Entities.User.Find(booking.Listing.UserId);
+            var supplierUser = Entities.User.Find(booking.Listing?.UserId ?? 0);
             var transactions = Entities.Transaction.List(BookingId: Id);
             var tags = Entities.Tag.List();
             var comments = Entities.BookingComment.List(BookingId: booking.Id);
 
             var Currencies = new List<EnumDescriptor>();
-            if (booking.Listing.RegionId == (int)Regions.Zimbabwe)
+            if ((booking.Listing?.RegionId ?? booking.Supplier.RegionId) == (int)Regions.Zimbabwe)
             {
                 Currencies.Add(new EnumDescriptor { Id = (int)Currency.USD, Title = $"{Currency.USD}" });
                 Currencies.Add(new EnumDescriptor { Id = (int)Currency.ZWL, Title = $"{Currency.ZWL}" });
             }
-            else if (booking.Listing.RegionId == (int)Regions.Uganda)
+            else if ((booking.Listing?.RegionId ?? booking.Supplier.RegionId) == (int)Regions.Uganda)
             {
                 Currencies.Add(new EnumDescriptor { Id = (int)Currency.USh, Title = $"{Currency.USh}" });
             }
@@ -144,7 +144,7 @@ namespace Agrishare.API.Controllers.CMS
             var data = new
             {
                 Entity = booking.Json(),
-                Supplier = supplier.Json(),
+                SupplierUser = supplierUser.Json(),
                 Transactions = transactions.Select(e => e.Json()),
                 Tags = tags.Select(e => e.Json()),
                 Comments = comments.Select(e => e.Json()),

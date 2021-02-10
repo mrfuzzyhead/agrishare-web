@@ -221,6 +221,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="AgrishareModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
           <ScalarProperty Name="BankAccountJson" ColumnName="BankAccount" />
@@ -400,6 +401,8 @@
     <EntitySetMapping Name="Suppliers">
       <EntityTypeMapping TypeName="AgrishareModel.Supplier">
         <MappingFragment StoreEntitySet="Suppliers">
+          <ScalarProperty Name="MaximumDistance" ColumnName="MaximumDistance" />
+          <ScalarProperty Name="TransportCostPerKm" ColumnName="TransportCostPerKm" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="Latitude" ColumnName="Latitude" />
           <ScalarProperty Name="Location" ColumnName="Location" />

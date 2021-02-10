@@ -135,6 +135,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\App\AdvertsController.cs" />
     <Compile Include="Controllers\App\ConfigController.cs" />
+    <Compile Include="Controllers\App\DashboardController.cs" />
     <Compile Include="Controllers\App\VouchersController.cs" />
     <Compile Include="Controllers\CMS\AdvertsController.cs" />
     <Compile Include="Controllers\CMS\RegionsController.cs" />

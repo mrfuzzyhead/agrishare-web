@@ -5,8 +5,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ListingId" Type="Int32" Nullable="false" />
-    <Property Name="ServiceId" Type="Int32" Nullable="false" />
+    <Property Name="ListingId" Type="Int32" />
+    <Property Name="ServiceId" Type="Int32" />
     <Property Name="ForId" Type="AgrishareModel.BookingFor" Nullable="false" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
     <Property Name="Location" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
@@ -251,13 +251,10 @@
     <Property Name="VerificationCodeExpiry" Type="DateTime" />
     <Property Name="SignalRConnectionId" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
-    <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_1" FromRole="User" ToRole="Journal" />
     <Property Name="AgentId" Type="Int32" />
     <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
     <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
-    <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
     <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="User" ToRole="BookingComment" />
     <Property Name="RegionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
     <Property Name="PaymentMethod" Type="Int16" Nullable="false" />
@@ -284,7 +281,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="bookings_ibfk_2">
-    <End Role="Listings" Type="Self.Listing" Multiplicity="1">
+    <End Role="Listings" Type="Self.Listing" Multiplicity="0..1">
       <OnDelete Action="Cascade" />
     </End>
     <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
@@ -604,6 +601,10 @@
       <End Role="Supplier" EntitySet="Suppliers" />
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
+    <AssociationSet Name="adverts_ibfk_1" Association="AgrishareModel.adverts_ibfk_1">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="Advert" EntitySet="Adverts" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Rating">
     <Key>
@@ -647,7 +648,7 @@
     <NavigationProperty Name="Listing" Relationship="AgrishareModel.services_ibfk_1" FromRole="Service" ToRole="Listing" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
   </EntityType>
   <Association Name="bookings_ibfk_3">
-    <End Type="AgrishareModel.Service" Role="Service" Multiplicity="1">
+    <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
       <OnDelete Action="Cascade" />
     </End>
     <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
@@ -1025,7 +1026,6 @@
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_1" FromRole="Agent" ToRole="User" />
   </EntityType>
   <Association Name="users_ibfk_1">
     <End Type="AgrishareModel.Agent" Role="Agent" Multiplicity="0..1" />
@@ -1438,6 +1438,7 @@
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
   </EntityType>
   <Association Name="users_ibfk_3">
     <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="0..1" />
@@ -1448,6 +1449,18 @@
       </Principal>
       <Dependent Role="User">
         <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="adverts_ibfk_1">
+    <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="AgrishareModel.Advert" Role="Advert" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Advert">
+        <PropertyRef Name="RegionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

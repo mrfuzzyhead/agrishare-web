@@ -30,10 +30,10 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object ProductList(int PageIndex, int PageSize, string Query = "", int SupplierId = 0)
         {
-            var count = Entities.Product.Count(SupplierId: SupplierId, Keywords: Query);
-            var list = Entities.Product.List(PageIndex: PageIndex, PageSize: PageSize, SupplierId: SupplierId, Keywords: Query);
+            var count = Entities.Product.Count(SupplierId: SupplierId, Keywords: Query, RegionId: CurrentRegion.Id);
+            var list = Entities.Product.List(PageIndex: PageIndex, PageSize: PageSize, SupplierId: SupplierId, Keywords: Query, RegionId: CurrentRegion.Id);
 
-            var adverts = Entities.Advert.List(Live: true, PageSize: 5, Sort: "Random");
+            var adverts = Entities.Advert.List(Live: true, PageSize: 5, Sort: "Random", RegionId: CurrentRegion.Id);
             Entities.Advert.AddImpressions(adverts.Select(e => e.Id).ToList());
 
             return Success(new
@@ -59,13 +59,11 @@ namespace Agrishare.API.Controllers.App
         }
 
         [Route("products/available")]
-        [AcceptVerbs("POST")]
-        public object CheckAvailability(ProductAvailabilityModel Model)
+        [AcceptVerbs("GET")]
+        public object CheckAvailability([FromUri] ProductAvailabilityModel Model)
         {
-            if (!ModelState.IsValid)
-                return Error(ModelState);
-
-            var unavailableProducts = Entities.Product.Unavailable(Model.ProductIds, Model.StartDate, Model.EndDate);
+            var productIds = Model.ProductIds.Split(',').Where(e => !string.IsNullOrEmpty(e)).Select(e => Convert.ToInt32(e)).ToList();
+            var unavailableProducts = Entities.Product.Unavailable(productIds, Model.StartDate, Model.EndDate);
 
             if (unavailableProducts.Count == 0)
                 return Success();
@@ -78,7 +76,8 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object Availability([FromUri] ProductAvailabilityModel Model)
         {
-            var bookings = Entities.Product.BookedDates(Model.ProductIds, Model.StartDate, Model.EndDate);
+            var productIds = Model.ProductIds.Split(',').Where(e => !string.IsNullOrEmpty(e)).Select(e => Convert.ToInt32(e)).ToList();
+            var bookings = Entities.Product.BookedDates(productIds, Model.StartDate, Model.EndDate);
 
             var list = new List<object>();
 

@@ -317,5 +317,26 @@ namespace Agrishare.Core.Entities
             };
             SNS.SendMessage(DeviceARN, message, $"app.agrishare.category.{TypeId}", args);
         }
+
+        public object AppDashboardJson()
+        {
+            var service = Booking.Service?.Category?.Title ?? Booking.Supplier?.Title ?? "";
+            var photoUrl = $"{Config.CDNURL}/" + (Booking.Listing?.Photos.FirstOrDefault()?.ThumbName ?? Booking.Products?.FirstOrDefault()?.Photo?.ThumbName ?? "NoImage.png");
+
+            return new
+            {
+                Id,
+                Title,
+                TypeId,
+                StatusId,
+                Booking.StartDate,
+                Booking.EndDate,
+                DateCreated,
+                Service = service,
+                PhotoUrl = photoUrl,
+                BookingId = Booking.Id,
+                BookingStatusId = Booking.StatusId
+            };
+        }
     }
 }

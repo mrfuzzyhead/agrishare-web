@@ -507,6 +507,7 @@
     <EntitySetMapping Name="Adverts">
       <EntityTypeMapping TypeName="AgrishareModel.Advert">
         <MappingFragment StoreEntitySet="Adverts">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

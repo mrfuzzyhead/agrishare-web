@@ -50,7 +50,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Product> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int SupplierId = 0)
+        public static List<Product> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int SupplierId = 0, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -62,11 +62,14 @@ namespace Agrishare.Core.Entities
                 if (SupplierId != 0)
                     query = query.Where(o => o.SupplierId == SupplierId);
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.Supplier.RegionId == RegionId);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", int SupplierId = 0)
+        public static int Count(string Keywords = "", int SupplierId = 0, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -77,6 +80,9 @@ namespace Agrishare.Core.Entities
 
                 if (SupplierId != 0)
                     query = query.Where(o => o.SupplierId == SupplierId);
+
+                if (RegionId > 0)
+                    query = query.Where(e => e.Supplier.RegionId == RegionId);
 
                 return query.Count();
             }
@@ -211,8 +217,8 @@ namespace Agrishare.Core.Entities
                     .AsNoTracking()
                     .Where(e => e.Booking.StartDate <= EndDate && e.Booking.EndDate >= StartDate && ProductIds.Contains(e.ProductId))
                     .GroupBy(e => e.Product)
-                    .Where(e => e.Count() >= e.First().Product.Stock)
-                    .Select(e => e.First().Product)
+                    .Where(e => e.Count() >= e.FirstOrDefault().Product.Stock)
+                    .Select(e => e.FirstOrDefault().Product)
                     .ToList();                    
             }
         }
@@ -226,7 +232,7 @@ namespace Agrishare.Core.Entities
                     .Include(e => e.Booking)
                     .Where(e => e.Booking.StartDate <= EndDate && e.Booking.EndDate >= StartDate && ProductIds.Contains(e.ProductId))
                     .GroupBy(e => e.Booking)
-                    .Select(e => e.First().Booking)
+                    .Select(e => e.FirstOrDefault().Booking)
                     .ToList();
             }
         }

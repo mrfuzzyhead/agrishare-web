@@ -115,7 +115,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.ListingId == ListingId);
 
                 if (RegionId > 0)
-                    query = query.Where(o => o.Listing.RegionId == RegionId);
+                    query = query.Where(o => o.Listing.RegionId == RegionId || o.Supplier.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -163,13 +163,16 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Bookings.Include(o => o.Listing).Where(o => !o.Deleted);
+                var query = ctx.Bookings
+                    .Include(o => o.Listing)
+                    .Include(o => o.Supplier)
+                    .Where(o => !o.Deleted);
 
                 if (ListingId > 0)
                     query = query.Where(o => o.ListingId == ListingId);
 
                 if (RegionId > 0)
-                    query = query.Where(o => o.Listing.RegionId == RegionId);
+                    query = query.Where(o => o.Listing.RegionId == RegionId || o.Supplier.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -336,17 +339,18 @@ namespace Agrishare.Core.Entities
 
             TagsJson = JsonConvert.SerializeObject(Tags.Select(e => e.Json()));
             ProductListJson = JsonConvert.SerializeObject(Products.Select(e => e.BookingJson()));
+            Products = null;
 
             if (ReceiptPhoto != null)
                 ReceiptPhotoPath = ReceiptPhoto.Filename;
 
             var service = Service;
-            if (service != null)
+            if (service != null && service.Id > 0)
                 ServiceId = service.Id;
             Service = null;
 
             var listing = Listing;
-            if (listing != null)
+            if (listing != null && listing.Id > 0)
                 ListingId = listing.Id;
             Listing = null;
 
@@ -360,6 +364,9 @@ namespace Agrishare.Core.Entities
                 SupplierId = supplier.Id;
             Supplier = null;
 
+            var bookingProducts = BookingProducts;
+            BookingProducts = null;
+
             if (Id == 0)
                 success = Add();
             else
@@ -369,6 +376,7 @@ namespace Agrishare.Core.Entities
             Listing = listing;
             User = user;
             Supplier = supplier;
+            BookingProducts = bookingProducts;
 
             return success;
         }
@@ -595,18 +603,18 @@ namespace Agrishare.Core.Entities
             return false;
         }
 
-        public void AddProduct(Product Product)
+        public void AddProduct(int ProductId)
         {
             using (var ctx = new AgrishareEntities())
             {
                 var ent = new BookingProduct
                 {
-                    ProductId = Product.Id,
+                    ProductId = ProductId,
                     BookingId = Id
                 };
 
                 ctx.BookingProducts.Attach(ent);
-                ctx.Entry(this).State = EntityState.Added;
+                ctx.Entry(ent).State = EntityState.Added;
                 ctx.SaveChanges();
             }
         }
@@ -636,6 +644,24 @@ namespace Agrishare.Core.Entities
                 return User.List(SupplierId: Supplier.Id);
 
             return new List<User>();
+        }
+
+        public object AppDashboardJson()
+        {
+            var service = Listing?.Title ?? Supplier?.Title ?? "";
+            var photoUrl = $"{Config.CDNURL}/" + (Listing?.Photos.FirstOrDefault()?.ThumbName ?? Products?.FirstOrDefault()?.Photo?.ThumbName ?? "NoImage.png");
+
+            return new
+            {
+                Id,
+                Title = "#" + Title,
+                PhotoUrl = photoUrl,
+                StatusId,
+                StartDate,
+                EndDate,
+                Service = service,
+                Price
+            };
         }
     }
 

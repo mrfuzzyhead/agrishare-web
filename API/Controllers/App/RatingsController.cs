@@ -31,11 +31,14 @@ namespace Agrishare.API.Controllers.App
             if (booking == null || booking.UserId != CurrentUser.Id)
                 return Error("Booking not found");
 
+            if (!booking.ListingId.HasValue)
+                return Error("Booking does not have a linked listing");
+
             var rating = new Entities.Rating
             {
                 BookingId = Model.BookingId,
                 Comments = Model.Comments,
-                ListingId = booking.ListingId,
+                ListingId = booking.ListingId.Value,
                 Stars = Model.Rating,
                 User = CurrentUser
             };

@@ -14,7 +14,7 @@ namespace Agrishare.API.Models
         public DateTime EndDate { get; set; }
 
         [Required]
-        public List<int> ProductIds { get; set; }
+        public string ProductIds { get; set; }
 
         public int Days { get; set; } = 1;
     }
