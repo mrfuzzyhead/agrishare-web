@@ -282,7 +282,7 @@ namespace Agrishare.API.Controllers.App
 
             return Success(new
             {
-                Bookings = bookings.Select(e => e.Json()),
+                Bookings = bookings.Select(e => e.AppDashboardJson()),
                 Summary = new
                 {
                     Month = monthlySpend,
@@ -304,7 +304,7 @@ namespace Agrishare.API.Controllers.App
 
             return Success(new
             {
-                Bookings = bookings.Select(e => e.Json()),
+                Bookings = bookings.Select(e => e.AppDashboardJson()),
                 Summary = new
                 {
                     Month = monthlySpend,
@@ -327,7 +327,7 @@ namespace Agrishare.API.Controllers.App
 
             return Success(new
             {
-                Bookings = bookings.Select(e => e.Json())
+                Bookings = bookings.Select(e => e.AppDashboardJson())
             });
         }
 
