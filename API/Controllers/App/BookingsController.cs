@@ -345,6 +345,8 @@ namespace Agrishare.API.Controllers.App
 
             var bookingUsers = Entities.BookingUser.List(BookingId: booking.Id);
 
+            var isOwner = CurrentUser.Id == booking.Listing?.UserId || CurrentUser.SupplierId == booking.Supplier?.Id;
+
             return Success(new
             {
                 Booking = booking.Json(),
@@ -352,7 +354,8 @@ namespace Agrishare.API.Controllers.App
                 Rated = ratingCount > 0,
                 Entities.Journal.CurrentRate,
                 Entities.Config.AgriShareBankDetails,
-                Entities.Config.AgriShareOfficeLocation
+                Entities.Config.AgriShareOfficeLocation,
+                IsOwner = isOwner
             });
         }
 

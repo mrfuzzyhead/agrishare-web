@@ -459,7 +459,7 @@ namespace Agrishare.Core.Entities
                 PaymentMethodId,
                 PaymentMethod = $"{PaymentMethodId}".ExplodeCamelCase(),
                 Supplier = Supplier?.Json(),
-                Products = Products?.Select(e => e.Json())
+                Products = Products?.Select(e => e.AppListJson())
             };
         }
 
