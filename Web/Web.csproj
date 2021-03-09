@@ -95,6 +95,9 @@
     <Content Include="Pages\About\Rules.aspx" />
     <Content Include="Pages\Account\Commission\Report.aspx" />
     <Content Include="Pages\Account\Listing\Bus.aspx" />
+    <Content Include="Pages\Account\Listing\Land.aspx" />
+    <Content Include="Pages\Account\Listing\Irrigation.aspx" />
+    <Content Include="Pages\Account\Listing\Labour.aspx" />
     <Content Include="Pages\Account\Seeking\Bus.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
@@ -122,13 +125,18 @@
     <Content Include="Pages\Homepage.aspx" />
     <Content Include="Pages\Account\GetStarted.aspx" />
     <Content Include="Resources\Images\App-Background.png" />
+    <Content Include="Resources\Images\Bus.svg" />
     <Content Include="Resources\Images\C2-Logo.svg" />
+    <Content Include="Resources\Images\Equipment.svg" />
     <Content Include="Resources\Images\Google-Play.png" />
     <Content Include="Resources\Images\Home-Combine.jpg" />
     <Content Include="Resources\Images\Home-Curve.png" />
     <Content Include="Resources\Images\Home-Tractor.jpg" />
     <Content Include="Resources\Images\Icon-Close.svg" />
     <Content Include="Resources\Images\Icon-Menu.svg" />
+    <Content Include="Resources\Images\Irrigation.svg" />
+    <Content Include="Resources\Images\Labour.svg" />
+    <Content Include="Resources\Images\Land.svg" />
     <Content Include="Resources\Images\Lorry.svg" />
     <Content Include="Resources\Images\Phinneas.jpg" />
     <Content Include="Resources\Images\Processing.svg" />
@@ -178,6 +186,27 @@
     </Compile>
     <Compile Include="Pages\Account\Listing\Bus.aspx.designer.cs">
       <DependentUpon>Bus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Land.aspx.cs">
+      <DependentUpon>Land.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Land.aspx.designer.cs">
+      <DependentUpon>Land.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Irrigation.aspx.cs">
+      <DependentUpon>Irrigation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Irrigation.aspx.designer.cs">
+      <DependentUpon>Irrigation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Labour.aspx.cs">
+      <DependentUpon>Labour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Labour.aspx.designer.cs">
+      <DependentUpon>Labour.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Account\Seeking\Bus.aspx.cs">
       <DependentUpon>Bus.aspx</DependentUpon>

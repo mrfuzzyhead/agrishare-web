@@ -40,7 +40,8 @@ namespace Agrishare.Core.Entities
 
         public static int Count(int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, int Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "")
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
+            bool HideUnavailable = false)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -133,9 +134,13 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine("FROM Listings");
                 sql.AppendLine("INNER JOIN Services ON Listings.Id = Services.ListingId");
                 sql.AppendLine("WHERE Listings.Deleted = 0 AND Services.Deleted = 0 AND Listings.StatusId = 1");
+                sql.AppendLine($"AND Listings.RegionId = {RegionId}");
                 sql.AppendLine($"AND Listings.CategoryId = {CategoryId}");
                 sql.AppendLine($"AND Services.Mobile = {SQL.Safe(Mobile)}");
                 sql.AppendLine($"AND Services.CategoryId = {ServiceId}");
+
+                if (HideUnavailable)
+                    sql.AppendLine($"AND Available = 1");
 
                 //BS: 2020-02-26 removed limitation checks
                 //sql.AppendLine($"AND {Size} >= MinimumQuantity");
@@ -162,7 +167,7 @@ namespace Agrishare.Core.Entities
 
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
-            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, int SupplierServiceId = 0,
+            decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
             bool HideUnavailable = false)
         {
             var sort = ListingSearchResultSort.Distance;

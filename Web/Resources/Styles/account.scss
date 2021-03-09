@@ -47,7 +47,7 @@
 
             img {
                 display: block;
-                width: 100px;
+                height: 60px;
                 margin: 10px auto;
             }
 
@@ -92,8 +92,10 @@
     .results-list {
         > a {
             height: 100px;
+
             > span:last-child {
                 height: 100%;
+
                 > strong {
                     flex: 1;
                 }

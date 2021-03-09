@@ -26,6 +26,12 @@ namespace Agrishare.Web.Pages.Account
                         return "processing";
                     case Core.Entities.Category.BusId:
                         return "bus";
+                    case Core.Entities.Category.IrrigationId:
+                        return "irrigation";
+                    case Core.Entities.Category.LabourId:
+                        return "labour";
+                    case Core.Entities.Category.LandId:
+                        return "land";
                 }
                 return string.Empty;
             }
@@ -50,6 +56,12 @@ namespace Agrishare.Web.Pages.Account
                     ListTitle.Text = "Processing"; break;
                 case Core.Entities.Category.BusId:
                     ListTitle.Text = "Buses"; break;
+                case Core.Entities.Category.IrrigationId:
+                    ListTitle.Text = "Irrigation"; break;
+                case Core.Entities.Category.LabourId:
+                    ListTitle.Text = "Labour"; break;
+                case Core.Entities.Category.LandId:
+                    ListTitle.Text = "Land"; break;
             }
 
             List.RecordCount = Core.Entities.Listing.Count(UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);

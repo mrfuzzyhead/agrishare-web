@@ -7,34 +7,43 @@ namespace Agrishare.Web.Pages.Account.Listing
 {
     public partial class Lorry : Page
     {
+        Core.Entities.Listing SelectedListing;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.RequiresAuthentication = true;
+            Master.SelectedUrl = "/account/offering";
             Master.Body.Attributes["class"] += " account ";
 
             if (Master.CurrentUser.PaymentMethods.Count == 0)
             {
                 Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
-                Response.Redirect("/account/profile/payments?r=/account/listing/bus");
+                Response.Redirect("/account/profile/payments?r=/account/listing/lorry");
+            }
+
+            var id = Convert.ToInt32(Request.QueryString["id"]);
+            SelectedListing = Core.Entities.Listing.Find(Id: id);
+            if (SelectedListing.Id > 0 && SelectedListing.User.Id != Master.CurrentUser.Id)
+            {
+                Master.Feedback = "Listing not found";
+                Response.Redirect("/account/offering");
             }
 
             if (!Page.IsPostBack)
             {
-                var id = Convert.ToInt32(Request.QueryString["id"]);
-                var listing = Core.Entities.Listing.Find(Id: id);
-                if (listing.Id > 0)
+                if (SelectedListing.Id > 0)
                 {
-                    EquipmentTitle.Text = listing.Title;
-                    Location.Latitude = listing.Latitude;
-                    Location.Longitude = listing.Longitude;
-                    Gallery.Photos = listing.Photos;
+                    EquipmentTitle.Text = SelectedListing.Title;
+                    Location.Latitude = SelectedListing.Latitude;
+                    Location.Longitude = SelectedListing.Longitude;
+                    Gallery.Photos = SelectedListing.Photos;
 
-                    if (listing.Services.Count > 0)
+                    if (SelectedListing.Services.Count > 0)
                     {
-                        TotalVolume.Text = listing.Services.First().TotalVolume.ToString();
-                        TimePerQuantityUnit.Text = listing.Services.First().TimePerQuantityUnit.ToString();
-                        DistanceCharge.Text = listing.Services.First().PricePerDistanceUnit.ToString();
-                        MaximumDistance.Text = listing.Services.First().MaximumDistance.ToString();
+                        TotalVolume.Text = SelectedListing.Services.First().TotalVolume.ToString();
+                        TimePerQuantityUnit.Text = SelectedListing.Services.First().TimePerQuantityUnit.ToString();
+                        DistanceCharge.Text = SelectedListing.Services.First().PricePerDistanceUnit.ToString();
+                        MaximumDistance.Text = SelectedListing.Services.First().MaximumDistance.ToString();
                     }
                 }
             }
@@ -42,26 +51,24 @@ namespace Agrishare.Web.Pages.Account.Listing
 
         public void Save(object s, EventArgs e)
         {
-            var id = Convert.ToInt32(Request.QueryString["id"]);
-            var listing = Core.Entities.Listing.Find(Id: id);
-
-            if (listing.Id == 0)
+            if (SelectedListing.Id == 0)
             {
-                listing.User = Master.CurrentUser;
-                listing.CategoryId = Core.Entities.Category.LorriesId;
-                listing.Services = new List<Core.Entities.Service>
+                SelectedListing.User = Master.CurrentUser;
+                SelectedListing.Region = Master.CurrentUser.Region;
+                SelectedListing.CategoryId = Core.Entities.Category.LorriesId;
+                SelectedListing.Services = new List<Core.Entities.Service>
                 {
                     new Core.Entities.Service()
                 };
             }
 
-            listing.Title = EquipmentTitle.Text;
-            listing.Latitude = Location.Latitude;
-            listing.Longitude = Location.Longitude;
-            listing.AvailableWithFuel = true;
-            listing.AvailableWithoutFuel = true;
+            SelectedListing.Title = EquipmentTitle.Text;
+            SelectedListing.Latitude = Location.Latitude;
+            SelectedListing.Longitude = Location.Longitude;
+            SelectedListing.AvailableWithFuel = true;
+            SelectedListing.AvailableWithoutFuel = true;
 
-            var service = listing.Services.First();
+            var service = SelectedListing.Services.First();
             service.DistanceUnitId = Core.Entities.DistanceUnit.Km;
             service.FuelPerQuantityUnit = 0;
             service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
@@ -75,9 +82,9 @@ namespace Agrishare.Web.Pages.Account.Listing
             service.TotalVolume = Convert.ToDecimal(TotalVolume.Text);
 
             if (Gallery.Photos.Count > 0)
-                listing.PhotoPaths = string.Join(",", Gallery.Photos.Select(o => o.Filename).ToArray());
+                SelectedListing.PhotoPaths = string.Join(",", Gallery.Photos.Select(o => o.Filename).ToArray());
 
-            if (listing.Save())
+            if (SelectedListing.Save())
             {
                 Master.Feedback = "Listing updated";
                 Response.Redirect($"/account/listings?cid={Core.Entities.Category.LorriesId}");

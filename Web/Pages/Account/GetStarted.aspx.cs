@@ -23,8 +23,15 @@ namespace Agrishare.Web.Pages.Account
                 RegisterForm.Visible = true;
                 LoginForm.Visible = true;
 
+                Region.DataSource = Core.Entities.Region.List();
+                Region.DataTextField = "Title";
+                Region.DataValueField = "Id";
+                Region.DataBind();
+                Region.Items.Insert(0, new ListItem("Select...", ""));
+
                 Gender.Items.Add(new ListItem { Text = $"{Core.Entities.Gender.Male}", Value = Core.Entities.Gender.Male.ToString() });
                 Gender.Items.Add(new ListItem { Text = $"{Core.Entities.Gender.Female}", Value = Core.Entities.Gender.Female.ToString() });
+                Gender.Items.Insert(0, new ListItem("Select...", ""));
             }
         }
 
@@ -48,7 +55,9 @@ namespace Agrishare.Web.Pages.Account
                     Roles = new List<Core.Entities.Role> { Core.Entities.Role.User },
                     AuthToken = Guid.NewGuid().ToString(),
                     StatusId = Core.Entities.UserStatus.Verified,
-                    LanguageId = Core.Entities.Language.English
+                    LanguageId = Core.Entities.Language.English,
+                    RegionId = Convert.ToInt32(Region.SelectedValue),
+                    Region = Core.Entities.Region.Find(Convert.ToInt32(Region.SelectedValue))
                 };
 
                 if (!user.UniqueEmailAddress())

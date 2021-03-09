@@ -218,6 +218,9 @@
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ProductEntity.cs" />
+    <Compile Include="Entities\ServiceLandRegion.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Tag.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

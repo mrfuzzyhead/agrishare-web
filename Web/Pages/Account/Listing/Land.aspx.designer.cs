@@ -7,172 +7,127 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Agrishare.Web.Pages.Account {
+namespace Agrishare.Web.Pages.Account.Listing {
     
     
-    public partial class GetStarted {
+    public partial class Land {
         
         /// <summary>
-        /// RegisterForm control.
+        /// EquipmentTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder RegisterForm;
+        protected global::System.Web.UI.WebControls.TextBox EquipmentTitle;
         
         /// <summary>
-        /// Region control.
+        /// GroupHire control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Region;
+        protected global::System.Web.UI.WebControls.CheckBox GroupHire;
         
         /// <summary>
-        /// FirstName control.
+        /// UnclearedLand control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox FirstName;
+        protected global::System.Web.UI.WebControls.CheckBox UnclearedLand;
         
         /// <summary>
-        /// LastName control.
+        /// ClearedLand control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox LastName;
+        protected global::System.Web.UI.WebControls.CheckBox ClearedLand;
         
         /// <summary>
-        /// EmailAddress control.
+        /// NearWaterSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox EmailAddress;
+        protected global::System.Web.UI.WebControls.CheckBox NearWaterSource;
         
         /// <summary>
-        /// Telephone control.
+        /// FertileSoil control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Telephone;
+        protected global::System.Web.UI.WebControls.CheckBox FertileSoil;
         
         /// <summary>
-        /// PIN control.
+        /// PricePerQuantityUnit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PIN;
+        protected global::System.Web.UI.WebControls.TextBox PricePerQuantityUnit;
         
         /// <summary>
-        /// Gender control.
+        /// MaxRentalYears control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Gender;
+        protected global::System.Web.UI.WebControls.TextBox MaxRentalYears;
         
         /// <summary>
-        /// DateOfBirth control.
+        /// AvailableAcres control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DateOfBirth;
+        protected global::System.Web.UI.WebControls.TextBox AvailableAcres;
         
         /// <summary>
-        /// ForgotForm control.
+        /// MinimumAcres control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder ForgotForm;
+        protected global::System.Web.UI.WebControls.TextBox MinimumAcres;
         
         /// <summary>
-        /// ForgotTelephone control.
+        /// Location control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ForgotTelephone;
+        protected global::Agrishare.Web.Controls.Map Location;
         
         /// <summary>
-        /// ResetForm control.
+        /// LandRegion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder ResetForm;
+        protected global::System.Web.UI.WebControls.DropDownList LandRegion;
         
         /// <summary>
-        /// ResetTelephone control.
+        /// Gallery control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ResetTelephone;
-        
-        /// <summary>
-        /// ResetCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ResetCode;
-        
-        /// <summary>
-        /// ResetPIN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ResetPIN;
-        
-        /// <summary>
-        /// LoginForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder LoginForm;
-        
-        /// <summary>
-        /// LoginTelephone control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox LoginTelephone;
-        
-        /// <summary>
-        /// LoginPIN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox LoginPIN;
+        protected global::Agrishare.Web.Controls.PhotoUpload Gallery;
         
         /// <summary>
         /// Master property.

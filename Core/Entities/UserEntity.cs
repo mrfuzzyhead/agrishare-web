@@ -540,6 +540,7 @@ namespace Agrishare.Core.Entities
             if (Roles != null)
                 RoleList = string.Join(",", Roles);
 
+            var _ = PaymentMethods;
             PaymentMethod = 0;
             if (PaymentMethods.Contains(Entities.PaymentMethod.BankTransfer))
                 PaymentMethod += (int)Entities.PaymentMethod.BankTransfer;

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="64">
+      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="109">
         <EntityTypeShape EntityType="AgrishareModel.Booking" Width="1.75" PointX="7.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.BookingUser" Width="2" PointX="5" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.Category" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
@@ -74,7 +74,7 @@
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_2" />
         <EntityTypeShape EntityType="AgrishareModel.BookingComment" Width="1.5" PointX="23" PointY="8" />
-        <EntityTypeShape EntityType="AgrishareModel.BookingTag" Width="1.5" PointX="10.25" PointY="10" />
+        <EntityTypeShape EntityType="AgrishareModel.BookingTag" Width="1.5" PointX="10.5" PointY="10.875" />
         <EntityTypeShape EntityType="AgrishareModel.Tag" Width="1.5" PointX="8" PointY="16.25" />
         <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_2" />

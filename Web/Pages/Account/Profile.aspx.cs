@@ -102,18 +102,20 @@ namespace Agrishare.Web.Pages.Account
 
         public void UpdateUser(object s, EventArgs e)
         {
-            Master.CurrentUser.FirstName = FirstName.Text;
-            Master.CurrentUser.LastName = LastName.Text;
-            Master.CurrentUser.EmailAddress = EmailAddress.Text;
-            Master.CurrentUser.Telephone = Telephone.Text;
-            Master.CurrentUser.GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue));
-            Master.CurrentUser.DateOfBirth = DateOfBirth.SelectedDate;
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
 
-            if (!Master.CurrentUser.UniqueTelephone())
+            user.FirstName = FirstName.Text;
+            user.LastName = LastName.Text;
+            user.EmailAddress = EmailAddress.Text;
+            user.Telephone = Telephone.Text;
+            user.GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue));
+            user.DateOfBirth = DateOfBirth.SelectedDate;
+
+            if (!user.UniqueTelephone())
                 Master.Feedback = "Telephone number has already been registered";
-            else if (!Master.CurrentUser.UniqueEmailAddress())
+            else if (!user.UniqueEmailAddress())
                 Master.Feedback = "Email address has already been registered";
-            else if (Master.CurrentUser.Save())
+            else if (user.Save())
             {
                 Master.Feedback = "Your details have been updated";
                 Response.Redirect("/account/profile");
@@ -124,15 +126,16 @@ namespace Agrishare.Web.Pages.Account
 
         public void UpdateNotificationPreferences(object s, EventArgs e)
         {
-            Master.CurrentUser.NotificationPreferences = 0;
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.NotificationPreferences = 0;
             if (SMS.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.SMS;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.SMS;
             if (PushNotifications.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.PushNotifications;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.PushNotifications;
             if (Email.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.Email;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.Email;
 
-            if (Master.CurrentUser.Save())
+            if (user.Save())
             {
                 Master.Feedback = "Your notification preferences have been updated";
                 Response.Redirect("/account/profile");
@@ -143,19 +146,20 @@ namespace Agrishare.Web.Pages.Account
 
         public void UpdatePaymentDetails(object s, EventArgs e)
         {
-            Master.CurrentUser.PaymentMethods = new List<Core.Entities.PaymentMethod>();
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.PaymentMethods = new List<Core.Entities.PaymentMethod>();
             if (Cash.Checked)
-                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.Cash);
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.Cash);
             if (BankTransfer.Checked)
-                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.BankTransfer);
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.BankTransfer);
             if (MobileMoney.Checked)
-                Master.CurrentUser.PaymentMethods.Add(Core.Entities.PaymentMethod.MobileMoney);
-            Master.CurrentUser.BankAccount.Bank = Bank.Text;
-            Master.CurrentUser.BankAccount.Branch = Branch.Text;
-            Master.CurrentUser.BankAccount.AccountName = AccountName.Text;
-            Master.CurrentUser.BankAccount.AccountNumber = AccountNumber.Text;
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.MobileMoney);
+            user.BankAccount.Bank = Bank.Text;
+            user.BankAccount.Branch = Branch.Text;
+            user.BankAccount.AccountName = AccountName.Text;
+            user.BankAccount.AccountNumber = AccountNumber.Text;
 
-            if (Master.CurrentUser.Save())
+            if (user.Save())
             {
                 Master.Feedback = "Your payment details have been updated";
                 var redir = Request.QueryString["r"];
@@ -190,8 +194,10 @@ namespace Agrishare.Web.Pages.Account
 
         public void Logout(object s, EventArgs e)
         {
-            Master.CurrentUser.AuthToken = string.Empty;
-            Master.CurrentUser.Save();
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.AuthToken = string.Empty;
+            user.Save();
+
             Master.DropCookie(string.Empty);
             Response.Redirect("/");
         }

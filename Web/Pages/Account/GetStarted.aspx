@@ -15,6 +15,12 @@
 
                 <h2>Register Now</h2>
 
+                <div class="form-row">
+                    <asp:Label runat="server" AssociatedControlID="Region" Text="Country *" />
+                    <asp:DropDownList runat="server" ID="Region" />
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="Region" Text="Country is required" Display="Dynamic" ValidationGroup="Register" />
+                </div>
+
                 <div class="form-cols">
 
                     <div class="form-row">
@@ -63,7 +69,7 @@
 
                     <div class="form-row">
                         <asp:Label runat="server" AssociatedControlID="DateOfBirth" Text="Date of birth *" />
-                        <asp:TextBox runat="server" ID="DateOfBirth" />
+                        <asp:TextBox runat="server" ID="DateOfBirth" placeholder="dd/MM/yyyy" />
                         <asp:RequiredFieldValidator runat="server" ControlToValidate="DateOfBirth" Text="Date of birth is required" Display="Dynamic" ValidationGroup="Register" />
                     </div>
 

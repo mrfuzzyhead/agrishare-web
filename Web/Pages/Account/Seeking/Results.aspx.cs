@@ -35,8 +35,16 @@ namespace Agrishare.Web.Pages.Account.Seeking
 
             Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Search, CategoryId: categoryId);
 
-            SearchResults.RecordCount = Core.Entities.ListingSearchResult.Count(categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume);
-            SearchResults.DataSource = Core.Entities.ListingSearchResult.List(SearchResults.CurrentPageIndex, SearchResults.PageSize, "Distance", categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume);
+            SearchResults.RecordCount = Core.Entities.ListingSearchResult.Count(
+                CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude,
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id);
+
+            SearchResults.DataSource = Core.Entities.ListingSearchResult.List(PageIndex: SearchResults.CurrentPageIndex, PageSize: SearchResults.PageSize, 
+                Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude, 
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id);
+
             SearchResults.DataBind();
 
             if (SearchResults.CurrentPageIndex == 0 && SearchResults.RecordCount > 0)

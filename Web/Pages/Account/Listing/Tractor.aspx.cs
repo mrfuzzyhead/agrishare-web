@@ -7,23 +7,29 @@ using System.Web.UI.WebControls;
 
 namespace Agrishare.Web.Pages.Account.Listing
 {
-    public partial class Tractor : System.Web.UI.Page
+    public partial class Tractor : Page
     {
         Core.Entities.Listing SelectedListing;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.RequiresAuthentication = true;
+            Master.SelectedUrl = "/account/offering";
             Master.Body.Attributes["class"] += " account ";
 
             if (Master.CurrentUser.PaymentMethods.Count == 0)
             {
                 Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
-                Response.Redirect("/account/profile/payments?r=/account/listing/bus");
+                Response.Redirect("/account/profile/payments?r=/account/listing/tractor");
             }
 
             var id = Convert.ToInt32(Request.QueryString["id"]);
             SelectedListing = Core.Entities.Listing.Find(Id: id);
+            if (SelectedListing.Id > 0 && SelectedListing.User.Id != Master.CurrentUser.Id)
+            {
+                Master.Feedback = "Listing not found";
+                Response.Redirect("/account/offering");
+            }
 
             if (!Page.IsPostBack)
             {
@@ -83,6 +89,7 @@ namespace Agrishare.Web.Pages.Account.Listing
             if (listing.Id == 0)
             {
                 listing.User = Master.CurrentUser;
+                listing.Region = Master.CurrentUser.Region;
                 listing.CategoryId = Core.Entities.Category.TractorsId;                
             }
 

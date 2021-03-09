@@ -364,6 +364,16 @@
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
+          <Property Name="MaximumDistanceToWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="MaximumDepthOfWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="UnclearedLand" Type="bool" Nullable="false" />
+          <Property Name="ClearedLand" Type="bool" Nullable="false" />
+          <Property Name="NearWaterSource" Type="bool" Nullable="false" />
+          <Property Name="FertileSoil" Type="bool" Nullable="false" />
+          <Property Name="LandRegion" Type="smallint" Nullable="false" />
+          <Property Name="MaxRentalYears" Type="int" Nullable="false" />
+          <Property Name="AvailableAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="MinimumAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
         </EntityType>
         <EntityType Name="Suppliers">
           <Key>
@@ -1890,6 +1900,16 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Listing" Relationship="AgrishareModel.services_ibfk_1" FromRole="Service" ToRole="Listing" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="MaximumDistanceToWaterSource" Type="Decimal" Nullable="false" />
+          <Property Name="MaximumDepthOfWaterSource" Type="Decimal" Nullable="false" />
+          <Property Name="UnclearedLand" Type="Boolean" Nullable="false" />
+          <Property Name="ClearedLand" Type="Boolean" Nullable="false" />
+          <Property Name="NearWaterSource" Type="Boolean" Nullable="false" />
+          <Property Name="FertileSoil" Type="Boolean" Nullable="false" />
+          <Property Name="LandRegion" Type="AgrishareModel.ServiceLandRegion" Nullable="false" />
+          <Property Name="MaxRentalYears" Type="Int32" Nullable="false" />
+          <Property Name="AvailableAcres" Type="Decimal" Nullable="false" />
+          <Property Name="MinimumAcres" Type="Decimal" Nullable="false" />
         </EntityType>
         <Association Name="bookings_ibfk_3">
           <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
@@ -2708,6 +2728,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="ServiceLandRegion" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="Northern" Value="1" />
+          <Member Name="Central" Value="2" />
+          <Member Name="Eastern" Value="3" />
+          <Member Name="Western" Value="4" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2984,6 +3011,16 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="AgrishareModel.Service">
               <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="MinimumAcres" ColumnName="MinimumAcres" />
+                <ScalarProperty Name="AvailableAcres" ColumnName="AvailableAcres" />
+                <ScalarProperty Name="MaxRentalYears" ColumnName="MaxRentalYears" />
+                <ScalarProperty Name="LandRegion" ColumnName="LandRegion" />
+                <ScalarProperty Name="FertileSoil" ColumnName="FertileSoil" />
+                <ScalarProperty Name="NearWaterSource" ColumnName="NearWaterSource" />
+                <ScalarProperty Name="ClearedLand" ColumnName="ClearedLand" />
+                <ScalarProperty Name="UnclearedLand" ColumnName="UnclearedLand" />
+                <ScalarProperty Name="MaximumDepthOfWaterSource" ColumnName="MaximumDepthOfWaterSource" />
+                <ScalarProperty Name="MaximumDistanceToWaterSource" ColumnName="MaximumDistanceToWaterSource" />
                 <ScalarProperty Name="FuelPrice" ColumnName="FuelPrice" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />

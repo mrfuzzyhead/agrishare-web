@@ -49,6 +49,8 @@ namespace Agrishare.Web.Pages
 
         public HtmlGenericControl Body;
 
+        public string CookieDomain = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //var analyticsId = Config.Find(Key: "Google Analytics Tracking ID").Value;
@@ -71,6 +73,8 @@ namespace Agrishare.Web.Pages
             Page.Header.Controls.Add(new Literal { Text = $@"<script type=""text/javascript"" src=""/script-{version}.js""></script>" });
 
             Body.Attributes.Add("ng-api-url", Config.APIURL);
+
+            CookieDomain = Config.DomainName;
         }
 
         protected override void OnPreRender(EventArgs e)

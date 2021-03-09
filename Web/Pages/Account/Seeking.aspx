@@ -34,6 +34,33 @@
         </li>
     </ul>
 
+    <ul class="search">
+        <li>
+            <a href="/account/seeking/other">
+                <img src="/Resources/Images/Equipment.svg" />
+                <span>Equipment</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/seeking/irrigation">
+                <img src="/Resources/Images/Irrigation.svg" class="tall" />
+                <span>Irrigation</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/seeking/labour">
+                <img src="/Resources/Images/Labour.svg" class="tall" />
+                <span>Labour</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/seeking/land">
+                <img src="/Resources/Images/Land.svg" class="tall" />
+                <span>Land</span>
+            </a>
+        </li>
+    </ul>
+
     <br />
 
     <div class="cols-rev">
@@ -42,7 +69,7 @@
 
             <h3>Recent Notifications <a href="/account/notifications/seeking">View All</a></h3>
 
-            <web:PagedRepeater runat="server" ID="Notifications" OnItemDataBound="BindNotification">
+            <web:PagedRepeater runat="server" ID="Notifications" OnItemDataBound="BindNotification" EmptyMessage="You have no unread notifications">
                 <HeaderTemplate>
                     <div class="notifications-summary-list">
                 </HeaderTemplate>
@@ -76,7 +103,7 @@
                 </div>
             </asp:Panel>            
 
-            <web:PagedRepeater runat="server" ID="Bookings" OnItemDataBound="BindBooking">
+            <web:PagedRepeater runat="server" ID="Bookings" OnItemDataBound="BindBooking" EmptyMessage="You have not made any bookings yet">
                 <HeaderTemplate>
                     <div class="bookings-list">
                 </HeaderTemplate>

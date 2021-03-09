@@ -38,6 +38,10 @@
                 <li><a href="/account/listings?cid=2">Lorries</a></li>
                 <li><a href="/account/listings?cid=3">Processing</a></li>
                 <li><a href="/account/listings?cid=17">Buses</a></li>
+                <li><a href="/account/equipment">Equipment</a></li>
+                <li><a href="/account/listings?cid=60">Irrigation</a></li>
+                <li><a href="/account/listings?cid=50">Labour</a></li>
+                <li><a href="/account/listings?cid=70">Land</a></li>
             </ul>
         </div>
     </div>
