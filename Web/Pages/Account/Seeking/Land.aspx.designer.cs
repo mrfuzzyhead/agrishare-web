@@ -7,82 +7,55 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Agrishare.Web.Pages.Account.Listing {
+namespace Agrishare.Web.Pages.Account.Seeking {
     
     
-    public partial class Labour {
+    public partial class Land {
         
         /// <summary>
-        /// EquipmentTitle control.
+        /// For control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox EquipmentTitle;
+        protected global::System.Web.UI.WebControls.RadioButtonList For;
         
         /// <summary>
-        /// GroupHire control.
+        /// LandRegion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox GroupHire;
+        protected global::System.Web.UI.WebControls.RadioButtonList LandRegion;
         
         /// <summary>
-        /// PricePerQuantityUnit control.
+        /// Acres control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PricePerQuantityUnit;
+        protected global::System.Web.UI.WebControls.TextBox Acres;
         
         /// <summary>
-        /// Services control.
+        /// Years control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList Services;
+        protected global::System.Web.UI.WebControls.TextBox Years;
         
         /// <summary>
-        /// Location control.
+        /// SearchButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Agrishare.Web.Controls.Map Location;
-        
-        /// <summary>
-        /// PricePerDistanceUnit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PricePerDistanceUnit;
-        
-        /// <summary>
-        /// MaximumDistance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MaximumDistance;
-        
-        /// <summary>
-        /// Gallery control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Agrishare.Web.Controls.PhotoUpload Gallery;
+        protected global::System.Web.UI.WebControls.Button SearchButton;
         
         /// <summary>
         /// Master property.

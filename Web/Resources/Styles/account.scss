@@ -2,6 +2,29 @@
 
 .account {
 
+    .profile-details {
+        padding: 0;
+        list-style: none;
+        border: dashed 1px #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+
+        li {
+            display: flex;
+            align-items: center;
+            border-bottom: solid 1px #ddd;
+
+            small {
+                flex: 0 0 150px;
+                padding: 10px;
+                background: #eee;
+            }
+            span {
+                padding: 5px 10px;
+            }
+        }
+    }
+
     .menu {
         padding: 0;
         list-style: none;
@@ -12,6 +35,26 @@
 
             &:last-child {
                 border-bottom: none;
+            }
+
+            &.delete {
+                margin-top: 20px;
+                margin-left: 5px;
+            }
+
+            a {
+                display: flex;
+                align-content: center;
+                text-decoration: none;
+                color: #555;
+
+                i {
+                    margin-right: 10px;
+                }
+
+                &.active {
+                    color: $pink;
+                }
             }
         }
     }

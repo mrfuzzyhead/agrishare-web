@@ -17,12 +17,18 @@
                     </p>
                 </asp:Panel>
 
-                <p><strong><asp:Literal runat="server" ID="DisplayName" /></strong></p>
-
                 <p>
-                    <small>TELEPHONE:</small> <asp:Literal runat="server" ID="DisplayTelephone" /><br />
-                    <small>EMAIL:</small> <asp:Literal runat="server" ID="DisplayEmailAddress" />
+                    Welcome <strong><asp:Literal runat="server" ID="DisplayName" /></strong><br />
+                    <small>Please review your profile detalis below and use the menu to edit your details.</small>
                 </p>
+
+                <ul class="profile-details">
+                    <li><small>COUNTRY:</small> <span><asp:Literal runat="server" ID="DisplayCountry" /></span></li>
+                    <li><small>EMAIL:</small> <span><asp:Literal runat="server" ID="DisplayEmailAddress" /></span></li>
+                    <li><small>TELEPHONE:</small> <span><asp:Literal runat="server" ID="DisplayTelephone" /></span></li>
+                    <li><small>GENDER:</small> <span><asp:Literal runat="server" ID="DisplayGender" /></span></li>
+                    <li><small>DATE OF BIRTH:</small> <span><asp:Literal runat="server" ID="DisplayDateOfBirth" /></span></li>
+                </ul>
 
                 <asp:Panel runat="server" ID="AgentDetails">
                     <h3>Commissions: <asp:Literal runat="server" Id="AgentName" /></h3>
@@ -46,6 +52,12 @@
             <asp:PlaceHolder runat="server" ID="EditProfileForm" Visible="false">
 
                 <h2>Edit Profile</h2>
+
+                <div class="form-row">
+                    <asp:Label runat="server" AssociatedControlID="Region" Text="Country *" />
+                    <asp:DropDownList runat="server" ID="Region" />
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="Region" Text="Country is required" Display="Dynamic" ValidationGroup="Edit" />
+                </div>
 
                 <div class="form-cols">
 
@@ -230,12 +242,12 @@
         <div>
 
             <ul class="menu">
-                <li><a href="/account/profile/edit">Edit Profile</a></li>
-                <li><a href="/account/profile/payments">Payment Details</a></li>
-                <li><a href="/account/profile/notifications">Notification Preferences</a></li>
-                <li><a href="/account/profile/resetpin">Reset PIN</a></li>
-                <li><asp:LinkButton runat="server" OnClick="Logout">Logout</asp:LinkButton></li>
-                <li><a href="/account/profile/delete">Delete my account</a></li>
+                <li><asp:HyperLink runat="server" ID="EditProfileLink" NavigateUrl="/account/profile/edit"><i class="material-icons-round">person</i><span>Edit Profile</span></asp:HyperLink></li>
+                <li><asp:HyperLink runat="server" ID="PaymentDetailsLink" NavigateUrl="/account/profile/payments"><i class="material-icons-round">credit_card</i><span>Payment Details</span></asp:HyperLink></li>
+                <li><asp:HyperLink runat="server" ID="NotificationPrefsLink" NavigateUrl="/account/profile/notifications"><i class="material-icons-round">notifications</i><span>Notification Preferences</span></asp:HyperLink></li>
+                <li><asp:HyperLink runat="server" ID="ResetPinLink" NavigateUrl="/account/profile/resetpin"><i class="material-icons-round">vpn_key</i><span>Reset PIN</span></asp:HyperLink></li>
+                <li class="logout"><asp:LinkButton runat="server" OnClick="Logout"><i class="material-icons-round">lock</i><span>Logout</span></asp:LinkButton></li>
+                <li class="delete"><asp:HyperLink runat="server" ID="DeleteAccountLink" NavigateUrl="/account/profile/delete"><i class="material-icons-round md-16">delete</i><small>Delete my account</small></asp:HyperLink></li>
             </ul>
 
         </div>

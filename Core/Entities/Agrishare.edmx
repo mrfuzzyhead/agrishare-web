@@ -374,6 +374,7 @@
           <Property Name="MaxRentalYears" Type="int" Nullable="false" />
           <Property Name="AvailableAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="MinimumAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="LabourServices" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Suppliers">
           <Key>
@@ -1910,6 +1911,7 @@
           <Property Name="MaxRentalYears" Type="Int32" Nullable="false" />
           <Property Name="AvailableAcres" Type="Decimal" Nullable="false" />
           <Property Name="MinimumAcres" Type="Decimal" Nullable="false" />
+          <Property Name="LabourServices" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="bookings_ibfk_3">
           <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
@@ -2735,6 +2737,15 @@
           <Member Name="Eastern" Value="3" />
           <Member Name="Western" Value="4" />
         </EnumType>
+        <EnumType Name="LabourService">
+          <Member Name="None" Value="0" />
+          <Member Name="LandClearing" Value="1" />
+          <Member Name="Planting" Value="2" />
+          <Member Name="Weeding" Value="4" />
+          <Member Name="Harvesting" Value="8" />
+          <Member Name="Loading" Value="16" />
+          <Member Name="Other" Value="32" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3011,6 +3022,7 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="AgrishareModel.Service">
               <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="LabourServices" ColumnName="LabourServices" />
                 <ScalarProperty Name="MinimumAcres" ColumnName="MinimumAcres" />
                 <ScalarProperty Name="AvailableAcres" ColumnName="AvailableAcres" />
                 <ScalarProperty Name="MaxRentalYears" ColumnName="MaxRentalYears" />

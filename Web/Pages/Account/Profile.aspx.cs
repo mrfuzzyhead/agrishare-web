@@ -16,6 +16,9 @@ namespace Agrishare.Web.Pages.Account
             Master.Body.Attributes["class"] += " account ";
 
             DisplayName.Text = HttpUtility.HtmlEncode(Master.CurrentUser.FirstName + " " + Master.CurrentUser.LastName);
+            DisplayCountry.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Region.Title);
+            DisplayGender.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Gender);
+            DisplayDateOfBirth.Text = Master.CurrentUser.DateOfBirth.HasValue ? Master.CurrentUser.DateOfBirth.Value.ToString("d MMMM yyyy") : "-";
             DisplayTelephone.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Telephone);
             DisplayEmailAddress.Text = HttpUtility.HtmlEncode(Master.CurrentUser.EmailAddress);
 
@@ -29,18 +32,27 @@ namespace Agrishare.Web.Pages.Account
             {
                 case "edit":
                     EditProfileForm.Visible = true;
+                    EditProfileLink.CssClass = "active";
                     if (!Page.IsPostBack)
                     {
+                        Region.DataSource = Core.Entities.Region.List();
+                        Region.DataTextField = "Title";
+                        Region.DataValueField = "Id";
+                        Region.DataBind();
+                        Region.Items.Insert(0, new ListItem("Select...", ""));
+
                         FirstName.Text = Master.CurrentUser.FirstName;
                         LastName.Text = Master.CurrentUser.LastName;
                         EmailAddress.Text = Master.CurrentUser.EmailAddress;
                         Telephone.Text = Master.CurrentUser.Telephone;
                         Gender.SelectedValue = ((int)Master.CurrentUser.GenderId).ToString();
                         DateOfBirth.SelectedDate = Master.CurrentUser.DateOfBirth;
+                        Region.SelectedValue = Master.CurrentUser.Region.Id.ToString();
                     }
                     break;
                 case "notifications":
                     NotificationPreferencesForm.Visible = true;
+                    NotificationPrefsLink.CssClass = "active";
                     if (!Page.IsPostBack)
                     {
                         SMS.Checked = (Master.CurrentUser.NotificationPreferences & (int)Core.Entities.NotificationPreferences.SMS) > 0;
@@ -50,6 +62,7 @@ namespace Agrishare.Web.Pages.Account
                     break;
                 case "payments":
                     PaymentDetailsForm.Visible = true;
+                    PaymentDetailsLink.CssClass = "active";
                     if (!Page.IsPostBack)
                     {
                         Cash.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.Cash);
@@ -63,11 +76,13 @@ namespace Agrishare.Web.Pages.Account
                     break;
                 case "resetpin":
                     ResetForm.Visible = true;
+                    ResetPinLink.CssClass = "active";
                     if (!Page.IsPostBack)
                         Master.CurrentUser.SendVerificationCode();
                     break;
                 case "delete":
                     DeleteForm.Visible = true;
+                    DeleteAccountLink.CssClass = "active";
                     var bookings = Core.Entities.Booking.Count(UserId: Master.CurrentUser.Id, StartDate: DateTime.Now, Upcoming: true);
                     if (bookings > 0)
                         DeleteWarning.Visible = true;
@@ -110,6 +125,7 @@ namespace Agrishare.Web.Pages.Account
             user.Telephone = Telephone.Text;
             user.GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue));
             user.DateOfBirth = DateOfBirth.SelectedDate;
+            user.Region = Core.Entities.Region.Find(Convert.ToInt32(Region.SelectedValue));
 
             if (!user.UniqueTelephone())
                 Master.Feedback = "Telephone number has already been registered";
@@ -189,6 +205,7 @@ namespace Agrishare.Web.Pages.Account
                 }
                 else
                     Master.Feedback = "The verification code has expired - please reset your PIN again";
+
             }
         }
 

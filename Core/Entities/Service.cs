@@ -42,6 +42,7 @@ namespace Agrishare.Core.Entities
         public int MaxRentalYears { get; set; }
         public decimal AvailableAcres { get; set; }
         public decimal MinimumAcres { get; set; }
+        public int LabourServices { get; set; }
     
         public virtual Listing Listing { get; set; }
     }

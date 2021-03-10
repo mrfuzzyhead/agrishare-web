@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Agrishare.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,7 @@ namespace Agrishare.Web.Pages.Account.Listing
 {
     public partial class Labour : System.Web.UI.Page
     {
-        private int CategoryId => Core.Entities.Category.LabourId;
+        private int CategoryId => Category.LabourId;
         Core.Entities.Listing SelectedListing;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -34,8 +35,12 @@ namespace Agrishare.Web.Pages.Account.Listing
 
             if (!Page.IsPostBack)
             {
-                Services.DataSource = Core.Entities.Category.List(ParentId: CategoryId);
-                Services.DataBind();
+                Services.Items.Add(new ListItem("Harvesting", $"{(int)LabourService.Harvesting}"));
+                Services.Items.Add(new ListItem("Land Clearing", $"{(int)LabourService.LandClearing}"));
+                Services.Items.Add(new ListItem("Loading", $"{(int)LabourService.Loading}"));
+                Services.Items.Add(new ListItem("Planting", $"{(int)LabourService.Planting}"));
+                Services.Items.Add(new ListItem("Weeding", $"{(int)LabourService.Weeding}"));
+                Services.Items.Add(new ListItem("Other", $"{(int)LabourService.Other}"));
 
                 if (SelectedListing.Id > 0)
                 {
@@ -47,31 +52,16 @@ namespace Agrishare.Web.Pages.Account.Listing
 
                     if (SelectedListing.Services.Count > 0)
                     {
+                        PricePerQuantityUnit.Text = SelectedListing.Services.First().PricePerQuantityUnit.ToString();
                         PricePerDistanceUnit.Text = SelectedListing.Services.First().PricePerDistanceUnit.ToString();
                         MaximumDistance.Text = SelectedListing.Services.First().MaximumDistance.ToString();
+
+                        foreach (ListItem item in Services.Items)
+                            if ((Convert.ToInt32(item.Value) & SelectedListing.Services.First().LabourServices) > 0)
+                                item.Selected = true;
                     }
                 }
 
-            }
-        }
-
-        public void BindService(object s, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                var category = (Core.Entities.Category)e.Item.DataItem;
-                ((CheckBox)e.Item.FindControl("Title")).Text = category.Title;
-
-                ((HiddenField)e.Item.FindControl("CategoryId")).Value = category.Id.ToString();
-                ((HiddenField)e.Item.FindControl("ServiceId")).Value = "0";
-
-                var service = SelectedListing.Services.FirstOrDefault(o => o.CategoryId == category.Id);
-                if (service != null)
-                {
-                    ((CheckBox)e.Item.FindControl("Title")).Checked = true;
-                    ((HiddenField)e.Item.FindControl("ServiceId")).Value = service.Id.ToString();
-                    ((TextBox)e.Item.FindControl("PricePerQuantityUnit")).Text = service.PricePerQuantityUnit.ToString();
-                }
             }
         }
 
@@ -81,7 +71,11 @@ namespace Agrishare.Web.Pages.Account.Listing
             {
                 SelectedListing.User = Master.CurrentUser;
                 SelectedListing.Region = Master.CurrentUser.Region;
-                SelectedListing.CategoryId = CategoryId;                
+                SelectedListing.CategoryId = CategoryId;
+                SelectedListing.Services = new List<Service>
+                {
+                    new Service()
+                };
             }
 
             SelectedListing.Title = EquipmentTitle.Text;
@@ -89,27 +83,22 @@ namespace Agrishare.Web.Pages.Account.Listing
             SelectedListing.Latitude = Location.Latitude;
             SelectedListing.Longitude = Location.Longitude;
 
-            var services = SelectedListing.Services;
-            SelectedListing.Services = new List<Core.Entities.Service>();
-            foreach (RepeaterItem item in Services.Items)
-            {
-                var enabled = ((CheckBox)item.FindControl("Title")).Checked;
-                if (!enabled)
-                    continue;
-
-                var categoryId = Convert.ToInt32(((HiddenField)item.FindControl("CategoryId")).Value);
-                var serviceId = Convert.ToInt32(((HiddenField)item.FindControl("ServiceId")).Value);
-                var service = services.FirstOrDefault(o => o.Id == serviceId);
-
-                if (service == null)
-                    service = new Core.Entities.Service();
-
-                service.CategoryId = categoryId;
-                service.PricePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("PricePerQuantityUnit")).Text);
-                service.PricePerDistanceUnit = Convert.ToDecimal(PricePerDistanceUnit.Text);
-                service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
-                SelectedListing.Services.Add(service);
-            }
+            var service = SelectedListing.Services.First();
+            service.DistanceUnitId = DistanceUnit.Km;
+            service.FuelPerQuantityUnit = 0;
+            service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
+            service.MinimumQuantity = 0;
+            service.Mobile = true;
+            service.QuantityUnitId = QuantityUnit.None;
+            service.CategoryId = Category.LabourId;
+            service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
+            service.TimeUnitId = TimeUnit.None;
+            service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
+            service.PricePerDistanceUnit = Convert.ToDecimal(PricePerDistanceUnit.Text);
+            service.LabourServices = 0;
+            foreach (ListItem item in Services.Items)
+                if (item.Selected)
+                    service.LabourServices += Convert.ToInt32(item.Value);
 
             if (Gallery.Photos.Count > 0)
                 SelectedListing.PhotoPaths = string.Join(",", Gallery.Photos.Select(o => o.Filename).ToArray());
@@ -122,11 +111,6 @@ namespace Agrishare.Web.Pages.Account.Listing
             else
                 Master.Feedback = "An unknown error ocurred";
 
-        }
-
-        protected void ValidateServiceField(object source, ServerValidateEventArgs args)
-        {
-            //args.IsValid = false;
         }
     }
 }

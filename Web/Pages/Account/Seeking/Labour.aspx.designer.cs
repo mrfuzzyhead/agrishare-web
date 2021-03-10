@@ -7,37 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Agrishare.Web.Pages.Account.Listing {
+namespace Agrishare.Web.Pages.Account.Seeking {
     
     
     public partial class Labour {
         
         /// <summary>
-        /// EquipmentTitle control.
+        /// For control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox EquipmentTitle;
-        
-        /// <summary>
-        /// GroupHire control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox GroupHire;
-        
-        /// <summary>
-        /// PricePerQuantityUnit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PricePerQuantityUnit;
+        protected global::System.Web.UI.WebControls.RadioButtonList For;
         
         /// <summary>
         /// Services control.
@@ -49,6 +31,24 @@ namespace Agrishare.Web.Pages.Account.Listing {
         protected global::System.Web.UI.WebControls.CheckBoxList Services;
         
         /// <summary>
+        /// DayCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox DayCount;
+        
+        /// <summary>
+        /// StartDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Agrishare.Web.Controls.Date StartDate;
+        
+        /// <summary>
         /// Location control.
         /// </summary>
         /// <remarks>
@@ -58,31 +58,13 @@ namespace Agrishare.Web.Pages.Account.Listing {
         protected global::Agrishare.Web.Controls.Map Location;
         
         /// <summary>
-        /// PricePerDistanceUnit control.
+        /// SearchButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PricePerDistanceUnit;
-        
-        /// <summary>
-        /// MaximumDistance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MaximumDistance;
-        
-        /// <summary>
-        /// Gallery control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Agrishare.Web.Controls.PhotoUpload Gallery;
+        protected global::System.Web.UI.WebControls.Button SearchButton;
         
         /// <summary>
         /// Master property.

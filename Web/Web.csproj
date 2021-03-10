@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Hello.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Pages\About\Contact.aspx" />
@@ -99,6 +100,9 @@
     <Content Include="Pages\Account\Listing\Irrigation.aspx" />
     <Content Include="Pages\Account\Listing\Labour.aspx" />
     <Content Include="Pages\Account\Seeking\Bus.aspx" />
+    <Content Include="Pages\Account\Seeking\Land.aspx" />
+    <Content Include="Pages\Account\Seeking\Irrigation.aspx" />
+    <Content Include="Pages\Account\Seeking\Labour.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
     <Content Include="Pages\About\Privacy.aspx" />
@@ -214,6 +218,27 @@
     </Compile>
     <Compile Include="Pages\Account\Seeking\Bus.aspx.designer.cs">
       <DependentUpon>Bus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Land.aspx.cs">
+      <DependentUpon>Land.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Land.aspx.designer.cs">
+      <DependentUpon>Land.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Irrigation.aspx.cs">
+      <DependentUpon>Irrigation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Irrigation.aspx.designer.cs">
+      <DependentUpon>Irrigation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Labour.aspx.cs">
+      <DependentUpon>Labour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Labour.aspx.designer.cs">
+      <DependentUpon>Labour.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>

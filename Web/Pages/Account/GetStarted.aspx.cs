@@ -128,7 +128,7 @@ namespace Agrishare.Web.Pages.Account
             if (Page.IsValid)
             {
                 var user = Core.Entities.User.Find(Telephone: ResetTelephone.Text);
-                if(user != null && user.Id > 0 && !user.VerificationCode.IsEmpty() && user.VerificationCode == ResetCode.Text)
+                if (user != null && user.Id > 0 && !user.VerificationCode.IsEmpty() && user.VerificationCode == ResetCode.Text)
                 {
                     user.ClearPassword = ResetPIN.Text;
                     user.FailedLoginAttempts = 0;
@@ -139,7 +139,11 @@ namespace Agrishare.Web.Pages.Account
                     Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
                 }
                 else
+                {
                     Master.Feedback = "The verification code has expired - please reset your PIN again";
+                    ResetForm.Visible = false;
+                    ForgotForm.Visible = true;
+                }
             }
         }
     }

@@ -23,33 +23,20 @@
                 <asp:CheckBox runat="server" ID="GroupHire" Text="Allow group hire" />
             </div>
 
+            <h3>Booking Details</h3>
+
+            <div class="form-row">
+                <asp:Label runat="server" AssociatedControlID="PricePerQuantityUnit" Text="Hire Cost *" />
+                <div><asp:TextBox runat="server" ID="PricePerQuantityUnit" MaxLength="8" /><span>$/DAY</span></div>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost is required" Display="Dynamic" />
+                <asp:RegularExpressionValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
+            </div>
+
             <h3>Services</h3>
 
-            <asp:Repeater runat="server" ID="Services" OnItemDataBound="BindService">
-                <ItemTemplate>
-
-                    <div class="service">
-
-                        <asp:HiddenField runat="server" ID="CategoryId" />
-                        <asp:HiddenField runat="server" ID="ServiceId" />
-
-                        <strong class="checkbox-row service-checkbox"><asp:CheckBox runat="server" ID="Title" /></strong>
-                        
-                        <div class="service-row">
-
-                            <div class="form-row">
-                                <asp:Label runat="server" AssociatedControlID="PricePerQuantityUnit" Text="Hire Cost *" />
-                                <div><asp:TextBox runat="server" ID="PricePerQuantityUnit" MaxLength="8" /><span>$/DAY</span></div>
-                                <asp:CustomValidator runat="server" ControlToValidate="PricePerQuantityUnit" ValidateEmptyText="true" ClientValidationFunction="validateServiceField" OnServerValidate="ValidateServiceField" Text="Hire cost is required" Display="Dynamic" />
-                                <asp:RegularExpressionValidator runat="server" ControlToValidate="PricePerQuantityUnit" Text="Hire cost  is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </ItemTemplate>
-            </asp:Repeater>
+            <div class="checkbox-list-row">
+                <asp:CheckBoxList runat="server" ID="Services" />
+            </div>
 
         </div>
         <div>
@@ -85,21 +72,5 @@
     <p>
         <asp:Button runat="server" Text="Save" CssClass="button" OnClick="Save" />
     </p>
-
-    <script>
-        $('.service-checkbox input').change(function () {
-            if ($(this).is(':checked'))
-                $(this).parent().next('div').show();
-            else                
-                $(this).parent().next('div').hide();
-        }).change();
-
-        function validateServiceField(sender, args) {
-            var checked = $(sender).closest('.service').find('input[type=checkbox]').is(':checked');
-            var empty = $(sender).closest('div').find('input').val() === '';
-            args.IsValid = !checked || (checked && !empty);
-        }
-
-    </script>
 
 </asp:Content>

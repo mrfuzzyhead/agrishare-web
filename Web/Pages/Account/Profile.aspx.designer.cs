@@ -40,13 +40,13 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.Literal DisplayName;
         
         /// <summary>
-        /// DisplayTelephone control.
+        /// DisplayCountry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal DisplayTelephone;
+        protected global::System.Web.UI.WebControls.Literal DisplayCountry;
         
         /// <summary>
         /// DisplayEmailAddress control.
@@ -56,6 +56,33 @@ namespace Agrishare.Web.Pages.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal DisplayEmailAddress;
+        
+        /// <summary>
+        /// DisplayTelephone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DisplayTelephone;
+        
+        /// <summary>
+        /// DisplayGender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DisplayGender;
+        
+        /// <summary>
+        /// DisplayDateOfBirth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DisplayDateOfBirth;
         
         /// <summary>
         /// AgentDetails control.
@@ -110,6 +137,15 @@ namespace Agrishare.Web.Pages.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder EditProfileForm;
+        
+        /// <summary>
+        /// Region control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList Region;
         
         /// <summary>
         /// FirstName control.
@@ -335,6 +371,51 @@ namespace Agrishare.Web.Pages.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder DeleteWarning;
+        
+        /// <summary>
+        /// EditProfileLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink EditProfileLink;
+        
+        /// <summary>
+        /// PaymentDetailsLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink PaymentDetailsLink;
+        
+        /// <summary>
+        /// NotificationPrefsLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink NotificationPrefsLink;
+        
+        /// <summary>
+        /// ResetPinLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink ResetPinLink;
+        
+        /// <summary>
+        /// DeleteAccountLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink DeleteAccountLink;
         
         /// <summary>
         /// Master property.

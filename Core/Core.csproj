@@ -211,6 +211,9 @@
     <Compile Include="Entities\Currency.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\LabourService.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Product.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
