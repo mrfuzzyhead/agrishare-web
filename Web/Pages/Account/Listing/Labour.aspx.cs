@@ -82,6 +82,8 @@ namespace Agrishare.Web.Pages.Account.Listing
             SelectedListing.GroupServices = GroupHire.Checked;
             SelectedListing.Latitude = Location.Latitude;
             SelectedListing.Longitude = Location.Longitude;
+            SelectedListing.AvailableWithFuel = true;
+            SelectedListing.AvailableWithoutFuel = true;
 
             var service = SelectedListing.Services.First();
             service.DistanceUnitId = DistanceUnit.Km;
@@ -89,11 +91,10 @@ namespace Agrishare.Web.Pages.Account.Listing
             service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
             service.MinimumQuantity = 0;
             service.Mobile = true;
-            service.QuantityUnitId = QuantityUnit.None;
+            service.QuantityUnitId = QuantityUnit.Days;
             service.CategoryId = Category.LabourId;
             service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
             service.TimeUnitId = TimeUnit.None;
-            service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
             service.PricePerDistanceUnit = Convert.ToDecimal(PricePerDistanceUnit.Text);
             service.LabourServices = 0;
             foreach (ListItem item in Services.Items)

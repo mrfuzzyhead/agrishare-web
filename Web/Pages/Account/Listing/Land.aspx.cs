@@ -93,6 +93,7 @@ namespace Agrishare.Web.Pages.Account.Listing
             service.FertileSoil = FertileSoil.Checked;
             service.LandRegion = (Core.Entities.ServiceLandRegion)Enum.ToObject(typeof(Core.Entities.ServiceLandRegion), Convert.ToInt32(LandRegion.SelectedValue));
             service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
+            service.QuantityUnitId = Core.Entities.QuantityUnit.Years;
             service.MaxRentalYears = Convert.ToInt32(MaxRentalYears.Text);
             service.AvailableAcres = Convert.ToDecimal(AvailableAcres.Text);
             service.MinimumAcres = Convert.ToDecimal(MinimumAcres.Text);

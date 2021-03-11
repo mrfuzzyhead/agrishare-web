@@ -12,7 +12,7 @@
             <div class="booking" ng-controller="AvailabilityController">
 
                 <ul>
-                    <li>
+                    <li runat="server" id="DatesRow">
                         <strong>Dates</strong>
                         <span>
                             <asp:Literal runat="server" ID="Dates" /> 
@@ -21,7 +21,7 @@
                         </span>
                         <span><em>This service will take <asp:Literal runat="server" ID="Days" />.</em></span>
                     </li>
-                    <li>
+                    <li runat="server" id="TransportCostRow">
                         <strong>Transport Cost</strong>
                         <span><asp:Literal runat="server" ID="TransportDistance" /></span>
                         <span><asp:Literal runat="server" ID="TransportCost" /></span>

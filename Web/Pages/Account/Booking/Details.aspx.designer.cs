@@ -31,6 +31,15 @@ namespace Agrishare.Web.Pages.Account.Booking {
         protected global::System.Web.UI.WebControls.HyperLink Reviews;
         
         /// <summary>
+        /// DatesRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DatesRow;
+        
+        /// <summary>
         /// Dates control.
         /// </summary>
         /// <remarks>
@@ -65,6 +74,15 @@ namespace Agrishare.Web.Pages.Account.Booking {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal Days;
+        
+        /// <summary>
+        /// TransportCostRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TransportCostRow;
         
         /// <summary>
         /// TransportDistance control.

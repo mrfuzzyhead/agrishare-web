@@ -79,9 +79,10 @@ namespace Agrishare.Web.Pages.Account.Listing
             service.MinimumQuantity = 0;
             service.Mobile = true;
             service.PricePerDistanceUnit = Convert.ToDecimal(DistanceCharge.Text);
-            service.QuantityUnitId = Core.Entities.QuantityUnit.None;
+            service.QuantityUnitId = Core.Entities.QuantityUnit.Days;
             service.CategoryId = Core.Entities.Category.IrrigationId;
             service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
+            service.TimePerQuantityUnit = 1; // 1 Day
             service.TimeUnitId = Core.Entities.TimeUnit.None;
             service.PricePerQuantityUnit = Convert.ToDecimal(PricePerQuantityUnit.Text);
             service.MaximumDistanceToWaterSource = Convert.ToDecimal(MaximumDistanceToWaterSource.Text);

@@ -2030,6 +2030,8 @@
           <Member Name="None" Value="0" />
           <Member Name="Hectare" Value="1" />
           <Member Name="Bags" Value="2" />
+          <Member Name="Days" Value="3" />
+          <Member Name="Years" Value="4" />
         </EnumType>
         <EnumType Name="TimeUnit" UnderlyingType="Int16">
           <Member Name="None" Value="0" />

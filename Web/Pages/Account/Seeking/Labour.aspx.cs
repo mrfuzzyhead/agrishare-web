@@ -39,7 +39,7 @@ namespace Agrishare.Web.Pages.Account.Seeking
                     services += Convert.ToInt32(item.Value);
 
             var url = $"/account/seeking/results?cid={Category.LabourId}&" +
-                $"sid={Category.LabourId}&" +
+                $"sid={Core.Entities.Category.LabourId}&" +
                 $"lat={Location.Latitude}&" +
                 $"lng={Location.Longitude}&" +
                 $"std={StartDate.Text}&" +

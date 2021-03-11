@@ -15,6 +15,8 @@ namespace Agrishare.Core.Entities
     {
         None = 0,
         Hectare = 1,
-        Bags = 2
+        Bags = 2,
+        Days = 3,
+        Years = 4
     }
 }

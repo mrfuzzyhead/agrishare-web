@@ -55,15 +55,28 @@ namespace Agrishare.Web.Pages.Account.Booking
             var size = Convert.ToInt32(Request.QueryString["qty"]);
             var includeFuel = Request.QueryString["fue"] == "1";
             var mobile = true;
-            if (categoryId == Core.Entities.Category.ProcessingId)
+            if (categoryId == Category.ProcessingId)
                 mobile = Request.QueryString["mob"] == "1";
+            if (categoryId == Core.Entities.Category.LandId)
+                mobile = false;
             var bookingFor = (Core.Entities.BookingFor)Enum.ToObject(typeof(Core.Entities.BookingFor), Convert.ToInt32(Request.QueryString["for"]));
             var destinationLatitude = Convert.ToDecimal(Request.QueryString["dla"]);
             var destinationLongitude = Convert.ToDecimal(Request.QueryString["dlo"]);
             var totalVolume = Convert.ToDecimal(Request.QueryString["vol"]);
             var additionalInfo = Request.QueryString["des"];
+            
+            // new fields: irrigation, labour, land
+            var distanceToWaterSource = Convert.ToDecimal(Request.QueryString["dis"]);
+            var depthOfWaterSource = Convert.ToDecimal(Request.QueryString["dep"]);
+            var labourServices = Convert.ToInt32(Request.QueryString["lsr"]);
+            var landRegion = Convert.ToInt32(Request.QueryString["reg"]);
 
-            var results = Core.Entities.ListingSearchResult.List(0, 10, "Distance", categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume, listingId);
+            var results = ListingSearchResult.List(PageIndex: 0, PageSize: 2, ListingId: listingId,
+                Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude,
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
+                LabourServices: labourServices, LandRegion: landRegion);
+
             if (results.Count != 1)
             {
                 Master.Feedback = "Listing not found";
@@ -145,21 +158,30 @@ namespace Agrishare.Web.Pages.Account.Booking
 
             TransportDistance.Text = SelectedBooking.TransportDistance.ToString("N2") + " km";
             TransportCost.Text = "$" + SelectedBooking.TransportCost.ToString("N2");
-            HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit + "s";
+            HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
             HireCost.Text = "$" + SelectedBooking.HireCost.ToString("N2");
-            if (SelectedBooking.Listing.CategoryId == Core.Entities.Category.LorriesId)
+            if (SelectedBooking.Listing.CategoryId == Category.LorriesId)
                 FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
             else
-                FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit + "s";
+                FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
             FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
 
-            HireCostRow.Visible = SelectedBooking.Listing.CategoryId != (int)Core.Entities.Category.BusId;
-            FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != (int)Core.Entities.Category.BusId;
+            HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;
+            FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId && SelectedBooking.Listing.CategoryId != Category.IrrigationId && SelectedBooking.Listing.CategoryId != Category.LabourId && SelectedBooking.Listing.CategoryId != Category.LandId;
 
             CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
             Commission.Text = "$" + SelectedBooking.AgriShareCommission.ToString("N2");
 
             Total.Text = "$" + SelectedBooking.Price.ToString("N2");
+
+            /** Land **/
+
+            if (SelectedBooking.Listing.CategoryId == Category.LandId)
+            {
+                DatesRow.Visible = false;
+                TransportCostRow.Visible = false;
+                FuelCostRow.Visible = false;
+            }
 
             /******************************/
 

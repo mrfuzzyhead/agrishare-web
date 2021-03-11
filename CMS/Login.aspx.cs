@@ -68,7 +68,7 @@ namespace Agrishare.CMS
         {
             var user = Core.Entities.User.Find(Telephone: ForgotMobileNumber.Text);
             if (user.Id > 0)
-                user.SendVerificationCode();
+                user.SendVerificationCode(TryEmail: true);
 
             ResetForm.Visible = true;
             LoginForm.Visible = false;

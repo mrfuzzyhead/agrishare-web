@@ -28,22 +28,32 @@ namespace Agrishare.Web.Pages.Account.Seeking
             var mobile = true;
             if (categoryId == Core.Entities.Category.ProcessingId)
                 mobile = Request.QueryString["mob"] == "1";
+            if (categoryId == Core.Entities.Category.LandId)
+                mobile = false;
             var bookingFor = (Core.Entities.BookingFor)Enum.ToObject(typeof(Core.Entities.BookingFor), Convert.ToInt32(Request.QueryString["for"]));
             var destinationLatitude = Convert.ToDecimal(Request.QueryString["dla"]);
             var destinationLongitude = Convert.ToDecimal(Request.QueryString["dlo"]);
             var totalVolume = Convert.ToDecimal(Request.QueryString["vol"]);
+
+            // new fields: irrigation, labour, land
+            var distanceToWaterSource = Convert.ToDecimal(Request.QueryString["dis"]);
+            var depthOfWaterSource = Convert.ToDecimal(Request.QueryString["dep"]);
+            var labourServices = Convert.ToInt32(Request.QueryString["lsr"]);
+            var landRegion = Convert.ToInt32(Request.QueryString["reg"]);
 
             Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Search, CategoryId: categoryId);
 
             SearchResults.RecordCount = Core.Entities.ListingSearchResult.Count(
                 CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
                 IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude,
-                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id);
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
+                LabourServices: labourServices, LandRegion: landRegion);
 
             SearchResults.DataSource = Core.Entities.ListingSearchResult.List(PageIndex: SearchResults.CurrentPageIndex, PageSize: SearchResults.PageSize, 
                 Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
                 IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude, 
-                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id);
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
+                LabourServices: labourServices, LandRegion: landRegion);
 
             SearchResults.DataBind();
 
@@ -60,7 +70,11 @@ namespace Agrishare.Web.Pages.Account.Seeking
                 if ((result.Photos?.Count ?? 0) > 0)
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{result.Photos.FirstOrDefault().ThumbName})");
 
-                ((Literal)e.Item.FindControl("Distance")).Text = Math.Round(result.Distance) == 0 ? "Nearby" : $"{Math.Round(result.Distance)}kms away";
+                if (result.Distance < 0)
+                    ((Literal)e.Item.FindControl("Distance")).Text = "";
+                else
+                    ((Literal)e.Item.FindControl("Distance")).Text = Math.Round(result.Distance) == 0 ? "Nearby" : $"{Math.Round(result.Distance)}kms away";
+
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(result.Title);
                 ((Literal)e.Item.FindControl("Price")).Text = "$" + result.Price.ToString("N2");
                 ((Literal)e.Item.FindControl("Status")).Text = result.Available ? "Available" : "Not available";

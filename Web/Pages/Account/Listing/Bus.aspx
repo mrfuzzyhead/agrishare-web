@@ -1,5 +1,5 @@
 ﻿<%@ MasterType TypeName="Agrishare.Web.Pages.Default" %>
-<%@ Page Title="Lorry" Language="C#" MasterPageFile="~/Pages/Default.Master" AutoEventWireup="true" CodeBehind="Bus.aspx.cs" Inherits="Agrishare.Web.Pages.Account.Listing.Bus" %>
+<%@ Page Title="Bus" Language="C#" MasterPageFile="~/Pages/Default.Master" AutoEventWireup="true" CodeBehind="Bus.aspx.cs" Inherits="Agrishare.Web.Pages.Account.Listing.Bus" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     

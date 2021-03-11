@@ -16,14 +16,17 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, decimal Longitude,
             DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For = BookingFor.Me,
-            decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "", bool HideUnavailable = false)
+            decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "", bool HideUnavailable = false,
+            decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
         {
             Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
             var list = ListingSearchResult.List(PageIndex: PageIndex, PageSize: PageSize, Sort: Sort, CategoryId: CategoryId,
                 ServiceId: ServiceId, Latitude: Latitude, Longitude: Longitude, StartDate: StartDate, Size: Size, IncludeFuel: IncludeFuel, 
                 Mobile: Mobile, For: For, DestinationLatitude: DestinationLatitude, DestinationLongitude: DestinationLongitude, 
-                TotalVolume: TotalVolume, Keywords: Keywords, RegionId: CurrentRegion.Id, HideUnavailable: HideUnavailable);
+                TotalVolume: TotalVolume, Keywords: Keywords, RegionId: CurrentRegion.Id, HideUnavailable: HideUnavailable,
+                DistanceToWaterSource: DistanceToWaterSource, DepthOfWaterSource: DepthOfWaterSource, LabourServices: LabourServices,
+                LandRegion: LandRegion);
 
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);

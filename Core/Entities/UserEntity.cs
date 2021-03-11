@@ -770,7 +770,7 @@ namespace Agrishare.Core.Entities
             return encryptedPassowrd == Password;
         }
 
-        public bool SendVerificationCode()
+        public bool SendVerificationCode(bool TryEmail = false)
         {
             if (VerificationCode.IsEmpty() || VerificationCodeExpiry < DateTime.UtcNow)
             {
@@ -778,8 +778,28 @@ namespace Agrishare.Core.Entities
                 VerificationCodeExpiry = DateTime.UtcNow.AddDays(1);
                 Save();
             }
-            var message = string.Format(Translations.Translate(TranslationKey.VerificationCode, LanguageId), VerificationCode);
-            return SMS.SendMessage(Telephone, message);
+
+            if (TryEmail && !string.IsNullOrEmpty(EmailAddress))
+            {
+                var template = Template.Find(Title: "Verification Code");
+                template.Replace("Code", VerificationCode);
+                template.Replace("Expiry Date", VerificationCodeExpiry.Value.ToString("h:mmtt d MMMM yyyy"));
+
+                new Email
+                {
+                    Message = template.EmailHtml(),
+                    RecipientEmail = EmailAddress,
+                    SenderEmail = Config.ApplicationEmailAddress,
+                    Subject = "Verification Code"
+                }.Send();
+
+                return true;
+            }
+            else
+            {
+                var message = string.Format(Translations.Translate(TranslationKey.VerificationCode, LanguageId), VerificationCode);
+                return SMS.SendMessage(Telephone, message);
+            }
         }
 
         #endregion

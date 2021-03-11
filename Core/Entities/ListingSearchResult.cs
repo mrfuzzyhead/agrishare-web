@@ -41,7 +41,7 @@ namespace Agrishare.Core.Entities
         public static int Count(int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, int Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
-            bool HideUnavailable = false)
+            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -70,6 +70,8 @@ namespace Agrishare.Core.Entities
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
                 else if (CategoryId == Category.BusId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + {pickupToDropoff})";
+                else if (CategoryId == Category.LandId)
+                    transportDistance = $"(-1)";
                 else if (Mobile)
                     transportDistance = $"{distance} * 2";
 
@@ -147,6 +149,15 @@ namespace Agrishare.Core.Entities
                 //if (Mobile)
                 //    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
 
+                if (DistanceToWaterSource > 0)
+                    sql.AppendLine($"AND {DistanceToWaterSource} <= Services.MaximumDistanceToWaterSource");
+
+                if (DepthOfWaterSource > 0)
+                    sql.AppendLine($"AND {DepthOfWaterSource} <= Services.MaximumDepthOfWaterSource");
+
+                if (CategoryId == Category.LandId)
+                    sql.AppendLine($"AND {TotalVolume} <= Services.AvailableAcres AND {TotalVolume} >= Services.MinimumAcres");
+
                 if (For == BookingFor.Group)
                     sql.AppendLine($"AND Listings.GroupServices = 1");
 
@@ -154,6 +165,12 @@ namespace Agrishare.Core.Entities
                     sql.AppendLine($"AND Listings.AvailableWithFuel = 1");
                 else
                     sql.AppendLine($"AND Listings.AvailableWithoutFuel = 1");
+
+                if (LabourServices > 0)
+                    sql.AppendLine($"AND (Services.LabourServices & {LabourServices}) = {LabourServices}");
+
+                if (LandRegion > 0)
+                    sql.AppendLine($"AND Services.LandRegion = {LandRegion}");
 
                 if (ListingId > 0)
                     sql.AppendLine($"AND Listings.Id = {ListingId}");
@@ -168,7 +185,7 @@ namespace Agrishare.Core.Entities
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
-            bool HideUnavailable = false)
+            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
         {
             var sort = ListingSearchResultSort.Distance;
             try { sort = (ListingSearchResultSort)Enum.Parse(typeof(ListingSearchResultSort), Sort); }
@@ -190,6 +207,8 @@ namespace Agrishare.Core.Entities
 
                 // distances
                 var distance = SQL.Distance(Latitude, Longitude, "Listings");
+                if (CategoryId == Category.LandId)
+                    distance = $"(-1)";
                 var depotToPickup = SQL.Distance(Latitude, Longitude, "Listings");
                 var pickupToDropoff = SQL.Distance(Latitude, Longitude, DestinationLatitude, DestinationLongitude);
                 var dropoffToDepot = SQL.Distance(DestinationLatitude, DestinationLongitude, "Listings");
@@ -202,6 +221,8 @@ namespace Agrishare.Core.Entities
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
                 else if (CategoryId == Category.BusId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + {pickupToDropoff})";
+                else if (CategoryId == Category.LandId)
+                    transportDistance = $"(-1)";
                 else if (Mobile)
                     transportDistance = $"{distance} * 2";
 
@@ -210,18 +231,16 @@ namespace Agrishare.Core.Entities
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                 {
                     sizeField = $"({trips})";
-                    sql.AppendLine($"{sizeField} AS Size,");
                 }
                 else if (CategoryId == Category.BusId)
                 {
                     sizeField = $"1";
-                    sql.AppendLine($"{sizeField} AS Size,");
                 }
                 else
                 {
                     sizeField = $"({Size})";
-                    sql.AppendLine($"{sizeField} AS Size,");
                 }
+                sql.AppendLine($"{sizeField} AS Size,");
 
                 // time
                 var days = $"CEIL((Services.TimePerQuantityUnit * {sizeField}) / 8)";
@@ -234,6 +253,10 @@ namespace Agrishare.Core.Entities
                 {
                     var totalDistance = $"(({depotToPickup} + {dropoffToDepot} + {pickupToDropoff}) / 100)";
                     days = $"CEIL((Services.TimePerQuantityUnit * {totalDistance}) / 8)";
+                }
+                else if (CategoryId == Category.IrrigationId || CategoryId == Category.LabourId)
+                {                    
+                    days = $"({sizeField})";
                 }
                 else if (CategoryId == Category.ProcessingId)
                 {
@@ -278,6 +301,22 @@ namespace Agrishare.Core.Entities
                 //sql.AppendLine($"AND {Size} >= MinimumQuantity");
                 //if (Mobile)
                 //    sql.AppendLine($"AND {distance} <= Services.MaximumDistance");
+
+                if (DistanceToWaterSource > 0)
+                    sql.AppendLine($"AND {DistanceToWaterSource} <= Services.MaximumDistanceToWaterSource");
+
+                if (DepthOfWaterSource > 0)
+                    sql.AppendLine($"AND {DepthOfWaterSource} <= Services.MaximumDepthOfWaterSource");
+
+                if (CategoryId == Category.LandId)
+                    sql.AppendLine($"AND {TotalVolume} <= Services.AvailableAcres AND {TotalVolume} >= Services.MinimumAcres");
+
+                if (LabourServices > 0)
+                    sql.AppendLine($"AND (Services.LabourServices & {LabourServices}) = {LabourServices}");
+
+                if (LandRegion > 0)
+                    sql.AppendLine($"AND Services.LandRegion = {LandRegion}");
+
 
                 if (For == BookingFor.Group)
                     sql.AppendLine($"AND Listings.GroupServices = 1");

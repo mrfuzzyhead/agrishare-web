@@ -184,17 +184,17 @@ namespace Agrishare.Core.Entities
             if (Booking.Products.Count > 0)
             {
                 var productsHtml = new StringBuilder();
-                var productRowTemplate = template.GetSectionTemplate("Product");
+                var productRowTemplate = template.GetSectionTemplate("Product Row");
                 foreach(var product in Booking.Products)
                 {
                     var html = productRowTemplate;
                     html = Template.Replace(html, "Product Title", product.Title);
                     productsHtml.AppendLine(html);
                 }
-                template.ReplaceSectionTemplate("Product", productsHtml.ToString());
+                template.ReplaceSectionTemplate("Product Row", productsHtml.ToString());
             }
             else
-                template.ReplaceSectionTemplate("Product", string.Empty);
+                template.ReplaceSectionTemplate("Product Row", string.Empty);
 
             template.Replace("Message", Message);
             template.Replace("Start Date", Booking.StartDate.ToString("d MMMM yyyy"));

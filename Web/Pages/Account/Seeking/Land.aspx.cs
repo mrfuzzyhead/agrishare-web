@@ -31,7 +31,8 @@ namespace Agrishare.Web.Pages.Account.Seeking
         public void FindListings(object s, EventArgs e)
         {
             var url = $"/account/seeking/results?cid={Core.Entities.Category.LandId}&" +
-                $"sid={Core.Entities.Category.LandId}&" +                
+                $"sid={Core.Entities.Category.LandId}&" +
+                $"std={DateTime.Now.ToString("yyyy-MM-dd")}&" +
                 $"reg={LandRegion.SelectedValue}&" +
                 $"vol={Acres.Text}&" +
                 $"qty={Years.Text}&" +
