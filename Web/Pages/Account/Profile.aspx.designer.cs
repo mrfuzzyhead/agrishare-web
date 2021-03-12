@@ -40,6 +40,24 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.Literal DisplayName;
         
         /// <summary>
+        /// SupplierRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SupplierRow;
+        
+        /// <summary>
+        /// DisplaySupplier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DisplaySupplier;
+        
+        /// <summary>
         /// DisplayCountry control.
         /// </summary>
         /// <remarks>

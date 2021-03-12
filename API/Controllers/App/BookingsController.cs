@@ -528,7 +528,7 @@ namespace Agrishare.API.Controllers.App
             {                
                 var supplierProductList = productList.Where(e => e.SupplierId == supplier.Id).ToList();
                 var dayCount = (int)Math.Ceiling((Model.EndDate - Model.StartDate).TotalDays) + 1;
-                var hireCost = supplierProductList.Sum(e => e.DayRate) * dayCount;
+                var hireCost = supplierProductList.Sum(e => e.DayRate) * dayCount * (1 + Core.Entities.Transaction.AgriShareCommission);
                 var transportDistance = (int)Math.Ceiling(Location.GetDistance(supplier.Longitude, supplier.Latitude, Model.Longitude, Model.Latitude) / 1000);
                 var transportCost = transportDistance * 2 * supplier.TransportCostPerKm * dayCount;                
 

@@ -99,6 +99,7 @@ namespace Agrishare.Core.Entities
 
             var photo = Photo;
             if (photo != null) PhotoPath = photo.Name + photo.Extension;
+            else PhotoPath = string.Empty;
             Photo = null;
 
             if (Id == 0)

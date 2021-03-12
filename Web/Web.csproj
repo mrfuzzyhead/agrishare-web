@@ -95,6 +95,7 @@
     <Content Include="Pages\About\Contact.aspx" />
     <Content Include="Pages\About\Rules.aspx" />
     <Content Include="Pages\Account\Commission\Report.aspx" />
+    <Content Include="Pages\Account\Listing\Product.aspx" />
     <Content Include="Pages\Account\Listing\Bus.aspx" />
     <Content Include="Pages\Account\Listing\Land.aspx" />
     <Content Include="Pages\Account\Listing\Irrigation.aspx" />
@@ -103,6 +104,7 @@
     <Content Include="Pages\Account\Seeking\Land.aspx" />
     <Content Include="Pages\Account\Seeking\Irrigation.aspx" />
     <Content Include="Pages\Account\Seeking\Labour.aspx" />
+    <Content Include="Pages\Account\Seeking\Products.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
     <Content Include="Pages\About\Privacy.aspx" />
@@ -184,6 +186,13 @@
     <Compile Include="Pages\Account\Commission\Report.aspx.designer.cs">
       <DependentUpon>Report.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Account\Listing\Product.aspx.cs">
+      <DependentUpon>Product.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Listing\Product.aspx.designer.cs">
+      <DependentUpon>Product.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Account\Listing\Bus.aspx.cs">
       <DependentUpon>Bus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -239,6 +248,13 @@
     </Compile>
     <Compile Include="Pages\Account\Seeking\Labour.aspx.designer.cs">
       <DependentUpon>Labour.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Products.aspx.cs">
+      <DependentUpon>Products.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\Seeking\Products.aspx.designer.cs">
+      <DependentUpon>Products.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
@@ -404,6 +420,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\Styles\blogs.scss" />
     <Content Include="Resources\Styles\cookies.scss" />
+    <Content Include="Resources\Styles\products.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

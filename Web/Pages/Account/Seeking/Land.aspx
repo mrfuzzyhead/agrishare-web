@@ -33,6 +33,13 @@
                 <asp:RegularExpressionValidator runat="server" ControlToValidate="Years" Text="Please enter a valid number" ValidationGroup="Step3" ValidationExpression="^[\d]$" Display="Dynamic" />
             </div>
 
+            <div id="StepDate" ng-show="search.step===4">
+                <p>When do you need to start using the land?</p>
+                <web:Date runat="server" ID="StartDate" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="StartDate" Text="This is a required field" Display="Dynamic" ValidationGroup="Step4"/>
+                <asp:RegularExpressionValidator runat="server" ControlToValidate="StartDate" Text="Please enter a valid date in the format dd/MM/yyyy" ValidationExpression="^[\d]{2}/[\d]{2}/[\d]{4}?$" Display="Dynamic" ValidationGroup="Step4"/>
+            </div>
+
         </div>
 
         <div class="cols">
@@ -40,8 +47,8 @@
                 <a ng-click="search.previous()" class="button" ng-hide="search.step===1">Back</a>
             </div>
             <div style="text-align: right">
-                <a ng-click="search.next()" class="button" ng-hide="search.step===3">Next</a>
-                <asp:Button runat="server" OnClick="FindListings" Text="Search" ID="SearchButton" CssClass="button" ng-show="search.step===3" />
+                <a ng-click="search.next()" class="button" ng-hide="search.step===4">Next</a>
+                <asp:Button runat="server" OnClick="FindListings" Text="Search" ID="SearchButton" CssClass="button" ng-show="search.step===4" />
             </div>
         </div>
 

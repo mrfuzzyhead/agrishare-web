@@ -32,7 +32,7 @@ namespace Agrishare.Web.Pages.Account.Seeking
         {
             var url = $"/account/seeking/results?cid={Core.Entities.Category.LandId}&" +
                 $"sid={Core.Entities.Category.LandId}&" +
-                $"std={DateTime.Now.ToString("yyyy-MM-dd")}&" +
+                $"std={StartDate.Text.ToString()}&" +
                 $"reg={LandRegion.SelectedValue}&" +
                 $"vol={Acres.Text}&" +
                 $"qty={Years.Text}&" +

@@ -41,10 +41,12 @@ namespace Agrishare.Web.Pages.Account
             {
                 var booking = (Core.Entities.Booking)e.Item.DataItem;
                 ((HyperLink)e.Item.FindControl("Link")).NavigateUrl = $"/account/booking/details?id={booking.Id}";
-                if ((booking.Listing.Photos?.Count ?? 0) > 0)
+                if ((booking.Listing?.Photos?.Count ?? 0) > 0)
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Listing.Photos.FirstOrDefault().ThumbName}");
+                else if (!string.IsNullOrEmpty(booking.Supplier?.Logo.Filename))
+                    ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Supplier.Logo.ThumbName}");
                 ((Literal)e.Item.FindControl("Date")).Text = booking.StartDate.ToString("d MMMM yyyy");
-                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing.Title);
+                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing?.Title ?? booking.Supplier?.Title ?? "Booking");
                 ((Literal)e.Item.FindControl("Price")).Text = "$" + booking.Price.ToString("N2");
             }
         }

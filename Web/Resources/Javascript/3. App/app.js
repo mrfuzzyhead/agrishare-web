@@ -23,6 +23,10 @@ var agrishareApp = angular
             }
             return null;
         };
+
+        $scope.productSearch = function (keywords) {
+            location.href = '/account/seeking/products?q=' + encodeURIComponent(keywords);
+        };
     })
 
     .controller('SearchController', function ($scope, $timeout) {
@@ -150,7 +154,7 @@ var agrishareApp = angular
 
                 calendar.month = calendar.months[startDate.getMonth()];
 
-                var url = $scope.apiUrl + '/listings/availability?ListingId=' + calendar.listingId + '&StartDate=' + calendar.formatDate(startDate) + '&EndDate=' + calendar.formatDate(endDate) + '&Days=' + calendar.days;
+                var url = $scope.apiUrl + '/availability/check?ListingId=' + calendar.listingId + '&StartDate=' + calendar.formatDate(startDate) + '&EndDate=' + calendar.formatDate(endDate) + '&Days=' + calendar.days + '&Volume=' + calendar.volume;
                 $http({
                     url: url,
                     headers: { "Authorization": $scope.authToken() }

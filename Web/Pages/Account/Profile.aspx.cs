@@ -16,11 +16,13 @@ namespace Agrishare.Web.Pages.Account
             Master.Body.Attributes["class"] += " account ";
 
             DisplayName.Text = HttpUtility.HtmlEncode(Master.CurrentUser.FirstName + " " + Master.CurrentUser.LastName);
-            DisplayCountry.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Region.Title);
+            DisplayCountry.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Region?.Title ?? "-");
             DisplayGender.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Gender);
             DisplayDateOfBirth.Text = Master.CurrentUser.DateOfBirth.HasValue ? Master.CurrentUser.DateOfBirth.Value.ToString("d MMMM yyyy") : "-";
             DisplayTelephone.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Telephone);
             DisplayEmailAddress.Text = HttpUtility.HtmlEncode(Master.CurrentUser.EmailAddress);
+            SupplierRow.Visible = Master.CurrentUser.Supplier != null;
+            DisplaySupplier.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Supplier?.Title ?? "-");
 
             if (!Page.IsPostBack)
             {

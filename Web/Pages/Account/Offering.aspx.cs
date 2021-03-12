@@ -29,6 +29,8 @@ namespace Agrishare.Web.Pages.Account.Offering
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
             MonthSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(UserId: Master.CurrentUser.Id, SupplierId: Master.CurrentUser.SupplierId ?? 0, StartDate: startDate).ToString("N2");
             AllTimeSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(Master.CurrentUser.Id).ToString("N2");
+
+            EquipmentCell.Visible = Master.CurrentUser.Supplier != null;
         }
 
         public void BindNotification(object s, RepeaterItemEventArgs e)

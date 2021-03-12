@@ -1,5 +1,6 @@
 ﻿using Agrishare.API.Models;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -224,34 +225,64 @@ namespace Agrishare.API.Controllers.App
 
         [Route("listings/availability")]
         [AcceptVerbs("GET")]
-        public object Availability(int ListingId, DateTime StartDate, DateTime EndDate, int Days = 1)
+        public object Availability(int ListingId, DateTime StartDate, DateTime EndDate, int Days = 1, int Volume = 0)
         {
-            var listing = Entities.Listing.Find(Id: ListingId);
+            var listing = Listing.Find(Id: ListingId);
             if (listing == null || listing.Id == 0)
                 return Error("Listing not found");
 
-            var bookings = Entities.Booking.List(ListingId: ListingId, StartDate: StartDate, EndDate: EndDate);
+            var bookings = Booking.List(ListingId: ListingId, StartDate: StartDate, EndDate: StartDate.AddDays(Days));
 
             var list = new List<object>();
 
-            var date = StartDate;
-            while (date <= EndDate)
+            if (listing.CategoryId == Category.LandId)
             {
-                var start = date.StartOfDay();
-                var end = date.AddDays(Days - 1).EndOfDay();
+                if (listing.CategoryId == Category.LandId)
+                    EndDate = StartDate.AddMonths(12);
 
-                var available = bookings.Where(o => 
-                    (o.StatusId == Entities.BookingStatus.Approved || o.StatusId == Entities.BookingStatus.InProgress || o.StatusId == Entities.BookingStatus.Pending || o.StatusId == Entities.BookingStatus.Incomplete) && 
-                    o.StartDate <= end && 
-                    o.EndDate >= start).Count() == 0;
-
-                list.Add(new
+                var date = StartDate;
+                while (date <= EndDate)
                 {
-                    Date = date,
-                    Available = available
-                });
+                    var start = date.StartOfDay();
+                    var end = date.AddDays(Days - 1).EndOfDay();
 
-                date = date.AddDays(1);
+                    var bookedVolume = bookings.Where(o =>
+                        (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.InProgress || o.StatusId == BookingStatus.Pending || o.StatusId == BookingStatus.Incomplete) &&
+                        o.StartDate <= end &&
+                        o.EndDate >= start).Sum(e => e.TotalVolume);
+
+                    var available = bookedVolume + Volume <= listing.Services.First().AvailableAcres;
+
+                    list.Add(new
+                    {
+                        Date = date,
+                        Available = available
+                    });
+
+                    date = date.AddMonths(1);
+                }
+            }
+            else
+            {
+                var date = StartDate;
+                while (date <= EndDate)
+                {
+                    var start = date.StartOfDay();
+                    var end = date.AddDays(Days - 1).EndOfDay();
+
+                    var available = bookings.Where(o =>
+                        (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.InProgress || o.StatusId == BookingStatus.Pending || o.StatusId == BookingStatus.Incomplete) &&
+                        o.StartDate <= end &&
+                        o.EndDate >= start).Count() == 0;
+
+                    list.Add(new
+                    {
+                        Date = date,
+                        Available = available
+                    });
+
+                    date = date.AddDays(1);
+                }
             }
 
             return Success(new

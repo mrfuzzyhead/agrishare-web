@@ -23,6 +23,7 @@
                 </p>
 
                 <ul class="profile-details">
+                    <li runat="server" id="SupplierRow"><small>SUPPLIER:</small> <span><asp:Literal runat="server" ID="DisplaySupplier" /></span></li>
                     <li><small>COUNTRY:</small> <span><asp:Literal runat="server" ID="DisplayCountry" /></span></li>
                     <li><small>EMAIL:</small> <span><asp:Literal runat="server" ID="DisplayEmailAddress" /></span></li>
                     <li><small>TELEPHONE:</small> <span><asp:Literal runat="server" ID="DisplayTelephone" /></span></li>

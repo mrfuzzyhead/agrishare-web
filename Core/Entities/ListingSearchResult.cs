@@ -216,6 +216,7 @@ namespace Agrishare.Core.Entities
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     trips = $"(CEIL({TotalVolume} / Services.TotalVolume))";
 
+                // transport distance
                 var transportDistance = $"0";
                 if (CategoryId == Category.LorriesId || ServiceId == Category.TractorTransportServiceId)
                     transportDistance = $"({depotToPickup} + {dropoffToDepot} + ({pickupToDropoff} * ({trips} - 1)))";
@@ -258,13 +259,24 @@ namespace Agrishare.Core.Entities
                 {                    
                     days = $"({sizeField})";
                 }
+                else if (CategoryId == Category.LandId)
+                {
+                    days = $"({sizeField} * 365)";
+                }
                 else if (CategoryId == Category.ProcessingId)
                 {
                     days = $"CEIL(({sizeField} / Services.TimePerQuantityUnit) / 8)";
                 }
 
                 // availability
-                sql.AppendLine($"IF((SELECT COUNT(Id) FROM Bookings WHERE Bookings.Deleted = 0 AND Bookings.StatusId IN (0, 1, 3, 6) AND Bookings.ListingId = Listings.Id AND Bookings.StartDate <= DATE_ADD(DATE('{SQL.Safe(StartDate)}'), INTERVAL {days} DAY) AND Bookings.EndDate >= DATE('{SQL.Safe(StartDate)}')) = 0, 1, 0) AS Available,");
+                if (CategoryId == Category.LandId)
+                {
+                    sql.AppendLine($"IF(IFNULL((SELECT SUM(TotalVolume) FROM Bookings WHERE Bookings.Deleted = 0 AND Bookings.StatusId IN (0, 1, 3, 6) AND Bookings.ListingId = Listings.Id AND Bookings.StartDate <= DATE_ADD(DATE('{SQL.Safe(StartDate)}'), INTERVAL {days} DAY) AND Bookings.EndDate >= DATE('{SQL.Safe(StartDate)}')), 0) + {TotalVolume} < Services.AvailableAcres, 1, 0) AS Available,");
+                }
+                else
+                {
+                    sql.AppendLine($"IF((SELECT COUNT(Id) FROM Bookings WHERE Bookings.Deleted = 0 AND Bookings.StatusId IN (0, 1, 3, 6) AND Bookings.ListingId = Listings.Id AND Bookings.StartDate <= DATE_ADD(DATE('{SQL.Safe(StartDate)}'), INTERVAL {days} DAY) AND Bookings.EndDate >= DATE('{SQL.Safe(StartDate)}')) = 0, 1, 0) AS Available,");
+                }
 
                 // costs
                 var hireCost = $"(Services.PricePerQuantityUnit * {Size} * {1 + Transaction.AgriShareCommission})";

@@ -103,7 +103,7 @@ CREATE TABLE `BookingProducts` (
   KEY `ProductId` (`ProductId`),
   CONSTRAINT `bookingproducts_ibfk_1` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`),
   CONSTRAINT `bookingproducts_ibfk_2` FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `BookingTags` */
 
@@ -205,7 +205,7 @@ CREATE TABLE `Bookings` (
   CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`Id`) ON DELETE SET NULL,
   CONSTRAINT `bookings_ibfk_4` FOREIGN KEY (`VoucherId`) REFERENCES `Vouchers` (`Id`) ON DELETE SET NULL,
   CONSTRAINT `bookings_ibfk_5` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5020 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5024 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Categories` */
 
@@ -258,7 +258,7 @@ CREATE TABLE `Counters` (
   CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_4` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
 
@@ -373,7 +373,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1353 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1572 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -395,7 +395,7 @@ CREATE TABLE `Notifications` (
   KEY `BookingId` (`BookingId`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Pages` */
 
@@ -442,7 +442,7 @@ CREATE TABLE `Products` (
   KEY `Deleted` (`Deleted`),
   KEY `Title` (`Title`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Ratings` */
 
@@ -574,7 +574,7 @@ CREATE TABLE `Templates` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `TransactionFees` */
 

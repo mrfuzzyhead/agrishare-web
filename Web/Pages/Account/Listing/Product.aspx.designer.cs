@@ -7,64 +7,55 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Agrishare.Web.Pages.Account.Seeking {
+namespace Agrishare.Web.Pages.Account.Listing {
     
     
-    public partial class Land {
+    public partial class Product {
         
         /// <summary>
-        /// For control.
+        /// EquipmentTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList For;
+        protected global::System.Web.UI.WebControls.TextBox EquipmentTitle;
         
         /// <summary>
-        /// LandRegion control.
+        /// EquipmentDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList LandRegion;
+        protected global::System.Web.UI.WebControls.TextBox EquipmentDescription;
         
         /// <summary>
-        /// Acres control.
+        /// Gallery control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Acres;
+        protected global::Agrishare.Web.Controls.PhotoUpload Gallery;
         
         /// <summary>
-        /// Years control.
+        /// CostPerDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Years;
+        protected global::System.Web.UI.WebControls.TextBox CostPerDay;
         
         /// <summary>
-        /// StartDate control.
+        /// Stock control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Agrishare.Web.Controls.Date StartDate;
-        
-        /// <summary>
-        /// SearchButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchButton;
+        protected global::System.Web.UI.WebControls.TextBox Stock;
         
         /// <summary>
         /// Master property.

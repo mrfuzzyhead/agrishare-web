@@ -11,6 +11,8 @@
 
             <div class="booking" ng-controller="AvailabilityController">
 
+                
+
                 <ul>
                     <li runat="server" id="DatesRow">
                         <strong>Dates</strong>
@@ -51,8 +53,9 @@
                 <div ng-show="calendar.visible" class="availability-calendar">
                     <div>
                         <div>
-
+                            
                             <asp:TextBox runat="server" ID="AvailabilityDays" ng-model="calendar.days" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="AvailabilityVolume" ng-model="calendar.days" CssClass="hidden" />
                             <asp:TextBox runat="server" ID="ListingId" ng-model="calendar.listingId" CssClass="hidden" />
                             <asp:TextBox runat="server" ID="StartDate" ng-model="calendar.startDate" CssClass="hidden" />
 
@@ -265,6 +268,25 @@
 
         </div>
         <div>
+            
+            <web:PagedRepeater runat="server" ID="ProductList" OnItemDataBound="BindProduct" Visible="false">
+                <HeaderTemplate>
+                    
+                    <div class="listings-list">
+                </HeaderTemplate>
+                <ItemTemplate>
+                        <asp:HyperLink runat="server" ID="Link">
+                            <span runat="server" ID="Photo" />
+                            <span>
+                                <strong><asp:Literal runat="server" ID="Title" /></strong>
+                                <small><asp:Literal runat="server" ID="Description" /></small>
+                            </span>
+                        </asp:HyperLink>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </div>
+                </FooterTemplate>
+            </web:PagedRepeater>
 
             <asp:Repeater runat="server" ID="Gallery" OnItemDataBound="BindPhoto">
                 <HeaderTemplate>

@@ -126,19 +126,34 @@ namespace Agrishare.Web.Pages.Account.Booking
 
         private void ShowDetails(bool Available = true)
         {
-            BookingTitle.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Title);
+            BookingTitle.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing?.Title ?? SelectedBooking.Supplier?.Title ?? "Booking");
 
-            Reviews.CssClass = $"stars-{(int)SelectedBooking.Listing.AverageRating}";
-            Reviews.Text = SelectedBooking.Listing.RatingCount == 0 ? "No reviews" : SelectedBooking.Listing.RatingCount == 1 ? "One review" : $"{SelectedBooking.Listing.RatingCount} reviews";
-            Reviews.NavigateUrl = $"/account/listing/reviews?lid={SelectedBooking.ListingId}";
+            if (SelectedBooking.Listing != null)
+            {
+                Reviews.CssClass = $"stars-{(int)SelectedBooking.Listing.AverageRating}";
+                Reviews.Text = SelectedBooking.Listing.RatingCount == 0 ? "No reviews" : SelectedBooking.Listing.RatingCount == 1 ? "One review" : $"{SelectedBooking.Listing.RatingCount} reviews";
+                Reviews.NavigateUrl = $"/account/listing/reviews?lid={SelectedBooking.ListingId}";
 
-            Gallery.DataSource = SelectedBooking.Listing.Photos;
-            Gallery.DataBind();
+                Gallery.DataSource = SelectedBooking.Listing.Photos;
+                Gallery.DataBind();
 
-            Description.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Description);
-            Brand.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Brand);
-            HorsePower.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.HorsePower);
-            Year.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Year);
+                Description.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Description);
+                Brand.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Brand);
+                HorsePower.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.HorsePower);
+                Year.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Year);
+
+                CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
+            }           
+            else
+            {
+                CommissionRow.Visible = SelectedBooking.Supplier.Id == Master.CurrentUser.Supplier?.Id;
+                FuelCostRow.Visible = false;
+
+                ProductList.Visible = true;
+                ProductList.RecordCount = SelectedBooking.Products.Count;
+                ProductList.DataSource = SelectedBooking.Products;
+                ProductList.DataBind();
+            }
 
             if (SelectedBooking.StartDate.Date == SelectedBooking.EndDate.Date)
                 Dates.Text = SelectedBooking.StartDate.ToString("d MMMM yyyy");
@@ -148,9 +163,17 @@ namespace Agrishare.Web.Pages.Account.Booking
                 Dates.Text = SelectedBooking.StartDate.ToString("d MMMM yyyy") + " - " + SelectedBooking.EndDate.ToString("d MMMM yyyy");
 
             var days = (SelectedBooking.EndDate - SelectedBooking.StartDate).TotalDays + 1;
-            Days.Text = days == 1 ? "1 day" : $"{days} days";
+            if (days >= 365)
+            {
+                var years = (int)Math.Round(days / 365);
+                Days.Text = years == 1 ? "1 year" : $"{years} years";
+            }
+            else
+            {
+                Days.Text = days == 1 ? "1 day" : $"{days} days";
+            }
 
-            AvailabilityDays.Attributes.Add("ng-init", $"calendar.days={days}");
+            AvailabilityDays.Attributes.Add("ng-init", $"calendar.days={days};calendar.volume={SelectedBooking.TotalVolume};");
             ListingId.Attributes.Add("ng-init", $"calendar.listingId={SelectedBooking.ListingId}");
             StartDate.Attributes.Add("ng-init", $"calendar.startDate=calendar.date('{SelectedBooking.StartDate.ToString("yyy-MM-dd")}')");
             Availability.Visible = SelectedBooking.Id == 0; // !Available;
@@ -158,27 +181,33 @@ namespace Agrishare.Web.Pages.Account.Booking
 
             TransportDistance.Text = SelectedBooking.TransportDistance.ToString("N2") + " km";
             TransportCost.Text = "$" + SelectedBooking.TransportCost.ToString("N2");
-            HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
             HireCost.Text = "$" + SelectedBooking.HireCost.ToString("N2");
-            if (SelectedBooking.Listing.CategoryId == Category.LorriesId)
-                FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
+
+            if (SelectedBooking.Listing != null)
+            {
+                HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
+                if (SelectedBooking.Listing.CategoryId == Category.LorriesId)
+                    FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
+                else
+                    FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
+                FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
+
+                HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;
+                FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId && SelectedBooking.Listing.CategoryId != Category.IrrigationId && SelectedBooking.Listing.CategoryId != Category.LabourId && SelectedBooking.Listing.CategoryId != Category.LandId;
+            }
             else
-                FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
-            FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
+            {
+                HireSize.Text = SelectedBooking.Products.Count == 1 ? "1 product" : $"{SelectedBooking.Products.Count} products";
+            }
 
-            HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;
-            FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId && SelectedBooking.Listing.CategoryId != Category.IrrigationId && SelectedBooking.Listing.CategoryId != Category.LabourId && SelectedBooking.Listing.CategoryId != Category.LandId;
-
-            CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
             Commission.Text = "$" + SelectedBooking.AgriShareCommission.ToString("N2");
 
             Total.Text = "$" + SelectedBooking.Price.ToString("N2");
 
             /** Land **/
 
-            if (SelectedBooking.Listing.CategoryId == Category.LandId)
+            if (SelectedBooking.Listing?.CategoryId == Category.LandId)
             {
-                DatesRow.Visible = false;
                 TransportCostRow.Visible = false;
                 FuelCostRow.Visible = false;
             }
@@ -186,7 +215,9 @@ namespace Agrishare.Web.Pages.Account.Booking
             /******************************/
 
             var isSeeker = SelectedBooking.UserId == Master.CurrentUser.Id;
-            var isOfferer = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
+
+            var isOfferer =
+                SelectedBooking.Listing != null ? SelectedBooking.Listing.UserId == Master.CurrentUser.Id : SelectedBooking.Supplier.Id == Master.CurrentUser.Supplier?.Id;
             
             RequestPanel.Visible = isSeeker && SelectedBooking.Id == 0 && Available;
             AwaitingConfirmPanel.Visible = isSeeker && SelectedBooking.StatusId == Core.Entities.BookingStatus.Pending;
@@ -265,6 +296,19 @@ namespace Agrishare.Web.Pages.Account.Booking
                     ReviewComments.Text = HttpUtility.HtmlEncode(rating.Comments);
                     ReviewDate.Text = rating.DateCreated.ToString("d MMMM yyyy");
                 }
+            }
+        }
+
+        public void BindProduct(object s, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                var listing = (Core.Entities.Product)e.Item.DataItem;
+                ((HyperLink)e.Item.FindControl("Link")).NavigateUrl = $"/account/seeking/products?id={listing.Id}";
+                if (!string.IsNullOrEmpty(listing.Photo?.Filename))
+                    ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{listing.Photo.ThumbName})");
+                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(listing.Title);
+                ((Literal)e.Item.FindControl("Description")).Text = $"{Master.CurrentUser.Region.Currency} {listing.DayRate.ToString("N2")}/day";
             }
         }
 

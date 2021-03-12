@@ -31,6 +31,27 @@ namespace Agrishare.Web.Pages
         }
         private User currentUser;
 
+        public List<Product> Cart
+        {
+            get
+            {
+                if (cart == null && Session["Cart"] != null)
+                    cart = (List<Product>)Session["Cart"];
+                if (cart == null)
+                {
+                    cart = new List<Product>();
+                    Session.Add("Cart", cart);
+                }
+                return cart;
+            }
+            set
+            {
+                cart = value;
+                Session.Add("Cart", cart);
+            }
+        }
+        private List<Product> cart;
+
         public string Feedback
         {
             get

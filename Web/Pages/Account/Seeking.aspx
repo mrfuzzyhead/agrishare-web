@@ -36,12 +36,6 @@
 
     <ul class="search">
         <li>
-            <a href="/account/seeking/other">
-                <img src="/Resources/Images/Equipment.svg" />
-                <span>Equipment</span>
-            </a>
-        </li>
-        <li>
             <a href="/account/seeking/irrigation">
                 <img src="/Resources/Images/Irrigation.svg" class="tall" />
                 <span>Irrigation</span>
@@ -57,6 +51,12 @@
             <a href="/account/seeking/land">
                 <img src="/Resources/Images/Land.svg" class="tall" />
                 <span>Land</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/seeking/products">
+                <img src="/Resources/Images/Equipment.svg" />
+                <span>Equipment</span>
             </a>
         </li>
     </ul>

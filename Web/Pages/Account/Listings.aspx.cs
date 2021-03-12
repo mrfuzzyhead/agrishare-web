@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace Agrishare.Web.Pages.Account
 {
-    public partial class Listings : System.Web.UI.Page
+    public partial class Listings : Page
     {
         Core.Entities.Category Category;
 
@@ -16,8 +16,10 @@ namespace Agrishare.Web.Pages.Account
         {
             get
             {
-                switch (Category.Id)
+                switch (Category?.Id ?? 0)
                 {
+                    case 0:
+                        return "product";
                     case Core.Entities.Category.LorriesId:
                         return "lorry";
                     case Core.Entities.Category.TractorsId:
@@ -43,11 +45,15 @@ namespace Agrishare.Web.Pages.Account
             Master.SelectedUrl = "/account/offering";
             Master.Body.Attributes["class"] += " account ";
 
-            try { Category = Core.Entities.Category.Find(Id: int.Parse(Request.QueryString["cid"])); }
-            catch { Category = Core.Entities.Category.Find(Id: Core.Entities.Category.LorriesId); }
+            EquipmentMenuItem.Visible = Master.CurrentUser.Supplier != null;
 
-            switch (Category.Id)
+            try { Category = Core.Entities.Category.Find(Id: int.Parse(Request.QueryString["cid"])); }
+            catch { Category = null; }
+
+            switch (Category?.Id ?? 0)
             {
+                case 0:
+                    ListTitle.Text = "Equipment"; break;
                 case Core.Entities.Category.LorriesId:
                     ListTitle.Text = "Lorries"; break;
                 case Core.Entities.Category.TractorsId:
@@ -64,9 +70,20 @@ namespace Agrishare.Web.Pages.Account
                     ListTitle.Text = "Land"; break;
             }
 
-            List.RecordCount = Core.Entities.Listing.Count(UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
-            List.DataSource = Core.Entities.Listing.List(PageIndex: List.CurrentPageIndex, PageSize: List.PageSize, UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
-            List.DataBind();
+            if ((Category?.Id ?? 0) == 0)
+            {
+                ProductList.Visible = true;
+                ProductList.RecordCount = Core.Entities.Product.Count(SupplierId: Master.CurrentUser.Supplier.Id);
+                ProductList.DataSource = Core.Entities.Product.List(PageIndex: ProductList.CurrentPageIndex, PageSize: ProductList.PageSize, SupplierId: Master.CurrentUser.Supplier.Id);
+                ProductList.DataBind();                
+            }
+            else if (Master.CurrentUser.Supplier != null)
+            {
+                ListingsList.Visible = true;
+                ListingsList.RecordCount = Core.Entities.Listing.Count(UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
+                ListingsList.DataSource = Core.Entities.Listing.List(PageIndex: ListingsList.CurrentPageIndex, PageSize: ListingsList.PageSize, UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
+                ListingsList.DataBind();
+            }
 
             AddButton.Text = $"Add {Type}";
             AddButton.NavigateUrl = $"/account/listing/{Type}";
@@ -82,6 +99,19 @@ namespace Agrishare.Web.Pages.Account
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{listing.Photos.FirstOrDefault().ThumbName})");
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(listing.Title);
                 ((Literal)e.Item.FindControl("Description")).Text = HttpUtility.HtmlEncode(listing.Description);
+            }
+        }
+
+        public void BindProduct(object s, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                var listing = (Core.Entities.Product)e.Item.DataItem;
+                ((HyperLink)e.Item.FindControl("Link")).NavigateUrl = $"/account/listing/{Type}?id={listing.Id}";
+                if (!string.IsNullOrEmpty(listing.Photo?.Filename))
+                    ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{listing.Photo.ThumbName})");
+                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(listing.Title);
+                ((Literal)e.Item.FindControl("Description")).Text = $"{Master.CurrentUser.Region.Currency} {listing.DayRate.ToString("N2")}/day";
             }
         }
     }

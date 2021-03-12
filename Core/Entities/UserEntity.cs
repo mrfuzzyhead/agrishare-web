@@ -115,6 +115,7 @@ namespace Agrishare.Core.Entities
                 var query = ctx.Users
                     .Include(o => o.Region)
                     .Include(o => o.Agent)
+                    .Include(o => o.Supplier)
                     .Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
@@ -730,6 +731,7 @@ namespace Agrishare.Core.Entities
                 AgentTypeId,
                 AgentType,
                 Region = Region?.Json(),
+                Supplier = Supplier?.TitleJson(),
                 BankAccount,
                 PaymentMethods
             };

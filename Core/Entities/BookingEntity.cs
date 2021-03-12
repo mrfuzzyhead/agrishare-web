@@ -19,7 +19,7 @@ namespace Agrishare.Core.Entities
         public string For => $"{ForId}".ExplodeCamelCase();
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public string PaymentStatus => $"{PaymentStatusId}".ExplodeCamelCase();
-        public decimal AgriShareCommission => Math.Round(Price - (Price / (1 + Commission)));
+        public decimal AgriShareCommission => Math.Round(HireCost - (HireCost / (1 + Commission)));
 
         private List<Tag> _tags;
         public List<Tag> Tags

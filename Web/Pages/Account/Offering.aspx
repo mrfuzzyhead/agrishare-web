@@ -35,12 +35,6 @@
     </ul>
     <ul class="search">
         <li>
-            <a href="/account/equipment">
-                <img src="/Resources/Images/Equipment.svg" />
-                <span>Equipment</span>
-            </a>
-        </li>
-        <li>
             <a href="/account/listings?cid=60">
                 <img src="/Resources/Images/Irrigation.svg" />
                 <span>Irrigation</span>
@@ -56,6 +50,12 @@
             <a href="/account/listings?cid=70">
                 <img src="/Resources/Images/Land.svg" />
                 <span>Land</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/listings?cid=0" runat="server" id="EquipmentCell">
+                <img src="/Resources/Images/Equipment.svg" />
+                <span>Equipment</span>
             </a>
         </li>
     </ul>
