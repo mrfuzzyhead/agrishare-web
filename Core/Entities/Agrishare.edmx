@@ -2195,6 +2195,7 @@
           <Member Name="English" Value="1" />
           <Member Name="Shona" Value="2" />
           <Member Name="Ndebele" Value="3" />
+          <Member Name="Luganda" Value="4" />
         </EnumType>
         <EntityType Name="Blog">
           <Key>
