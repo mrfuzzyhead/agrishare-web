@@ -51,7 +51,7 @@ namespace Agrishare.API.Controllers.App
             if (!Model.Latitude.HasValue || !Model.Longitude.HasValue)
                 return Error("Location is required");
 
-            var listing = new Entities.Listing
+            var listing = new Listing
             {
                 AvailableWithoutFuel = Model.AvailableWithoutFuel,
                 AvailableWithFuel = Model.AvailableWithFuel,
@@ -71,23 +71,34 @@ namespace Agrishare.API.Controllers.App
                 Region = CurrentUser.Region
             };
 
-            listing.Services = new List<Entities.Service>();
+            listing.Services = new List<Service>();
             foreach (var service in Model.Services)
-                listing.Services.Add(new Entities.Service
+                listing.Services.Add(new Service
                 {
                     DistanceUnitId = service.DistanceUnitId,
                     FuelPrice = service.FuelPrice,
                     FuelPerQuantityUnit = service.FuelPerQuantityUnit,
                     MaximumDistance = service.MaximumDistance,
                     MinimumQuantity = service.MinimumQuantity,
-                    Mobile = service.Mobile || listing.CategoryId == Entities.Category.TractorsId || listing.CategoryId == Entities.Category.LorriesId,
+                    Mobile = service.Mobile || listing.CategoryId == Category.TractorsId || listing.CategoryId == Category.LorriesId || listing.CategoryId == Category.IrrigationId || listing.CategoryId == Category.LabourId,
                     PricePerDistanceUnit = service.Mobile ? service.PricePerDistanceUnit ?? 0 : 0,
                     PricePerQuantityUnit = service.PricePerQuantityUnit,
                     QuantityUnitId = service.QuantityUnitId,
                     CategoryId = service.CategoryId,
                     TimePerQuantityUnit = service.TimePerQuantityUnit,
                     TimeUnitId = service.TimeUnitId,
-                    TotalVolume = service.TotalVolume
+                    TotalVolume = service.TotalVolume,
+                    LabourServices = service.Services,
+                    MaximumDistanceToWaterSource = service.MaximumDistanceToWaterSource,
+                    MaximumDepthOfWaterSource = service.MaximumDepthOfWaterSource,
+                    UnclearedLand = service.UnclearedLand,
+                    ClearedLand = service.ClearedLand,
+                    NearWaterSource = service.NearWaterSource,
+                    FertileSoil = service.FertileSoil,
+                    MaxRentalYears = service.MaxRentalYears,
+                    AvailableAcres = service.AvailableAcres,
+                    MinimumAcres = service.MinimumAcres,
+                    LandRegion = service.LandRegion
                 });
 
             if (listing.Services.Count == 0)
@@ -153,23 +164,35 @@ namespace Agrishare.API.Controllers.App
             listing.Title = Model.Title;
             listing.Year = Model.Year;
 
-            listing.Services = new List<Entities.Service>();
+            listing.Services = new List<Service>();
             foreach (var service in Model.Services)
-                listing.Services.Add(new Entities.Service
+                listing.Services.Add(new Service
                 {
                     Id = service.Id,
                     DistanceUnitId = service.DistanceUnitId,
+                    FuelPrice = service.FuelPrice,
                     FuelPerQuantityUnit = service.FuelPerQuantityUnit,
                     MaximumDistance = service.MaximumDistance,
                     MinimumQuantity = service.MinimumQuantity,
-                    Mobile = service.Mobile,
-                    PricePerDistanceUnit = service.PricePerDistanceUnit ?? 0,
+                    Mobile = service.Mobile || listing.CategoryId == Category.TractorsId || listing.CategoryId == Category.LorriesId || listing.CategoryId == Category.IrrigationId || listing.CategoryId == Category.LabourId,
+                    PricePerDistanceUnit = service.Mobile ? service.PricePerDistanceUnit ?? 0 : 0,
                     PricePerQuantityUnit = service.PricePerQuantityUnit,
                     QuantityUnitId = service.QuantityUnitId,
                     CategoryId = service.CategoryId,
                     TimePerQuantityUnit = service.TimePerQuantityUnit,
                     TimeUnitId = service.TimeUnitId,
-                    TotalVolume = service.TotalVolume
+                    TotalVolume = service.TotalVolume,
+                    LabourServices = service.Services,
+                    MaximumDistanceToWaterSource = service.MaximumDistanceToWaterSource,
+                    MaximumDepthOfWaterSource = service.MaximumDepthOfWaterSource,
+                    UnclearedLand = service.UnclearedLand,
+                    ClearedLand = service.ClearedLand,
+                    NearWaterSource = service.NearWaterSource,
+                    FertileSoil = service.FertileSoil,
+                    MaxRentalYears = service.MaxRentalYears,
+                    AvailableAcres = service.AvailableAcres,
+                    MinimumAcres = service.MinimumAcres,
+                    LandRegion = service.LandRegion
                 });
 
             var photos = new List<string>();

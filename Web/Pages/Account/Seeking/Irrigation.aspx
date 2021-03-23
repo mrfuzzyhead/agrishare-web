@@ -30,8 +30,8 @@
                 <p>&nbsp;</p>
                 <p>How deep is the water source?</p>
                 <asp:TextBox runat="server" ID="WaterSourceDepth" placeholder="Depth (m)" />      
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="WaterSourceDistance" Text="This is a required field" Display="Dynamic"  ValidationGroup="Step3"/>
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="WaterSourceDistance" Text="Please enter a valid number" ValidationGroup="Step3" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="WaterSourceDepth" Text="This is a required field" Display="Dynamic"  ValidationGroup="Step3"/>
+                <asp:RegularExpressionValidator runat="server" ControlToValidate="WaterSourceDepth" Text="Please enter a valid number" ValidationGroup="Step3" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
             </div>
 
             <div id="StepDate" ng-show="search.step===4">

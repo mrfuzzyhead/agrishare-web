@@ -271,6 +271,17 @@
     <EntitySetMapping Name="Services">
       <EntityTypeMapping TypeName="AgrishareModel.Service">
         <MappingFragment StoreEntitySet="Services">
+          <ScalarProperty Name="LabourServices" ColumnName="LabourServices" />
+          <ScalarProperty Name="MinimumAcres" ColumnName="MinimumAcres" />
+          <ScalarProperty Name="AvailableAcres" ColumnName="AvailableAcres" />
+          <ScalarProperty Name="MaxRentalYears" ColumnName="MaxRentalYears" />
+          <ScalarProperty Name="LandRegion" ColumnName="LandRegion" />
+          <ScalarProperty Name="FertileSoil" ColumnName="FertileSoil" />
+          <ScalarProperty Name="NearWaterSource" ColumnName="NearWaterSource" />
+          <ScalarProperty Name="ClearedLand" ColumnName="ClearedLand" />
+          <ScalarProperty Name="UnclearedLand" ColumnName="UnclearedLand" />
+          <ScalarProperty Name="MaximumDepthOfWaterSource" ColumnName="MaximumDepthOfWaterSource" />
+          <ScalarProperty Name="MaximumDistanceToWaterSource" ColumnName="MaximumDistanceToWaterSource" />
           <ScalarProperty Name="FuelPrice" ColumnName="FuelPrice" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />

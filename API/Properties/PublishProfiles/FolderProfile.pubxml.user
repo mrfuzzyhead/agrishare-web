@@ -10,19 +10,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Agrishare.API.dll">
-      <publishTime>02/03/2021 16:13:23</publishTime>
+      <publishTime>03/23/2021 10:07:37</publishTime>
     </File>
     <File Include="bin/Agrishare.API.pdb">
-      <publishTime>02/03/2021 16:13:23</publishTime>
+      <publishTime>03/23/2021 10:07:37</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll">
-      <publishTime>02/03/2021 16:13:23</publishTime>
+      <publishTime>03/23/2021 10:07:36</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll.config">
       <publishTime>11/26/2020 16:24:12</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.pdb">
-      <publishTime>02/03/2021 16:13:23</publishTime>
+      <publishTime>03/23/2021 10:07:36</publishTime>
     </File>
     <File Include="bin/AWSSDK.dll">
       <publishTime>03/16/2019 00:24:03</publishTime>

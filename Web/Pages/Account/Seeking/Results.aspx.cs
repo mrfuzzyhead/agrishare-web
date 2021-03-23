@@ -22,7 +22,16 @@ namespace Agrishare.Web.Pages.Account.Seeking
             var serviceId = Convert.ToInt32(Request.QueryString["sid"]);
             var latitude = Convert.ToDecimal(Request.QueryString["lat"]);
             var longitude = Convert.ToDecimal(Request.QueryString["lng"]);
-            var startDate = Convert.ToDateTime(Request.QueryString["std"]);
+
+            //var startDate = Convert.ToDateTime(Request.QueryString["std"]);
+            DateTime? startDate = null;
+            if (startDate == null)
+                try { startDate = Convert.ToDateTime(Request.QueryString["std"]); } catch { }
+            if (startDate == null)
+                try { startDate = DateTime.ParseExact(Request.QueryString["std"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture); } catch { }
+            if (startDate == null)
+                startDate = DateTime.Today;
+                        
             var size = Convert.ToInt32(Request.QueryString["qty"]);
             var includeFuel = Request.QueryString["fue"] == "1";
             var mobile = true;
@@ -44,13 +53,13 @@ namespace Agrishare.Web.Pages.Account.Seeking
             Core.Entities.Counter.Hit(UserId: Master.CurrentUser.Id, Event: Core.Entities.Counters.Search, CategoryId: categoryId);
 
             SearchResults.RecordCount = Core.Entities.ListingSearchResult.Count(
-                CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate.Value, Size: size,
                 IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude,
                 TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
                 LabourServices: labourServices, LandRegion: landRegion);
 
             SearchResults.DataSource = Core.Entities.ListingSearchResult.List(PageIndex: SearchResults.CurrentPageIndex, PageSize: SearchResults.PageSize, 
-                Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate.Value, Size: size,
                 IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude, 
                 TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
                 LabourServices: labourServices, LandRegion: landRegion);

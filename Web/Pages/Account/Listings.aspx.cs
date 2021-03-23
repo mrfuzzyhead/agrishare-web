@@ -70,19 +70,24 @@ namespace Agrishare.Web.Pages.Account
                     ListTitle.Text = "Land"; break;
             }
 
-            if ((Category?.Id ?? 0) == 0)
+            if ((Category?.Id ?? 0) == 0 && Master.CurrentUser.Supplier != null)
             {
                 ProductList.Visible = true;
                 ProductList.RecordCount = Core.Entities.Product.Count(SupplierId: Master.CurrentUser.Supplier.Id);
                 ProductList.DataSource = Core.Entities.Product.List(PageIndex: ProductList.CurrentPageIndex, PageSize: ProductList.PageSize, SupplierId: Master.CurrentUser.Supplier.Id);
                 ProductList.DataBind();                
             }
-            else if (Master.CurrentUser.Supplier != null)
+            else if ((Category?.Id ?? 0) > 0)
             {
                 ListingsList.Visible = true;
                 ListingsList.RecordCount = Core.Entities.Listing.Count(UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
                 ListingsList.DataSource = Core.Entities.Listing.List(PageIndex: ListingsList.CurrentPageIndex, PageSize: ListingsList.PageSize, UserId: Master.CurrentUser.Id, CategoryId: Category?.Id ?? 0);
                 ListingsList.DataBind();
+            }
+            else
+            {
+                Master.Feedback = "Category not found";
+                Response.Redirect("/account/offering");
             }
 
             AddButton.Text = $"Add {Type}";

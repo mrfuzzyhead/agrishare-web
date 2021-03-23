@@ -359,6 +359,17 @@
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />
+    <Property Name="MaximumDistanceToWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="MaximumDepthOfWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="UnclearedLand" Type="bool" Nullable="false" />
+    <Property Name="ClearedLand" Type="bool" Nullable="false" />
+    <Property Name="NearWaterSource" Type="bool" Nullable="false" />
+    <Property Name="FertileSoil" Type="bool" Nullable="false" />
+    <Property Name="LandRegion" Type="smallint" Nullable="false" />
+    <Property Name="MaxRentalYears" Type="int" Nullable="false" />
+    <Property Name="AvailableAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="MinimumAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="LabourServices" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Suppliers">
     <Key>

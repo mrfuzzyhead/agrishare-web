@@ -646,6 +646,17 @@
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Listing" Relationship="AgrishareModel.services_ibfk_1" FromRole="Service" ToRole="Listing" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Name="MaximumDistanceToWaterSource" Type="Decimal" Nullable="false" />
+    <Property Name="MaximumDepthOfWaterSource" Type="Decimal" Nullable="false" />
+    <Property Name="UnclearedLand" Type="Boolean" Nullable="false" />
+    <Property Name="ClearedLand" Type="Boolean" Nullable="false" />
+    <Property Name="NearWaterSource" Type="Boolean" Nullable="false" />
+    <Property Name="FertileSoil" Type="Boolean" Nullable="false" />
+    <Property Name="LandRegion" Type="AgrishareModel.ServiceLandRegion" Nullable="false" />
+    <Property Name="MaxRentalYears" Type="Int32" Nullable="false" />
+    <Property Name="AvailableAcres" Type="Decimal" Nullable="false" />
+    <Property Name="MinimumAcres" Type="Decimal" Nullable="false" />
+    <Property Name="LabourServices" Type="Int32" Nullable="false" />
   </EntityType>
   <Association Name="bookings_ibfk_3">
     <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
@@ -764,6 +775,8 @@
     <Member Name="None" Value="0" />
     <Member Name="Hectare" Value="1" />
     <Member Name="Bags" Value="2" />
+    <Member Name="Days" Value="3" />
+    <Member Name="Years" Value="4" />
   </EnumType>
   <EnumType Name="TimeUnit" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
@@ -927,6 +940,7 @@
     <Member Name="English" Value="1" />
     <Member Name="Shona" Value="2" />
     <Member Name="Ndebele" Value="3" />
+    <Member Name="Luganda" Value="4" />
   </EnumType>
   <EntityType Name="Blog">
     <Key>
@@ -1464,4 +1478,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EnumType Name="ServiceLandRegion" UnderlyingType="Int16">
+    <Member Name="None" Value="0" />
+    <Member Name="Northern" Value="1" />
+    <Member Name="Central" Value="2" />
+    <Member Name="Eastern" Value="3" />
+    <Member Name="Western" Value="4" />
+  </EnumType>
+  <EnumType Name="LabourService">
+    <Member Name="None" Value="0" />
+    <Member Name="LandClearing" Value="1" />
+    <Member Name="Planting" Value="2" />
+    <Member Name="Weeding" Value="4" />
+    <Member Name="Harvesting" Value="8" />
+    <Member Name="Loading" Value="16" />
+    <Member Name="Other" Value="32" />
+  </EnumType>
 </Schema>

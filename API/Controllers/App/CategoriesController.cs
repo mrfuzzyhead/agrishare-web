@@ -14,7 +14,8 @@ namespace Agrishare.API.Controllers.App
             var list = new List<object>();
 
             var categories = Entities.Category.List();
-            var parents = Entities.Category.ParentListByListingCount();
+            //var parents = Entities.Category.ParentListByListingCount();
+            var parents = categories.Where(e => !e.ParentId.HasValue).ToList();
             var sortOrder = 1;
             foreach(var item in parents)
             {
