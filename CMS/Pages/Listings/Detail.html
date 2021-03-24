@@ -61,18 +61,6 @@
 
                 <h2>Details</h2>
                 <ul class="details">
-                    <!--<li>
-                        <strong>Brand</strong>
-                        <span>{{detail.entity.Brand}}</span>
-                    </li>
-                    <li>
-                        <strong>Horsepower</strong>
-                        <span>{{detail.entity.Horsepower || '-'}}</span>
-                    </li>
-                    <li>
-                        <strong>Year</strong>
-                        <span>{{detail.entity.Year}}</span>
-                    </li>-->
                     <li>
                         <strong>Allow Group Services</strong>
                         <span>{{detail.entity.GroupServices ? 'Yes' : 'No'}}</span>
@@ -94,37 +82,77 @@
                 <h2>{{service.Category.Title}}</h2>
                 <ul class="details">
                     <li ng-if="service.MinimumQuantity">
-                        <strong>Minimum Quantity</strong>
-                        <span>{{service.MinimumQuantity}} {{service.QuantityUnit}}</span>
+                        <strong>Minimum quantity</strong>
+                        <span>{{service.MinimumQuantity | number}} {{service.QuantityUnit}}</span>
                     </li>
                     <li ng-if="service.FuelPerQuantityUnit">
-                        <strong>Fuel / Quantity Unit</strong>
-                        <span>{{service.FuelPerQuantityUnit}} litres</span>
+                        <strong>Fuel / quantity unit</strong>
+                        <span>{{service.FuelPerQuantityUnit | number}} litres</span>
                     </li>
                     <li ng-if="service.FuelPrice">
-                        <strong>Fuel Price</strong>
+                        <strong>Fuel price</strong>
                         <span>{{service.FuelPrice | currency : app.region.Currency}}</span>
                     </li>
                     <li ng-if="service.PricePerQuantityUnit">
-                        <strong>Price / Quantity Unit</strong>
-                        <span>{{service.PricePerQuantityUnit | currency : app.region.Currency}}</span>
+                        <strong>Price / quantity unit</strong>
+                        <span>{{service.PricePerQuantityUnit | currency : app.region.CurrencyCode}}</span>
                     </li>
-                    <li ng-if="service.TimePerQuantityUnit">
-                        <strong>Time / Quantity Unit</strong>
-                        <span>{{service.TimePerQuantityUnit}} {{service.TimeUnit}}</span>
+                    <li ng-if="service.TimePerQuantityUnit && service.TimeUnitId">
+                        <strong>Time / quantity unit</strong>
+                        <span>{{service.TimePerQuantityUnit | number}} {{service.TimeUnit}}</span>
                     </li>
                     <li ng-if="service.MaximumDistance">
-                        <strong>Maximum Distance</strong>
-                        <span>{{service.MaximumDistance}} {{service.DistanceUnit}}</span>
+                        <strong>Maximum distance</strong>
+                        <span>{{service.MaximumDistance | number}} {{service.DistanceUnit}}</span>
                     </li>
                     <li ng-if="service.PricePerDistanceUnit">
-                        <strong>Price / Distance Unit</strong>
+                        <strong>Price / distance unit</strong>
                         <span>{{service.PricePerDistanceUnit | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li ng-if="service.TotalVolume">
-                        <strong>Total Volume</strong>
-                        <span ng-if="service.TotalVolume===1">{{service.TotalVolume}} tonne</span>
-                        <span ng-if="service.TotalVolume!==1">{{service.TotalVolume}} tonnes</span>
+                        <strong>Total volume</strong>
+                        <span ng-if="service.TotalVolume===1">{{service.TotalVolume | number}} tonne</span>
+                        <span ng-if="service.TotalVolume!==1">{{service.TotalVolume | number}} tonnes</span>
+                    </li>
+                    <li ng-if="service.MaximumDistanceToWaterSource">
+                        <strong>Maximum distance to water source</strong>
+                        <span>{{service.MaximumDistanceToWaterSource | number}} km</span>
+                    </li>
+                    <li ng-if="service.MaximumDepthOfWaterSource">
+                        <strong>Maximum depth of water source</strong>
+                        <span>{{service.MaximumDepthOfWaterSource | number}} m</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Available land</strong>
+                        <span>{{service.AvailableAcres | number}} acres</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Maximum lease</strong>
+                        <span>{{service.MaxRentalYears | number}} years</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Minimum rental</strong>
+                        <span>{{service.MinimumAcres | number}} acres</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Uncleared land</strong>
+                        <span>{{service.UnclearedLand ? 'Yes' : 'No'}}</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Uncleared land</strong>
+                        <span>{{service.UnclearedLand ? 'Yes' : 'No'}}</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Cleared land</strong>
+                        <span>{{service.ClearedLand ? 'Yes' : 'No'}}</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Near water source</strong>
+                        <span>{{service.NearWaterSource ? 'Yes' : 'No'}}</span>
+                    </li>
+                    <li ng-if="service.Category.Id===70">
+                        <strong>Fertile soil</strong>
+                        <span>{{service.FertileSoil ? 'Yes' : 'No'}}</span>
                     </li>
                     <li>
                         <strong>Mobile</strong>
