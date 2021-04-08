@@ -37,7 +37,7 @@ namespace Agrishare.Core.Entities
         public int FailedVoucherAttempts { get; set; }
         public int RegionId { get; set; }
         public short PaymentMethod { get; set; }
-        public string BankAccountJson { get; set; }
+        public string EncryptedBankAccountJson { get; set; }
         public UserStatus StatusId { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }

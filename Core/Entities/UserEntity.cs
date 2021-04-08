@@ -50,8 +50,11 @@ namespace Agrishare.Core.Entities
         {
             get
             {
-                if (bankAccount == null && !string.IsNullOrEmpty(BankAccountJson))
-                    bankAccount = JsonConvert.DeserializeObject<BankAccount>(BankAccountJson);
+                if (bankAccount == null && !string.IsNullOrEmpty(EncryptedBankAccountJson))
+                {
+                    var bankAccountJson = Utils.Encryption.DecryptWithRC4(EncryptedBankAccountJson);
+                    bankAccount = JsonConvert.DeserializeObject<BankAccount>(bankAccountJson);
+                }
                 if (bankAccount == null)
                     bankAccount = new BankAccount();
                 return bankAccount;
@@ -551,7 +554,7 @@ namespace Agrishare.Core.Entities
                 PaymentMethod += (int)Entities.PaymentMethod.MobileMoney;
 
             if (BankAccount != null)
-                BankAccountJson = JsonConvert.SerializeObject(BankAccount);
+                EncryptedBankAccountJson = Utils.Encryption.EncryptWithRC4(JsonConvert.SerializeObject(BankAccount));
 
             var agent = Agent;
             if (agent != null && agent.Id > 0)
@@ -694,7 +697,7 @@ namespace Agrishare.Core.Entities
                 AgentTypeId,
                 AgentType,
                 Region = Region?.Json(),
-                BankAccount,
+                //BankAccount,
                 PaymentMethods
             };
         }

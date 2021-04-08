@@ -1513,7 +1513,7 @@
           <Property Name="RegionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
           <Property Name="PaymentMethod" Type="Int16" Nullable="false" />
-          <Property Name="BankAccountJson" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <Property Name="EncryptedBankAccountJson" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
           <Property Name="StatusId" Type="AgrishareModel.UserStatus" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
@@ -2978,7 +2978,7 @@
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
-                <ScalarProperty Name="BankAccountJson" ColumnName="BankAccount" />
+                <ScalarProperty Name="EncryptedBankAccountJson" ColumnName="BankAccount" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
                 <ScalarProperty Name="AgentId" ColumnName="AgentId" />
