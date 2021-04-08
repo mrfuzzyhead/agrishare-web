@@ -40,7 +40,7 @@ namespace Agrishare.API.Controllers.CMS
 
             var users = Entities.User.BulkSMSList(RegionId: CurrentRegion.Id).Select(e => e.Telephone).ToList();
 
-            if (Core.Utils.SMS.SendMessages(users, Model.Message))
+            if (Core.Utils.SMS.SendMessages(users, Model.Message, CurrentRegion))
                 return Success(new
                 {
                     Entity = Model,

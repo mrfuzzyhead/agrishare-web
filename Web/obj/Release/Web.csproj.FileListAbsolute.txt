@@ -169,3 +169,4 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Web.csproj.C
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Web.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Agrishare.Web.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Agrishare.Web.pdb
+C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\InfobipClientLib.dll

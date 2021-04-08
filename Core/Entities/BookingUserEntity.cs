@@ -155,7 +155,7 @@ namespace Agrishare.Core.Entities
                 Save();
             }
             var message = $"Your verification code is {VerificationCode}";
-            if (SMS.SendMessage(Telephone, message))
+            if (SMS.SendMessage(Telephone, message, User.Region))
             {
                 var booking = Booking.Find(Id: Booking?.Id ?? BookingId);
                 booking.SMSCount += 1;

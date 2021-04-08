@@ -270,7 +270,7 @@ namespace Agrishare.Core.Entities
                     break;
             }
 
-            if (SMS.SendMessage(User.Telephone, message))
+            if (SMS.SendMessage(User.Telephone, message, User.Region))
             {
                 var booking = Booking.Find(Booking?.Id ?? BookingId ?? 0);
                 if (booking.Id > 0)

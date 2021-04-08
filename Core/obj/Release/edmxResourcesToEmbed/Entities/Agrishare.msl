@@ -224,7 +224,7 @@
           <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
-          <ScalarProperty Name="BankAccountJson" ColumnName="BankAccount" />
+          <ScalarProperty Name="EncryptedBankAccountJson" ColumnName="BankAccount" />
           <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
           <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
           <ScalarProperty Name="AgentId" ColumnName="AgentId" />

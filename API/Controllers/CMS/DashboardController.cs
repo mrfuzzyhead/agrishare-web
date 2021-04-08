@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
 
@@ -109,6 +110,8 @@ namespace Agrishare.API.Controllers.CMS
                     femaleHeight = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Female)?.Count ?? 0) / max * 100M
                 });
 
+            var smsBalance = SMS.GetBalance(CurrentRegion);
+
             var data = new
             {
                 activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id),
@@ -150,7 +153,7 @@ namespace Agrishare.API.Controllers.CMS
                     Female = Entities.Counter.Count(Event: Entities.Counters.CompleteBooking, Gender: Entities.Gender.Female, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id)
                 },
                 locations = locations.Select(o => new { o.Latitude, o.Longitude }),
-                smsBalance = SMS.GetBalance(),
+                smsBalance,
                 bookingsGraph,
                 profitGraph,
                 ageGenderGraph,

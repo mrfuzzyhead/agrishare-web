@@ -291,7 +291,7 @@ namespace Agrishare.API.Controllers.CMS
                 return Error(ModelState);
 
             var user = Entities.User.Find(Model.UserId);
-            if (Core.Utils.SMS.SendMessage(user.Telephone, Model.Message))
+            if (Core.Utils.SMS.SendMessage(user.Telephone, Model.Message, user.Region))
             {
                 Model.Sent = true;
 

@@ -803,7 +803,7 @@ namespace Agrishare.Core.Entities
             else
             {
                 var message = string.Format(Translations.Translate(TranslationKey.VerificationCode, LanguageId), VerificationCode);
-                return SMS.SendMessage(Telephone, message);
+                return SMS.SendMessage(Telephone, message, Region);
             }
         }
 

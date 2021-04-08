@@ -48,6 +48,9 @@
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="InfobipClientLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Infobip.Api.Client.1.2.0\lib\net45\InfobipClientLib.dll</HintPath>
+    </Reference>
     <Reference Include="Mandrill.net, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mandrill.net.5.0.0\lib\net45\Mandrill.net.dll</HintPath>
     </Reference>

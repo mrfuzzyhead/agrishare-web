@@ -147,3 +147,4 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csproj
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Core.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Agrishare.Core.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Core\obj\Release\Agrishare.Core.pdb
+C:\Users\brad\Documents\Working Files\AgriShare Web\Core\bin\Release\InfobipClientLib.dll
