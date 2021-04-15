@@ -9,6 +9,8 @@ namespace Agrishare.Web.Pages.Account.Seeking
 {
     public partial class Tractor : Page
     {
+        public string QuantityUnit => Master.CurrentUser.Region.Id == (int)Core.Entities.Regions.Uganda ? "acre" : "ha";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.RequiresAuthentication = true;

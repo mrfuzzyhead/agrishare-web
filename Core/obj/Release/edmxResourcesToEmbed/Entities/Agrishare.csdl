@@ -773,16 +773,18 @@
   </EnumType>
   <EnumType Name="QuantityUnit" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
-    <Member Name="Hectare" Value="1" />
+    <Member Name="Hectares" Value="1" />
     <Member Name="Bags" Value="2" />
     <Member Name="Days" Value="3" />
     <Member Name="Years" Value="4" />
+    <Member Name="Acres" Value="5" />
   </EnumType>
   <EnumType Name="TimeUnit" UnderlyingType="Int16">
     <Member Name="None" Value="0" />
     <Member Name="HectaresPerHour" Value="1" />
     <Member Name="HoursPer100Kms" Value="2" />
     <Member Name="BagsPerHour" Value="3" />
+    <Member Name="AcresPerHour" Value="4" />
   </EnumType>
   <EnumType Name="DistanceUnit" UnderlyingType="Int16">
     <Member Name="None" Value="0" />

@@ -86,11 +86,7 @@
                 <ul class="details">
                     <li>
                         <strong>Code</strong>
-                        <span>
-                            {{
-detail.entity.VerificationCode || 'N/A'
-                            }}
-                        </span>
+                        <span>{{detail.entity.VerificationCode || 'N/A'}}</span>
                     </li>
                     <li>
                         <strong>Expiry</strong>
@@ -105,12 +101,12 @@ detail.entity.VerificationCode || 'N/A'
                     <li>
                         <strong>Failed Login Count</strong>
                         <span>{{detail.entity.FailedLoginAttempts}}</span>
-                        <i class="material-icons" ng-click="detail.async('/cms/api/users/failedloginattempts/reset?id='+detail.entity.Id)">refresh</i>
+                        <i class="material-icons" ng-click="detail.async('/cms/users/failedloginattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
                     </li>
                     <li>
                         <strong>Failed Voucher Count</strong>
                         <span>{{detail.entity.FailedVoucherAttempts}}</span>
-                        <i class="material-icons" ng-click="detail.async('/cms/api/users/failedvoucherattempts/reset?id='+detail.entity.Id)">refresh</i>
+                        <i class="material-icons" ng-click="detail.async('/cms/users/failedvoucherattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
                     </li>
                 </ul>
             </div>

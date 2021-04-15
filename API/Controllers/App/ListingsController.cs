@@ -73,6 +73,10 @@ namespace Agrishare.API.Controllers.App
 
             listing.Services = new List<Service>();
             foreach (var service in Model.Services)
+            {
+                if (service.QuantityUnitId == QuantityUnit.Hectares && CurrentRegion.Id == (int)Regions.Uganda)
+                    service.QuantityUnitId = QuantityUnit.Acres;
+
                 listing.Services.Add(new Service
                 {
                     DistanceUnitId = service.DistanceUnitId,
@@ -100,6 +104,7 @@ namespace Agrishare.API.Controllers.App
                     MinimumAcres = service.MinimumAcres,
                     LandRegion = service.LandRegion
                 });
+            }
 
             if (listing.Services.Count == 0)
                 return Error("You must enable at least on service");

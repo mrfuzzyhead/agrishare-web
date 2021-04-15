@@ -9,6 +9,8 @@ namespace Agrishare.Web.Pages.Account.Listing
 {
     public partial class Tractor : Page
     {
+        public string QuantityUnit => Master.CurrentUser.Region.Id == (int)Core.Entities.Regions.Uganda ? "acre" : "ha";
+
         Core.Entities.Listing SelectedListing;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -47,7 +49,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                     AvailableWithFuel.Checked = listing.AvailableWithFuel;
                     AvailableWithoutFuel.Checked = listing.AvailableWithoutFuel;
                 }
-
             }
         }
 
@@ -71,7 +72,6 @@ namespace Agrishare.Web.Pages.Account.Listing
 
                         ((TextBox)e.Item.FindControl("TimePerQuantityUnit")).Text = service.TimePerQuantityUnit.ToString();
                         ((TextBox)e.Item.FindControl("PricePerQuantityUnit")).Text = service.PricePerQuantityUnit.ToString();
-                        ((TextBox)e.Item.FindControl("FuelPerQuantityUnit")).Text = service.FuelPerQuantityUnit.ToString();
                         ((TextBox)e.Item.FindControl("MinimumQuantity")).Text = service.MinimumQuantity.ToString();
 
                         MaximumDistance.Text = service.MaximumDistance.ToString();
@@ -116,9 +116,13 @@ namespace Agrishare.Web.Pages.Account.Listing
                     service = new Core.Entities.Service();
 
                 service.CategoryId = categoryId;
+                service.QuantityUnitId = Master.CurrentUser.Region.Id == (int)Core.Entities.Regions.Uganda ? Core.Entities.QuantityUnit.Acres : Core.Entities.QuantityUnit.Hectares;
                 service.TimePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("TimePerQuantityUnit")).Text);
                 service.PricePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("PricePerQuantityUnit")).Text);
                 service.MinimumQuantity = Convert.ToDecimal(((TextBox)item.FindControl("MinimumQuantity")).Text);
+                service.DistanceUnitId = Core.Entities.DistanceUnit.Km;
+                service.PricePerDistanceUnit = Convert.ToDecimal(PricePerDistanceUnit.Text);
+                service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
                 listing.Services.Add(service);
             }
 

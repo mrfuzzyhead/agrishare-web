@@ -34,7 +34,7 @@
     
             <div class="form-row">
                 <asp:Label runat="server" AssociatedControlID="MaximumDistanceToWaterSource" Text="Maximum distance to water source *" />
-                <div><asp:TextBox runat="server" ID="MaximumDistanceToWaterSource" MaxLength="8" /><span>KM</span></div>
+                <div><asp:TextBox runat="server" ID="MaximumDistanceToWaterSource" MaxLength="8" /><span>METRES</span></div>
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="MaximumDistanceToWaterSource" Text="Maximum distance to water source is required" Display="Dynamic" />
                 <asp:RegularExpressionValidator runat="server" ControlToValidate="MaximumDistanceToWaterSource" Text="Maximum distance to water source is invalid" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
             </div>

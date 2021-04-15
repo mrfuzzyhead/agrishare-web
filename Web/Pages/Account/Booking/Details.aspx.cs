@@ -189,7 +189,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                 if (SelectedBooking.Listing.CategoryId == Category.LorriesId)
                     FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
                 else
-                    FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
+                    FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.DistanceUnit;
                 FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
 
                 HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;

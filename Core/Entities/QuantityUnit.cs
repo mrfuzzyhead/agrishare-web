@@ -14,9 +14,10 @@ namespace Agrishare.Core.Entities
     public enum QuantityUnit : short
     {
         None = 0,
-        Hectare = 1,
+        Hectares = 1,
         Bags = 2,
         Days = 3,
-        Years = 4
+        Years = 4,
+        Acres = 5
     }
 }

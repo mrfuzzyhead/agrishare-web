@@ -11,8 +11,6 @@
 
             <div class="booking" ng-controller="AvailabilityController">
 
-                
-
                 <ul>
                     <li runat="server" id="DatesRow">
                         <strong>Dates</strong>

@@ -24,7 +24,7 @@
 
             <div id="StepDistance" ng-show="search.step===3">
                 <p>What is the distance to the water source from your garden?</p>
-                <asp:TextBox runat="server" ID="WaterSourceDistance" placeholder="Distance (km)" />      
+                <asp:TextBox runat="server" ID="WaterSourceDistance" placeholder="Distance (m)" />      
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="WaterSourceDistance" Text="This is a required field" Display="Dynamic"  ValidationGroup="Step3"/>
                 <asp:RegularExpressionValidator runat="server" ControlToValidate="WaterSourceDistance" Text="Please enter a valid number" ValidationGroup="Step3" ValidationExpression="^[\d]+(.[\d]+)?$" Display="Dynamic" />
                 <p>&nbsp;</p>
