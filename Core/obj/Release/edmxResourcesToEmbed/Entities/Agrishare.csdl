@@ -87,6 +87,9 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ParentId" Type="Int32" />
     <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="TitleShona" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="TitleNdebele" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="TitleLuganda" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Deleted" Type="Boolean" Nullable="false" />

@@ -147,6 +147,9 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ParentId" Type="int" />
     <Property Name="Title" Type="varchar" MaxLength="256" />
+    <Property Name="TitleShona" Type="varchar" MaxLength="256" />
+    <Property Name="TitleNdebele" Type="varchar" MaxLength="256" />
+    <Property Name="TitleLuganda" Type="varchar" MaxLength="256" />
     <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Deleted" Type="bool" Nullable="false" />

@@ -215,6 +215,9 @@ CREATE TABLE `Categories` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `ParentId` int(11) DEFAULT NULL,
   `Title` varchar(256) DEFAULT NULL,
+  `TitleShona` varchar(256) DEFAULT NULL,
+  `TitleNdebele` varchar(256) DEFAULT NULL,
+  `TitleLuganda` varchar(256) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -233,7 +236,7 @@ CREATE TABLE `Config` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Counters` */
 
@@ -258,7 +261,7 @@ CREATE TABLE `Counters` (
   CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_4` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=270 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
 
@@ -357,7 +360,7 @@ CREATE TABLE `Listings` (
   CONSTRAINT `listings_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `listings_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `listings_ibfk_3` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Log` */
 
@@ -373,7 +376,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1572 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1587 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -522,7 +525,7 @@ CREATE TABLE `Services` (
   KEY `CategoryId` (`CategoryId`),
   CONSTRAINT `services_ibfk_1` FOREIGN KEY (`ListingId`) REFERENCES `Listings` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `services_ibfk_2` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Suppliers` */
 
@@ -677,7 +680,7 @@ CREATE TABLE `Users` (
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`AgentId`) REFERENCES `Agents` (`Id`),
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`),
   CONSTRAINT `users_ibfk_3` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10010 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10011 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Vouchers` */
 
