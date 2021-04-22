@@ -274,7 +274,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1240 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1242 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Messages` */
 
@@ -282,8 +282,12 @@ DROP TABLE IF EXISTS `Messages`;
 
 CREATE TABLE `Messages` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `UserId` int(11) NOT NULL,
+  `GUID` varchar(128) DEFAULT NULL,
+  `UserId` int(11) DEFAULT NULL,
   `ParentId` int(11) DEFAULT NULL,
+  `Name` varchar(32) DEFAULT NULL,
+  `EmailAddress` varchar(128) DEFAULT NULL,
+  `Telephone` varchar(32) DEFAULT NULL,
   `Title` varchar(256) DEFAULT NULL,
   `Message` varchar(4096) DEFAULT NULL,
   `Status` smallint(6) NOT NULL DEFAULT '0',
@@ -297,7 +301,7 @@ CREATE TABLE `Messages` (
   KEY `Deleted` (`Deleted`),
   KEY `Date` (`Date`),
   CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Notifications` */
 
@@ -412,7 +416,7 @@ CREATE TABLE `Templates` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `TransactionFees` */
 

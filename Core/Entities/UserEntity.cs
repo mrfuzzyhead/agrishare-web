@@ -513,7 +513,7 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var oneYearAgo = DateTime.Now.AddYears(-1);
+                var oneYearAgo = DateTime.Now.AddYears(-10);
                 var users = ctx.Users.Where(o => o.Deleted && o.LastModified > oneYearAgo);
                 foreach(var user in users)
                     ctx.Entry(user).State = EntityState.Deleted;
