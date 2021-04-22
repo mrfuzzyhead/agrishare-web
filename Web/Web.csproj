@@ -91,6 +91,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\About\Thread.aspx" />
     <Content Include="Pages\About\Contact.aspx" />
     <Content Include="Pages\About\Rules.aspx" />
     <Content Include="Pages\Account\Commission\Report.aspx" />
@@ -155,6 +156,13 @@
     <Compile Include="Code\Pager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\About\Thread.aspx.cs">
+      <DependentUpon>Thread.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\About\Thread.aspx.designer.cs">
+      <DependentUpon>Thread.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\About\Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -334,6 +342,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\Styles\blogs.scss" />
     <Content Include="Resources\Styles\cookies.scss" />
+    <Content Include="Resources\Styles\message.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -29,6 +29,12 @@
             </div>
 
             <div class="form-row">
+                <asp:Label runat="server" AssociatedControlID="Subject" Text="Subject *" />
+                <asp:TextBox runat="server" ID="Subject" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Subject" Text="Subject is required" Display="Dynamic" />
+            </div>
+
+            <div class="form-row">
                 <asp:Label runat="server" AssociatedControlID="Message" Text="Message *" />
                 <asp:TextBox runat="server" ID="Message" TextMode="MultiLine" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Message" Text="Message is required" Display="Dynamic" />

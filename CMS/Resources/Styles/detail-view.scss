@@ -314,3 +314,23 @@
         }
     }
 }
+
+.message-view {
+    .message {
+        padding: 20px;
+        border-bottom: dashed 1px #ddd;
+
+        small {
+            color: #999;
+        }
+    }
+
+    .post-reply {
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px 20px 20px;
+        border: solid 1px #ccc;
+        border-radius: 5px;
+    }
+}

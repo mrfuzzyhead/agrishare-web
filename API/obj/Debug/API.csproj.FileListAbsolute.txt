@@ -92,3 +92,6 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Debug\API.csproj.Cor
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Debug\API.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Debug\Agrishare.API.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Debug\Agrishare.API.pdb
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\ephtmltopdf.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\ephtmltopdf.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\epengine.dll

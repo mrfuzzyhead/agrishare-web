@@ -20,6 +20,7 @@ agrishareApp.factory('App', function ($location, Utils) {
             { title: "Listings", icon: "local_shipping", url: "#/listings/list", roles: 'Administrator' },
             { title: "Bookings", icon: "account_balance_wallet", url: "#/bookings/list", roles: 'Administrator' },
             { title: "Ledger", icon: "receipt", url: "#/journals/list", roles: 'Administrator' },
+            { title: "Messages", icon: "mail", url: "#/messages/list", roles: 'Administrator' },
             { title: "Users", icon: "person", url: "#/users/list", roles: 'Administrator' },
             {
                 title: "Deleted", icon: "delete_sweep", roles: 'Administrator', submenu: [

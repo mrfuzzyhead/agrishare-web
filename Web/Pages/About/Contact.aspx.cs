@@ -15,21 +15,17 @@ namespace Agrishare.Web.Pages.About
 
         public void SendMessage(object s, EventArgs e)
         {
-            var template = Core.Entities.Template.Find(Title: "Contact");
-            template.Replace("Name", Name.Text);
-            template.Replace("Email Address", EmailAddress.Text);
-            template.Replace("Telephone", Telephone.Text);
-            template.Replace("Message", Message.Text);
-
-            new Core.Entities.Email
+            new Core.Entities.Message
             {
-                Message = template.EmailHtml(),
-                RecipientEmail = Core.Entities.Config.ApplicationEmailAddress,
-                SenderEmail = EmailAddress.Text,
-                Subject = "Contact from website"
-            }.Send();
+                Content = Message.Text,
+                EmailAddress = EmailAddress.Text,
+                Name = Name.Text,
+                Telephone = Telephone.Text,
+                Title = Subject.Text
+            }.Save();
 
             Master.Feedback = "Your message has been sent";
+            Response.Redirect("/about/contact");
         }
     }
 }
