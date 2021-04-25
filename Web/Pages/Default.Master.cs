@@ -47,6 +47,7 @@ namespace Agrishare.Web.Pages
 
         public string SelectedUrl { get; set; }
 
+        public HtmlHead Head;
         public HtmlGenericControl Body;
 
         protected void Page_Load(object sender, EventArgs e)

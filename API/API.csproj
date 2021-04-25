@@ -134,6 +134,8 @@
     <Compile Include="Code\ValidateViewModelAttribute.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\App\ConfigController.cs" />
+    <Compile Include="Controllers\App\MessagesController.cs" />
+    <Compile Include="Controllers\CMS\MessagesController.cs" />
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />
@@ -164,6 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\ReconcileModel.cs" />
     <Compile Include="Models\ListingModel.cs" />
     <Compile Include="Models\RatingModel.cs" />

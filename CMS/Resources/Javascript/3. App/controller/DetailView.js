@@ -86,10 +86,29 @@ agrishareApp.controller('DetailViewController', function ($attrs, $controller, $
             headers: App.authorizationHeader()
         })
             .then(function (response) {
-                if (notes == null)
+                if (notes === null)
                     notes = [];
                 notes.push(response.data);
                 note.Notes = '';
+            }, function (response) {
+                Utils.toast.error(response.data.Message || 'An unknown error occurred');
+            });
+    };
+
+    detail.post = function (url, data) {
+        $http({
+            method: 'POST',
+            url: App.apiUrl + url,
+            data: data,
+            headers: App.authorizationHeader()
+        })
+            .then(function (response) {
+                if (response.data.Feedback)
+                    Utils.toast.success(response.data.Feedback);
+                if (response.data.Entity) {
+                    detail.entity = response.data.Entity;
+                    detail.data = response.data;
+                }
             }, function (response) {
                 Utils.toast.error(response.data.Message || 'An unknown error occurred');
             });
