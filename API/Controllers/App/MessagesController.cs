@@ -13,7 +13,7 @@ namespace Agrishare.API.Controllers.App
     {
         [Route("messages")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex = 0, int PageSize = 25)
+        public object List(int PageIndex = 0, int PageSize = 50)
         {
             var list = Entities.Message.List(UserId: CurrentUser.Id, PageIndex: PageIndex, PageSize: PageSize);
             return Success(new
@@ -37,12 +37,12 @@ namespace Agrishare.API.Controllers.App
                 message.Save();
             }
 
-            var thread = Entities.Message.List(ParentId: message.Id);
+            var thread = Entities.Message.List(ParentId: message.Id).OrderBy(e => e.Id).ToList();
+            thread.Insert(0, message);
 
             return Success(new
             {
-                Message = message.DetailJson(),
-                Thread = thread.Select(e => e.DetailJson())
+                List = thread.Select(e => e.DetailJson())
             });
         }
 

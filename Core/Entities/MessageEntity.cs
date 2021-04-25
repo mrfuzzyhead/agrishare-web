@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Agrishare.Core.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -95,34 +96,50 @@ namespace Agrishare.Core.Entities
                 original.Save();
             }
 
-            if (User == null && ParentId.HasValue && !string.IsNullOrEmpty(EmailAddress) && SendNotification)
+            if (ParentId.HasValue && SendNotification)
             {
-                var template = Template.Find(Title: "Message Reply");
-                template.Replace("Content", Content);
-                template.Replace("Reply URL", $"{Config.WebURL}/about/thread?guid={original.GUID}");
-
-                var thread = List(ParentId: ParentId.Value, Sort: "Id").Where(e => e.Id != Id).ToList();
-                thread.Insert(0, original);
-                var row = template.GetSectionTemplate("Thread");
-                var rows = new StringBuilder();
-                foreach(var message in thread)
+                if (((User?.NotificationPreferences ?? 0) & (int)NotificationPreferences.PushNotifications) > 0)
                 {
-                    var html = row;
-                    html = Template.Replace(html, "Name", message.User?.Title ?? Name);
-                    html = Template.Replace(html, "Date", message.Date.ToString("d MMMM yyyy h:mmtt"));
-                    html = Template.Replace(html, "Message", message.Content);
-                    rows.AppendLine(html);
+                    var devices = Device.List(UserId: User.Id);
+                    foreach (var device in devices)
+                    {
+                        var args = new Dictionary<string, object>
+                        {
+                            { "MessageId", original.Id }
+                        };
+                        SNS.SendMessage(device.EndpointARN, "New reply from the AgriShare team", $"app.agrishare.category.Message", args);
+                    }
                 }
-                template.ReplaceSectionTemplate("Thread", rows.ToString());
 
-                new Email
+                if (!string.IsNullOrEmpty(original.User?.EmailAddress ?? original.EmailAddress))
                 {
-                    Message = template.EmailHtml(),
-                    RecipientEmail = EmailAddress,
-                    RecipientName = Name,
-                    SenderEmail = "noreply@agrishare.app",
-                    Subject = $"Reply: {original.Title}"
-                }.Send();
+                    var template = Template.Find(Title: "Message Reply");
+                    template.Replace("Content", Content);
+                    template.Replace("Reply URL", $"{Config.WebURL}/about/thread?guid={original.GUID}");
+
+                    var thread = List(ParentId: ParentId.Value, Sort: "Id").Where(e => e.Id != Id).ToList();
+                    thread.Insert(0, original);
+                    var row = template.GetSectionTemplate("Thread");
+                    var rows = new StringBuilder();
+                    foreach (var message in thread)
+                    {
+                        var html = row;
+                        html = Template.Replace(html, "Name", message.User?.Title ?? Name);
+                        html = Template.Replace(html, "Date", message.Date.ToString("d MMMM yyyy h:mmtt"));
+                        html = Template.Replace(html, "Message", message.Content);
+                        rows.AppendLine(html);
+                    }
+                    template.ReplaceSectionTemplate("Thread", rows.ToString());
+
+                    new Email
+                    {
+                        Message = template.EmailHtml(),
+                        RecipientEmail = original.User?.EmailAddress ?? original.EmailAddress,
+                        RecipientName = original.User?.Title ?? original.Name,
+                        SenderEmail = "noreply@agrishare.app",
+                        Subject = $"Reply: {original.Title}"
+                    }.Send();
+                }
             }
 
             return success;

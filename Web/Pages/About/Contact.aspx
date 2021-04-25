@@ -40,6 +40,8 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Message" Text="Message is required" Display="Dynamic" />
             </div>
 
+            <div class="g-recaptcha" data-sitekey="<%=RecaptchaSiteKey %>" style="margin: 1em 0"></div>
+
             <p>
                 <asp:Button runat="server" Text="Send" CssClass="button" OnClick="SendMessage" />
             </p>
