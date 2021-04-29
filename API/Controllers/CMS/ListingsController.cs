@@ -17,8 +17,12 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, [FromUri] ListingFilterModel Filter)
         {
-            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
+            bool? trending = null;
+            if (Filter.Trending == 1)
+                trending = true;
+
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
             var title = "Listings";
 
             if (Filter.UserId > 0)
@@ -164,6 +168,25 @@ namespace Agrishare.API.Controllers.CMS
                     listing.Id
                 });
             }
+
+            return Error("An unknown error occurred");
+        }
+
+        [Route("listings/trending/toggle")]
+        [AcceptVerbs("GET")]
+        public object ToggleTrending(int Id)
+        {
+            var listing = Entities.Listing.Find(Id: Id);
+            if (listing?.Id == 0)
+                return Error("Listing not found");
+
+            listing.Trending = !listing.Trending;
+
+            if (listing.Save())
+                return Success(new
+                {
+                    Entity = listing.Json()
+                });
 
             return Error("An unknown error occurred");
         }

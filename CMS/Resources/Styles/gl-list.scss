@@ -176,6 +176,23 @@ gl-list {
                     > div:first-child {
                         flex: 1;
                     }
+
+                    .trending {
+                        display: flex;
+                        align-items: center;
+                        color: #ccc;
+                        padding-left: 20px;
+
+                        i {
+                            padding: 5px;
+                        }
+
+                        .active {
+                            color: white;
+                            background: green;
+                            border-radius: 99px;
+                        }
+                    }
                 }
 
                 &.setting {

@@ -62,7 +62,7 @@ namespace Agrishare.Core.Entities
         public decimal IMTT { get; set; }
         public decimal TransactionFee { get; set; }
         public string ReceiptPhotoPath { get; set; }
-        public int PaymentMethodId { get; set; }
+        public short PaymentMethodId { get; set; }
         public Nullable<int> VoucherId { get; set; }
         public decimal VoucherTotal { get; set; }
         public short PaymentStatusId { get; set; }

@@ -253,6 +253,7 @@
           <Property Name="AverageRating" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="RatingCount" Type="int" Nullable="false" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
+          <Property Name="Trending" Type="bool" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -1091,37 +1092,37 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AgrishareModelStoreContainer">
-          <EntitySet Name="Adverts" EntityType="Self.Adverts" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingComments" EntityType="Self.BookingComments" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingProducts" EntityType="Self.BookingProducts" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingTags" EntityType="Self.BookingTags" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Config" EntityType="Self.Config" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Counters" EntityType="Self.Counters" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Journals" EntityType="Self.Journals" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Listings" EntityType="Self.Listings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Log" EntityType="Self.Log" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Products" EntityType="Self.Products" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="UserVouchers" EntityType="Self.UserVouchers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Vouchers" EntityType="Self.Vouchers" Schema="agrishare" store:Type="Tables" />
+          <EntitySet Name="Adverts" EntityType="Self.Adverts" Schema="" store:Type="Tables" />
+          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="" store:Type="Tables" />
+          <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="" store:Type="Tables" />
+          <EntitySet Name="BookingComments" EntityType="Self.BookingComments" Schema="" store:Type="Tables" />
+          <EntitySet Name="BookingProducts" EntityType="Self.BookingProducts" Schema="" store:Type="Tables" />
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="" store:Type="Tables" />
+          <EntitySet Name="BookingTags" EntityType="Self.BookingTags" Schema="" store:Type="Tables" />
+          <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="" store:Type="Tables" />
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="" store:Type="Tables" />
+          <EntitySet Name="Counters" EntityType="Self.Counters" Schema="" store:Type="Tables" />
+          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="" store:Type="Tables" />
+          <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="" store:Type="Tables" />
+          <EntitySet Name="Journals" EntityType="Self.Journals" Schema="" store:Type="Tables" />
+          <EntitySet Name="Listings" EntityType="Self.Listings" Schema="" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="" store:Type="Tables" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="" store:Type="Tables" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="" store:Type="Tables" />
+          <EntitySet Name="Templates" EntityType="Self.Templates" Schema="" store:Type="Tables" />
+          <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="" store:Type="Tables" />
+          <EntitySet Name="UserVouchers" EntityType="Self.UserVouchers" Schema="" store:Type="Tables" />
+          <EntitySet Name="Vouchers" EntityType="Self.Vouchers" Schema="" store:Type="Tables" />
           <AssociationSet Name="adverts_ibfk_1" Association="Self.adverts_ibfk_1">
             <End Role="Regions" EntitySet="Regions" />
             <End Role="Adverts" EntitySet="Adverts" />
@@ -1342,7 +1343,7 @@
           <Property Name="IMTT" Type="Decimal" Nullable="false" />
           <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
           <Property Name="ReceiptPhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="PaymentMethodId" Type="Int32" Nullable="false" />
+          <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
           <Property Name="VoucherId" Type="Int32" />
           <Property Name="VoucherTotal" Type="Decimal" Nullable="false" />
           <Property Name="PaymentStatusId" Type="Int16" Nullable="false" />
@@ -1443,6 +1444,7 @@
           <NavigationProperty Name="Services" Relationship="AgrishareModel.services_ibfk_1" FromRole="Listing" ToRole="Service" />
           <Property Name="RegionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
+          <Property Name="Trending" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -2948,6 +2950,7 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
+                <ScalarProperty Name="Trending" ColumnName="Trending" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="AvailableWithFuel" ColumnName="AvailableWithFuel" />
                 <ScalarProperty Name="AvailableWithoutFuel" ColumnName="AvailableWithoutFuel" />

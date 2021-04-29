@@ -63,7 +63,7 @@ namespace Agrishare.Core.Entities
 
         public static List<Listing> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", 
             string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, 
-            bool Deleted = false, int RegionId = 0)
+            bool Deleted = false, int RegionId = 0, bool? Trending = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -89,12 +89,15 @@ namespace Agrishare.Core.Entities
                 if (Status != ListingStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (Trending.HasValue)
+                    query = query.Where(e => e.Trending == Trending);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
         public static int Count(string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, 
-            ListingStatus Status = ListingStatus.None, bool Deleted = false, int RegionId = 0)
+            ListingStatus Status = ListingStatus.None, bool Deleted = false, int RegionId = 0, bool? Trending = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -117,6 +120,9 @@ namespace Agrishare.Core.Entities
 
                 if (Status != ListingStatus.None)
                     query = query.Where(o => o.StatusId == Status);
+
+                if (Trending.HasValue)
+                    query = query.Where(e => e.Trending == Trending);
 
                 return query.Count();
             }
@@ -252,6 +258,7 @@ namespace Agrishare.Core.Entities
                 User?.PaymentMethods,
                 User = IncludeUser ? User?.Json() : null,
                 Url = $"{Config.WebURL}{UrlPath}",
+                Trending,
                 DateCreated,
                 LastModified
             };

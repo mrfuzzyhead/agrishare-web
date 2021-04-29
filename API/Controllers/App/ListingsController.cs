@@ -12,6 +12,17 @@ namespace Agrishare.API.Controllers.App
     [@Authorize(Roles="User")]
     public class ListingsController : BaseApiController
     {
+        [Route("listings/trending")]
+        [AcceptVerbs("GET")]
+        public object TrendingList(int PageIndex = 0, int PageSize = 10, int CategoryId = 0)
+        {
+            var list = Listing.List(PageIndex: PageIndex, PageSize: PageSize, CategoryId: CategoryId, RegionId: CurrentRegion.Id, Trending: true);
+            return Success(new
+            {
+                List = list.Select(e => e.Json())
+            });
+        }
+
         [Route("listings")]
         [AcceptVerbs("GET")]
         public object List(int PageIndex = 0, int PageSize = 25, int CategoryId = 0)

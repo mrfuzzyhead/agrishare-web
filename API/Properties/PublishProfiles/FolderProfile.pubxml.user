@@ -10,19 +10,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Agrishare.API.dll">
-      <publishTime>03/23/2021 10:07:37</publishTime>
+      <publishTime>04/29/2021 14:44:02</publishTime>
     </File>
     <File Include="bin/Agrishare.API.pdb">
-      <publishTime>03/23/2021 10:07:37</publishTime>
+      <publishTime>04/29/2021 14:44:02</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll">
-      <publishTime>03/23/2021 10:07:36</publishTime>
+      <publishTime>04/29/2021 14:44:01</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll.config">
-      <publishTime>11/26/2020 16:24:12</publishTime>
+      <publishTime>04/29/2021 11:57:58</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.pdb">
-      <publishTime>03/23/2021 10:07:36</publishTime>
+      <publishTime>04/29/2021 14:44:01</publishTime>
     </File>
     <File Include="bin/AWSSDK.dll">
       <publishTime>03/16/2019 00:24:03</publishTime>
@@ -44,6 +44,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/EPPlus.dll">
       <publishTime>03/16/2019 00:24:04</publishTime>
+    </File>
+    <File Include="bin/InfobipClientLib.dll">
+      <publishTime>09/07/2020 13:17:04</publishTime>
     </File>
     <File Include="bin/Mandrill.net.dll">
       <publishTime>03/16/2019 00:24:04</publishTime>
@@ -214,7 +217,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:24:05</publishTime>
     </File>
     <File Include="bin/System.IO.Compression.dll">
-      <publishTime>03/16/2019 00:24:06</publishTime>
+      <publishTime>02/24/2019 17:26:43</publishTime>
     </File>
     <File Include="bin/System.Linq.Dynamic.dll">
       <publishTime>03/16/2019 00:24:06</publishTime>
@@ -265,7 +268,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:23:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/03/2021 15:18:04</publishTime>
+      <publishTime>04/29/2021 14:41:03</publishTime>
     </File>
   </ItemGroup>
 </Project>
