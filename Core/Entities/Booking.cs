@@ -22,14 +22,11 @@ namespace Agrishare.Core.Entities
             this.Ratings = new HashSet<Rating>();
             this.Journals = new HashSet<Journal>();
             this.Counters = new HashSet<Counter>();
-            this.BookingComments = new HashSet<BookingComment>();
-            this.BookingTags = new HashSet<BookingTag>();
-            this.BookingProducts = new HashSet<BookingProduct>();
         }
     
         public int Id { get; set; }
-        public Nullable<int> ListingId { get; set; }
-        public Nullable<int> ServiceId { get; set; }
+        public int ListingId { get; set; }
+        public int ServiceId { get; set; }
         public BookingFor ForId { get; set; }
         public int UserId { get; set; }
         public string Location { get; set; }
@@ -52,23 +49,17 @@ namespace Agrishare.Core.Entities
         public decimal TransportDistance { get; set; }
         public BookingStatus StatusId { get; set; }
         public bool PaidOut { get; set; }
+        public System.DateTime DateCreated { get; set; }
+        public System.DateTime LastModified { get; set; }
+        public bool Deleted { get; set; }
         public decimal Commission { get; set; }
         public decimal AgentCommission { get; set; }
         public int SMSCount { get; set; }
         public decimal SMSCost { get; set; }
         public decimal IMTT { get; set; }
         public decimal TransactionFee { get; set; }
-        public Nullable<int> VoucherId { get; set; }
-        public decimal VoucherTotal { get; set; }
-        public BookingPaymentStatus PaymentStatusId { get; set; }
-        public string TagsJson { get; set; }
-        public string ReceiptPhotoPath { get; set; }
-        public short PaymentMethodId { get; set; }
-        public System.DateTime DateCreated { get; set; }
-        public System.DateTime LastModified { get; set; }
-        public bool Deleted { get; set; }
-        public string ProductListJson { get; set; }
-        public Nullable<int> SupplierId { get; set; }
+        public string ReceiptPhoto { get; set; }
+        public int PaymentMethodId { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -83,13 +74,5 @@ namespace Agrishare.Core.Entities
         public virtual ICollection<Journal> Journals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Counter> Counters { get; set; }
-        public virtual Voucher Voucher { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookingComment> BookingComments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookingTag> BookingTags { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookingProduct> BookingProducts { get; set; }
-        public virtual Supplier Supplier { get; set; }
     }
 }

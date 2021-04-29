@@ -141,7 +141,6 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\MySql.Data.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\MySql.Data.Entity.EF6.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\Newtonsoft.Json.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\StackExchange.Redis.StrongName.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\ephtmltopdf.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\EPPlus.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\RestSharp.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\AWSSDK.dll
@@ -159,14 +158,15 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\MySql.Data.Entity.EF
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\Newtonsoft.Json.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\StackExchange.Redis.StrongName.xml
-C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\ephtmltopdf.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\EPPlus.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\AWSSDK.pdb
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\System.Diagnostics.DiagnosticSource.xml
-C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\epengine.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Web.csprojAssemblyReference.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Web.csproj.CoreCompileInputs.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Web.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Agrishare.Web.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\Web\obj\Release\Agrishare.Web.pdb
-C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\InfobipClientLib.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\ephtmltopdf.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\ephtmltopdf.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\epengine.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\Web\bin\RestSharp.xml

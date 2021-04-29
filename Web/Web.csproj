@@ -60,6 +60,9 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Drawing.Design" />
@@ -89,22 +92,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Hello.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\About\Thread.aspx" />
     <Content Include="Pages\About\Contact.aspx" />
     <Content Include="Pages\About\Rules.aspx" />
     <Content Include="Pages\Account\Commission\Report.aspx" />
-    <Content Include="Pages\Account\Listing\Product.aspx" />
-    <Content Include="Pages\Account\Listing\Bus.aspx" />
-    <Content Include="Pages\Account\Listing\Land.aspx" />
-    <Content Include="Pages\Account\Listing\Irrigation.aspx" />
-    <Content Include="Pages\Account\Listing\Labour.aspx" />
-    <Content Include="Pages\Account\Seeking\Bus.aspx" />
-    <Content Include="Pages\Account\Seeking\Land.aspx" />
-    <Content Include="Pages\Account\Seeking\Irrigation.aspx" />
-    <Content Include="Pages\Account\Seeking\Labour.aspx" />
-    <Content Include="Pages\Account\Seeking\Products.aspx" />
     <Content Include="Pages\Blog.aspx" />
     <Content Include="Pages\About\FAQs.aspx" />
     <Content Include="Pages\About\Privacy.aspx" />
@@ -131,18 +124,13 @@
     <Content Include="Pages\Homepage.aspx" />
     <Content Include="Pages\Account\GetStarted.aspx" />
     <Content Include="Resources\Images\App-Background.png" />
-    <Content Include="Resources\Images\Bus.svg" />
     <Content Include="Resources\Images\C2-Logo.svg" />
-    <Content Include="Resources\Images\Equipment.svg" />
     <Content Include="Resources\Images\Google-Play.png" />
     <Content Include="Resources\Images\Home-Combine.jpg" />
     <Content Include="Resources\Images\Home-Curve.png" />
     <Content Include="Resources\Images\Home-Tractor.jpg" />
     <Content Include="Resources\Images\Icon-Close.svg" />
     <Content Include="Resources\Images\Icon-Menu.svg" />
-    <Content Include="Resources\Images\Irrigation.svg" />
-    <Content Include="Resources\Images\Labour.svg" />
-    <Content Include="Resources\Images\Land.svg" />
     <Content Include="Resources\Images\Lorry.svg" />
     <Content Include="Resources\Images\Phinneas.jpg" />
     <Content Include="Resources\Images\Processing.svg" />
@@ -172,6 +160,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Pages\About\Thread.aspx.cs">
+      <DependentUpon>Thread.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\About\Thread.aspx.designer.cs">
+      <DependentUpon>Thread.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\About\Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -185,76 +180,6 @@
     </Compile>
     <Compile Include="Pages\Account\Commission\Report.aspx.designer.cs">
       <DependentUpon>Report.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Product.aspx.cs">
-      <DependentUpon>Product.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Product.aspx.designer.cs">
-      <DependentUpon>Product.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Bus.aspx.cs">
-      <DependentUpon>Bus.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Bus.aspx.designer.cs">
-      <DependentUpon>Bus.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Land.aspx.cs">
-      <DependentUpon>Land.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Land.aspx.designer.cs">
-      <DependentUpon>Land.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Irrigation.aspx.cs">
-      <DependentUpon>Irrigation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Irrigation.aspx.designer.cs">
-      <DependentUpon>Irrigation.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Labour.aspx.cs">
-      <DependentUpon>Labour.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Listing\Labour.aspx.designer.cs">
-      <DependentUpon>Labour.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Bus.aspx.cs">
-      <DependentUpon>Bus.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Bus.aspx.designer.cs">
-      <DependentUpon>Bus.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Land.aspx.cs">
-      <DependentUpon>Land.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Land.aspx.designer.cs">
-      <DependentUpon>Land.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Irrigation.aspx.cs">
-      <DependentUpon>Irrigation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Irrigation.aspx.designer.cs">
-      <DependentUpon>Irrigation.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Labour.aspx.cs">
-      <DependentUpon>Labour.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Labour.aspx.designer.cs">
-      <DependentUpon>Labour.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Products.aspx.cs">
-      <DependentUpon>Products.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Account\Seeking\Products.aspx.designer.cs">
-      <DependentUpon>Products.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
@@ -420,7 +345,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\Styles\blogs.scss" />
     <Content Include="Resources\Styles\cookies.scss" />
-    <Content Include="Resources\Styles\products.scss" />
+    <Content Include="Resources\Styles\message.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

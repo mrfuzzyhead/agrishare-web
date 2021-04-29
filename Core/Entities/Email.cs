@@ -55,11 +55,15 @@ namespace Agrishare.Core.Entities
             if (!Live)
                 RecipientEmail = DeveloperEmailAddress;
 
+            var _fromEmail = Config.ApplicationEmailAddress;
+            if (SenderEmail.Contains(Config.DomainName))
+                _fromEmail = SenderEmail;
+
             var message = new MandrillMessage()
             {
                 ReplyTo = SenderEmail,
                 FromName = Config.ApplicationName,
-                FromEmail = Config.ApplicationEmailAddress,
+                FromEmail = _fromEmail,
                 Html = Message,
                 Subject = Subject
             };

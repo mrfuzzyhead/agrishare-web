@@ -14,6 +14,13 @@ namespace Agrishare.Core.Entities
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.Journals = new HashSet<Journal>();
+            this.Messages = new HashSet<Message>();
+        }
+    
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -31,21 +38,20 @@ namespace Agrishare.Core.Entities
         public string VerificationCode { get; set; }
         public Nullable<System.DateTime> VerificationCodeExpiry { get; set; }
         public string SignalRConnectionId { get; set; }
-        public Language LanguageId { get; set; }
-        public Nullable<int> AgentId { get; set; }
-        public AgentUserType AgentTypeId { get; set; }
-        public int FailedVoucherAttempts { get; set; }
-        public int RegionId { get; set; }
-        public short PaymentMethod { get; set; }
-        public string EncryptedBankAccountJson { get; set; }
         public UserStatus StatusId { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public Nullable<int> SupplierId { get; set; }
+        public Language LanguageId { get; set; }
+        public Nullable<int> AgentId { get; set; }
+        public AgentUserType AgentTypeId { get; set; }
+        public short PaymentMethod { get; set; }
+        public string BankAccount { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Journal> Journals { get; set; }
         public virtual Agent Agent { get; set; }
-        public virtual Region Region { get; set; }
-        public virtual Supplier Supplier { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

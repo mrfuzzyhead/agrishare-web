@@ -5,23 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AgrishareModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Adverts">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="256" />
-          <Property Name="PhotoPath" Type="varchar" MaxLength="1024" />
-          <Property Name="LinkUrl" Type="varchar" MaxLength="1024" />
-          <Property Name="ImpressionCount" Type="int" Nullable="false" />
-          <Property Name="ClickCount" Type="int" Nullable="false" />
-          <Property Name="StartDate" Type="date" Nullable="false" />
-          <Property Name="EndDate" Type="date" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-          <Property Name="RegionId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Agents">
           <Key>
             <PropertyRef Name="Id" />
@@ -47,29 +30,6 @@
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
         </EntityType>
-        <EntityType Name="BookingComments">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookingId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Text" Type="varchar" MaxLength="4096" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
-        <EntityType Name="BookingProducts">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookingId" Type="int" Nullable="false" />
-          <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
         <EntityType Name="Bookings">
           <Key>
             <PropertyRef Name="Id" />
@@ -77,8 +37,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ForId" Type="smallint" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="ListingId" Type="int" />
-          <Property Name="ServiceId" Type="int" />
+          <Property Name="ListingId" Type="int" Nullable="false" />
+          <Property Name="ServiceId" Type="int" Nullable="false" />
           <Property Name="Location" Type="varchar" MaxLength="256" />
           <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
@@ -96,9 +56,9 @@
           <Property Name="TransportCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="TransportDistance" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="AdditionalInformation" Type="varchar" MaxLength="4096" />
+          <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Commission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="TotalVolume" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
           <Property Name="PaidOut" Type="bool" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -108,33 +68,16 @@
           <Property Name="SMSCost" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="TransactionFee" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="IMTT" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="VoucherId" Type="int" />
-          <Property Name="VoucherTotal" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="PaymentStatus" Type="smallint" Nullable="false" />
-          <Property Name="Tags" Type="varchar" MaxLength="1024" />
           <Property Name="ReceiptPhoto" Type="varchar" MaxLength="1024" />
-          <Property Name="PaymentMethodId" Type="smallint" Nullable="false" />
-          <Property Name="ProductListJson" Type="varchar" MaxLength="4096" />
-          <Property Name="SupplierId" Type="int" />
-        </EntityType>
-        <EntityType Name="BookingTags">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookingId" Type="int" Nullable="false" />
-          <Property Name="TagId" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
+          <Property Name="PaymentMethodId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="BookingUsers">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookingId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" />
+          <Property Name="BookingId" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="256" />
           <Property Name="Telephone" Type="varchar" MaxLength="16" />
           <Property Name="Ratio" Type="decimal" Precision="10" Scale="3" Nullable="false" />
@@ -152,9 +95,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParentId" Type="int" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
-          <Property Name="TitleShona" Type="varchar" MaxLength="256" />
-          <Property Name="TitleNdebele" Type="varchar" MaxLength="256" />
-          <Property Name="TitleLuganda" Type="varchar" MaxLength="256" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -214,17 +154,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
           <Property Name="UserId" Type="int" />
           <Property Name="BookingId" Type="int" />
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="CurrencyAmount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
-          <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -234,22 +170,21 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
           <Property Name="Description" Type="varchar" MaxLength="2048" />
           <Property Name="Location" Type="varchar" MaxLength="256" />
-          <Property Name="Latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="Longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
+          <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
           <Property Name="Brand" Type="varchar" MaxLength="256" />
           <Property Name="HorsePower" Type="int" />
           <Property Name="Year" Type="int" />
           <Property Name="ConditionId" Type="smallint" Nullable="false" />
           <Property Name="GroupServices" Type="bool" Nullable="false" />
-          <Property Name="Photos" Type="text" />
           <Property Name="AvailableWithoutFuel" Type="bool" Nullable="false" />
           <Property Name="AvailableWithFuel" Type="bool" Nullable="false" />
+          <Property Name="Photos" Type="text" />
           <Property Name="AverageRating" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="RatingCount" Type="int" Nullable="false" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
@@ -266,6 +201,26 @@
           <Property Name="Title" Type="varchar" MaxLength="1024" />
           <Property Name="Description" Type="longtext" />
           <Property Name="LevelId" Type="smallint" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Deleted" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GUID" Type="varchar" MaxLength="32" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="32" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="128" />
+          <Property Name="Telephone" Type="varchar" MaxLength="32" />
+          <Property Name="Title" Type="varchar" MaxLength="256" />
+          <Property Name="Message" Type="varchar" MaxLength="4096" />
+          <Property Name="Status" Type="smallint" Nullable="false" />
+          <Property Name="ReplyCount" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -305,21 +260,6 @@
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
         </EntityType>
-        <EntityType Name="Products">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SupplierId" Type="int" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="128" />
-          <Property Name="Description" Type="varchar" MaxLength="1024" />
-          <Property Name="DayRate" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="Stock" Type="int" Nullable="false" />
-          <Property Name="Photo" Type="varchar" MaxLength="1024" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
         <EntityType Name="Ratings">
           <Key>
             <PropertyRef Name="Id" />
@@ -330,17 +270,6 @@
           <Property Name="BookingId" Type="int" Nullable="false" />
           <Property Name="Comments" Type="varchar" MaxLength="1024" />
           <Property Name="Rating" Type="decimal" Precision="10" Scale="1" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Regions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="64" />
-          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -364,44 +293,6 @@
           <Property Name="TimePerQuantityUnit" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="PricePerDistanceUnit" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="FuelPrice" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-          <Property Name="MaximumDistanceToWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="MaximumDepthOfWaterSource" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="UnclearedLand" Type="bool" Nullable="false" />
-          <Property Name="ClearedLand" Type="bool" Nullable="false" />
-          <Property Name="NearWaterSource" Type="bool" Nullable="false" />
-          <Property Name="FertileSoil" Type="bool" Nullable="false" />
-          <Property Name="LandRegion" Type="smallint" Nullable="false" />
-          <Property Name="MaxRentalYears" Type="int" Nullable="false" />
-          <Property Name="AvailableAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="MinimumAcres" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="LabourServices" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Suppliers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RegionId" Type="int" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="128" />
-          <Property Name="Logo" Type="varchar" MaxLength="1024" />
-          <Property Name="Location" Type="varchar" MaxLength="256" />
-          <Property Name="Latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="Longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="TransportCostPerKm" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="MaximumDistance" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Tags">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="64" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -442,7 +333,6 @@
           <Property Name="ServerReference" Type="varchar" MaxLength="256" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="256" />
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="Currency" Type="smallint" Nullable="false" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
           <Property Name="Log" Type="text" />
           <Property Name="Error" Type="varchar" MaxLength="1024" />
@@ -455,7 +345,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="256" />
           <Property Name="LastName" Type="varchar" MaxLength="256" />
           <Property Name="EmailAddress" Type="varchar" MaxLength="1024" />
@@ -466,116 +355,40 @@
           <Property Name="Salt" Type="varchar" MaxLength="512" />
           <Property Name="AuthToken" Type="varchar" MaxLength="1024" />
           <Property Name="FailedLoginAttempts" Type="int" Nullable="false" />
-          <Property Name="FailedVoucherAttempts" Type="int" Nullable="false" />
           <Property Name="VerificationCode" Type="varchar" MaxLength="8" />
           <Property Name="VerificationCodeExpiry" Type="datetime" Precision="0" />
           <Property Name="NotificationPreferences" Type="smallint" Nullable="false" />
           <Property Name="InterestId" Type="smallint" Nullable="false" />
           <Property Name="LanguageId" Type="smallint" Nullable="false" />
           <Property Name="AgentId" Type="int" />
-          <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
           <Property Name="SignalRConnectionId" Type="varchar" MaxLength="256" />
           <Property Name="StatusId" Type="smallint" Nullable="false" />
           <Property Name="RoleList" Type="varchar" MaxLength="1024" />
+          <Property Name="AgentTypeId" Type="smallint" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
           <Property Name="PaymentMethod" Type="smallint" Nullable="false" />
-          <Property Name="BankAccount" Type="varchar" MaxLength="4096" />
-          <Property Name="SupplierId" Type="int" />
+          <Property Name="BankAccount" Type="varchar" MaxLength="2048" />
         </EntityType>
-        <EntityType Name="UserVouchers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="VoucherId" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Vouchers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TypeId" Type="smallint" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="128" />
-          <Property Name="Code" Type="varchar" MaxLength="16" />
-          <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="RedeemCount" Type="int" Nullable="false" />
-          <Property Name="MaxRedeemCount" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Deleted" Type="bool" Nullable="false" />
-        </EntityType>
-        <Association Name="adverts_ibfk_1">
-          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
-          <End Role="Adverts" Type="Self.Adverts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Regions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Adverts">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingcomments_ibfk_1">
-          <End Role="Bookings" Type="Self.Bookings" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BookingComments" Type="Self.BookingComments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bookings">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingComments">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingcomments_ibfk_2">
+        <Association Name="bookings_ibfk_1">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BookingComments" Type="Self.BookingComments" Multiplicity="*" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BookingComments">
+            <Dependent Role="Bookings">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="bookingproducts_ibfk_1">
-          <End Role="Bookings" Type="Self.Bookings" Multiplicity="1" />
-          <End Role="BookingProducts" Type="Self.BookingProducts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bookings">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingProducts">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingproducts_ibfk_2">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="BookingProducts" Type="Self.BookingProducts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingProducts">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="bookings_ibfk_2">
-          <End Role="Listings" Type="Self.Listings" Multiplicity="0..1" />
+          <End Role="Listings" Type="Self.Listings" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Listings">
@@ -587,7 +400,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="bookings_ibfk_3">
-          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Services">
@@ -595,58 +410,6 @@
             </Principal>
             <Dependent Role="Bookings">
               <PropertyRef Name="ServiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookings_ibfk_4">
-          <End Role="Vouchers" Type="Self.Vouchers" Multiplicity="0..1" />
-          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vouchers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Bookings">
-              <PropertyRef Name="VoucherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookings_ibfk_5">
-          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
-          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Suppliers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Bookings">
-              <PropertyRef Name="SupplierId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingtags_ibfk_1">
-          <End Role="Bookings" Type="Self.Bookings" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BookingTags" Type="Self.BookingTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bookings">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingTags">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingtags_ibfk_2">
-          <End Role="Tags" Type="Self.Tags" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BookingTags" Type="Self.BookingTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tags">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingTags">
-              <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -776,18 +539,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="journals_ibfk_3">
-          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
-          <End Role="Journals" Type="Self.Journals" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Regions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Journals">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="listings_ibfk_1">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -816,15 +567,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="listings_ibfk_3">
-          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
-          <End Role="Listings" Type="Self.Listings" Multiplicity="*" />
+        <Association Name="messages_ibfk_1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Regions">
+            <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Listings">
-              <PropertyRef Name="RegionId" />
+            <Dependent Role="Messages">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -867,20 +618,6 @@
             </Principal>
             <Dependent Role="Pages1">
               <PropertyRef Name="ParentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="products_ibfk_1">
-          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Suppliers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -954,18 +691,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="suppliers_ibfk_1">
-          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
-          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Regions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Suppliers">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="transactions_ibfk_2">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1006,108 +731,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="users_ibfk_2">
-          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Regions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="users_ibfk_3">
-          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Suppliers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="SupplierId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="uservouchers_ibfk_1">
-          <End Role="Users" Type="Self.Users" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="UserVouchers" Type="Self.UserVouchers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserVouchers">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="uservouchers_ibfk_2">
-          <End Role="Vouchers" Type="Self.Vouchers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="UserVouchers" Type="Self.UserVouchers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vouchers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserVouchers">
-              <PropertyRef Name="VoucherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="AgrishareModelStoreContainer">
-          <EntitySet Name="Adverts" EntityType="Self.Adverts" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingComments" EntityType="Self.BookingComments" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingProducts" EntityType="Self.BookingProducts" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingTags" EntityType="Self.BookingTags" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Config" EntityType="Self.Config" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Counters" EntityType="Self.Counters" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Journals" EntityType="Self.Journals" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Listings" EntityType="Self.Listings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Log" EntityType="Self.Log" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Products" EntityType="Self.Products" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="UserVouchers" EntityType="Self.UserVouchers" Schema="agrishare" store:Type="Tables" />
-          <EntitySet Name="Vouchers" EntityType="Self.Vouchers" Schema="agrishare" store:Type="Tables" />
-          <AssociationSet Name="adverts_ibfk_1" Association="Self.adverts_ibfk_1">
-            <End Role="Regions" EntitySet="Regions" />
-            <End Role="Adverts" EntitySet="Adverts" />
-          </AssociationSet>
-          <AssociationSet Name="bookingcomments_ibfk_1" Association="Self.bookingcomments_ibfk_1">
-            <End Role="Bookings" EntitySet="Bookings" />
-            <End Role="BookingComments" EntitySet="BookingComments" />
-          </AssociationSet>
-          <AssociationSet Name="bookingcomments_ibfk_2" Association="Self.bookingcomments_ibfk_2">
+          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="BookingUsers" EntityType="Self.BookingUsers" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Counters" EntityType="Self.Counters" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Faqs" EntityType="Self.Faqs" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Journals" EntityType="Self.Journals" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Listings" EntityType="Self.Listings" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Templates" EntityType="Self.Templates" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="TransactionFees" EntityType="Self.TransactionFees" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="agrishare_live" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="agrishare_live" store:Type="Tables" />
+          <AssociationSet Name="bookings_ibfk_1" Association="Self.bookings_ibfk_1">
             <End Role="Users" EntitySet="Users" />
-            <End Role="BookingComments" EntitySet="BookingComments" />
-          </AssociationSet>
-          <AssociationSet Name="bookingproducts_ibfk_1" Association="Self.bookingproducts_ibfk_1">
             <End Role="Bookings" EntitySet="Bookings" />
-            <End Role="BookingProducts" EntitySet="BookingProducts" />
-          </AssociationSet>
-          <AssociationSet Name="bookingproducts_ibfk_2" Association="Self.bookingproducts_ibfk_2">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="BookingProducts" EntitySet="BookingProducts" />
           </AssociationSet>
           <AssociationSet Name="bookings_ibfk_2" Association="Self.bookings_ibfk_2">
             <End Role="Listings" EntitySet="Listings" />
@@ -1116,22 +764,6 @@
           <AssociationSet Name="bookings_ibfk_3" Association="Self.bookings_ibfk_3">
             <End Role="Services" EntitySet="Services" />
             <End Role="Bookings" EntitySet="Bookings" />
-          </AssociationSet>
-          <AssociationSet Name="bookings_ibfk_4" Association="Self.bookings_ibfk_4">
-            <End Role="Vouchers" EntitySet="Vouchers" />
-            <End Role="Bookings" EntitySet="Bookings" />
-          </AssociationSet>
-          <AssociationSet Name="bookings_ibfk_5" Association="Self.bookings_ibfk_5">
-            <End Role="Suppliers" EntitySet="Suppliers" />
-            <End Role="Bookings" EntitySet="Bookings" />
-          </AssociationSet>
-          <AssociationSet Name="bookingtags_ibfk_1" Association="Self.bookingtags_ibfk_1">
-            <End Role="Bookings" EntitySet="Bookings" />
-            <End Role="BookingTags" EntitySet="BookingTags" />
-          </AssociationSet>
-          <AssociationSet Name="bookingtags_ibfk_2" Association="Self.bookingtags_ibfk_2">
-            <End Role="Tags" EntitySet="Tags" />
-            <End Role="BookingTags" EntitySet="BookingTags" />
           </AssociationSet>
           <AssociationSet Name="bookingusers_ibfk_1" Association="Self.bookingusers_ibfk_1">
             <End Role="Bookings" EntitySet="Bookings" />
@@ -1169,10 +801,6 @@
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Journals" EntitySet="Journals" />
           </AssociationSet>
-          <AssociationSet Name="journals_ibfk_3" Association="Self.journals_ibfk_3">
-            <End Role="Regions" EntitySet="Regions" />
-            <End Role="Journals" EntitySet="Journals" />
-          </AssociationSet>
           <AssociationSet Name="listings_ibfk_1" Association="Self.listings_ibfk_1">
             <End Role="Users" EntitySet="Users" />
             <End Role="Listings" EntitySet="Listings" />
@@ -1181,9 +809,9 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Listings" EntitySet="Listings" />
           </AssociationSet>
-          <AssociationSet Name="listings_ibfk_3" Association="Self.listings_ibfk_3">
-            <End Role="Regions" EntitySet="Regions" />
-            <End Role="Listings" EntitySet="Listings" />
+          <AssociationSet Name="messages_ibfk_1" Association="Self.messages_ibfk_1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
           <AssociationSet Name="notifications_ibfk_1" Association="Self.notifications_ibfk_1">
             <End Role="Users" EntitySet="Users" />
@@ -1196,10 +824,6 @@
           <AssociationSet Name="pages_ibfk_1" Association="Self.pages_ibfk_1">
             <End Role="Pages" EntitySet="Pages" />
             <End Role="Pages1" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="products_ibfk_1" Association="Self.products_ibfk_1">
-            <End Role="Suppliers" EntitySet="Suppliers" />
-            <End Role="Products" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="ratings_ibfk_1" Association="Self.ratings_ibfk_1">
             <End Role="Listings" EntitySet="Listings" />
@@ -1221,10 +845,6 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Services" EntitySet="Services" />
           </AssociationSet>
-          <AssociationSet Name="suppliers_ibfk_1" Association="Self.suppliers_ibfk_1">
-            <End Role="Regions" EntitySet="Regions" />
-            <End Role="Suppliers" EntitySet="Suppliers" />
-          </AssociationSet>
           <AssociationSet Name="transactions_ibfk_2" Association="Self.transactions_ibfk_2">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Transactions" EntitySet="Transactions" />
@@ -1237,22 +857,6 @@
             <End Role="Agents" EntitySet="Agents" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="users_ibfk_2" Association="Self.users_ibfk_2">
-            <End Role="Regions" EntitySet="Regions" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="users_ibfk_3" Association="Self.users_ibfk_3">
-            <End Role="Suppliers" EntitySet="Suppliers" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="uservouchers_ibfk_1" Association="Self.uservouchers_ibfk_1">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserVouchers" EntitySet="UserVouchers" />
-          </AssociationSet>
-          <AssociationSet Name="uservouchers_ibfk_2" Association="Self.uservouchers_ibfk_2">
-            <End Role="Vouchers" EntitySet="Vouchers" />
-            <End Role="UserVouchers" EntitySet="UserVouchers" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1263,8 +867,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ListingId" Type="Int32" />
-          <Property Name="ServiceId" Type="Int32" />
+          <Property Name="ListingId" Type="Int32" Nullable="false" />
+          <Property Name="ServiceId" Type="Int32" Nullable="false" />
           <Property Name="ForId" Type="AgrishareModel.BookingFor" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Location" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
@@ -1293,6 +897,9 @@
           <NavigationProperty Name="Ratings" Relationship="AgrishareModel.ratings_ibfk_3" FromRole="Booking" ToRole="Rating" />
           <Property Name="StatusId" Type="AgrishareModel.BookingStatus" Nullable="false" />
           <Property Name="PaidOut" Type="Boolean" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Booking" ToRole="Journal" />
           <NavigationProperty Name="Counters" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Booking" ToRole="Counter" />
           <Property Name="Commission" Type="Decimal" Nullable="false" />
@@ -1301,22 +908,8 @@
           <Property Name="SMSCost" Type="Decimal" Nullable="false" />
           <Property Name="IMTT" Type="Decimal" Nullable="false" />
           <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
-          <Property Name="VoucherId" Type="Int32" />
-          <NavigationProperty Name="Voucher" Relationship="AgrishareModel.bookings_ibfk_4" FromRole="Booking" ToRole="Voucher" />
-          <Property Name="VoucherTotal" Type="Decimal" Nullable="false" />
-          <Property Name="PaymentStatusId" Type="AgrishareModel.BookingPaymentStatus" Nullable="false" />
-          <NavigationProperty Name="BookingComments" Relationship="AgrishareModel.bookingcomments_ibfk_1" FromRole="Booking" ToRole="BookingComment" />
-          <NavigationProperty Name="BookingTags" Relationship="AgrishareModel.bookingtags_ibfk_1" FromRole="Booking" ToRole="BookingTag" />
-          <Property Name="TagsJson" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="ReceiptPhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="ProductListJson" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
-          <Property Name="SupplierId" Type="Int32" />
-          <NavigationProperty Name="BookingProducts" Relationship="AgrishareModel.bookingproducts_ibfk_1" FromRole="Booking" ToRole="BookingProduct" />
-          <NavigationProperty Name="Supplier" Relationship="AgrishareModel.bookings_ibfk_51" FromRole="Booking" ToRole="Supplier" />
+          <Property Name="ReceiptPhoto" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentMethodId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="BookingUser">
           <Key>
@@ -1345,9 +938,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParentId" Type="Int32" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="TitleShona" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="TitleNdebele" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="TitleLuganda" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
@@ -1368,20 +958,19 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
           <Property Name="Question" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
           <Property Name="Answer" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="SortOrder" Type="Int32" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
         </EntityType>
         <EntityType Name="Listing">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegionId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
@@ -1405,7 +994,6 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.listings_ibfk_1" FromRole="Listings" ToRole="Users" />
           <NavigationProperty Name="Services" Relationship="AgrishareModel.services_ibfk_1" FromRole="Listing" ToRole="Service" />
-          <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1430,12 +1018,12 @@
           <Property Name="TypeId" Type="AgrishareModel.NotificationType" Nullable="false" />
           <Property Name="StatusId" Type="AgrishareModel.NotificationStatus" Nullable="false" />
           <Property Name="GroupId" Type="AgrishareModel.NotificationGroup" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Booking" Relationship="Self.notifications_ibfk_2" FromRole="Notifications" ToRole="Bookings" />
           <NavigationProperty Name="User" Relationship="Self.notifications_ibfk_1" FromRole="Notifications" ToRole="Users" />
+          <Property Name="Message" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Page">
           <Key>
@@ -1480,7 +1068,6 @@
           <Property Name="ServerReference" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="EcoCashReference" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Decimal" Nullable="false" />
-          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="StatusId" Type="AgrishareModel.TransactionStatus" Nullable="false" />
           <Property Name="Log" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Error" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
@@ -1511,21 +1098,18 @@
           <Property Name="VerificationCode" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="VerificationCodeExpiry" Type="DateTime" />
           <Property Name="SignalRConnectionId" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="AgrishareModel.UserStatus" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
+          <NavigationProperty Name="Journals" Relationship="AgrishareModel.journals_ibfk_1" FromRole="User" ToRole="Journal" />
           <Property Name="AgentId" Type="Int32" />
           <NavigationProperty Name="Agent" Relationship="AgrishareModel.users_ibfk_1" FromRole="User" ToRole="Agent" />
           <Property Name="AgentTypeId" Type="AgrishareModel.AgentUserType" Nullable="false" />
-          <Property Name="FailedVoucherAttempts" Type="Int32" Nullable="false" />
-          <Property Name="RegionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Region" Relationship="AgrishareModel.users_ibfk_2" FromRole="User" ToRole="Region" />
           <Property Name="PaymentMethod" Type="Int16" Nullable="false" />
-          <Property Name="EncryptedBankAccountJson" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
-          <Property Name="StatusId" Type="AgrishareModel.UserStatus" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="SupplierId" Type="Int32" />
-          <NavigationProperty Name="Supplier" Relationship="AgrishareModel.users_ibfk_3" FromRole="User" ToRole="Supplier" />
+          <Property Name="BankAccount" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Messages" Relationship="AgrishareModel.messages_ibfk_1" FromRole="User" ToRole="Message" />
         </EntityType>
         <Association Name="bookings_ibfk_1">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -1542,7 +1126,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="bookings_ibfk_2">
-          <End Role="Listings" Type="Self.Listing" Multiplicity="0..1">
+          <End Role="Listings" Type="Self.Listing" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
@@ -1788,83 +1372,10 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="Counter" EntitySet="Counters" />
           </AssociationSet>
-          <EntitySet Name="Vouchers" EntityType="AgrishareModel.Voucher" />
-          <AssociationSet Name="bookings_ibfk_4" Association="AgrishareModel.bookings_ibfk_4">
-            <End Role="Voucher" EntitySet="Vouchers" />
-            <End Role="Booking" EntitySet="Bookings" />
-          </AssociationSet>
-          <EntitySet Name="Suppliers" EntityType="AgrishareModel.Supplier" />
-          <EntitySet Name="UserVouchers" EntityType="AgrishareModel.UserVoucher" />
-          <AssociationSet Name="uservouchers_ibfk_1" Association="AgrishareModel.uservouchers_ibfk_1">
+          <EntitySet Name="Messages" EntityType="AgrishareModel.Message" />
+          <AssociationSet Name="messages_ibfk_1" Association="AgrishareModel.messages_ibfk_1">
             <End Role="User" EntitySet="Users" />
-            <End Role="UserVoucher" EntitySet="UserVouchers" />
-          </AssociationSet>
-          <AssociationSet Name="uservouchers_ibfk_2" Association="AgrishareModel.uservouchers_ibfk_2">
-            <End Role="Voucher" EntitySet="Vouchers" />
-            <End Role="UserVoucher" EntitySet="UserVouchers" />
-          </AssociationSet>
-          <EntitySet Name="BookingComments" EntityType="AgrishareModel.BookingComment" />
-          <EntitySet Name="BookingTags" EntityType="AgrishareModel.BookingTag" />
-          <EntitySet Name="Tags" EntityType="AgrishareModel.Tag" />
-          <AssociationSet Name="bookingcomments_ibfk_1" Association="AgrishareModel.bookingcomments_ibfk_1">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="BookingComment" EntitySet="BookingComments" />
-          </AssociationSet>
-          <AssociationSet Name="bookingcomments_ibfk_2" Association="AgrishareModel.bookingcomments_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="BookingComment" EntitySet="BookingComments" />
-          </AssociationSet>
-          <AssociationSet Name="bookingtags_ibfk_1" Association="AgrishareModel.bookingtags_ibfk_1">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="BookingTag" EntitySet="BookingTags" />
-          </AssociationSet>
-          <AssociationSet Name="bookingtags_ibfk_2" Association="AgrishareModel.bookingtags_ibfk_2">
-            <End Role="Tag" EntitySet="Tags" />
-            <End Role="BookingTag" EntitySet="BookingTags" />
-          </AssociationSet>
-          <EntitySet Name="Regions" EntityType="AgrishareModel.Region" />
-          <AssociationSet Name="journals_ibfk_3" Association="AgrishareModel.journals_ibfk_3">
-            <End Role="Region" EntitySet="Regions" />
-            <End Role="Journal" EntitySet="Journals" />
-          </AssociationSet>
-          <AssociationSet Name="listings_ibfk_3" Association="AgrishareModel.listings_ibfk_3">
-            <End Role="Region" EntitySet="Regions" />
-            <End Role="Listing" EntitySet="Listings" />
-          </AssociationSet>
-          <AssociationSet Name="users_ibfk_2" Association="AgrishareModel.users_ibfk_2">
-            <End Role="Region" EntitySet="Regions" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="suppliers_ibfk_1" Association="AgrishareModel.suppliers_ibfk_1">
-            <End Role="Region" EntitySet="Regions" />
-            <End Role="Supplier" EntitySet="Suppliers" />
-          </AssociationSet>
-          <EntitySet Name="BookingProducts" EntityType="AgrishareModel.BookingProduct" />
-          <EntitySet Name="Products" EntityType="AgrishareModel.Product" />
-          <AssociationSet Name="bookingproducts_ibfk_1" Association="AgrishareModel.bookingproducts_ibfk_1">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="BookingProduct" EntitySet="BookingProducts" />
-          </AssociationSet>
-          <AssociationSet Name="bookingproducts_ibfk_2" Association="AgrishareModel.bookingproducts_ibfk_2">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="BookingProduct" EntitySet="BookingProducts" />
-          </AssociationSet>
-          <AssociationSet Name="bookings_ibfk_51" Association="AgrishareModel.bookings_ibfk_51">
-            <End Role="Supplier" EntitySet="Suppliers" />
-            <End Role="Booking" EntitySet="Bookings" />
-          </AssociationSet>
-          <AssociationSet Name="products_ibfk_1" Association="AgrishareModel.products_ibfk_1">
-            <End Role="Supplier" EntitySet="Suppliers" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <EntitySet Name="Adverts" EntityType="AgrishareModel.Advert" />
-          <AssociationSet Name="users_ibfk_3" Association="AgrishareModel.users_ibfk_3">
-            <End Role="Supplier" EntitySet="Suppliers" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="adverts_ibfk_1" Association="AgrishareModel.adverts_ibfk_1">
-            <End Role="Region" EntitySet="Regions" />
-            <End Role="Advert" EntitySet="Adverts" />
+            <End Role="Message" EntitySet="Messages" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rating">
@@ -1907,20 +1418,9 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Listing" Relationship="AgrishareModel.services_ibfk_1" FromRole="Service" ToRole="Listing" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="MaximumDistanceToWaterSource" Type="Decimal" Nullable="false" />
-          <Property Name="MaximumDepthOfWaterSource" Type="Decimal" Nullable="false" />
-          <Property Name="UnclearedLand" Type="Boolean" Nullable="false" />
-          <Property Name="ClearedLand" Type="Boolean" Nullable="false" />
-          <Property Name="NearWaterSource" Type="Boolean" Nullable="false" />
-          <Property Name="FertileSoil" Type="Boolean" Nullable="false" />
-          <Property Name="LandRegion" Type="AgrishareModel.ServiceLandRegion" Nullable="false" />
-          <Property Name="MaxRentalYears" Type="Int32" Nullable="false" />
-          <Property Name="AvailableAcres" Type="Decimal" Nullable="false" />
-          <Property Name="MinimumAcres" Type="Decimal" Nullable="false" />
-          <Property Name="LabourServices" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="bookings_ibfk_3">
-          <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
+          <End Type="AgrishareModel.Service" Role="Service" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
@@ -2008,15 +1508,15 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="ServiceId" Type="Int32" />
-          <Property Name="BookingId" Type="Int32" />
-          <Property Name="CategoryId" Type="Int32" />
           <Property Name="Event" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Service" Relationship="AgrishareModel.counters_ibfk_1" FromRole="Counter" ToRole="Category" />
           <NavigationProperty Name="User" Relationship="AgrishareModel.counters_ibfk_2" FromRole="Counter" ToRole="User" />
+          <Property Name="BookingId" Type="Int32" />
           <NavigationProperty Name="Booking" Relationship="AgrishareModel.counters_ibfk_3" FromRole="Counter" ToRole="Booking" />
+          <Property Name="CategoryId" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="AgrishareModel.counters_ibfk_4" FromRole="Counter" ToRole="Category" />
         </EntityType>
         <EnumType Name="ListingStatus" UnderlyingType="Int16">
@@ -2034,18 +1534,14 @@
         </EnumType>
         <EnumType Name="QuantityUnit" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
-          <Member Name="Hectares" Value="1" />
+          <Member Name="Hectare" Value="1" />
           <Member Name="Bags" Value="2" />
-          <Member Name="Days" Value="3" />
-          <Member Name="Years" Value="4" />
-          <Member Name="Acres" Value="5" />
         </EnumType>
         <EnumType Name="TimeUnit" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
           <Member Name="HectaresPerHour" Value="1" />
           <Member Name="HoursPer100Kms" Value="2" />
           <Member Name="BagsPerHour" Value="3" />
-          <Member Name="AcresPerHour" Value="4" />
         </EnumType>
         <EnumType Name="DistanceUnit" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
@@ -2106,7 +1602,6 @@
           <Member Name="None" Value="-1" />
           <Member Name="Cancelled" Value="5" />
           <Member Name="Incomplete" Value="6" />
-          <Member Name="Paid" Value="7" />
         </EnumType>
         <EnumType Name="BookingUserStatus" UnderlyingType="Int16">
           <Member Name="Pending" Value="0" />
@@ -2203,7 +1698,6 @@
           <Member Name="English" Value="1" />
           <Member Name="Shona" Value="2" />
           <Member Name="Ndebele" Value="3" />
-          <Member Name="Luganda" Value="4" />
         </EnumType>
         <EntityType Name="Blog">
           <Key>
@@ -2222,23 +1716,18 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegionId" Type="Int32" Nullable="false" />
-          <Property Name="TypeId" Type="AgrishareModel.JournalType" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="BookingId" Type="Int32" />
           <Property Name="Amount" Type="Decimal" Nullable="false" />
-          <Property Name="CurrencyAmount" Type="Decimal" Nullable="false" />
-          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="Reconciled" Type="Boolean" Nullable="false" />
           <Property Name="EcoCashReference" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="TypeId" Type="AgrishareModel.JournalType" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Booking" Relationship="AgrishareModel.journals_ibfk_2" FromRole="Journal" ToRole="Booking" />
           <NavigationProperty Name="User" Relationship="AgrishareModel.journals_ibfk_1" FromRole="Journal" ToRole="User" />
-          <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
         </EntityType>
         <Association Name="journals_ibfk_2">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2274,8 +1763,6 @@
           <Member Name="Refund" Value="2" />
           <Member Name="Settlement" Value="3" />
           <Member Name="Fee" Value="4" />
-          <Member Name="Expense" Value="5" />
-          <Member Name="Income" Value="6" />
         </EnumType>
         <Association Name="counters_ibfk_3">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2296,13 +1783,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Commission" Type="Decimal" Nullable="false" />
-          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_1" FromRole="Agent" ToRole="User" />
+          <Property Name="TypeId" Type="AgrishareModel.AgentType" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="users_ibfk_1">
           <End Type="AgrishareModel.Agent" Role="Agent" Multiplicity="0..1" />
@@ -2358,404 +1846,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Voucher">
+        <EntityType Name="Message">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeId" Type="AgrishareModel.VoucherType" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Code" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="RedeemCount" Type="Int32" Nullable="false" />
-          <Property Name="MaxRedeemCount" Type="Int32" Nullable="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <Association Name="bookings_ibfk_4">
-          <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="0..1" />
-          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Voucher">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Booking">
-              <PropertyRef Name="VoucherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EnumType Name="VoucherType" UnderlyingType="Int16">
-          <Member Name="None" Value="0" />
-          <Member Name="Value" Value="1" />
-          <Member Name="Percentage" Value="2" />
-        </EnumType>
-        <EntityType Name="Supplier">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegionId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="LogoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Region" Relationship="AgrishareModel.suppliers_ibfk_1" FromRole="Supplier" ToRole="Region" />
-          <Property Name="Location" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="Latitude" Type="Decimal" Nullable="false" />
-          <Property Name="Longitude" Type="Decimal" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="AgrishareModel.users_ibfk_3" FromRole="Supplier" ToRole="User" />
-          <Property Name="TransportCostPerKm" Type="Decimal" Nullable="false" />
-          <Property Name="MaximumDistance" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserVoucher">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="VoucherId" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Voucher" Relationship="AgrishareModel.uservouchers_ibfk_2" FromRole="UserVoucher" ToRole="Voucher" />
-        </EntityType>
-        <Association Name="uservouchers_ibfk_1">
-          <End Type="AgrishareModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.UserVoucher" Role="UserVoucher" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserVoucher">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="uservouchers_ibfk_2">
-          <End Type="AgrishareModel.Voucher" Role="Voucher" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.UserVoucher" Role="UserVoucher" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Voucher">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserVoucher">
-              <PropertyRef Name="VoucherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="BookingComment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookingId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Text" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Booking" Relationship="AgrishareModel.bookingcomments_ibfk_1" FromRole="BookingComment" ToRole="Booking" />
-          <NavigationProperty Name="User" Relationship="AgrishareModel.bookingcomments_ibfk_2" FromRole="BookingComment" ToRole="User" />
-        </EntityType>
-        <EntityType Name="BookingTag">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookingId" Type="Int32" Nullable="false" />
-          <Property Name="TagId" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Booking" Relationship="AgrishareModel.bookingtags_ibfk_1" FromRole="BookingTag" ToRole="Booking" />
-          <NavigationProperty Name="Tag" Relationship="AgrishareModel.bookingtags_ibfk_2" FromRole="BookingTag" ToRole="Tag" />
-        </EntityType>
-        <EntityType Name="Tag">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="BookingTags" Relationship="AgrishareModel.bookingtags_ibfk_2" FromRole="Tag" ToRole="BookingTag" />
-        </EntityType>
-        <Association Name="bookingcomments_ibfk_1">
-          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.BookingComment" Role="BookingComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingComment">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingcomments_ibfk_2">
-          <End Type="AgrishareModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.BookingComment" Role="BookingComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingComment">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingtags_ibfk_1">
-          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.BookingTag" Role="BookingTag" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingTag">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingtags_ibfk_2">
-          <End Type="AgrishareModel.Tag" Role="Tag" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.BookingTag" Role="BookingTag" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tag">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingTag">
-              <PropertyRef Name="TagId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EnumType Name="BookingPaymentStatus" UnderlyingType="Int16">
-          <Member Name="None" Value="0" />
-          <Member Name="Pending" Value="1" />
-          <Member Name="Paid" Value="2" />
-          <Member Name="Exported" Value="3" />
-          <Member Name="Settled" Value="4" />
-        </EnumType>
-        <EntityType Name="Region">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          </EntityType>
-        <Association Name="journals_ibfk_3">
-          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
-          <End Type="AgrishareModel.Journal" Role="Journal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Region">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Journal">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="listings_ibfk_3">
-          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
-          <End Type="AgrishareModel.Listing" Role="Listing" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Region">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Listing">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="users_ibfk_2">
-          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
-          <End Type="AgrishareModel.User" Role="User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Region">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="suppliers_ibfk_1">
-          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
-          <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Region">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Supplier">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EnumType Name="PaymentMethod" UnderlyingType="Int16">
-          <Member Name="None" Value="0" />
-          <Member Name="Cash" Value="1" />
-          <Member Name="BankTransfer" Value="2" />
-          <Member Name="MobileMoney" Value="4" />
-        </EnumType>
-        <EnumType Name="Currency" UnderlyingType="Int16">
-          <Member Name="None" Value="0" />
-          <Member Name="USD" Value="1" />
-          <Member Name="ZWL" Value="2" />
-          <Member Name="USh" Value="3" />
-        </EnumType>
-        <EntityType Name="BookingProduct">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookingId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="AgrishareModel.bookingproducts_ibfk_2" FromRole="BookingProduct" ToRole="Product" />
-          <NavigationProperty Name="Booking" Relationship="AgrishareModel.bookingproducts_ibfk_1" FromRole="BookingProduct" ToRole="Booking" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SupplierId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="DayRate" Type="Decimal" Nullable="false" />
-          <Property Name="Stock" Type="Int32" Nullable="false" />
-          <Property Name="PhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Supplier" Relationship="AgrishareModel.products_ibfk_1" FromRole="Product" ToRole="Supplier" />
-        </EntityType>
-        <Association Name="bookingproducts_ibfk_1">
-          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="1" />
-          <End Type="AgrishareModel.BookingProduct" Role="BookingProduct" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingProduct">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookingproducts_ibfk_2">
-          <End Type="AgrishareModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="AgrishareModel.BookingProduct" Role="BookingProduct" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingProduct">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="bookings_ibfk_51">
-          <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="0..1" />
-          <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Supplier">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Booking">
-              <PropertyRef Name="SupplierId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="products_ibfk_1">
-          <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="AgrishareModel.Product" Role="Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Supplier">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="SupplierId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Advert">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="true" />
+          <Property Name="ParentId" Type="Int32" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="PhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="LinkUrl" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="ImpressionCount" Type="Int32" Nullable="false" />
-          <Property Name="ClickCount" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="AgrishareModel.MessageStatus" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="AgrishareModel.messages_ibfk_1" FromRole="Message" ToRole="User" />
+          <Property Name="ReplyCount" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="GUID" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="users_ibfk_3">
-          <End Type="AgrishareModel.Supplier" Role="Supplier" Multiplicity="0..1" />
-          <End Type="AgrishareModel.User" Role="User" Multiplicity="*" />
+        <Association Name="messages_ibfk_1">
+          <End Type="AgrishareModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="AgrishareModel.Message" Role="Message" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Supplier">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="SupplierId" />
+            <Dependent Role="Message">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="adverts_ibfk_1">
-          <End Type="AgrishareModel.Region" Role="Region" Multiplicity="1" />
-          <End Type="AgrishareModel.Advert" Role="Advert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Region">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Advert">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EnumType Name="ServiceLandRegion" UnderlyingType="Int16">
+        <EnumType Name="MessageStatus" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
-          <Member Name="Northern" Value="1" />
-          <Member Name="Central" Value="2" />
-          <Member Name="Eastern" Value="3" />
-          <Member Name="Western" Value="4" />
-        </EnumType>
-        <EnumType Name="LabourService">
-          <Member Name="None" Value="0" />
-          <Member Name="LandClearing" Value="1" />
-          <Member Name="Planting" Value="2" />
-          <Member Name="Weeding" Value="4" />
-          <Member Name="Harvesting" Value="8" />
-          <Member Name="Loading" Value="16" />
-          <Member Name="Other" Value="32" />
+          <Member Name="Unread" Value="1" />
+          <Member Name="Read" Value="2" />
         </EnumType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2766,14 +1893,8 @@
           <EntitySetMapping Name="Bookings">
             <EntityTypeMapping TypeName="AgrishareModel.Booking">
               <MappingFragment StoreEntitySet="Bookings">
-                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
-                <ScalarProperty Name="ProductListJson" ColumnName="ProductListJson" />
                 <ScalarProperty Name="PaymentMethodId" ColumnName="PaymentMethodId" />
-                <ScalarProperty Name="ReceiptPhotoPath" ColumnName="ReceiptPhoto" />
-                <ScalarProperty Name="TagsJson" ColumnName="Tags" />
-                <ScalarProperty Name="PaymentStatusId" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="VoucherTotal" ColumnName="VoucherTotal" />
-                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="ReceiptPhoto" ColumnName="ReceiptPhoto" />
                 <ScalarProperty Name="TransactionFee" ColumnName="TransactionFee" />
                 <ScalarProperty Name="IMTT" ColumnName="IMTT" />
                 <ScalarProperty Name="SMSCost" ColumnName="SMSCost" />
@@ -2832,9 +1953,6 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="AgrishareModel.Category">
               <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="TitleLuganda" ColumnName="TitleLuganda" />
-                <ScalarProperty Name="TitleNdebele" ColumnName="TitleNdebele" />
-                <ScalarProperty Name="TitleShona" ColumnName="TitleShona" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2873,7 +1991,6 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="AvailableWithFuel" ColumnName="AvailableWithFuel" />
                 <ScalarProperty Name="AvailableWithoutFuel" ColumnName="AvailableWithoutFuel" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
@@ -2966,7 +2083,6 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="AgrishareModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
                 <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />
                 <ScalarProperty Name="Error" ColumnName="Error" />
@@ -2986,10 +2102,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AgrishareModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
-                <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
-                <ScalarProperty Name="EncryptedBankAccountJson" ColumnName="BankAccount" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="AgentTypeId" ColumnName="AgentTypeId" />
                 <ScalarProperty Name="AgentId" ColumnName="AgentId" />
@@ -3036,17 +2149,6 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="AgrishareModel.Service">
               <MappingFragment StoreEntitySet="Services">
-                <ScalarProperty Name="LabourServices" ColumnName="LabourServices" />
-                <ScalarProperty Name="MinimumAcres" ColumnName="MinimumAcres" />
-                <ScalarProperty Name="AvailableAcres" ColumnName="AvailableAcres" />
-                <ScalarProperty Name="MaxRentalYears" ColumnName="MaxRentalYears" />
-                <ScalarProperty Name="LandRegion" ColumnName="LandRegion" />
-                <ScalarProperty Name="FertileSoil" ColumnName="FertileSoil" />
-                <ScalarProperty Name="NearWaterSource" ColumnName="NearWaterSource" />
-                <ScalarProperty Name="ClearedLand" ColumnName="ClearedLand" />
-                <ScalarProperty Name="UnclearedLand" ColumnName="UnclearedLand" />
-                <ScalarProperty Name="MaximumDepthOfWaterSource" ColumnName="MaximumDepthOfWaterSource" />
-                <ScalarProperty Name="MaximumDistanceToWaterSource" ColumnName="MaximumDistanceToWaterSource" />
                 <ScalarProperty Name="FuelPrice" ColumnName="FuelPrice" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
@@ -3112,10 +2214,6 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
-                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
@@ -3158,142 +2256,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Vouchers">
-            <EntityTypeMapping TypeName="AgrishareModel.Voucher">
-              <MappingFragment StoreEntitySet="Vouchers">
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="MaxRedeemCount" ColumnName="MaxRedeemCount" />
-                <ScalarProperty Name="RedeemCount" ColumnName="RedeemCount" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="AgrishareModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="GUID" ColumnName="GUID" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ReplyCount" ColumnName="ReplyCount" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Suppliers">
-            <EntityTypeMapping TypeName="AgrishareModel.Supplier">
-              <MappingFragment StoreEntitySet="Suppliers">
-                <ScalarProperty Name="MaximumDistance" ColumnName="MaximumDistance" />
-                <ScalarProperty Name="TransportCostPerKm" ColumnName="TransportCostPerKm" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="LogoPath" ColumnName="Logo" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserVouchers">
-            <EntityTypeMapping TypeName="AgrishareModel.UserVoucher">
-              <MappingFragment StoreEntitySet="UserVouchers">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="StatusId" ColumnName="Status" />
+                <ScalarProperty Name="Content" ColumnName="Message" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BookingComments">
-            <EntityTypeMapping TypeName="AgrishareModel.BookingComment">
-              <MappingFragment StoreEntitySet="BookingComments">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BookingTags">
-            <EntityTypeMapping TypeName="AgrishareModel.BookingTag">
-              <MappingFragment StoreEntitySet="BookingTags">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="TagId" ColumnName="TagId" />
-                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tags">
-            <EntityTypeMapping TypeName="AgrishareModel.Tag">
-              <MappingFragment StoreEntitySet="Tags">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Regions">
-            <EntityTypeMapping TypeName="AgrishareModel.Region">
-              <MappingFragment StoreEntitySet="Regions">
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BookingProducts">
-            <EntityTypeMapping TypeName="AgrishareModel.BookingProduct">
-              <MappingFragment StoreEntitySet="BookingProducts">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="AgrishareModel.Product">
-              <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="PhotoPath" ColumnName="Photo" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
-                <ScalarProperty Name="DayRate" ColumnName="DayRate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Adverts">
-            <EntityTypeMapping TypeName="AgrishareModel.Advert">
-              <MappingFragment StoreEntitySet="Adverts">
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
-                <ScalarProperty Name="ImpressionCount" ColumnName="ImpressionCount" />
-                <ScalarProperty Name="LinkUrl" ColumnName="LinkUrl" />
-                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

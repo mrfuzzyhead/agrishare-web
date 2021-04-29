@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html ng-app="agrishareApp">
-<head runat="server">
+<head runat="server" id="Head">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,400i,700,700i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
     <meta charset="utf-8" />

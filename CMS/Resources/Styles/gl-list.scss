@@ -17,6 +17,10 @@ gl-list {
         padding: 15px 20px;
     }
 
+    icon.message-read {
+        background-color: #ccc !important;
+    }
+
     > div {
         flex: 1;
     }
@@ -190,6 +194,18 @@ gl-list {
                         > * {
                             margin: 2px 0 !important;
                         }
+                    }
+                }
+
+                &.message {
+                    display: flex;
+
+                    > div:first-child {
+                        flex: 1;
+                    }
+
+                    > div:last-child {
+                        text-align: right;
                     }
                 }
 

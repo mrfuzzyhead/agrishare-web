@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="109">
+      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="AgrishareModel.Booking" Width="1.75" PointX="7.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.BookingUser" Width="2" PointX="5" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.Category" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
@@ -43,16 +43,12 @@
         <AssociationConnector Association="AgrishareModel.bookingusers_ibfk_2" ManuallyRouted="true" >
           <ConnectorPoint PointX="17.125" PointY="4" />
           <ConnectorPoint PointX="17.125" PointY="3.5" />
-          <ConnectorPoint PointX="14.458333333333334" PointY="3.4999999999999996" />
-          <ConnectorPoint PointX="14.291666666666666" PointY="3.5" />
           <ConnectorPoint PointX="13.583333833333333" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="13.416667166666665" PointY="3.5" />
           <ConnectorPoint PointX="12.333333333333334" PointY="3.4999999999999991" />
           <ConnectorPoint PointX="12.041664166666665" PointY="3.5" />
           <ConnectorPoint PointX="11.708333333333334" PointY="3.4999999999999996" />
           <ConnectorPoint PointX="11.541666666666666" PointY="3.5" />
-          <ConnectorPoint PointX="10.112947717948719" PointY="3.4999999999999996" />
-          <ConnectorPoint PointX="9.9462810512820514" PointY="3.5" />
           <ConnectorPoint PointX="7.375" PointY="3.5" />
           <ConnectorPoint PointX="7.375" PointY="8.5" />
           <ConnectorPoint PointX="7" PointY="8.875" />
@@ -67,34 +63,8 @@
         <AssociationConnector Association="AgrishareModel.users_ibfk_1" />
         <EntityTypeShape EntityType="AgrishareModel.TransactionFee" Width="1.5" PointX="3.375" PointY="13.75" />
         <AssociationConnector Association="AgrishareModel.counters_ibfk_4" />
-        <EntityTypeShape EntityType="AgrishareModel.Voucher" Width="1.5" PointX="5.375" PointY="15" />
-        <AssociationConnector Association="AgrishareModel.bookings_ibfk_4" />
-        <EntityTypeShape EntityType="AgrishareModel.Supplier" Width="1.5" PointX="3.25" PointY="19.75" />
-        <EntityTypeShape EntityType="AgrishareModel.UserVoucher" Width="1.5" PointX="20" PointY="9.75" />
-        <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_1" />
-        <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_2" />
-        <EntityTypeShape EntityType="AgrishareModel.BookingComment" Width="1.5" PointX="23" PointY="8" />
-        <EntityTypeShape EntityType="AgrishareModel.BookingTag" Width="1.5" PointX="10.5" PointY="10.875" />
-        <EntityTypeShape EntityType="AgrishareModel.Tag" Width="1.5" PointX="8" PointY="16.25" />
-        <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_1" />
-        <AssociationConnector Association="AgrishareModel.bookingcomments_ibfk_2" />
-        <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_1" />
-        <AssociationConnector Association="AgrishareModel.bookingtags_ibfk_2" />
-        <EntityTypeShape EntityType="AgrishareModel.Region" Width="1.5" PointX="10.375" PointY="14.75" />
-        <AssociationConnector Association="AgrishareModel.journals_ibfk_3" />
-        <AssociationConnector Association="AgrishareModel.listings_ibfk_3" />
-        <AssociationConnector Association="AgrishareModel.users_ibfk_2" />
-        <AssociationConnector Association="AgrishareModel.suppliers_ibfk_1" />
-        <EntityTypeShape EntityType="AgrishareModel.BookingProduct" Width="1.5" PointX="13.25" PointY="16.375" />
-        <EntityTypeShape EntityType="AgrishareModel.Product" Width="1.5" PointX="5.5" PointY="24" />
-        <AssociationConnector Association="AgrishareModel.bookingproducts_ibfk_1" />
-        <AssociationConnector Association="AgrishareModel.bookingproducts_ibfk_2" />
-        <AssociationConnector Association="AgrishareModel.bookings_ibfk_51" />
-        <AssociationConnector Association="AgrishareModel.products_ibfk_1" />
-        <EntityTypeShape EntityType="AgrishareModel.Advert" Width="1.5" PointX="15.375" PointY="12.75" />
-        <AssociationConnector Association="AgrishareModel.users_ibfk_3" />
-        <AssociationConnector Association="AgrishareModel.bookings_ibfk_6" />
-        <AssociationConnector Association="AgrishareModel.adverts_ibfk_1" />
+        <EntityTypeShape EntityType="AgrishareModel.Message" Width="1.5" PointX="20" PointY="7.875" />
+        <AssociationConnector Association="AgrishareModel.messages_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

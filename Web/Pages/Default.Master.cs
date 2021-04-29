@@ -68,6 +68,7 @@ namespace Agrishare.Web.Pages
 
         public string SelectedUrl { get; set; }
 
+        public HtmlHead Head;
         public HtmlGenericControl Body;
 
         public string CookieDomain = string.Empty;
