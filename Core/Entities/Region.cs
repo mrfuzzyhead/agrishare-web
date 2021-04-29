@@ -14,11 +14,32 @@ namespace Agrishare.Core.Entities
     
     public partial class Region
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Region()
+        {
+            this.Adverts = new HashSet<Advert>();
+            this.Journals = new HashSet<Journal>();
+            this.Listings = new HashSet<Listing>();
+            this.Suppliers = new HashSet<Supplier>();
+            this.Users = new HashSet<User>();
+        }
+    
         public int Id { get; set; }
         public string Title { get; set; }
-        public Currency Currency { get; set; }
+        public short Currency { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Advert> Adverts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Journal> Journals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Listing> Listings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Supplier> Suppliers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

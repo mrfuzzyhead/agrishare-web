@@ -372,7 +372,7 @@ namespace Agrishare.Core.Entities
                     TypeId = JournalType.Payment,
                     UserId = BookingUser.UserId ?? Booking?.UserId,
                     Date = DateTime.UtcNow,
-                    Currency = Currency.ZWL,
+                    Currency = Entities.Currency.ZWL,
                     CurrencyAmount = Amount,
                     RegionId = Booking.Listing.RegionId
                 }.Save();

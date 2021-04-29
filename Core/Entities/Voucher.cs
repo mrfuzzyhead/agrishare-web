@@ -14,15 +14,27 @@ namespace Agrishare.Core.Entities
     
     public partial class Voucher
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Voucher()
+        {
+            this.Bookings = new HashSet<Booking>();
+            this.UserVouchers = new HashSet<UserVoucher>();
+        }
+    
         public int Id { get; set; }
         public VoucherType TypeId { get; set; }
         public string Title { get; set; }
         public string Code { get; set; }
+        public decimal Amount { get; set; }
         public int RedeemCount { get; set; }
         public int MaxRedeemCount { get; set; }
-        public decimal Amount { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserVoucher> UserVouchers { get; set; }
     }
 }

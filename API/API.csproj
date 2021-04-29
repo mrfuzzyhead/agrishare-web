@@ -133,9 +133,19 @@
     <Compile Include="Code\ExceptionFilter.cs" />
     <Compile Include="Code\ValidateViewModelAttribute.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\App\AdvertsController.cs" />
+    <Compile Include="Controllers\App\AvailabilityController.cs" />
     <Compile Include="Controllers\App\ConfigController.cs" />
+    <Compile Include="Controllers\App\DashboardController.cs" />
     <Compile Include="Controllers\App\MessagesController.cs" />
+    <Compile Include="Controllers\App\ProductsController.cs" />
+    <Compile Include="Controllers\App\VouchersController.cs" />
+    <Compile Include="Controllers\CMS\AdvertsController.cs" />
     <Compile Include="Controllers\CMS\MessagesController.cs" />
+    <Compile Include="Controllers\CMS\ProductsController.cs" />
+    <Compile Include="Controllers\CMS\RegionsController.cs" />
+    <Compile Include="Controllers\CMS\SuppliersController.cs" />
+    <Compile Include="Controllers\CMS\TagsController.cs" />
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />
@@ -154,7 +164,6 @@
     <Compile Include="Controllers\App\RatingsController.cs" />
     <Compile Include="Controllers\App\BookingsController.cs" />
     <Compile Include="Controllers\App\TransactionsController.cs" />
-    <Compile Include="Controllers\App\ServicesController.cs" />
     <Compile Include="Controllers\App\SearchController.cs" />
     <Compile Include="Controllers\App\ListingsController.cs" />
     <Compile Include="Controllers\App\CountersController.cs" />
@@ -162,12 +171,18 @@
     <Compile Include="Controllers\App\FaqsController.cs" />
     <Compile Include="Controllers\App\UserController.cs" />
     <Compile Include="Controllers\App\UploadController.cs" />
+    <Compile Include="Controllers\CMS\VouchersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\ExportLedgerModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
-    <Compile Include="Models\ReconcileModel.cs" />
+    <Compile Include="Models\PaymentPreferencesModel.cs" />
+    <Compile Include="Models\PopModel.cs" />
+    <Compile Include="Models\ProductAvailabiliyModel.cs" />
+    <Compile Include="Models\ProductBookingModel.cs" />
+    <Compile Include="Models\ReconcileLedgerModel.cs" />
     <Compile Include="Models\ListingModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\BookingModel.cs" />

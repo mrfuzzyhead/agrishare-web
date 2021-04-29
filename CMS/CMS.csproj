@@ -114,10 +114,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Booking Paid Email.html" />
     <Content Include="Data\Message Reply.html" />
     <Content Include="Data\Invoice PDF.html" />
     <Content Include="Data\Listing PDF.html" />
     <Content Include="Data\Email Template.html" />
+    <Content Include="Data\New Booking.html" />
+    <Content Include="Data\Verification Code.html" />
     <Content Include="Data\WHH-Logo.svg" />
     <Content Include="Login.aspx" />
     <Content Include="Default.aspx" />

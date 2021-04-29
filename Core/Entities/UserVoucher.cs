@@ -21,6 +21,7 @@ namespace Agrishare.Core.Entities
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
     
+        public virtual User User { get; set; }
         public virtual Voucher Voucher { get; set; }
     }
 }

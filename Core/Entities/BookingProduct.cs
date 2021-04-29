@@ -21,7 +21,7 @@ namespace Agrishare.Core.Entities
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual Booking Booking { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace Agrishare.Core.Entities
         }
     
         public int Id { get; set; }
-        public int RegionId { get; set; }
         public int UserId { get; set; }
         public int CategoryId { get; set; }
         public string Title { get; set; }
@@ -43,6 +42,7 @@ namespace Agrishare.Core.Entities
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+        public int RegionId { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

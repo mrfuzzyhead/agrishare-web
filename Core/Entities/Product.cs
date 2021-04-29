@@ -14,6 +14,12 @@ namespace Agrishare.Core.Entities
     
     public partial class Product
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.BookingProducts = new HashSet<BookingProduct>();
+        }
+    
         public int Id { get; set; }
         public int SupplierId { get; set; }
         public string Title { get; set; }
@@ -25,6 +31,8 @@ namespace Agrishare.Core.Entities
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingProduct> BookingProducts { get; set; }
         public virtual Supplier Supplier { get; set; }
     }
 }

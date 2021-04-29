@@ -181,3 +181,4 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\System.Buffers.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\System.Memory.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\System.Numerics.Vectors.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\CMS\bin\InfobipClientLib.dll

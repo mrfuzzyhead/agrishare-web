@@ -21,13 +21,13 @@ namespace Agrishare.Core.Entities
         public string ServerReference { get; set; }
         public string EcoCashReference { get; set; }
         public decimal Amount { get; set; }
-        public Currency Currency { get; set; }
         public TransactionStatus StatusId { get; set; }
         public string Log { get; set; }
         public string Error { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+        public Currency Currency { get; set; }
     
         public virtual Booking Booking { get; set; }
         public virtual BookingUser BookingUser { get; set; }

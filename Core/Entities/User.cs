@@ -19,6 +19,8 @@ namespace Agrishare.Core.Entities
         {
             this.Journals = new HashSet<Journal>();
             this.Messages = new HashSet<Message>();
+            this.BookingComments = new HashSet<BookingComment>();
+            this.UserVouchers = new HashSet<UserVoucher>();
         }
     
         public int Id { get; set; }
@@ -46,12 +48,21 @@ namespace Agrishare.Core.Entities
         public Nullable<int> AgentId { get; set; }
         public AgentUserType AgentTypeId { get; set; }
         public short PaymentMethod { get; set; }
-        public string BankAccount { get; set; }
+        public string EncryptedBankAccountJson { get; set; }
+        public int RegionId { get; set; }
+        public int FailedVoucherAttempts { get; set; }
+        public Nullable<int> SupplierId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual Agent Agent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingComment> BookingComments { get; set; }
+        public virtual Region Region { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserVoucher> UserVouchers { get; set; }
     }
 }

@@ -45,6 +45,8 @@ C:\Users\brad\Documents\Working Files\Agrishare\API\obj\Release\Agrishare.API.dl
 C:\Users\brad\Documents\Working Files\Agrishare\API\obj\Release\Agrishare.API.pdb
 C:\Users\brad\Documents\Working Files\Agrishare\API\bin\EPPlus.dll
 C:\Users\brad\Documents\Working Files\Agrishare\API\bin\EPPlus.xml
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csprojAssemblyReference.cache
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csproj.CoreCompileInputs.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\Agrishare.API.dll.config
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\Agrishare.API.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\Agrishare.API.pdb
@@ -69,8 +71,9 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\WebActivatorEx.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\StackExchange.Redis.StrongName.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\ephtmltopdf.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\EPPlus.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\RestSharp.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\InfobipClientLib.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\AWSSDK.dll
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\RestSharp.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\Mandrill.net.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\System.Linq.Dynamic.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\System.IO.Compression.dll
@@ -90,9 +93,6 @@ C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\ephtmltopdf.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\EPPlus.xml
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\AWSSDK.pdb
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\epengine.dll
-C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csprojAssemblyReference.cache
-C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csproj.CoreCompileInputs.cache
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csproj.CopyComplete
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\Agrishare.API.dll
 C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\Agrishare.API.pdb
-C:\Users\brad\Documents\Working Files\AgriShare Web\API\bin\InfobipClientLib.dll
