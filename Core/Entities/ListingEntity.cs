@@ -264,6 +264,21 @@ namespace Agrishare.Core.Entities
             };
         }
 
+        public object AppDashboardJson()
+        {
+            var PhotoUrl = $"{Config.CDNURL}/NoImage.png";
+            if (Photos.Count > 0)
+                PhotoUrl = $"{Config.CDNURL}/{Photos.FirstOrDefault().ThumbName}";
+
+            return new
+            {
+                Id,
+                Title,
+                Category = Category?.Json(),
+                PhotoUrl
+            };
+        }
+
         /* Reports */
 
         public static List<ListingData> Graph(DateTime StartDate, DateTime EndDate, int CategoryId = 0, int RegionId = 0)

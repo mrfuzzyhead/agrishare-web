@@ -115,7 +115,10 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
+                var query = ctx.Users
+                    .Include(o => o.Region)
+                    .Include(o => o.Agent)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -369,7 +372,7 @@ namespace Agrishare.Core.Entities
                 }
 
                 if (query == null)
-                    query = ctx.Users.Where(u => !u.Deleted);
+                    query = ctx.Users.Include(o => o.Region).Include(o => o.Agent).Where(u => !u.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -500,7 +503,7 @@ namespace Agrishare.Core.Entities
                 }
 
                 if (query == null)
-                    query = ctx.Users.Where(u => !u.Deleted);
+                    query = ctx.Users.Include(o => o.Region).Include(o => o.Agent).Where(u => !u.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));

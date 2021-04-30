@@ -29,7 +29,7 @@ namespace Agrishare.Core.Entities
     
         public int Id { get; set; }
         public Nullable<int> ListingId { get; set; }
-        public int ServiceId { get; set; }
+        public Nullable<int> ServiceId { get; set; }
         public BookingFor ForId { get; set; }
         public int UserId { get; set; }
         public string Location { get; set; }

@@ -50,10 +50,13 @@ namespace Agrishare.API.Controllers.App
                 Commission = CurrentUser.Agent != null ? Booking.SeekingSummaryAgentCommission(CurrentUser.Id) : 0
             };
 
+            var trending = Listing.List(PageIndex: 0, PageSize: 5, RegionId: CurrentRegion.Id, Trending: true);
+           
             return Success(new
             {
                 Notifications = notifications.Select(e => e.AppDashboardJson()),
                 Bookings = bookings.Select(e => e.AppDashboardJson()),
+                Trending = trending.Select(e => e.AppDashboardJson()),
                 Summary = summary
             });
         }

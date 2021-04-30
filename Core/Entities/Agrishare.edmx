@@ -1302,7 +1302,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ListingId" Type="Int32" Nullable="true" />
-          <Property Name="ServiceId" Type="Int32" Nullable="false" />
+          <Property Name="ServiceId" Type="Int32" Nullable="true" />
           <Property Name="ForId" Type="AgrishareModel.BookingFor" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Location" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
@@ -1968,7 +1968,7 @@
           <Property Name="LabourServices" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="bookings_ibfk_3">
-          <End Type="AgrishareModel.Service" Role="Service" Multiplicity="1">
+          <End Type="AgrishareModel.Service" Role="Service" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="*" />
