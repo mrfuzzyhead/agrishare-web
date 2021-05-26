@@ -345,7 +345,7 @@ namespace Agrishare.API.Controllers.App
 
             var bookingUsers = Entities.BookingUser.List(BookingId: booking.Id);
 
-            var isOwner = CurrentUser.Id == booking.Listing?.UserId || CurrentUser.SupplierId == booking.Supplier?.Id;
+            var isOwner = CurrentUser.Id == booking.Listing?.UserId || (booking.Supplier != null && CurrentUser.SupplierId == booking.Supplier?.Id);
 
             return Success(new
             {
