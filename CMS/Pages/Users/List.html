@@ -68,6 +68,7 @@
                         <gl-menu-item gl-icon="account_balance_wallet" ng-click="app.go('/bookings/list/filter/userid/'+item.Id+'?'+app.returnUrlQs())">Bookings</gl-menu-item>
                         <gl-menu-item gl-icon="message" ng-click="app.go('/users/sms/'+item.Id+'?'+app.returnUrlQs())">Send SMS</gl-menu-item>
                         <gl-menu-item gl-icon="edit" ng-click="app.go('/users/edit/'+item.Id+'?'+app.returnUrlQs())">Edit</gl-menu-item>
+                        <gl-menu-item gl-icon="password" ng-click="app.go('/users/password/'+item.Id+'?'+app.returnUrlQs())">Set password</gl-menu-item>
                         <gl-menu-item gl-icon="delete" ng-click="list.delete($index, app.apiUrl + '/cms/users/delete?id=' + item.Id)">Delete</gl-menu-item>
                     </gl-popup-menu>
                 </action>

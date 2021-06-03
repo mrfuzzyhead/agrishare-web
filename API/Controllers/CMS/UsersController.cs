@@ -228,6 +228,40 @@ namespace Agrishare.API.Controllers.CMS
             return Error();
         }
 
+        /* Password */
+
+        [Route("users/password/find")]
+        [AcceptVerbs("GET")]
+        public object FindPassword(int Id = 0)
+        {           
+            var data = new
+            {
+                Entity = Entities.User.Find(Id: Id).AdminJson()
+            };
+
+            return Success(data);
+        }
+
+        [Route("users/password/save")]
+        [AcceptVerbs("POST")]
+        public object SavePassword(Entities.User User)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            var user = User.Find(Id: User.Id);
+            user.ClearPassword = User.ClearPassword;
+            user.FailedLoginAttempts = 0;
+
+            if (User.Save())
+                return Success(new
+                {
+                    Entity = User.AdminJson()
+                });
+
+            return Error();
+        }
+
         /* Deleted */
 
         [Route("users/deleted/list")]
