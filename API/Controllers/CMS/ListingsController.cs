@@ -38,7 +38,7 @@ namespace Agrishare.API.Controllers.CMS
                     title = category.Title;
             }
 
-            int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0;
+            int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0, labour = 0, land = 0, irrigation = 0;
             decimal averageRating = 0M;
             if (PageIndex == 0)
             {
@@ -46,6 +46,9 @@ namespace Agrishare.API.Controllers.CMS
                 tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId, RegionId: CurrentRegion.Id);
                 lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId, RegionId: CurrentRegion.Id);
                 processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId, RegionId: CurrentRegion.Id);
+                labour = Entities.Listing.Count(CategoryId: Entities.Category.LabourId, RegionId: CurrentRegion.Id);
+                land = Entities.Listing.Count(CategoryId: Entities.Category.LandId, RegionId: CurrentRegion.Id);
+                irrigation = Entities.Listing.Count(CategoryId: Entities.Category.IrrigationId, RegionId: CurrentRegion.Id);
                 buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId, RegionId: CurrentRegion.Id);
                 reviews = Entities.Rating.Count(RegionId: CurrentRegion.Id);
                 onestar = Entities.Rating.Count(Stars: 1, RegionId: CurrentRegion.Id);
@@ -76,6 +79,9 @@ namespace Agrishare.API.Controllers.CMS
                     Tractors = tractors,
                     Lorries = lorries,
                     Processors = processors,
+                    Labour = labour,
+                    Land = land,
+                    Irrigation = irrigation,
                     Buses = buses,
                     Reviews = reviews,
                     AverageRating = averageRating,

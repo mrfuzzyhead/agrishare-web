@@ -37,6 +37,18 @@
                 <strong>{{list.summary.Buses}}</strong>
                 <small>Buses</small>
             </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/70?'+app.returnUrlQs())">
+                <strong>{{list.summary.Land}}</strong>
+                <small>Land</small>
+            </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/50?'+app.returnUrlQs())">
+                <strong>{{list.summary.Labour}}</strong>
+                <small>Labour</small>
+            </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/60?'+app.returnUrlQs())">
+                <strong>{{list.summary.Irrigation}}</strong>
+                <small>Irrigation</small>
+            </div>
             <ul>
                 <li><strong>{{list.summary.Reviews}}</strong> Ratings</li>
                 <li><strong>{{list.summary.OneStar}}</strong> 1-Star Ratings</li>
