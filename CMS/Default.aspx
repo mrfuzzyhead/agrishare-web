@@ -49,7 +49,7 @@
                     <a ng-click="app.setRegion(region)" >
                         <i class="material-icons" ng-if="region.Id!==app.region.Id">language</i>
                         <!--https://www.countryflags.com/-->
-                        <img src="/Resources/Images/Region-{{app.region.Id}}.png" ng-if="region.Id===app.region.Id" />
+                        <img ng-src="/Resources/Images/Region-{{app.region.Id}}.png" ng-if="region.Id===app.region.Id" />
                         <span>{{region.Title}}</span>
                     </a>
                 </li>
