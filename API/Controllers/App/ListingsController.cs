@@ -1,5 +1,6 @@
 ﻿using Agrishare.API.Models;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,17 @@ namespace Agrishare.API.Controllers.App
     [@Authorize(Roles="User")]
     public class ListingsController : BaseApiController
     {
+        [Route("listings/trending")]
+        [AcceptVerbs("GET")]
+        public object TrendingList(int PageIndex = 0, int PageSize = 10, int CategoryId = 0)
+        {
+            var list = Listing.List(PageIndex: PageIndex, PageSize: PageSize, CategoryId: CategoryId, RegionId: CurrentRegion.Id, Trending: true);
+            return Success(new
+            {
+                List = list.Select(e => e.Json())
+            });
+        }
+
         [Route("listings")]
         [AcceptVerbs("GET")]
         public object List(int PageIndex = 0, int PageSize = 25, int CategoryId = 0)
@@ -50,7 +62,7 @@ namespace Agrishare.API.Controllers.App
             if (!Model.Latitude.HasValue || !Model.Longitude.HasValue)
                 return Error("Location is required");
 
-            var listing = new Entities.Listing
+            var listing = new Listing
             {
                 AvailableWithoutFuel = Model.AvailableWithoutFuel,
                 AvailableWithFuel = Model.AvailableWithFuel,
@@ -66,27 +78,44 @@ namespace Agrishare.API.Controllers.App
                 StatusId = Entities.ListingStatus.Live,
                 Title = Model.Title,
                 UserId = CurrentUser.Id,
-                Year = Model.Year
+                Year = Model.Year,
+                Region = CurrentUser.Region
             };
 
-            listing.Services = new List<Entities.Service>();
+            listing.Services = new List<Service>();
             foreach (var service in Model.Services)
-                listing.Services.Add(new Entities.Service
+            {
+                if (service.QuantityUnitId == QuantityUnit.Hectares && CurrentRegion.Id == (int)Regions.Uganda)
+                    service.QuantityUnitId = QuantityUnit.Acres;
+
+                listing.Services.Add(new Service
                 {
                     DistanceUnitId = service.DistanceUnitId,
                     FuelPrice = service.FuelPrice,
                     FuelPerQuantityUnit = service.FuelPerQuantityUnit,
                     MaximumDistance = service.MaximumDistance,
                     MinimumQuantity = service.MinimumQuantity,
-                    Mobile = service.Mobile || listing.CategoryId == Entities.Category.TractorsId || listing.CategoryId == Entities.Category.LorriesId,
+                    Mobile = service.Mobile || listing.CategoryId == Category.TractorsId || listing.CategoryId == Category.LorriesId || listing.CategoryId == Category.IrrigationId || listing.CategoryId == Category.LabourId,
                     PricePerDistanceUnit = service.Mobile ? service.PricePerDistanceUnit ?? 0 : 0,
                     PricePerQuantityUnit = service.PricePerQuantityUnit,
                     QuantityUnitId = service.QuantityUnitId,
                     CategoryId = service.CategoryId,
                     TimePerQuantityUnit = service.TimePerQuantityUnit,
                     TimeUnitId = service.TimeUnitId,
-                    TotalVolume = service.TotalVolume
+                    TotalVolume = service.TotalVolume,
+                    LabourServices = service.Services,
+                    MaximumDistanceToWaterSource = service.MaximumDistanceToWaterSource,
+                    MaximumDepthOfWaterSource = service.MaximumDepthOfWaterSource,
+                    UnclearedLand = service.UnclearedLand,
+                    ClearedLand = service.ClearedLand,
+                    NearWaterSource = service.NearWaterSource,
+                    FertileSoil = service.FertileSoil,
+                    MaxRentalYears = service.MaxRentalYears,
+                    AvailableAcres = service.AvailableAcres,
+                    MinimumAcres = service.MinimumAcres,
+                    LandRegion = service.LandRegion
                 });
+            }
 
             if (listing.Services.Count == 0)
                 return Error("You must enable at least on service");
@@ -151,23 +180,35 @@ namespace Agrishare.API.Controllers.App
             listing.Title = Model.Title;
             listing.Year = Model.Year;
 
-            listing.Services = new List<Entities.Service>();
+            listing.Services = new List<Service>();
             foreach (var service in Model.Services)
-                listing.Services.Add(new Entities.Service
+                listing.Services.Add(new Service
                 {
                     Id = service.Id,
                     DistanceUnitId = service.DistanceUnitId,
+                    FuelPrice = service.FuelPrice,
                     FuelPerQuantityUnit = service.FuelPerQuantityUnit,
                     MaximumDistance = service.MaximumDistance,
                     MinimumQuantity = service.MinimumQuantity,
-                    Mobile = service.Mobile,
-                    PricePerDistanceUnit = service.PricePerDistanceUnit ?? 0,
+                    Mobile = service.Mobile || listing.CategoryId == Category.TractorsId || listing.CategoryId == Category.LorriesId || listing.CategoryId == Category.IrrigationId || listing.CategoryId == Category.LabourId,
+                    PricePerDistanceUnit = service.Mobile ? service.PricePerDistanceUnit ?? 0 : 0,
                     PricePerQuantityUnit = service.PricePerQuantityUnit,
                     QuantityUnitId = service.QuantityUnitId,
                     CategoryId = service.CategoryId,
                     TimePerQuantityUnit = service.TimePerQuantityUnit,
                     TimeUnitId = service.TimeUnitId,
-                    TotalVolume = service.TotalVolume
+                    TotalVolume = service.TotalVolume,
+                    LabourServices = service.Services,
+                    MaximumDistanceToWaterSource = service.MaximumDistanceToWaterSource,
+                    MaximumDepthOfWaterSource = service.MaximumDepthOfWaterSource,
+                    UnclearedLand = service.UnclearedLand,
+                    ClearedLand = service.ClearedLand,
+                    NearWaterSource = service.NearWaterSource,
+                    FertileSoil = service.FertileSoil,
+                    MaxRentalYears = service.MaxRentalYears,
+                    AvailableAcres = service.AvailableAcres,
+                    MinimumAcres = service.MinimumAcres,
+                    LandRegion = service.LandRegion
                 });
 
             var photos = new List<string>();
@@ -223,34 +264,64 @@ namespace Agrishare.API.Controllers.App
 
         [Route("listings/availability")]
         [AcceptVerbs("GET")]
-        public object Availability(int ListingId, DateTime StartDate, DateTime EndDate, int Days = 1)
+        public object Availability(int ListingId, DateTime StartDate, DateTime EndDate, int Days = 1, int Volume = 0)
         {
-            var listing = Entities.Listing.Find(Id: ListingId);
+            var listing = Listing.Find(Id: ListingId);
             if (listing == null || listing.Id == 0)
                 return Error("Listing not found");
 
-            var bookings = Entities.Booking.List(ListingId: ListingId, StartDate: StartDate, EndDate: EndDate);
+            var bookings = Booking.List(ListingId: ListingId, StartDate: StartDate, EndDate: StartDate.AddDays(Days));
 
             var list = new List<object>();
 
-            var date = StartDate;
-            while (date <= EndDate)
+            if (listing.CategoryId == Category.LandId)
             {
-                var start = date.StartOfDay();
-                var end = date.AddDays(Days - 1).EndOfDay();
+                if (listing.CategoryId == Category.LandId)
+                    EndDate = StartDate.AddMonths(12);
 
-                var available = bookings.Where(o => 
-                    (o.StatusId == Entities.BookingStatus.Approved || o.StatusId == Entities.BookingStatus.InProgress || o.StatusId == Entities.BookingStatus.Pending || o.StatusId == Entities.BookingStatus.Incomplete) && 
-                    o.StartDate <= end && 
-                    o.EndDate >= start).Count() == 0;
-
-                list.Add(new
+                var date = StartDate;
+                while (date <= EndDate)
                 {
-                    Date = date,
-                    Available = available
-                });
+                    var start = date.StartOfDay();
+                    var end = date.AddDays(Days - 1).EndOfDay();
 
-                date = date.AddDays(1);
+                    var bookedVolume = bookings.Where(o =>
+                        (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.InProgress || o.StatusId == BookingStatus.Pending || o.StatusId == BookingStatus.Incomplete) &&
+                        o.StartDate <= end &&
+                        o.EndDate >= start).Sum(e => e.TotalVolume);
+
+                    var available = bookedVolume + Volume <= listing.Services.First().AvailableAcres;
+
+                    list.Add(new
+                    {
+                        Date = date,
+                        Available = available
+                    });
+
+                    date = date.AddMonths(1);
+                }
+            }
+            else
+            {
+                var date = StartDate;
+                while (date <= EndDate)
+                {
+                    var start = date.StartOfDay();
+                    var end = date.AddDays(Days - 1).EndOfDay();
+
+                    var available = bookings.Where(o =>
+                        (o.StatusId == BookingStatus.Approved || o.StatusId == BookingStatus.InProgress || o.StatusId == BookingStatus.Pending || o.StatusId == BookingStatus.Incomplete) &&
+                        o.StartDate <= end &&
+                        o.EndDate >= start).Count() == 0;
+
+                    list.Add(new
+                    {
+                        Date = date,
+                        Available = available
+                    });
+
+                    date = date.AddDays(1);
+                }
             }
 
             return Success(new

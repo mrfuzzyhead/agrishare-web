@@ -12,7 +12,7 @@ namespace Agrishare.CMS.Pages
             if (!CurrentUser.Roles.Contains(Role.Administrator))
                 Response.Redirect("/");
 
-            var bookings = Booking.SettlementReport(StartDate: DateTime.Now.AddDays(-7), EndDate: DateTime.Now);
+            var bookings = Booking.SettlementReport(StartDate: DateTime.Now.AddDays(-7), EndDate: DateTime.Now, RegionId: CurrentRegion.Id);
 
             var csv = new StringBuilder();
             csv.AppendLine("Date,Booking,User,Telephone,Amount,Type,EcoCash Reference");

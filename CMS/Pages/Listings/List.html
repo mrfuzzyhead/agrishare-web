@@ -7,6 +7,7 @@
 
         <gl-popup-menu gl-position="top right" class="responsive">
             <gl-menu-item gl-icon="search" ng-click="list.showSearch()">Search</gl-menu-item>
+            <gl-menu-item gl-icon="trending_up" ng-click="app.go('/listings/list/filter/trending/1?'+app.returnUrlQs())">Trending</gl-menu-item>
             <gl-menu-item gl-icon="map" ng-click="app.go('/listings/map?'+app.returnUrlQs())">Map</gl-menu-item>
             <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
         </gl-popup-menu>
@@ -36,6 +37,18 @@
                 <strong>{{list.summary.Buses}}</strong>
                 <small>Buses</small>
             </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/70?'+app.returnUrlQs())">
+                <strong>{{list.summary.Land}}</strong>
+                <small>Land</small>
+            </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/50?'+app.returnUrlQs())">
+                <strong>{{list.summary.Labour}}</strong>
+                <small>Labour</small>
+            </div>
+            <div style="cursor: pointer" ng-click="app.go('/listings/list/filter/categoryid/60?'+app.returnUrlQs())">
+                <strong>{{list.summary.Irrigation}}</strong>
+                <small>Irrigation</small>
+            </div>
             <ul>
                 <li><strong>{{list.summary.Reviews}}</strong> Ratings</li>
                 <li><strong>{{list.summary.OneStar}}</strong> 1-Star Ratings</li>
@@ -58,14 +71,17 @@
 
             <div ng-repeat="item in list.data">
                 <photo style="background-image:url({{item.Photos[0].Thumb}})"></photo>
-                <row class="listing" ng-click="app.go('/listings/detail/'+item.Id+'?'+app.returnUrlQs())">
-                    <div>
+                <row class="listing">
+                    <div ng-click="app.go('/listings/detail/'+item.Id+'?'+app.returnUrlQs())">
                         <strong>{{item.Title}}</strong> &nbsp; <gl-rating gl-stars="item.AverageRating" ng-if="item.RatingCount>0" style="position:relative;top:2px"></gl-rating> <small style="position:relative;top:-2px" ng-if="item.RatingCount>0">({{item.RatingCount}})</small><br />
                         <small>{{item.Category.Title}}</small>
                         <small ng-if="item.Brand">&bull; {{item.Brand}}</small>
                     </div>
                     <div>
                         <em class="status outline">{{item.Status}}</em>
+                    </div>
+                    <div class="trending">
+                        <i class="material-icons" ng-click="list.async($index, app.apiUrl + '/cms/listings/trending/toggle?id='+item.Id)" ng-class="{'active':item.Trending}">trending_up</i>
                     </div>
                 </row>
                 <action>

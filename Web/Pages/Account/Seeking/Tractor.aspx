@@ -4,8 +4,6 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     
     <h1>Seeking a tractor</h1>
-     
-    <p>Lorem ipsum dolores sit amet.</p>
 
     <div ng-controller="SearchController">
 
@@ -24,7 +22,7 @@
             </div>
 
             <div id="StepTractorDetails" ng-show="search.step===3">
-                <p>Enter the size of the field in hectares:</p>
+                <p>Enter the size of the field in <%=QuantityUnit %>s:</p>
                 <asp:TextBox runat="server" ID="FieldSize" TextMode="Number" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="FieldSize" Text="This is a required field" Display="Dynamic" ValidationGroup="Step3"/>
             </div>

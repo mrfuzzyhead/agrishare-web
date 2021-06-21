@@ -1,0 +1,35 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Supplier" ag-selected-url="#/suppliers/list" ag-api-route="/cms/suppliers/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
+            <gl-upload gl-label="Logo" ng-model="form.entity" gl-model-attribute="Logo" gl-required="true"></gl-upload>
+
+            <div flex>
+                <gl-textbox gl-label="Transport Cost Per KM" ng-model="form.entity.TransportCostPerKm" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Maximum Distance" ng-model="form.entity.MaximumDistance" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
+            <h2>Location</h2>
+            <gl-textbox gl-label="Address" ng-model="form.entity.Location" gl-required="true"></gl-textbox>
+            <div flex>
+                <gl-textbox gl-label="Latitude" ng-model="form.entity.Latitude" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Longitude" ng-model="form.entity.Longitude" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

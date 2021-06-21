@@ -17,8 +17,12 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, [FromUri] ListingFilterModel Filter)
         {
-            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId);
+            bool? trending = null;
+            if (Filter.Trending == 1)
+                trending = true;
+
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
             var title = "Listings";
 
             if (Filter.UserId > 0)
@@ -34,21 +38,24 @@ namespace Agrishare.API.Controllers.CMS
                     title = category.Title;
             }
 
-            int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0;
+            int total = 0, tractors = 0, lorries = 0, processors = 0, buses = 0, reviews = 0, onestar = 0, labour = 0, land = 0, irrigation = 0;
             decimal averageRating = 0M;
             if (PageIndex == 0)
             {
-                total = Entities.Listing.Count();
-                tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId);
-                lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId);
-                processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId);
-                buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId);
-                reviews = Entities.Rating.Count();
-                onestar = Entities.Rating.Count(Stars: 1);
-                averageRating = Entities.Rating.AverageRating();
+                total = Entities.Listing.Count(RegionId: CurrentRegion.Id);
+                tractors = Entities.Listing.Count(CategoryId: Entities.Category.TractorsId, RegionId: CurrentRegion.Id);
+                lorries = Entities.Listing.Count(CategoryId: Entities.Category.LorriesId, RegionId: CurrentRegion.Id);
+                processors = Entities.Listing.Count(CategoryId: Entities.Category.ProcessingId, RegionId: CurrentRegion.Id);
+                labour = Entities.Listing.Count(CategoryId: Entities.Category.LabourId, RegionId: CurrentRegion.Id);
+                land = Entities.Listing.Count(CategoryId: Entities.Category.LandId, RegionId: CurrentRegion.Id);
+                irrigation = Entities.Listing.Count(CategoryId: Entities.Category.IrrigationId, RegionId: CurrentRegion.Id);
+                buses = Entities.Listing.Count(CategoryId: Entities.Category.BusId, RegionId: CurrentRegion.Id);
+                reviews = Entities.Rating.Count(RegionId: CurrentRegion.Id);
+                onestar = Entities.Rating.Count(Stars: 1, RegionId: CurrentRegion.Id);
+                averageRating = Entities.Rating.AverageRating(RegionId: CurrentRegion.Id);
             }
 
-            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId);
+            var graphData = Entities.Listing.Graph(StartDate: DateTime.Now.AddMonths(-6), EndDate: DateTime.Now, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id);
             var Graph = new List<object>();
             foreach (var item in graphData)
             {
@@ -72,6 +79,9 @@ namespace Agrishare.API.Controllers.CMS
                     Tractors = tractors,
                     Lorries = lorries,
                     Processors = processors,
+                    Labour = labour,
+                    Land = land,
+                    Irrigation = irrigation,
                     Buses = buses,
                     Reviews = reviews,
                     AverageRating = averageRating,
@@ -164,6 +174,25 @@ namespace Agrishare.API.Controllers.CMS
                     listing.Id
                 });
             }
+
+            return Error("An unknown error occurred");
+        }
+
+        [Route("listings/trending/toggle")]
+        [AcceptVerbs("GET")]
+        public object ToggleTrending(int Id)
+        {
+            var listing = Entities.Listing.Find(Id: Id);
+            if (listing?.Id == 0)
+                return Error("Listing not found");
+
+            listing.Trending = !listing.Trending;
+
+            if (listing.Save())
+                return Success(new
+                {
+                    Entity = listing.Json()
+                });
 
             return Error("An unknown error occurred");
         }

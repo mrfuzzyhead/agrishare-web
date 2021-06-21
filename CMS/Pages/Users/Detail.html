@@ -43,6 +43,44 @@
                 </ul>
             </div>
 
+            <div class="box">
+                <h2>Payment Methods</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Cash</strong>
+                        <span ng-show="detail.entity.PaymentMethods.includes(1)"><i class="material-icons" style="color:green">check</i></span>
+                        <span ng-hide="detail.entity.PaymentMethods.includes(1)"><i class="material-icons" style="color:gray">cancel</i></span>
+                    </li>
+                    <li>
+                        <strong>Bank Transfer</strong>
+                        <span ng-show="detail.entity.PaymentMethods.includes(2)"><i class="material-icons" style="color:green">check</i></span>
+                        <span ng-hide="detail.entity.PaymentMethods.includes(2)"><i class="material-icons" style="color:gray">cancel</i></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box" ng-if="detail.entity.BankAccount.AccountNumber">
+                <h2>Bank Account</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Bank</strong>
+                        <span>{{detail.entity.BankAccount.Bank}}</span>
+                    </li>
+                    <li>
+                        <strong>Branch</strong>
+                        <span>{{detail.entity.BankAccount.Branch}}</span>
+                    </li>
+                    <li>
+                        <strong>Account Name</strong>
+                        <span>{{detail.entity.BankAccount.AccountName}}</span>
+                    </li>
+                    <li>
+                        <strong>Account Number</strong>
+                        <span>{{detail.entity.BankAccount.AccountNumber}}</span>
+                    </li>
+                </ul>
+            </div>
+
             <div class="box" ng-if="detail.entity.VerificationCode">
                 <h2>Verification</h2>
                 <ul class="details">
@@ -53,6 +91,22 @@
                     <li>
                         <strong>Expiry</strong>
                         <span>{{detail.entity.VerificationCodeExpiry || 'N/A' | date : 'd MMMM yyyy h:mma'}}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box">
+                <h2>Advanced</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Failed Login Count</strong>
+                        <span>{{detail.entity.FailedLoginAttempts}}</span>
+                        <i class="material-icons" ng-click="detail.async('/cms/users/failedloginattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
+                    </li>
+                    <li>
+                        <strong>Failed Voucher Count</strong>
+                        <span>{{detail.entity.FailedVoucherAttempts}}</span>
+                        <i class="material-icons" ng-click="detail.async('/cms/users/failedvoucherattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
                     </li>
                 </ul>
             </div>

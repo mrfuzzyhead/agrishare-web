@@ -1,0 +1,23 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Reconcile" ag-selected-url="#/journals/list" ag-api-route="/cms/journals/export/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+            <div flex>
+                <gl-date gl-label="Start Date" ng-model="form.entity.StartDate" gl-required="true"></gl-date>
+                <gl-date gl-label="End Date" ng-model="form.entity.EndDate" gl-required="true"></gl-date>
+            </div>
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

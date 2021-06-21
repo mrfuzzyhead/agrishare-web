@@ -166,7 +166,19 @@ namespace Agrishare.Core.Entities
                 TimePerQuantityUnit,
                 PricePerDistanceUnit,
                 FuelPrice,
-                DateCreated
+                DateCreated,
+
+                MaximumDistanceToWaterSource,
+                MaximumDepthOfWaterSource,
+                UnclearedLand,
+                ClearedLand,
+                NearWaterSource,
+                FertileSoil,
+                LandRegion,
+                MaxRentalYears,
+                AvailableAcres,
+                MinimumAcres,
+                LabourServices
             };
         }
     }

@@ -22,13 +22,22 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.Literal ListTitle;
         
         /// <summary>
-        /// List control.
+        /// ListingsList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Agrishare.Web.Controls.PagedRepeater List;
+        protected global::Agrishare.Web.Controls.PagedRepeater ListingsList;
+        
+        /// <summary>
+        /// ProductList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Agrishare.Web.Controls.PagedRepeater ProductList;
         
         /// <summary>
         /// AddButton control.
@@ -38,6 +47,15 @@ namespace Agrishare.Web.Pages.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink AddButton;
+        
+        /// <summary>
+        /// EquipmentMenuItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl EquipmentMenuItem;
         
         /// <summary>
         /// Master property.

@@ -164,7 +164,7 @@
 
             <asp:Panel runat="server" class="form" id="ForgotForm">
                 
-                <p>Enter your mobile number and we will send you a verification code via SMS.</p>
+                <p>Enter your mobile number and we will send you a verification code via email or SMS.</p>
 
                 <div>
                     <span class="material-icons">phone_android</span>

@@ -26,6 +26,20 @@ nav {
 
         span {
             flex: 1;
+            display: flex;
+            align-items: baseline;
+
+            b {
+                font-weight: normal;
+            }
+
+            small {
+                flex: 1;
+                padding-left: 10px;
+                font-size: 13px;
+                color: rgba(255, 255, 255, .5);
+                text-transform: uppercase;
+            }
         }
 
         a {
@@ -119,6 +133,24 @@ nav {
                 ul {
                     display: block;
                     opacity: 1;
+                }
+            }
+
+            &.region {
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 28px;
+                    margin-left: 2px;
+                    border: solid 1px white;
+                    border-radius: 99px;
+                }
+
+                &.active {
+                    a {
+                        color: white !important;
+                    }
                 }
             }
         }

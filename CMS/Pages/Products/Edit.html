@@ -1,0 +1,29 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Product" ag-selected-url="#/products/list" ag-api-route="/cms/products/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <gl-dropdown-list gl-label="Supplier" ng-model="form.entity.Supplier" gl-source="form.data.Suppliers" gl-required="true"></gl-dropdown-list>
+            <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
+            <gl-upload gl-label="Photo" ng-model="form.entity" gl-model-attribute="Photo" gl-required="true"></gl-upload>
+            <gl-textarea gl-label="Description" ng-model="form.entity.Description" gl-required="true"></gl-textarea>
+            <div flex>
+                <gl-textbox gl-label="Cost/day" ng-model="form.entity.DayRate" gl-required="true" gl-type="number"></gl-textbox>
+                <gl-textbox gl-label="Stock" ng-model="form.entity.Stock" gl-required="true" gl-type="number"></gl-textbox>
+            </div>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

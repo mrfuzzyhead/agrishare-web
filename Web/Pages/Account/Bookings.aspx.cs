@@ -21,7 +21,7 @@ namespace Agrishare.Web.Pages.Account
             if (Group == Core.Entities.NotificationGroup.Offering)
             {
                 List.RecordCount = Core.Entities.Booking.Count(SupplierId: Master.CurrentUser.Id);
-                List.DataSource = Core.Entities.Booking.List(PageSize: 10, SupplierId: Master.CurrentUser.Id);
+                List.DataSource = Core.Entities.Booking.List(PageSize: 10, ListingUserId: Master.CurrentUser.Id, ListingSupplierId: Master.CurrentUser.SupplierId ?? 0);
             }
             else
             {
@@ -31,8 +31,8 @@ namespace Agrishare.Web.Pages.Account
             List.DataBind();
 
             var startDate = DateTime.Today.StartOfDay().AddDays(-(DateTime.Today.Day - 1));
-            MonthSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
-            AllTimeSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(Master.CurrentUser.Id).ToString("N2");
+            MonthSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(UserId: Master.CurrentUser.Id, SupplierId: Master.CurrentUser.SupplierId ?? 0, StartDate: startDate).ToString("N2");
+            AllTimeSummary.Text = "$" + Core.Entities.Booking.OfferingSummary(UserId: Master.CurrentUser.Id, SupplierId: Master.CurrentUser.SupplierId ?? 0).ToString("N2");
         }
 
         public void BindBooking(object s, RepeaterItemEventArgs e)
@@ -41,10 +41,12 @@ namespace Agrishare.Web.Pages.Account
             {
                 var booking = (Core.Entities.Booking)e.Item.DataItem;
                 ((HyperLink)e.Item.FindControl("Link")).NavigateUrl = $"/account/booking/details?id={booking.Id}";
-                if ((booking.Listing.Photos?.Count ?? 0) > 0)
+                if ((booking.Listing?.Photos?.Count ?? 0) > 0)
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Listing.Photos.FirstOrDefault().ThumbName}");
+                else if (!string.IsNullOrEmpty(booking.Supplier?.Logo.Filename))
+                    ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Supplier.Logo.ThumbName}");
                 ((Literal)e.Item.FindControl("Date")).Text = booking.StartDate.ToString("d MMMM yyyy");
-                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing.Title);
+                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing?.Title ?? booking.Supplier?.Title ?? "Booking");
                 ((Literal)e.Item.FindControl("Price")).Text = "$" + booking.Price.ToString("N2");
             }
         }

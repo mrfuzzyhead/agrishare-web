@@ -1,0 +1,29 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Advert" ag-selected-url="#/adverts/list" ag-api-route="/cms/adverts/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
+            <gl-upload gl-label="Banner" ng-model="form.entity" gl-model-attribute="Banner" gl-required="true"></gl-upload>
+            <p style="margin-top: -10px; font-style: italic; font-size: 11px">Banner image should be 800px x 200px</p>
+            <gl-textbox gl-label="Link" ng-model="form.entity.LinkUrl"></gl-textbox>
+            <div flex>
+                <gl-date gl-label="Start Date" ng-model="form.entity.StartDate"></gl-date>
+                <gl-date gl-label="End Date" ng-model="form.entity.EndDate"></gl-date>
+            </div>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

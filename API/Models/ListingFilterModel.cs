@@ -9,6 +9,7 @@ namespace Agrishare.API.Models
         public string Query { get; set; }
         public int UserId { get; set; }
         public int CategoryId { get; set; }
+        public int Trending { get; set; }
 
     }
 }

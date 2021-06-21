@@ -190,7 +190,7 @@ agrishareApp.directive('glDate', function ($timeout) {
             //
 
             scope.$watch('year', function () {
-                if (scope.year == undefined)
+                if (scope.year === undefined)
                     return;
                 scope.calendarDate.year(scope.year);
                 scope.glooDateModel = scope.calendarDate.toDate();

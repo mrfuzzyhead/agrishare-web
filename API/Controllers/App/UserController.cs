@@ -2,6 +2,7 @@
 using Agrishare.Core;
 using Agrishare.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
@@ -10,8 +11,6 @@ namespace Agrishare.API.Controllers.App
 {
     public class UserController : BaseApiController
     {
-        private const int MaxFailedLoginAttempts = 5;
-
         [Route("register/telephone/lookup")]
         [AcceptVerbs("GET")]
         public object FindTelephone(string Telephone)
@@ -38,7 +37,7 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            var user = new Entities.User
+            var user = new User
             {
                 FirstName = User.FirstName,
                 LastName = User.LastName,
@@ -47,8 +46,17 @@ namespace Agrishare.API.Controllers.App
                 DateOfBirth = User.DateOfBirth,
                 GenderId = User.GenderId,
                 ClearPassword = User.PIN,
-                LanguageId = User.LanguageId ?? Entities.Language.English
+                LanguageId = User.LanguageId ?? Language.English
             };
+
+            try
+            {
+                user.Region = Region.Find(User.RegionId.Value);
+            }
+            catch
+            {
+                user.Region = Region.Find((int)Regions.Zimbabwe);
+            }
 
             if (!Regex.IsMatch(user.Telephone, @"^07[\d]{8}"))
                 return Error($"{user.Telephone} is not a valid cell number. The number should start with 07 and contain 10 digits.");
@@ -59,9 +67,9 @@ namespace Agrishare.API.Controllers.App
             if (!user.EmailAddress.IsEmpty() && !user.UniqueEmailAddress())
                 return Error($"{user.EmailAddress} has already been registered");
 
-            user.RoleList = $"{Entities.Role.User}";
+            user.RoleList = $"{Role.User}";
             user.NotificationPreferences = (int)Entities.NotificationPreferences.PushNotifications + (int)Entities.NotificationPreferences.SMS + (int)Entities.NotificationPreferences.BulkSMS;
-            user.StatusId = Entities.UserStatus.Pending;
+            user.StatusId = UserStatus.Pending;
 
             if (!Entities.User.VerificationRequired)
             {
@@ -72,7 +80,7 @@ namespace Agrishare.API.Controllers.App
 
             if (user.Save())
             {
-                Entities.Counter.Hit(CurrentUser.Id, Entities.Counters.Register);
+                Counter.Hit(CurrentUser.Id, Counters.Register);
 
                 if (Entities.User.VerificationRequired)
                 {
@@ -98,7 +106,7 @@ namespace Agrishare.API.Controllers.App
         {
             var user = Entities.User.Find(Id: UserId);
 
-            if (user?.FailedLoginAttempts > MaxFailedLoginAttempts)
+            if (user?.FailedLoginAttempts > Entities.User.MaxFailedLoginAttempts)
                 return Error("Your account has been locked - please reset your PIN.");
 
             if (user?.VerificationCode == Code)
@@ -138,7 +146,7 @@ namespace Agrishare.API.Controllers.App
             if (user?.StatusId == Entities.UserStatus.Pending)
                 return Error("Your account has not been verified - please reset your PIN.");
 
-            if (user.FailedLoginAttempts > MaxFailedLoginAttempts)
+            if (user.FailedLoginAttempts > Entities.User.MaxFailedLoginAttempts)
                 return Error("Your account has been locked - please reset your PIN.");
 
             if (user.ValidatePassword(PIN))
@@ -231,6 +239,15 @@ namespace Agrishare.API.Controllers.App
             CurrentUser.GenderId = User.GenderId;
             CurrentUser.LanguageId = User.LanguageId ?? Entities.Language.English;
 
+            try
+            {
+                CurrentUser.Region = Region.Find(User.RegionId.Value);
+            }
+            catch
+            {
+                CurrentUser.Region = Region.Find((int)Regions.Zimbabwe);
+            }
+
             if (newTelephone)
                 CurrentUser.StatusId = Entities.UserStatus.Pending;
 
@@ -288,6 +305,32 @@ namespace Agrishare.API.Controllers.App
         public object UpdateLanguagePreference(Language LanguageId)
         {
             CurrentUser.LanguageId = LanguageId;
+            if (CurrentUser.Save())
+                return Success(new
+                {
+                    User = CurrentUser.ProfileJson()
+                });
+
+            return Error("Could not update preferences");
+        }
+
+        [@Authorize(Roles = "User")]
+        [Route("profile/preferences/payments/update")]
+        [AcceptVerbs("GET")]
+        public object UpdatePaymentPreferences([FromUri] PaymentPreferencesModel Preferences)
+        {
+            CurrentUser.PaymentMethods = new List<PaymentMethod>();
+            if (Preferences.Cash)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.Cash);
+            if (Preferences.BankTransfer)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.BankTransfer);
+            if (Preferences.MobileMoney)
+                CurrentUser.PaymentMethods.Add(PaymentMethod.MobileMoney);
+            CurrentUser.BankAccount.Bank = Preferences.BankName;
+            CurrentUser.BankAccount.Branch = Preferences.BranchName;
+            CurrentUser.BankAccount.AccountName = Preferences.AccountName;
+            CurrentUser.BankAccount.AccountNumber = Preferences.AccountNumber;
+
             if (CurrentUser.Save())
                 return Success(new
                 {

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="index.htm" />
+    <Content Include="NoImage.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

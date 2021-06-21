@@ -65,11 +65,11 @@
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=8.0.24.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=8.0.25.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.EntityFramework, Version=8.0.24.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.24\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
+    <Reference Include="MySql.Data.EntityFramework, Version=8.0.25.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.25\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -107,27 +107,43 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\Ubiety.Dns.Core.dll</HintPath>
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\Ubiety.Dns.Core.dll</HintPath>
     </Reference>
     <Reference Include="Zstandard.Net, Version=1.1.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\Zstandard.Net.dll</HintPath>
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\Zstandard.Net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Booking Paid Email.html" />
     <Content Include="Data\Message Reply.html" />
     <Content Include="Data\Invoice PDF.html" />
     <Content Include="Data\Listing PDF.html" />
     <Content Include="Data\Email Template.html" />
+    <Content Include="Data\New Booking.html" />
+    <Content Include="Data\Verification Code.html" />
     <Content Include="Data\WHH-Logo.svg" />
     <Content Include="Login.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Pages\Adverts\Detail.html" />
+    <Content Include="Pages\Adverts\Edit.html" />
+    <Content Include="Pages\Adverts\List.html" />
     <Content Include="Pages\Messages\Detail.html" />
     <Content Include="Pages\Messages\Edit.html" />
     <Content Include="Pages\Messages\List.html" />
     <Content Include="Pages\Bookings\TransactionLog.html" />
+    <Content Include="Pages\Products\Detail.html" />
+    <Content Include="Pages\Products\Edit.html" />
+    <Content Include="Pages\Products\List.html" />
+    <Content Include="Pages\Regions\Edit.html" />
+    <Content Include="Pages\Regions\List.html" />
     <Content Include="Pages\SettlementReport.aspx" />
+    <Content Include="Pages\Suppliers\Detail.html" />
+    <Content Include="Pages\Suppliers\Edit.html" />
+    <Content Include="Pages\Suppliers\List.html" />
+    <Content Include="Pages\Tags\Edit.html" />
+    <Content Include="Pages\Tags\List.html" />
     <Content Include="Pages\TransactionFees\Edit.html" />
     <Content Include="Pages\TransactionFees\List.html" />
     <Content Include="Pages\Agents\Edit.html" />
@@ -157,6 +173,7 @@
     <Content Include="Pages\Faqs\Detail.html" />
     <Content Include="Pages\Faqs\Edit.html" />
     <Content Include="Pages\Faqs\List.html" />
+    <Content Include="Pages\Users\Password.html" />
     <Content Include="Pages\Users\SMS.html" />
     <Content Include="Pages\Users\Detail.html" />
     <Content Include="Pages\Users\Edit.html" />
@@ -165,6 +182,8 @@
     <Content Include="Pages\Dashboard.html" />
     <Content Include="Pages\Bookings\List.html" />
     <Content Include="Pages\Listings\List.html" />
+    <Content Include="Pages\Vouchers\Edit.html" />
+    <Content Include="Pages\Vouchers\List.html" />
     <Content Include="Resources\Images\Marker-1.png" />
     <Content Include="Resources\Images\Marker-17.png" />
     <Content Include="Resources\Images\Marker-2.png" />

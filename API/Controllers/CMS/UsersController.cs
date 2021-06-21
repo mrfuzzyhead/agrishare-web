@@ -31,29 +31,29 @@ namespace Agrishare.API.Controllers.CMS
             int recordCount = 0;
             List<User> list = new List<User>();
 
-            if (Filter.View == UserFilterView.Active || Filter.View == UserFilterView.CompletedBooking || Filter.View == UserFilterView.EquipmentOwner)
+            if ((int)Filter.View > 10)
             {
-                recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate);
-                list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate);
+                recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
+                list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
             }
             else
             {
-                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null);
-                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null);
+                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id);
+                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id);
             }
 
             int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
             if (PageIndex == 0)
             {
-                total = Entities.User.Count();
-                totalAgents = Entities.User.Count(Agent: true);
-                totalRegular = Entities.User.Count(Agent: false);
-                male = Entities.User.Count(Gender: Gender.Male);
-                female = Entities.User.Count(Gender: Gender.Female);
-                deleted = Entities.User.Count(Deleted: true);
-                lockedout = Entities.User.Count(FailedLoginAttempts: 5);
-                active = Entities.Counter.Count(UniqueUser: true);
-                unverified = Entities.User.Count(Status: Entities.UserStatus.Pending);
+                total = Entities.User.Count(RegionId: CurrentRegion.Id);
+                totalAgents = Entities.User.Count(Agent: true, RegionId: CurrentRegion.Id);
+                totalRegular = Entities.User.Count(Agent: false, RegionId: CurrentRegion.Id);
+                male = Entities.User.Count(Gender: Gender.Male, RegionId: CurrentRegion.Id);
+                female = Entities.User.Count(Gender: Gender.Female, RegionId: CurrentRegion.Id);
+                deleted = Entities.User.Count(Deleted: true, RegionId: CurrentRegion.Id);
+                lockedout = Entities.User.Count(FailedLoginAttempts: Entities.User.MaxFailedLoginAttempts, RegionId: CurrentRegion.Id);
+                active = Entities.Counter.Count(UniqueUser: true, RegionId: CurrentRegion.Id);
+                unverified = Entities.User.Count(Status: Entities.UserStatus.Pending, RegionId: CurrentRegion.Id);
             }
 
             var Genders = EnumInfo.ToList<Gender>().Where(g => g.Title != "None").ToList();
@@ -61,12 +61,19 @@ namespace Agrishare.API.Controllers.CMS
 
             var Views = new List<EnumDescriptor>
             {
-                new EnumDescriptor{ Id = 0, Title = "All" },
-                new EnumDescriptor{ Id = 1, Title = "Active" },
-                new EnumDescriptor{ Id = 2, Title = "Completed a booking" },
-                new EnumDescriptor{ Id = 3, Title = "Equipment Owner" },
-                new EnumDescriptor{ Id = 4, Title = "Agent" },
-                new EnumDescriptor{ Id = 5, Title = "Administrator" }
+                new EnumDescriptor{ Id = (int)UserFilterView.All, Title = "All" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Active, Title = "Active" },
+                new EnumDescriptor{ Id = (int)UserFilterView.EquipmentOwner, Title = "Equipment Owner" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Agent, Title = "Agent" },
+                new EnumDescriptor{ Id = (int)UserFilterView.Administrator, Title = "Administrator" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedSearch, Title = "Completed a search" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MatchedSearch, Title = "Matched a search" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MadeBooking, Title = "Made a booking" },
+                new EnumDescriptor{ Id = (int)UserFilterView.BookingConfirmed, Title = "Booking confirmed" },
+                new EnumDescriptor{ Id = (int)UserFilterView.PaidBooking, Title = "Paid for booking" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedBooking, Title = "Booking completed" },
+                new EnumDescriptor{ Id = (int)UserFilterView.CompletedSearchNoMatch, Title = "Search no matches" },
+                new EnumDescriptor{ Id = (int)UserFilterView.MatchedSearchNoBooking, Title = "Matched search no booking" }
             };
 
             var data = new
@@ -98,8 +105,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object UnverifiedList(int PageIndex = 0, int PageSize = 25, string Query = "")
         {
-            var recordCount = Entities.User.Count(Keywords: Query, Status: Entities.UserStatus.Pending);
-            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Status: Entities.UserStatus.Pending);
+            var recordCount = Entities.User.Count(Keywords: Query, Status: UserStatus.Pending, RegionId: CurrentRegion.Id);
+            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Status: UserStatus.Pending, RegionId: CurrentRegion.Id);
 
             var data = new
             {
@@ -116,6 +123,9 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Find(int Id = 0)
         {
+            var Suppliers = Entities.Supplier.List();
+            Suppliers.Insert(0, new Supplier { Id = 0, Title = "None" });
+
             var data = new
             {
                 Entity = Entities.User.Find(Id: Id).AdminJson(),
@@ -124,7 +134,11 @@ namespace Agrishare.API.Controllers.CMS
                 Languages = EnumInfo.ToList<Entities.Language>(),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
                 Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
-                Types = EnumInfo.ToList<AgentUserType>()
+                Types = EnumInfo.ToList<AgentUserType>(),
+                Entities.User.MaxFailedLoginAttempts,
+                Entities.User.MaxFailedVoucherAttempts,
+                PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0),
+                Suppliers = Suppliers.Select(e => new { e.Id, e.Title })
             };
 
             return Success(data);
@@ -145,6 +159,10 @@ namespace Agrishare.API.Controllers.CMS
                 var u = Entities.User.Find(Id: User.Id);
                 User.Password = u.Password;
                 User.Salt = u.Salt;
+            }
+            else
+            {
+                User.Region = CurrentRegion;
             }
 
             if (User.Save())
@@ -188,14 +206,70 @@ namespace Agrishare.API.Controllers.CMS
             });
         }
 
+        [Route("users/failedloginattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedLoginAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedLoginAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
+        [Route("users/failedvoucherattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedVoucherAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedVoucherAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
+        /* Password */
+
+        [Route("users/password/find")]
+        [AcceptVerbs("GET")]
+        public object FindPassword(int Id = 0)
+        {           
+            var data = new
+            {
+                Entity = Entities.User.Find(Id: Id).AdminJson()
+            };
+
+            return Success(data);
+        }
+
+        [Route("users/password/save")]
+        [AcceptVerbs("POST")]
+        public object SavePassword(Entities.User User)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            var user = User.Find(Id: User.Id);
+            user.ClearPassword = User.ClearPassword;
+            user.FailedLoginAttempts = 0;
+
+            if (User.Save())
+                return Success(new
+                {
+                    Entity = User.AdminJson()
+                });
+
+            return Error();
+        }
+
         /* Deleted */
 
         [Route("users/deleted/list")]
         [AcceptVerbs("GET")]
         public object DeletedList(int PageIndex = 0, int PageSize = 25, string Query = "")
         {
-            var recordCount = Entities.User.Count(Keywords: Query, Deleted: true);
-            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Deleted: true);
+            var recordCount = Entities.User.Count(Keywords: Query, Deleted: true, RegionId: CurrentRegion.Id);
+            var list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Deleted: true, RegionId: CurrentRegion.Id);
 
             var data = new
             {
@@ -251,7 +325,7 @@ namespace Agrishare.API.Controllers.CMS
                 return Error(ModelState);
 
             var user = Entities.User.Find(Model.UserId);
-            if (Core.Utils.SMS.SendMessage(user.Telephone, Model.Message))
+            if (Core.Utils.SMS.SendMessage(user.Telephone, Model.Message, user.Region))
             {
                 Model.Sent = true;
 

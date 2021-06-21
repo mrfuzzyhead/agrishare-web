@@ -142,8 +142,19 @@ gl-list {
 
                         > em {
                             display: inline-block;
-                            width: 80px;
+                            width: 90px;
                             text-align: center;
+                        }
+                    }
+
+                    .tag {
+                        display: inline-flex;
+                        align-items: center;
+                        margin-right: 10px;
+                        padding-top: 5px;
+
+                        i {
+                            margin-right: 5px;
                         }
                     }
 
@@ -164,6 +175,23 @@ gl-list {
 
                     > div:first-child {
                         flex: 1;
+                    }
+
+                    .trending {
+                        display: flex;
+                        align-items: center;
+                        color: #ccc;
+                        padding-left: 20px;
+
+                        i {
+                            padding: 5px;
+                        }
+
+                        .active {
+                            color: white;
+                            background: green;
+                            border-radius: 99px;
+                        }
                     }
                 }
 

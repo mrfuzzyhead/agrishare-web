@@ -8,7 +8,10 @@ agrishareApp.factory('App', function ($location, Utils) {
 
     var App = {
         apiUrl: '',
-        user: {},        
+        user: {},
+        region: {},
+        regions: [],  
+        cookieDomain: '',
 
         title: '',
         status: '',
@@ -18,8 +21,10 @@ agrishareApp.factory('App', function ($location, Utils) {
         menu: [
             { title: "Dashboard", icon: "assessment", url: "#/dashboard", roles: 'Administrator,Dashboard' },
             { title: "Listings", icon: "local_shipping", url: "#/listings/list", roles: 'Administrator' },
+            { title: "Products", icon: "shopping_basket", url: "#/products/list", roles: 'Administrator' },
             { title: "Bookings", icon: "account_balance_wallet", url: "#/bookings/list", roles: 'Administrator' },
             { title: "Ledger", icon: "receipt", url: "#/journals/list", roles: 'Administrator' },
+            { title: "Adverts", icon: "panorama", url: "#/adverts/list", roles: 'Administrator' },
             { title: "Messages", icon: "mail", url: "#/messages/list", roles: 'Administrator' },
             { title: "Users", icon: "person", url: "#/users/list", roles: 'Administrator' },
             {
@@ -35,9 +40,13 @@ agrishareApp.factory('App', function ($location, Utils) {
                     { title: "Broadcast SMS", url: "#/sms/broadcast", roles: 'Administrator' },
                     { title: "FAQs", url: "#/faqs/list", roles: 'Administrator' },
                     { title: "Log", url: "#/log/list", roles: 'Administrator' },
+                    { title: "Regions", url: "#/regions/list", roles: 'Administrator' },
                     { title: "Settings", url: "#/settings/list", roles: 'Administrator' },
+                    { title: "Suppliers", url: "#/suppliers/list", roles: 'Administrator' },
+                    { title: "Tags", url: "#/tags/list", roles: 'Administrator' },
                     { title: "Templates", url: "#/templates/list", roles: 'Administrator' },
-                    { title: "Transaction Fees", url: "#/transactionfees/list", roles: 'Administrator' }
+                    { title: "Transaction Fees", url: "#/transactionfees/list", roles: 'Administrator' },
+                    { title: "Vouchers", url: "#/vouchers/list", roles: 'Administrator' }
                 ]
             }
         ],
@@ -73,6 +82,12 @@ agrishareApp.factory('App', function ($location, Utils) {
 
         go: function (url) {
             location.hash = url;
+        },
+
+        setRegion: function (region) {
+            this.region = region;
+            Utils.cookie.create('region', region.Id, 365, this.cookieDomain);
+            location.reload();
         },
 
         slideshow: {

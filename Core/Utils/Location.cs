@@ -10,6 +10,11 @@ namespace Agrishare.Core.Utils
 {
     public class Location
     {
+        public static double GetDistance(decimal OriginLongitude, decimal OriginLatitude, decimal DestinationLongitude, decimal DestinationLatitude)
+        {
+            return GetDistance((double)OriginLongitude, (double)OriginLatitude, (double)DestinationLongitude, (double)DestinationLatitude);
+        }
+
         public static double GetDistance(double OriginLongitude, double OriginLatitude, double DestinationLongitude, double DestinationLatitude)
         {
             var d1 = OriginLatitude * (Math.PI / 180.0);

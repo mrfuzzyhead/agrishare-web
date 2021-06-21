@@ -12,7 +12,7 @@
             <div class="booking" ng-controller="AvailabilityController">
 
                 <ul>
-                    <li>
+                    <li runat="server" id="DatesRow">
                         <strong>Dates</strong>
                         <span>
                             <asp:Literal runat="server" ID="Dates" /> 
@@ -21,17 +21,17 @@
                         </span>
                         <span><em>This service will take <asp:Literal runat="server" ID="Days" />.</em></span>
                     </li>
-                    <li>
+                    <li runat="server" id="TransportCostRow">
                         <strong>Transport Cost</strong>
                         <span><asp:Literal runat="server" ID="TransportDistance" /></span>
                         <span><asp:Literal runat="server" ID="TransportCost" /></span>
                     </li>
-                    <li>
+                    <li runat="server" id="HireCostRow">
                         <strong>Hire Cost</strong>
                         <span><asp:Literal runat="server" ID="HireSize" /></span>
                         <span><asp:Literal runat="server" ID="HireCost" /></span>
                     </li>
-                    <li>
+                    <li runat="server" id="FuelCostRow">
                         <strong>Fuel Cost</strong>
                         <span><asp:Literal runat="server" ID="FuelSize" /></span>
                         <span><asp:Literal runat="server" ID="FuelCost" /></span>
@@ -48,22 +48,27 @@
                     </li>
                 </ul>
         
-                <div ng-show="calendar.visible">
-
-                    <asp:TextBox runat="server" ID="AvailabilityDays" ng-model="calendar.days" CssClass="hidden" />
-                    <asp:TextBox runat="server" ID="ListingId" ng-model="calendar.listingId" CssClass="hidden" />
-                    <asp:TextBox runat="server" ID="StartDate" ng-model="calendar.startDate" CssClass="hidden" />
-
+                <div ng-show="calendar.visible" class="availability-calendar">
                     <div>
-                        <a ng-click="calendar.previous()">Prev</a>
-                        <strong>{{calendar.month}}</strong>
-                        <a ng-click="calendar.next()">Next</a>
+                        <div>
+                            
+                            <asp:TextBox runat="server" ID="AvailabilityDays" ng-model="calendar.days" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="AvailabilityVolume" ng-model="calendar.days" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="ListingId" ng-model="calendar.listingId" CssClass="hidden" />
+                            <asp:TextBox runat="server" ID="StartDate" ng-model="calendar.startDate" CssClass="hidden" />
+
+                            <div>
+                                <a ng-click="calendar.previous()">Prev</a>
+                                <strong>{{calendar.month}}</strong>
+                                <a ng-click="calendar.next()">Next</a>
+                            </div>
+
+                            <ul>
+                                <li ng-repeat="item in calendar.dates" ng-click="calendar.setStartDate(item.Available, item.Date)" ng-class="{'available' : item.Available}">{{item.Date | date : 'd MMMM yyyy'}}</li>
+                            </ul>
+
+                        </div>
                     </div>
-
-                    <ul ng-repeat="item in calendar.dates">
-                        <li ng-click="calendar.setStartDate(item.Available, item.Date)" ng-class="{'available' : item.Available}">{{item.Date | date : 'd MMMM yyyy'}}</li>
-                    </ul>
-
                 </div>
 
             </div>
@@ -95,23 +100,53 @@
 
                     <p><strong>Make payment</strong></p>
 
-                    <p>Please enter the EcoCash number below and then check phone for further instructions.</p>
+                    <asp:PlaceHolder runat="server" ID="PaymentCashPanel" Visible="false">
+                        <p>Please deliver a cash payment to the AgriShare offices at:<br />
+                            <br />
+                            <asp:Literal runat="server" Id="CashDeliveryAddress" /></p>
+                    </asp:PlaceHolder>
 
-                    <div class="form-row">
-                        <asp:Label runat="server" AssociatedControlID="PayerName" Text="Name" />
-                        <asp:TextBox runat="server" ID="PayerName" MaxLength="64" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerName" Text="Name is required" ValidationGroup="Payment" />
-                    </div>
+                    <asp:PlaceHolder runat="server" ID="PaymentOrPanel" Visible="false">
+                        <p><strong>-OR-</strong></p>
+                    </asp:PlaceHolder>
 
-                    <div class="form-row">
-                        <asp:Label runat="server" AssociatedControlID="PayerMobileNumber" Text="EcoCash Number" />
-                        <asp:TextBox runat="server" ID="PayerMobileNumber" MaxLength="10" placeholder="07" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerMobileNumber" Text="EcoCash Number is required" ValidationGroup="Payment" />
-                    </div>
+                    <asp:PlaceHolder runat="server" ID="PaymentBankPanel" Visible="false">
 
-                    <p>
-                        <asp:Button runat="server" OnClick="InitiatePayment" Text="Submit" CssClass="button" ValidationGroup="Payment" />
-                    </p>
+                        <p>Pay via bank transfer to:<br />
+                            <br />
+                            <asp:Literal runat="server" Id="BankDetails" /></p>
+                        
+                        <p><strong>Upload your proof of payment:</strong></p>      
+                        
+                        <web:PhotoUpload runat="server" ID="PopUpload" />
+
+                        <p>
+                            <asp:Button runat="server" OnClick="SavePop" Text="Submit" CssClass="button" />
+                        </p>
+
+                    </asp:PlaceHolder>
+
+                    <asp:PlaceHolder runat="server" ID="MobileMoneyPanel" Visible="false">
+
+                        <p>Please enter the EcoCash number below and then check phone for further instructions.</p>
+
+                        <div class="form-row">
+                            <asp:Label runat="server" AssociatedControlID="PayerName" Text="Name" />
+                            <asp:TextBox runat="server" ID="PayerName" MaxLength="64" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerName" Text="Name is required" ValidationGroup="Payment" />
+                        </div>
+
+                        <div class="form-row">
+                            <asp:Label runat="server" AssociatedControlID="PayerMobileNumber" Text="EcoCash Number" />
+                            <asp:TextBox runat="server" ID="PayerMobileNumber" MaxLength="10" placeholder="07" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="PayerMobileNumber" Text="EcoCash Number is required" ValidationGroup="Payment" />
+                        </div>
+
+                        <p>
+                            <asp:Button runat="server" OnClick="InitiatePayment" Text="Submit" CssClass="button" ValidationGroup="Payment" />
+                        </p>
+
+                    </asp:PlaceHolder>
 
                 </div>
 
@@ -231,6 +266,25 @@
 
         </div>
         <div>
+            
+            <web:PagedRepeater runat="server" ID="ProductList" OnItemDataBound="BindProduct" Visible="false">
+                <HeaderTemplate>
+                    
+                    <div class="listings-list">
+                </HeaderTemplate>
+                <ItemTemplate>
+                        <asp:HyperLink runat="server" ID="Link">
+                            <span runat="server" ID="Photo" />
+                            <span>
+                                <strong><asp:Literal runat="server" ID="Title" /></strong>
+                                <small><asp:Literal runat="server" ID="Description" /></small>
+                            </span>
+                        </asp:HyperLink>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </div>
+                </FooterTemplate>
+            </web:PagedRepeater>
 
             <asp:Repeater runat="server" ID="Gallery" OnItemDataBound="BindPhoto">
                 <HeaderTemplate>
@@ -248,7 +302,7 @@
 
             <p><asp:Literal runat="server" ID="Description" /></p>
 
-            <ul class="details">
+            <ul class="details" style="display: none">
                 <li><strong>Brand</strong><span><asp:Literal runat="server" ID="Brand" /></span></li>
                 <li><strong>Horse Power</strong><span><asp:Literal runat="server" ID="HorsePower" /></span></li>
                 <li><strong>Year</strong><span><asp:Literal runat="server" ID="Year" /></span></li>

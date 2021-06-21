@@ -36,6 +36,8 @@ namespace Agrishare.Web.Controls
             }
         }
 
+        public bool Multiple { get; set; } = true;
+
         protected override void Render(HtmlTextWriter writer)
         {
             base.AddAttributesToRender(writer);
@@ -49,7 +51,7 @@ namespace Agrishare.Web.Controls
                         'queueID': '{ClientID}-upload-queue',
                         'uploadScript': '{Core.Entities.Config.APIURL}/upload/photo',
                         'removeCompleted': true,
-                        'multi': true,
+                        'multi': {Multiple.ToString().ToLower()},
                         'onInit': function () {{
                             var str = $('#{ClientID}-upload-files').val();
                             var files = str !== '' ? JSON.parse(str) : [];
@@ -59,6 +61,8 @@ namespace Agrishare.Web.Controls
                         'onUploadComplete': function (file, data) {{
                             var str = $('#{ClientID}-upload-files').val();
                             var files = str !== '' ? JSON.parse(str) : [];
+                            if (!{Multiple.ToString().ToLower()})
+                                files = [];
                             data = JSON.parse(data);
                             for (var i = 0; i < data.length; i++) {{
                                 $('#{ClientID}-upload-preview').append('<div><div style=""background-image:url({Core.Entities.Config.CDNURL}/' + data[i].ThumbName + ')""></div></div>');

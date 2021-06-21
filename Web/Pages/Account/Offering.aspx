@@ -26,6 +26,38 @@
                 <span>Processing</span>
             </a>
         </li>
+        <li>
+            <a href="/account/listings?cid=17">
+                <img src="/Resources/Images/Bus.svg" />
+                <span>Buses</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="search">
+        <li>
+            <a href="/account/listings?cid=60">
+                <img src="/Resources/Images/Irrigation.svg" />
+                <span>Irrigation</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/listings?cid=50">
+                <img src="/Resources/Images/Labour.svg" />
+                <span>Labour</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/listings?cid=70">
+                <img src="/Resources/Images/Land.svg" />
+                <span>Land</span>
+            </a>
+        </li>
+        <li>
+            <a href="/account/listings?cid=0" runat="server" id="EquipmentCell">
+                <img src="/Resources/Images/Equipment.svg" />
+                <span>Equipment</span>
+            </a>
+        </li>
     </ul>
 
     <br />
@@ -36,7 +68,7 @@
 
             <h3>Recent Notifications <a href="/account/notifications/offering">View All</a></h3>
 
-            <web:PagedRepeater runat="server" ID="Notifications" OnItemDataBound="BindNotification">
+            <web:PagedRepeater runat="server" ID="Notifications" OnItemDataBound="BindNotification" EmptyMessage="You have no unread notifications">
                 <HeaderTemplate>
                     <div class="notifications-summary-list">
                 </HeaderTemplate>
@@ -70,7 +102,7 @@
                 </div>
             </asp:Panel>
 
-            <web:PagedRepeater runat="server" ID="Bookings" OnItemDataBound="BindBooking">
+            <web:PagedRepeater runat="server" ID="Bookings" OnItemDataBound="BindBooking" EmptyMessage="You have not received any bookings yet">
                 <HeaderTemplate>
                     <div class="bookings-list">
                 </HeaderTemplate>
