@@ -20,5 +20,8 @@ namespace Agrishare.Core.Entities
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+        public string TitleShona { get; set; }
+        public string TitleNdebele { get; set; }
+        public string TitleLuganda { get; set; }
     }
 }

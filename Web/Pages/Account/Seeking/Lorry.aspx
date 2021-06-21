@@ -5,8 +5,6 @@
     
     <h1>Seeking a lorry</h1>
 
-    <p>Lorem ipsum dolores sit amet.</p>
-
     <div ng-controller="SearchController">
 
         <div class="search-form">

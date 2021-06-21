@@ -50,7 +50,7 @@ agrishareApp.directive('glDropdownList', function ($http, $q, App) {
             var label = element.find('label').css({ opacity: 0 });
 
             scope.$watch('ngModel', function (newValue) {
-                if (newValue || newValue == 0) 
+                if (newValue || newValue === 0) 
                     label.stop(true, true).animate({ opacity: 1 });
                 else
                     label.stop(true, true).animate({ opacity: 0 });
@@ -74,8 +74,10 @@ agrishareApp.directive('glDropdownList', function ($http, $q, App) {
             };
 
             scope.$watch('source', function (newValue) {
-                if (scope.source)
+                if (scope.source) {
                     scope.filteredSource = scope.source.slice();
+                    updateSelection();
+                }
             });
 
             scope.$watch('query', function (newValue) {
@@ -105,6 +107,7 @@ agrishareApp.directive('glDropdownList', function ($http, $q, App) {
             }, true);
 
             var updateSelection = function () {
+
                 if (scope.source && (scope.ngModel || scope.ngModel == 0)) {
                     var selectedValue = attrs.glSelection ? scope.ngModel : scope.ngModel.Id;
                     for (var i = 0; i < scope.source.length; i++) {

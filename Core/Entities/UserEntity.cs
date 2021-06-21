@@ -14,6 +14,9 @@ namespace Agrishare.Core.Entities
     {
         public static bool VerificationRequired => Convert.ToBoolean(Config.Find(Key: "User Verification Required")?.Value ?? "True");
 
+        public static int MaxFailedLoginAttempts = 0;
+        public static int MaxFailedVoucherAttempts = 10;
+
         public static string AuthCookieName = "agrishare";
         public static string DefaultSort = "FirstName";
         public string FullName => $"{FirstName} {LastName}".Trim();
@@ -39,6 +42,49 @@ namespace Agrishare.Core.Entities
             set
             {
                 roles = value;
+            }
+        }
+
+        public BankAccount bankAccount { get; set; }
+        public BankAccount BankAccount
+        {
+            get
+            {
+                if (bankAccount == null && !string.IsNullOrEmpty(EncryptedBankAccountJson))
+                {
+                    var bankAccountJson = Utils.Encryption.DecryptWithRC4(EncryptedBankAccountJson);
+                    bankAccount = JsonConvert.DeserializeObject<BankAccount>(bankAccountJson);
+                }
+                if (bankAccount == null)
+                    bankAccount = new BankAccount();
+                return bankAccount;
+            }
+            set
+            {
+                bankAccount = value;
+            }
+        }
+
+        private List<PaymentMethod> paymentMethods;
+        public List<PaymentMethod> PaymentMethods
+        {
+            get
+            {
+                if (paymentMethods == null)
+                {
+                    paymentMethods = new List<PaymentMethod>();
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.BankTransfer) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.BankTransfer);
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.Cash) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.Cash);
+                    if ((PaymentMethod & (int)Entities.PaymentMethod.MobileMoney) > 0)
+                        paymentMethods.Add(Entities.PaymentMethod.MobileMoney);
+                }
+                return paymentMethods;
+            }
+            set
+            {
+                paymentMethods = value;
             }
         }
 
@@ -69,7 +115,10 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
+                var query = ctx.Users
+                    .Include(o => o.Region)
+                    .Include(o => o.Agent)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -87,11 +136,17 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null)
+        public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "",
+            string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null,
+            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0, int SupplierId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Include(o => o.Agent).Where(o => o.Deleted == Deleted);
+                var query = ctx.Users
+                    .Include(o => o.Region)
+                    .Include(o => o.Agent)
+                    .Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -132,11 +187,19 @@ namespace Agrishare.Core.Entities
                 if (Administrator.HasValue && Administrator.Value == false)
                     query = query.Where(o => !o.RoleList.Contains("Administrator"));
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
+
+                if (SupplierId > 0)
+                    query = query.Where(e => e.SupplierId == SupplierId);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null, DateTime? RegisterToDate = null, bool? Administrator = null)
+        public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null,
+            DateTime? RegisterToDate = null, bool? Administrator = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -181,29 +244,34 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.DateCreated <= toDate);
                 }
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
+
                 return query.Count();
             }
         }
 
-        public static List<User> BulkSMSList()
+        public static List<User> BulkSMSList(int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.ToList();
             }
         }
-        
-        public static int BulkSMSCount()
+
+        public static int BulkSMSCount(int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Users.Where(o => o.Deleted == false && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
                 return query.Count();
             }
         }
 
-        public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None,
+            int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
+            DateTime? FilterEndDate = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -219,8 +287,66 @@ namespace Agrishare.Core.Entities
                             counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
+                    case UserFilterView.CompletedSearchNoMatch:
+                    case UserFilterView.MatchedSearchNoBooking:
+
+                        var counter3 = ctx.Counters.Include(c => c.User.Agent);
+
+                        if (FilterStartDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated <= FilterEndDate);
+
+                        var searchEvent = $"{Counters.Search}".ExplodeCamelCase();
+                        var matchEvent = $"{Counters.Match}".ExplodeCamelCase();
+                        var bookEvent = $"{Counters.Book}".ExplodeCamelCase();
+
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearchNoMatch:
+                                counter3 = counter3.Where(c => c.Event == searchEvent || c.Event == matchEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == matchEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+
+                            case UserFilterView.MatchedSearchNoBooking:
+                                counter3 = counter3.Where(c => c.Event == matchEvent || c.Event == bookEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == bookEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+                        }
+
+                        break;
+
+                    case UserFilterView.CompletedSearch:
+                    case UserFilterView.MatchedSearch:
+                    case UserFilterView.MadeBooking:
+                    case UserFilterView.BookingConfirmed:
+                    case UserFilterView.PaidBooking:
                     case UserFilterView.CompletedBooking:
-                        var eventName = $"{Counters.CompleteBooking}";
+
+                        var eventName = "";
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearch: eventName = $"{Counters.Search}".ExplodeCamelCase(); break;
+                            case UserFilterView.MatchedSearch: eventName = $"{Counters.Match}".ExplodeCamelCase(); break;
+                            case UserFilterView.MadeBooking: eventName = $"{Counters.Book}".ExplodeCamelCase(); break;
+                            case UserFilterView.BookingConfirmed: eventName = $"{Counters.ConfirmBooking}".ExplodeCamelCase(); break;
+                            case UserFilterView.PaidBooking: eventName = $"{Counters.CompletePayment}".ExplodeCamelCase(); break;
+                            case UserFilterView.CompletedBooking: eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase(); break;
+                        }
+
                         var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
                         if (FilterStartDate.HasValue)
                             counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
@@ -228,6 +354,7 @@ namespace Agrishare.Core.Entities
                             counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
                     case UserFilterView.EquipmentOwner:
                         var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
                         if (FilterStartDate.HasValue)
@@ -245,7 +372,7 @@ namespace Agrishare.Core.Entities
                 }
 
                 if (query == null)
-                    query = ctx.Users.Where(u => !u.Deleted);
+                    query = ctx.Users.Include(o => o.Region).Include(o => o.Agent).Where(u => !u.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -265,17 +392,23 @@ namespace Agrishare.Core.Entities
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
 
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
+
                 return query.Count();
             }
         }
 
-        public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null)
+        public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue,
+            string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
+            bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
+            DateTime? FilterEndDate = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
                 IQueryable<User> query = null;
 
-                switch(FilterView)
+                switch (FilterView)
                 {
                     case UserFilterView.Active:
                         var counter1 = ctx.Counters.Include(c => c.User.Agent);
@@ -285,8 +418,66 @@ namespace Agrishare.Core.Entities
                             counter1 = counter1.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter1.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
+                    case UserFilterView.CompletedSearchNoMatch:
+                    case UserFilterView.MatchedSearchNoBooking:
+
+                        var counter3 = ctx.Counters.Include(c => c.User.Agent);
+
+                        if (FilterStartDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated >= FilterStartDate);
+                        if (FilterEndDate.HasValue)
+                            counter3 = counter3.Where(c => c.DateCreated <= FilterEndDate);
+
+                        var searchEvent = $"{Counters.Search}".ExplodeCamelCase();
+                        var matchEvent = $"{Counters.Match}".ExplodeCamelCase();
+                        var bookEvent = $"{Counters.Book}".ExplodeCamelCase();
+
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearchNoMatch:
+                                counter3 = counter3.Where(c => c.Event == searchEvent || c.Event == matchEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == matchEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+
+                            case UserFilterView.MatchedSearchNoBooking:
+                                counter3 = counter3.Where(c => c.Event == matchEvent || c.Event == bookEvent);
+
+                                query = counter3
+                                    .GroupBy(c => c.UserId)
+                                    .Where(c => c.Count(d => d.Event == bookEvent) == 0)
+                                    .Select(g => g.FirstOrDefault().User)
+                                    .Where(u => !u.Deleted);
+
+                                break;
+                        }
+
+                        break;
+
+                    case UserFilterView.CompletedSearch:
+                    case UserFilterView.MatchedSearch:
+                    case UserFilterView.MadeBooking:
+                    case UserFilterView.BookingConfirmed:
+                    case UserFilterView.PaidBooking:
                     case UserFilterView.CompletedBooking:
-                        var eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase();
+
+                        var eventName = "";
+                        switch (FilterView)
+                        {
+                            case UserFilterView.CompletedSearch: eventName = $"{Counters.Search}".ExplodeCamelCase(); break;
+                            case UserFilterView.MatchedSearch: eventName = $"{Counters.Match}".ExplodeCamelCase(); break;
+                            case UserFilterView.MadeBooking: eventName = $"{Counters.Book}".ExplodeCamelCase(); break;
+                            case UserFilterView.BookingConfirmed: eventName = $"{Counters.ConfirmBooking}".ExplodeCamelCase(); break;
+                            case UserFilterView.PaidBooking: eventName = $"{Counters.CompletePayment}".ExplodeCamelCase(); break;
+                            case UserFilterView.CompletedBooking: eventName = $"{Counters.CompleteBooking}".ExplodeCamelCase(); break;
+                        }
+
                         var counter2 = ctx.Counters.Include(c => c.User.Agent).Where(c => c.Event == eventName);
                         if (FilterStartDate.HasValue)
                             counter2 = counter2.Where(c => c.DateCreated >= FilterStartDate);
@@ -294,6 +485,7 @@ namespace Agrishare.Core.Entities
                             counter2 = counter2.Where(c => c.DateCreated <= FilterEndDate);
                         query = counter2.GroupBy(c => c.UserId).Select(g => g.FirstOrDefault().User).Where(u => !u.Deleted);
                         break;
+
                     case UserFilterView.EquipmentOwner:
                         var listings = ctx.Listings.Include(c => c.User.Agent).Where(l => !l.Deleted);
                         if (FilterStartDate.HasValue)
@@ -311,7 +503,7 @@ namespace Agrishare.Core.Entities
                 }
 
                 if (query == null)
-                    query = ctx.Users.Where(u => !u.Deleted);
+                    query = ctx.Users.Include(o => o.Region).Include(o => o.Agent).Where(u => !u.Deleted);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -330,6 +522,9 @@ namespace Agrishare.Core.Entities
 
                 if (Status != UserStatus.None)
                     query = query.Where(o => o.StatusId == Status);
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -348,10 +543,31 @@ namespace Agrishare.Core.Entities
             if (Roles != null)
                 RoleList = string.Join(",", Roles);
 
+            PaymentMethod = 0;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.BankTransfer))
+                PaymentMethod += (int)Entities.PaymentMethod.BankTransfer;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.Cash))
+                PaymentMethod += (int)Entities.PaymentMethod.Cash;
+            if (PaymentMethods.Contains(Entities.PaymentMethod.MobileMoney))
+                PaymentMethod += (int)Entities.PaymentMethod.MobileMoney;
+
+            if (BankAccount != null)
+                EncryptedBankAccountJson = Utils.Encryption.EncryptWithRC4(JsonConvert.SerializeObject(BankAccount));
+
             var agent = Agent;
             if (agent != null && agent.Id > 0)
                 AgentId = agent.Id;
             Agent = null;
+
+            var region = Region;
+            if (region != null && region.Id > 0)
+                RegionId = region.Id;
+            Region = null;
+
+            var supplier = Supplier;
+            if (supplier != null && supplier.Id != 0)
+                SupplierId = supplier.Id;
+            Supplier = null;
 
             if (Id == 0)
                 success = Add();
@@ -359,6 +575,8 @@ namespace Agrishare.Core.Entities
                 success = Update();
 
             Agent = agent;
+            Region = region;
+            Supplier = supplier;
 
             if (!AuthToken.IsEmpty())
                 Cache.Instance.Add(CacheKey(AuthToken), this.AdminJson());
@@ -411,7 +629,9 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json(),
+                Supplier = Supplier?.TitleJson()
             };
         }
 
@@ -441,12 +661,13 @@ namespace Agrishare.Core.Entities
                 Status,
                 StatusId,
                 Telephone,
-                Language
+                Language,
+                Region = Region?.Json()
             };
         }
 
         public object ProfileJson()
-        {   
+        {
             return new
             {
                 Id,
@@ -472,7 +693,10 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json(),
+                BankAccount,
+                PaymentMethods
             };
         }
 
@@ -490,6 +714,7 @@ namespace Agrishare.Core.Entities
                 Gender,
                 AuthToken,
                 FailedLoginAttempts,
+                FailedVoucherAttempts,
                 VerificationCode,
                 VerificationCodeExpiry,
                 NotificationPreferences,
@@ -505,7 +730,10 @@ namespace Agrishare.Core.Entities
                 AgentId,
                 Agent = Agent?.Json(),
                 AgentTypeId,
-                AgentType
+                AgentType,
+                Region = Region?.Json(),
+                BankAccount,
+                PaymentMethods
             };
         }
 
@@ -544,13 +772,34 @@ namespace Agrishare.Core.Entities
         public bool SendVerificationCode()
         {
             if (VerificationCode.IsEmpty() || VerificationCodeExpiry < DateTime.UtcNow)
-            {
                 VerificationCode = GeneratePIN(4);
-                VerificationCodeExpiry = DateTime.UtcNow.AddDays(1);
-                Save();
+
+            VerificationCodeExpiry = DateTime.UtcNow.AddDays(1);
+            Save();
+
+            bool emailSent = false, smsSent = false;
+
+            if (!string.IsNullOrEmpty(EmailAddress))
+            {
+                var template = Template.Find(Title: "Verification Code");
+                template.Replace("Code", VerificationCode);
+                template.Replace("Expiry Date", VerificationCodeExpiry.Value.ToString("h:mmtt d MMMM yyyy"));
+
+                new Email
+                {
+                    Message = template.EmailHtml(),
+                    RecipientEmail = EmailAddress,
+                    SenderEmail = Config.ApplicationEmailAddress,
+                    Subject = "Verification Code"
+                }.Send();
+
+                emailSent = true;
             }
+
             var message = string.Format(Translations.Translate(TranslationKey.VerificationCode, LanguageId), VerificationCode);
-            return SMS.SendMessage(Telephone, message);
+            smsSent = SMS.SendMessage(Telephone, message, Region);
+
+            return emailSent || smsSent;
         }
 
         #endregion
@@ -568,16 +817,74 @@ namespace Agrishare.Core.Entities
         }
 
         #endregion
+
+        public static List<AgeGenderData> GetAgeGenderData(int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var sql = $@"SELECT 
+	                            CASE 
+                                WHEN Age IS NULL THEN 0
+	                            WHEN Age <= 17 THEN 0
+	                            WHEN Age BETWEEN 18 AND 24 THEN 1
+	                            WHEN Age BETWEEN 25 AND 34 THEN 2
+	                            WHEN Age BETWEEN 35 AND 44 THEN 3
+	                            WHEN Age BETWEEN 45 AND 54 THEN 4
+	                            WHEN Age BETWEEN 55 AND 64 THEN 5
+	                            WHEN Age >= 65 THEN 6
+	                            END AS AgeRangeIndex,
+	                            GenderId AS Gender,
+	                            IFNULL(COUNT(GenderId), 0) AS `Count`
+                            FROM (SELECT FLOOR(DATEDIFF(NOW(), DateOfBirth) / 365) AS Age, GenderId FROM Users WHERE RegionId = {RegionId}) AS `Data`                    
+                            GROUP BY AgeRangeIndex, GenderId";
+
+                return ctx.Database.SqlQuery<AgeGenderData>(sql).ToList();
+            }
+        }
+
+        public class AgeGenderData
+        {
+            public string AgeRange => AgeRanges[AgeRangeIndex];
+            public int AgeRangeIndex { get; set; }
+            public Gender Gender { get; set; }
+            public int Count { get; set; }
+
+            public static List<string> AgeRanges = new List<string>
+            {
+                "13 - 17",
+                "18 - 24",
+                "25 - 34",
+                "35 - 44",
+                "45 - 54",
+                "55 - 64",
+                "65 - 99"
+            };
+        }
     }
 
     public enum UserFilterView
     {
         All = 0,
-        Active = 1,
-        CompletedBooking = 2,
-        EquipmentOwner = 3,
+        Active = 21,
+        EquipmentOwner = 22,
         Agent = 4,
-        Administrator = 5
+        Administrator = 5,
+        CompletedSearch = 11,
+        MatchedSearch = 12,
+        MadeBooking = 13,
+        BookingConfirmed = 14,
+        PaidBooking = 15,
+        CompletedBooking = 16,
+        MatchedSearchNoBooking = 51,
+        CompletedSearchNoMatch = 52
+    }
+
+    public class BankAccount
+    {
+        public string Bank { get; set; }
+        public string Branch { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
     }
 
 }

@@ -3,6 +3,7 @@
 
     <ag-title-bar>
         <gl-icon-button gl-icon="receipt" ng-click="app.redirect('/pages/settlementreport.aspx')" ng-if="app.hasRole('Administrator')">Download Settlement Report</gl-icon-button>
+        <gl-icon-button gl-icon="insights" ng-click="app.go('#/settings/edit/39?'+app.returnUrlQs())" ng-if="app.hasRole('Administrator')&&app.region.Id===1">USD1.00 = {{dashboard.data.currentUsdRate | currency : 'ZWL'}}</gl-icon-button>
     </ag-title-bar>
 
     <ag-section ag-controller="dashboard">
@@ -14,7 +15,7 @@
                     <li><big>{{dashboard.data.activeListingCount}}</big><strong>Live<br />Listings</strong></li>
                     <li><big>{{dashboard.data.activeUsers}}</big><strong>Active<br />Users<br /><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Active User is a user who has used the app (performed any function within the app) during the selected time frame.">info</a></strong></li>
                     <li><big>{{dashboard.data.completeBookingCount}}</big><strong>Paid<br />Bookings</strong></li>
-                    <li><big>{{dashboard.data.smsBalance | currency}}</big><strong>SMS<br />Balance</strong></li>
+                    <li><big>{{dashboard.data.smsBalance | currency : '€'}}</big><strong>SMS<br />Balance</strong></li>
                 </ul>
             </div>
 
@@ -29,11 +30,22 @@
 
             <div class="settlement">
                 <ul>
-                    <li><big>{{dashboard.data.totalBookingAmount | currency}}</big><strong>Total<br />Transactions</strong></li>
-                    <li><big>{{dashboard.data.agrishareCommission | currency}}</big><strong>AgriShare<br />Commission</strong></li>
-                    <li><big>{{dashboard.data.feesIncurred | currency}}</big><strong>Fees<br />Incurred</strong></li>
-                    <li><big>{{dashboard.data.agentsCommission | currency}}</big><strong>Agents<br />Commission</strong></li>
+                    <li><big>{{dashboard.data.totalBookingAmount | currency : app.region.CurrencyCode}}</big><strong>Total<br />Transactions</strong></li>
+                    <li><big>{{dashboard.data.agrishareCommission | currency : app.region.CurrencyCode}}</big><strong>AgriShare<br />Commission</strong></li>
+                    <li><big>{{dashboard.data.feesIncurred | currency : app.region.CurrencyCode}}</big><strong>Fees<br />Incurred</strong></li>
+                    <li><big>{{dashboard.data.agentsCommission | currency : app.region.CurrencyCode}}</big><strong>Agents<br />Commission</strong></li>
                 </ul>
+            </div>
+
+            <div class="chart-view">
+                <canvas class="chart chart-line"
+                        chart-data="dashboard.data.profitGraph.Data"
+                        chart-labels="dashboard.data.profitGraph.Labels"
+                        chart-series="dashboard.data.profitGraph.Series"
+                        chart-dataset-override="dashboard.graph.datasetOverride"
+                        chart-colors="dashboard.graph.colors"
+                        chart-options="dashboard.graph.options"
+                        height="100"></canvas>
             </div>
 
             <div class="activity">
@@ -46,9 +58,12 @@
                     <a ng-click="dashboard.activity.filter.category=2" ng-class="{'active':dashboard.activity.filter.category==2}">Lorries</a>
                     <a ng-click="dashboard.activity.filter.category=3" ng-class="{'active':dashboard.activity.filter.category==3}">Processing</a>
                     <a ng-click="dashboard.activity.filter.category=17" ng-class="{'active':dashboard.activity.filter.category==17}">Buses</a>
+                    <a ng-click="dashboard.activity.filter.category=70" ng-class="{'active':dashboard.activity.filter.category==70}">Land</a>
+                    <a ng-click="dashboard.activity.filter.category=60" ng-class="{'active':dashboard.activity.filter.category==60}">Irrigation</a>
+                    <a ng-click="dashboard.activity.filter.category=50" ng-class="{'active':dashboard.activity.filter.category==50}">Labour</a>
                 </h2>
                 <ul>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(11)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
@@ -63,7 +78,7 @@
                         <strong>Total<br />Searches</strong>
                         <small>{{dashboard.data.searchCount.Male}} Male &bull; {{dashboard.data.searchCount.Female}} Female</small>
                     </li>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(12)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.matchCount.Male + dashboard.data.matchCount.Female"
@@ -78,7 +93,7 @@
                         <strong>Matched<br />Searches</strong>
                         <small>{{dashboard.data.matchCount.Male}} Male &bull; {{dashboard.data.matchCount.Female}} Female</small>
                     </li>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(13)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.bookingCount.Male + dashboard.data.bookingCount.Female"
@@ -93,7 +108,7 @@
                         <strong>Bookings<br />Made</strong>
                         <small>{{dashboard.data.bookingCount.Male}} Male &bull; {{dashboard.data.bookingCount.Female}} Female</small>
                     </li>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(14)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.confirmCount.Male + dashboard.data.confirmCount.Female"
@@ -108,7 +123,7 @@
                         <strong>Bookings<br />Confirmed</strong>
                         <small>{{dashboard.data.confirmCount.Male}} Male &bull; {{dashboard.data.confirmCount.Female}} Female</small>
                     </li>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(15)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.paidCount.Male + dashboard.data.paidCount.Female"
@@ -123,7 +138,7 @@
                         <strong>Paid<br />Bookings</strong>
                         <small>{{dashboard.data.paidCount.Male}} Male &bull; {{dashboard.data.paidCount.Female}} Female</small>
                     </li>
-                    <li>
+                    <li ng-click="dashboard.userActionFilter(16)">
                         <div>
                             <round-progress max="dashboard.data.searchCount.Male + dashboard.data.searchCount.Female"
                                             current="dashboard.data.completeCount.Male + dashboard.data.completeCount.Female"
@@ -141,7 +156,7 @@
                 </ul>
             </div>
 
-            <h2>Bookings by month</h2>
+            <h2 ng-if="dashboard.data.bookingsGraph.length">Bookings by month</h2>
             <div class="graph-view" ng-if="dashboard.data.bookingsGraph.length">
 
                 <div class="col" ng-repeat="item in dashboard.data.bookingsGraph">
@@ -155,6 +170,15 @@
 
             <h2>Bookings by location</h2>
             <div id="heatmap" style="width: 100%; height: 450px; background-color: #ccc"></div>
+
+            <h2>Users</h2>
+            <div class="age-gender-graph">
+                <div ng-repeat="item in dashboard.data.ageGenderGraph">
+                    <div class="f"><div style="height: {{item.femaleHeight}}%" ng-if="item.female">{{item.femalePercent | percent : 2}} ({{item.female | number}})</div></div>
+                    <small>{{item.range}}</small>
+                    <div class="m"><div style="height: {{item.maleHeight}}%" ng-if="item.male">{{item.malePercent | percent : 2}} ({{item.male | number}})</div></div>
+                </div>
+            </div>
 
         </div>
 

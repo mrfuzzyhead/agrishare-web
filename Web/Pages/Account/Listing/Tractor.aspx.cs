@@ -7,17 +7,31 @@ using System.Web.UI.WebControls;
 
 namespace Agrishare.Web.Pages.Account.Listing
 {
-    public partial class Tractor : System.Web.UI.Page
+    public partial class Tractor : Page
     {
+        public string QuantityUnit => Master.CurrentUser.Region.Id == (int)Core.Entities.Regions.Uganda ? "acre" : "ha";
+
         Core.Entities.Listing SelectedListing;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.RequiresAuthentication = true;
+            Master.SelectedUrl = "/account/offering";
             Master.Body.Attributes["class"] += " account ";
+
+            if (Master.CurrentUser.PaymentMethods.Count == 0)
+            {
+                Master.Feedback = "Please update your accepted payment methods to continue with adding equipment";
+                Response.Redirect("/account/profile/payments?r=/account/listing/tractor");
+            }
 
             var id = Convert.ToInt32(Request.QueryString["id"]);
             SelectedListing = Core.Entities.Listing.Find(Id: id);
+            if (SelectedListing.Id > 0 && SelectedListing.User.Id != Master.CurrentUser.Id)
+            {
+                Master.Feedback = "Listing not found";
+                Response.Redirect("/account/offering");
+            }
 
             if (!Page.IsPostBack)
             {
@@ -28,10 +42,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                 if (listing.Id > 0)
                 {
                     EquipmentTitle.Text = listing.Title;
-                    Description.Text = listing.Description;
-                    Brand.Text = listing.Brand;
-                    Horsepower.Text = listing.HorsePower?.ToString();
-                    Year.Text = listing.Year?.ToString();
                     GroupHire.Checked = listing.GroupServices;
                     Location.Latitude = listing.Latitude;
                     Location.Longitude = listing.Longitude;
@@ -39,7 +49,6 @@ namespace Agrishare.Web.Pages.Account.Listing
                     AvailableWithFuel.Checked = listing.AvailableWithFuel;
                     AvailableWithoutFuel.Checked = listing.AvailableWithoutFuel;
                 }
-
             }
         }
 
@@ -63,7 +72,6 @@ namespace Agrishare.Web.Pages.Account.Listing
 
                         ((TextBox)e.Item.FindControl("TimePerQuantityUnit")).Text = service.TimePerQuantityUnit.ToString();
                         ((TextBox)e.Item.FindControl("PricePerQuantityUnit")).Text = service.PricePerQuantityUnit.ToString();
-                        ((TextBox)e.Item.FindControl("FuelPerQuantityUnit")).Text = service.FuelPerQuantityUnit.ToString();
                         ((TextBox)e.Item.FindControl("MinimumQuantity")).Text = service.MinimumQuantity.ToString();
 
                         MaximumDistance.Text = service.MaximumDistance.ToString();
@@ -81,14 +89,11 @@ namespace Agrishare.Web.Pages.Account.Listing
             if (listing.Id == 0)
             {
                 listing.User = Master.CurrentUser;
+                listing.Region = Master.CurrentUser.Region;
                 listing.CategoryId = Core.Entities.Category.TractorsId;                
             }
 
             listing.Title = EquipmentTitle.Text;
-            listing.Description = Description.Text;
-            listing.Brand = Brand.Text;
-            listing.HorsePower = Convert.ToInt32(Horsepower.Text);
-            listing.Year = Convert.ToInt32(Year.Text);
             listing.GroupServices = GroupHire.Checked;
             listing.Latitude = Location.Latitude;
             listing.Longitude = Location.Longitude;
@@ -111,10 +116,13 @@ namespace Agrishare.Web.Pages.Account.Listing
                     service = new Core.Entities.Service();
 
                 service.CategoryId = categoryId;
+                service.QuantityUnitId = Master.CurrentUser.Region.Id == (int)Core.Entities.Regions.Uganda ? Core.Entities.QuantityUnit.Acres : Core.Entities.QuantityUnit.Hectares;
                 service.TimePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("TimePerQuantityUnit")).Text);
                 service.PricePerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("PricePerQuantityUnit")).Text);
-                service.FuelPerQuantityUnit = Convert.ToDecimal(((TextBox)item.FindControl("FuelPerQuantityUnit")).Text);
                 service.MinimumQuantity = Convert.ToDecimal(((TextBox)item.FindControl("MinimumQuantity")).Text);
+                service.DistanceUnitId = Core.Entities.DistanceUnit.Km;
+                service.PricePerDistanceUnit = Convert.ToDecimal(PricePerDistanceUnit.Text);
+                service.MaximumDistance = Convert.ToDecimal(MaximumDistance.Text);
                 listing.Services.Add(service);
             }
 

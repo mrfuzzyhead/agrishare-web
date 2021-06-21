@@ -52,7 +52,8 @@ agrishareApp.controller('DetailViewController', function ($attrs, $controller, $
             .then(function (response) {
                 if (response.data.Message)
                     Utils.toast.success(response.data.Feedback);
-                detail.entity = response.data.Entity;
+                if (response.data.Entity)
+                    detail.entity = response.data.Entity;
                 detail.data = response.data;
             }, function (response) {
                 Utils.toast.error(response.data.Message || 'An unknown error occurred');

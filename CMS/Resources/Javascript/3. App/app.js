@@ -6,7 +6,7 @@
 
 var agrishareApp =
     angular
-        .module('agrishareApp', ['ui.router', '720kb.tooltips', 'ngToast', 'ngAnimate', 'ngFileUpload', 'cp.ngConfirm', 'ngMap', 'angular-svg-round-progressbar'])
+        .module('agrishareApp', ['ui.router', '720kb.tooltips', 'ngToast', 'ngAnimate', 'ngFileUpload', 'cp.ngConfirm', 'ngMap', 'angular-svg-round-progressbar', 'chart.js'])
         .config(function ($sceDelegateProvider, ngToastProvider, $stateProvider, $locationProvider, $urlRouterProvider) {
 
             $sceDelegateProvider.resourceUrlWhitelist([
@@ -35,8 +35,19 @@ var agrishareApp =
                     controller: function ($scope, $stateParams) {
                         $scope.filter = {};
                         var parts = $stateParams.filter.split('/');
-                        for (var i = 0; i < parts.length; i += 2)
-                            $scope.filter[parts[i]] = parts[i + 1];
+                        for (var i = 0; i < parts.length; i += 2) {
+                            if (parts[i].match(/date/)) {
+                                var dt = moment(parts[i + 1]);
+                                $scope.filter[parts[i]] = dt.toDate();
+                            }
+                            else {
+                                var num = parseInt(parts[i + 1]);
+                                if (isNaN(num))
+                                    $scope.filter[parts[i]] = parts[i + 1];
+                                else
+                                    $scope.filter[parts[i]] = num;
+                            }
+                        }
                     }
                 })
                 .state('Detail', {
@@ -74,9 +85,20 @@ var agrishareApp =
             };
         })
         .filter('percent', function () {
-            return function (value) {
+            return function (value, precision) {
                 if (isNaN(parseFloat(value)) || !isFinite(value)) return '-';
-                return (value * 100) + '%';
+                if (typeof precision === 'undefined') precision = 1;
+                return (value * 100).toFixed(precision) + '%';
+            };
+        })
+        .filter('newLines', function () {
+            return function (value) {
+                try {
+                    return value.replace(/(?:\r\n|\r|\n)/gi, '<br/>');
+                }
+                catch (ex) {
+                    return value;
+                }
             };
         })
         .directive('glEnterKeypress', function () {
@@ -104,7 +126,10 @@ var agrishareApp =
         })
         .config(["$httpProvider", function ($httpProvider) {
 
-            var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+\+[\d]{2}:[\d]{2})?$/;
+            $httpProvider.defaults.withCredentials = true;
+
+            //var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+\+[\d]{2}:[\d]{2})?$/;
+            var jsonDateRegex = /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]+)?(\+[\d]{2}:[\d]{2})?([Z])?$/;
 
             var convertDateStringsToDates = function (input) {
                 if (typeof input !== "object") return input;

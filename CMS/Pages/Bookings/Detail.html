@@ -15,8 +15,8 @@
                         <em class="status outline">{{detail.entity.Status}}</em>
                     </div>
                     <div>
-                        <strong>{{detail.entity.Price | currency}}</strong><br />
-                        <small>{{detail.entity.AgriShareCommission | currency}}</small>
+                        <strong>{{detail.entity.Price | currency : app.region.CurrencyCode}}</strong><br />
+                        <small>{{detail.entity.AgriShareCommission | currency : app.region.CurrencyCode}}</small>
                     </div>
                 </div>
 
@@ -25,15 +25,15 @@
                     <div map-lazy-load="https://maps.google.com/maps/api/js?key=AIzaSyCEHzltxutIsimd9nZsP6QC2LSHHFIE6PI">
                         <ng-map center="{{detail.entity.Latitude}},{{detail.entity.Longitude}}" zoom="15">
                             <custom-marker position="[{{detail.entity.Latitude}},{{detail.entity.Longitude}}]">Destination</custom-marker>
-                            <custom-marker position="[{{detail.entity.Listing.Latitude}},{{detail.entity.Listing.Longitude}}]">Source</custom-marker>
+                            <custom-marker ng-if="detail.entity.Listing" position="[{{detail.entity.Listing.Latitude}},{{detail.entity.Listing.Longitude}}]">Source</custom-marker>
+                            <custom-marker ng-if="detail.entity.Supplier" position="[{{detail.entity.Supplier.Latitude}},{{detail.entity.Supplier.Longitude}}]">Supplier</custom-marker>
                         </ng-map>
                     </div>
-
                 </div>
 
             </div>
 
-            <div class="box">
+            <div class="box" ng-if="detail.entity.Listing">
 
                 <h2>Booking Details</h2>
                 <ul class="details">
@@ -41,9 +41,17 @@
                         <strong>For</strong>
                         <span>{{detail.entity.For}}</span>
                     </li>
-                    <li>
+                    <li ng-if="![2,17].includes(detail.entity.Listing.Category.Id)">
                         <strong>Quantity</strong>
                         <span>{{detail.entity.Quantity}} {{detail.entity.Service.QuantityUnit}}</span>
+                    </li>
+                    <li ng-if="[2].includes(detail.entity.Listing.Category.Id)">
+                        <strong>Trips</strong>
+                        <span>{{detail.entity.Quantity}}</span>
+                    </li>
+                    <li ng-if="detail.entity.TotalVolume">
+                        <strong>Total Volume</strong>
+                        <span>{{detail.entity.TotalVolume}} tonnes</span>
                     </li>
                     <li>
                         <strong>Distance</strong>
@@ -66,10 +74,64 @@
                         <span>{{detail.entity.AdditionalInformation || '-'}}</span>
                     </li>
                 </ul>
+            </div>
 
+            <div class="box" ng-if="detail.entity.Supplier">
+
+                <h2>Booking Details</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Supplier</strong>
+                        <span>{{detail.entity.Supplier.Title}}</span>
+                    </li>
+                    <li>
+                        <strong>Distance</strong>
+                        <span>{{detail.entity.Distance}}km</span>
+                    </li>
+                    <li>
+                        <strong>Start Date</strong>
+                        <span>{{detail.entity.StartDate | date : 'd MMMM yyyy'}}</span>
+                    </li>
+                    <li>
+                        <strong>End Date</strong>
+                        <span>{{detail.entity.EndDate | date : 'd MMMM yyyy'}}</span>
+                    </li>
+                    <li>
+                        <strong>Additional Information</strong>
+                        <span>{{detail.entity.AdditionalInformation || '-'}}</span>
+                    </li>
+                </ul>
             </div>
 
             <div class="box">
+
+                <h2>User Payment Details</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Amount</strong>
+                        <span>{{detail.entity.Price | currency : app.region.CurrencyCode}}</span>
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span><em class="status">{{detail.entity.Status}}</em></span>
+                    </li>
+                    <li ng-if="detail.entity.ReceiptPhoto">
+                        <strong>Receipt</strong>
+                        <span><a href="{{detail.entity.ReceiptPhoto.Zoom}}" target="_blank">View</a></span>
+                    </li>
+                </ul>
+
+                <div ng-if="[1,7].includes(detail.entity.StatusId)" class="booking-payment-form">
+                    <div flex>
+                        <gl-dropdown-list gl-placeholder="Currency" ng-model="detail.data.Payment.Currency" gl-required="true" gl-source="detail.data.Currencies" gl-selection="Id"></gl-dropdown-list>
+                        <gl-textbox gl-placeholder="Amount" ng-model="detail.data.Payment.Amount" gl-required="true" gl-type="number"></gl-textbox>
+                        <gl-icon-button ng-click="detail.async('/cms/bookings/paid?id='+detail.entity.Id+'&currency='+detail.data.Payment.Currency+'&amount='+detail.data.Payment.Amount)" class="accent">Payment Received</gl-icon-button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="box" ng-if="detail.entity.Listing">
 
                 <h2>Listing</h2>
                 <ul class="details">
@@ -81,9 +143,21 @@
                         <strong>Category</strong>
                         <span>{{detail.entity.Listing.Category.Title}}</span>
                     </li>
-                    <li>
+                    <li ng-if="[1,3].includes(detail.entity.Listing.Category.Id)">
                         <strong>Service</strong>
-                        <span>{{detail.entity.Service.Category.Title}}</a></span>
+                        <span>{{detail.entity.Service.Category.Title}}</span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="box" ng-if="detail.entity.Supplier">
+
+                <h2>{{detail.entity.Supplier.Title}} Products</h2>
+                <ul class="details">
+                    <li ng-repeat="item in detail.entity.Products">
+                        <strong>{{item.Title}}</strong>
+                        <span>{{item.DayRate | currency}}/day</span>
                     </li>
                 </ul>
 
@@ -91,7 +165,7 @@
 
             <div class="box">
 
-                <h2>User</h2>
+                <h2>Booking User</h2>
                 <ul class="details">
                     <li>
                         <strong>Name</strong>
@@ -109,26 +183,55 @@
 
                 <h2>Fee</h2>
                 <ul class="details">
-                    <li>
+                    <li ng-if="detail.entity.HireCost">
                         <strong>Hire Cost</strong>
-                        <span>{{detail.entity.HireCost | currency}}</span>
+                        <span>{{detail.entity.HireCost | currency : app.region.CurrencyCode}}</span>
                     </li>
-                    <li>
+                    <li ng-if="detail.entity.FuelCost">
                         <strong>Fuel Cost</strong>
-                        <span>{{detail.entity.FuelCost | currency}}</span>
+                        <span>{{detail.entity.FuelCost | currency : app.region.CurrencyCode}}</span>
                     </li>
-                    <li>
+                    <li ng-if="detail.entity.TransportCost">
                         <strong>Transport Cost</strong>
-                        <span>{{detail.entity.TransportCost | currency}}</span>
+                        <span>{{detail.entity.TransportCost | currency : app.region.CurrencyCode}}</span>
+                    </li>
+                    <li ng-if="detail.entity.Voucher">
+                        <strong>Voucher: {{detail.entity.Voucher.Title}}</strong>
+                        <span>({{detail.entity.VoucherTotal | currency : app.region.CurrencyCode}})</span>
                     </li>
                     <li style="background-color: #fafafa">
                         <strong>Total</strong>
-                        <span>{{detail.entity.Price | currency}}</span>
+                        <span>{{detail.entity.Price | currency : app.region.CurrencyCode}}</span>
                     </li>
                 </ul>
 
             </div>
 
+            <div class="box">
+
+                <h2>Supplier Payment</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Amount</strong>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency : app.region.CurrencyCode}}</span>
+                    </li>
+                    <li style="align-items: center">
+                        <strong>Status</strong>
+                        <span ng-if="!detail.entity.PaidOut" style="font-size: 11px; margin-right: 5px">PENDING</span>
+                        <i class="material-icons md-16" ng-if="!detail.entity.PaidOut" style="color: grey">access_time</i>
+                        <span ng-if="detail.entity.PaidOut" style="font-size: 11px; margin-right: 5px">PAID</span>
+                        <i class="material-icons md-16" ng-if="detail.entity.PaidOut" style="color: green">check_circle</i>
+                    </li>
+                    <li>
+                        <strong>Telephone</strong>
+                        <span>{{detail.data.SupplierUser.Telephone || '-'}}</span>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; text-align: right" ng-if="[3,4].includes(detail.entity.StatusId) && !detail.entity.PaidOut">
+                    <gl-icon-button gl-icon="payments" class="border" ng-click="detail.async('/cms/bookings/paidout?BookingId='+detail.entity.Id)">Paid</gl-icon-button>
+                </div>
+
+            </div>
 
             <div class="box">
 
@@ -136,38 +239,60 @@
                 <ul class="details">
                     <li>
                         <strong>Supplier Fee</strong>
-                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.Price - detail.entity.AgriShareCommission | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li ng-if="detail.entity.AgentCommission">
                         <strong>AgriShare Commission ({{1 - detail.entity.AgentCommission | percent}})</strong>
-                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li ng-if="detail.entity.AgentCommission">
                         <strong>Agent Commission ({{detail.entity.AgentCommission | percent}})</strong>
-                        <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.AgentCommission * detail.entity.AgriShareCommission | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li ng-if="!detail.entity.AgentCommission">
                         <strong>AgriShare Commission ({{detail.entity.Commission | percent : 2}})</strong>
-                        <span>{{detail.entity.AgriShareCommission | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> SMS Costs ({{detail.entity.SMSCount}})</strong>
-                        <span>{{detail.entity.SMSCost | currency}}</span>
+                        <span>{{detail.entity.SMSCost | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> IMTT</strong>
-                        <span>{{detail.entity.IMTT | currency}}</span>
+                        <span>{{detail.entity.IMTT | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li>
                         <strong><small>LESS</small> Transaction Fee</strong>
-                        <span>{{detail.entity.TransactionFee | currency}}</span>
+                        <span>{{detail.entity.TransactionFee | currency : app.region.CurrencyCode}}</span>
                     </li>
                     <li>
                         <strong>Profit</strong>
-                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) - detail.entity.SMSCost - detail.entity.IMTT - detail.entity.TransactionFee | currency}}</span>
+                        <span>{{detail.entity.AgriShareCommission - (detail.entity.AgentCommission * detail.entity.AgriShareCommission) - detail.entity.SMSCost - detail.entity.IMTT - detail.entity.TransactionFee | currency : app.region.CurrencyCode}}</span>
                     </li>
                 </ul>
 
+            </div>
+
+            <div ng-if="detail.entity.PaymentMethodId===2" class="box">
+                <h2>Supplier Bank Details</h2>
+                <ul class="details">
+                    <li>
+                        <strong>Bank</strong>
+                        <span>{{detail.entity.Listing.Supplier.BankAccount.Bank}}</span>
+                    </li>
+                    <li>
+                        <strong>Branch</strong>
+                        <span>{{detail.entity.Listing.Supplier.BankAccount.Branch}}</span>
+                    </li>
+                    <li>
+                        <strong>Account Name</strong>
+                        <span>{{detail.entity.Listing.Supplier.BankAccount.AccountName}}</span>
+                    </li>
+                    <li>
+                        <strong>Account Number</strong>
+                        <span>{{detail.entity.Listing.Supplier.BankAccount.AccountNumber}}</span>
+                    </li>
+                </ul>
             </div>
 
             <div class="box" ng-if="detail.data.Transactions.length>0">
@@ -176,7 +301,7 @@
                 <ul class="transactions">
                     <li ng-repeat="item in detail.data.Transactions">
                         <strong>
-                            {{item.Amount | currency}}<br />
+                            {{item.Amount | currency : item.CurrencyCode}}<br />
                             <small>{{item.BookingUser.Name}} &bull; {{item.BookingUser.Telephone}}</small>
                         </strong>
                         <span>
@@ -190,6 +315,46 @@
                         <gl-icon-button gl-icon="delete_sweep" ng-click="detail.async('/cms/bookings/transactions/refund?Id='+item.Id)" ng-if="item.StatusId==4 && item.Amount>0"></gl-icon-button>
                     </li>
                 </ul>
+
+            </div>
+
+            <div class="box">
+
+                <h2>Tags</h2>
+                <ul class="details">
+                    <li ng-repeat="tag in detail.entity.Tags">
+                        <strong>{{tag.Title}}</strong>
+                        <span><a class="material-icons md-16" ng-click="detail.async('/cms/bookings/tags/remove?TagId='+tag.Id+'&BookingId='+detail.entity.Id)">delete</a></span>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; display: flex; align-items: center">
+                    <div style="flex: 1; margin: -20px 10px -20px 0">
+                        <gl-dropdown-list gl-source="detail.data.Tags" ng-model="addTagId" gl-placeholder="Add Tag" gl-selection="Id"></gl-dropdown-list>
+                    </div>
+                    <div>
+                        <gl-icon-button gl-icon="add" class="border" ng-click="detail.async('/cms/bookings/tags/add?TagId='+addTagId+'&BookingId='+detail.entity.Id)">Add</gl-icon-button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="box">
+
+                <h2>Comments</h2>
+                <ul class="comments" ng-if="detail.data.Comments.length">
+                    <li ng-repeat="comment in detail.data.Comments">
+                        <span ng-bind-html="comment.Text | newLines | trustAsHtml"></span>
+                        <small>{{comment.User.Title}} &bull; {{comment.DateCreated | date : 'd MMMM yyyy h:mma'}}</small>
+                    </li>
+                </ul>
+                <div style="background: #eee; padding: 20px; display: flex; align-items: center">
+                    <div style="flex: 1; margin: -20px 10px -20px 0">
+                        <gl-textarea ng-model="comment" gl-placeholder="Comment"></gl-textarea>
+                    </div>
+                    <div>
+                        <gl-icon-button gl-icon="send" class="border" ng-click="detail.async('/cms/bookings/comments/add?Text='+comment+'&BookingId='+detail.entity.Id);comment='';">Add</gl-icon-button>
+                    </div>
+                </div>
 
             </div>
 

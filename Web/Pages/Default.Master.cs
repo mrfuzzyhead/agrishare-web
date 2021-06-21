@@ -31,6 +31,27 @@ namespace Agrishare.Web.Pages
         }
         private User currentUser;
 
+        public List<Product> Cart
+        {
+            get
+            {
+                if (cart == null && Session["Cart"] != null)
+                    cart = (List<Product>)Session["Cart"];
+                if (cart == null)
+                {
+                    cart = new List<Product>();
+                    Session.Add("Cart", cart);
+                }
+                return cart;
+            }
+            set
+            {
+                cart = value;
+                Session.Add("Cart", cart);
+            }
+        }
+        private List<Product> cart;
+
         public string Feedback
         {
             get
@@ -49,6 +70,8 @@ namespace Agrishare.Web.Pages
 
         public HtmlHead Head;
         public HtmlGenericControl Body;
+
+        public string CookieDomain = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -72,6 +95,8 @@ namespace Agrishare.Web.Pages
             Page.Header.Controls.Add(new Literal { Text = $@"<script type=""text/javascript"" src=""/script-{version}.js""></script>" });
 
             Body.Attributes.Add("ng-api-url", Config.APIURL);
+
+            CookieDomain = Config.DomainName;
         }
 
         protected override void OnPreRender(EventArgs e)

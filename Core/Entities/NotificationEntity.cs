@@ -170,8 +170,32 @@ namespace Agrishare.Core.Entities
         private void SendEmail(string RecipientName = "", string RecipientEmailAddress = "")
         {
             var template = Template.Find(Title: Type);
-            template.Replace("Service", Booking.Service.Category.Title);
-            template.Replace("Supplier", Booking.Service.Listing.Title);
+
+            if (Booking.Service != null)
+                template.Replace("Service", Booking.Service.Category?.Title);
+            else
+                template.ReplaceSectionTemplate("Service", string.Empty);
+
+            if (Booking.Supplier != null)
+                template.Replace("Supplier", Booking.Supplier.Title);
+            else
+                template.ReplaceSectionTemplate("Supplier", string.Empty);
+
+            if (Booking.Products.Count > 0)
+            {
+                var productsHtml = new StringBuilder();
+                var productRowTemplate = template.GetSectionTemplate("Product Row");
+                foreach(var product in Booking.Products)
+                {
+                    var html = productRowTemplate;
+                    html = Template.Replace(html, "Product Title", product.Title);
+                    productsHtml.AppendLine(html);
+                }
+                template.ReplaceSectionTemplate("Product Row", productsHtml.ToString());
+            }
+            else
+                template.ReplaceSectionTemplate("Product Row", string.Empty);
+
             template.Replace("Message", Message);
             template.Replace("Start Date", Booking.StartDate.ToString("d MMMM yyyy"));
             template.Replace("End Date", Booking.EndDate.ToString("d MMMM yyyy"));
@@ -246,7 +270,7 @@ namespace Agrishare.Core.Entities
                     break;
             }
 
-            if (SMS.SendMessage(User.Telephone, message))
+            if (SMS.SendMessage(User.Telephone, message, User.Region))
             {
                 var booking = Booking.Find(Booking?.Id ?? BookingId ?? 0);
                 if (booking.Id > 0)
@@ -292,6 +316,27 @@ namespace Agrishare.Core.Entities
                 { "BookingId", BookingId }
             };
             SNS.SendMessage(DeviceARN, message, $"app.agrishare.category.{TypeId}", args);
+        }
+
+        public object AppDashboardJson()
+        {
+            var service = Booking.Service?.Category?.Title ?? Booking.Supplier?.Title ?? "";
+            var photoUrl = $"{Config.CDNURL}/" + (Booking.Listing?.Photos.FirstOrDefault()?.ThumbName ?? Booking.Products?.FirstOrDefault()?.Photo?.ThumbName ?? "NoImage.png");
+
+            return new
+            {
+                Id,
+                Title,
+                TypeId,
+                StatusId,
+                Booking.StartDate,
+                Booking.EndDate,
+                DateCreated,
+                Service = service,
+                PhotoUrl = photoUrl,
+                BookingId = Booking.Id,
+                BookingStatusId = Booking.StatusId
+            };
         }
     }
 }

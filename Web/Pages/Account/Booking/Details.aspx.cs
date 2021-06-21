@@ -1,4 +1,5 @@
 ﻿using Agrishare.Core;
+using Agrishare.Core.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,6 @@ namespace Agrishare.Web.Pages.Account.Booking
             Master.SelectedUrl = SelectedBooking.UserId == Master.CurrentUser.Id ? "/account/seeking" : "/account/offering";
 
             ShowDetails();
-
         }
 
         private void SetupRequest()
@@ -55,15 +55,28 @@ namespace Agrishare.Web.Pages.Account.Booking
             var size = Convert.ToInt32(Request.QueryString["qty"]);
             var includeFuel = Request.QueryString["fue"] == "1";
             var mobile = true;
-            if (categoryId == Core.Entities.Category.ProcessingId)
+            if (categoryId == Category.ProcessingId)
                 mobile = Request.QueryString["mob"] == "1";
+            if (categoryId == Core.Entities.Category.LandId)
+                mobile = false;
             var bookingFor = (Core.Entities.BookingFor)Enum.ToObject(typeof(Core.Entities.BookingFor), Convert.ToInt32(Request.QueryString["for"]));
             var destinationLatitude = Convert.ToDecimal(Request.QueryString["dla"]);
             var destinationLongitude = Convert.ToDecimal(Request.QueryString["dlo"]);
             var totalVolume = Convert.ToDecimal(Request.QueryString["vol"]);
             var additionalInfo = Request.QueryString["des"];
+            
+            // new fields: irrigation, labour, land
+            var distanceToWaterSource = Convert.ToDecimal(Request.QueryString["dis"]);
+            var depthOfWaterSource = Convert.ToDecimal(Request.QueryString["dep"]);
+            var labourServices = Convert.ToInt32(Request.QueryString["lsr"]);
+            var landRegion = Convert.ToInt32(Request.QueryString["reg"]);
 
-            var results = Core.Entities.ListingSearchResult.List(0, 10, "Distance", categoryId, serviceId, latitude, longitude, startDate, size, includeFuel, mobile, bookingFor, destinationLatitude, destinationLongitude, totalVolume, listingId);
+            var results = ListingSearchResult.List(PageIndex: 0, PageSize: 2, ListingId: listingId,
+                Sort: "Distance", CategoryId: categoryId, ServiceId: serviceId, Latitude: latitude, Longitude: longitude, StartDate: startDate, Size: size,
+                IncludeFuel: includeFuel, Mobile: mobile, For: bookingFor, DestinationLatitude: destinationLatitude, DestinationLongitude: destinationLongitude,
+                TotalVolume: totalVolume, RegionId: Master.CurrentUser.Region.Id, DistanceToWaterSource: distanceToWaterSource, DepthOfWaterSource: depthOfWaterSource,
+                LabourServices: labourServices, LandRegion: landRegion);
+
             if (results.Count != 1)
             {
                 Master.Feedback = "Listing not found";
@@ -104,7 +117,8 @@ namespace Agrishare.Web.Pages.Account.Booking
                 TransportCost = (decimal)result.TransportCost,
                 TransportDistance = (decimal)result.TransportDistance,
                 User = Master.CurrentUser,
-                UserId = Master.CurrentUser.Id
+                UserId = Master.CurrentUser.Id,
+                Commission = Core.Entities.Transaction.AgriShareCommission
             };
 
             ShowDetails(result.Available);
@@ -112,19 +126,34 @@ namespace Agrishare.Web.Pages.Account.Booking
 
         private void ShowDetails(bool Available = true)
         {
-            BookingTitle.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Title);
+            BookingTitle.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing?.Title ?? SelectedBooking.Supplier?.Title ?? "Booking");
 
-            Reviews.CssClass = $"stars-{(int)SelectedBooking.Listing.AverageRating}";
-            Reviews.Text = SelectedBooking.Listing.RatingCount == 0 ? "No reviews" : SelectedBooking.Listing.RatingCount == 1 ? "One review" : $"{SelectedBooking.Listing.RatingCount} reviews";
-            Reviews.NavigateUrl = $"/account/listing/reviews?lid={SelectedBooking.ListingId}";
+            if (SelectedBooking.Listing != null)
+            {
+                Reviews.CssClass = $"stars-{(int)SelectedBooking.Listing.AverageRating}";
+                Reviews.Text = SelectedBooking.Listing.RatingCount == 0 ? "No reviews" : SelectedBooking.Listing.RatingCount == 1 ? "One review" : $"{SelectedBooking.Listing.RatingCount} reviews";
+                Reviews.NavigateUrl = $"/account/listing/reviews?lid={SelectedBooking.ListingId}";
 
-            Gallery.DataSource = SelectedBooking.Listing.Photos;
-            Gallery.DataBind();
+                Gallery.DataSource = SelectedBooking.Listing.Photos;
+                Gallery.DataBind();
 
-            Description.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Description);
-            Brand.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Brand);
-            HorsePower.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.HorsePower);
-            Year.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Year);
+                Description.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Description);
+                Brand.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Brand);
+                HorsePower.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.HorsePower);
+                Year.Text = HttpUtility.HtmlEncode(SelectedBooking.Listing.Year);
+
+                CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
+            }           
+            else
+            {
+                CommissionRow.Visible = SelectedBooking.Supplier.Id == Master.CurrentUser.Supplier?.Id;
+                FuelCostRow.Visible = false;
+
+                ProductList.Visible = true;
+                ProductList.RecordCount = SelectedBooking.Products.Count;
+                ProductList.DataSource = SelectedBooking.Products;
+                ProductList.DataBind();
+            }
 
             if (SelectedBooking.StartDate.Date == SelectedBooking.EndDate.Date)
                 Dates.Text = SelectedBooking.StartDate.ToString("d MMMM yyyy");
@@ -134,9 +163,17 @@ namespace Agrishare.Web.Pages.Account.Booking
                 Dates.Text = SelectedBooking.StartDate.ToString("d MMMM yyyy") + " - " + SelectedBooking.EndDate.ToString("d MMMM yyyy");
 
             var days = (SelectedBooking.EndDate - SelectedBooking.StartDate).TotalDays + 1;
-            Days.Text = days == 1 ? "1 day" : $"{days} days";
+            if (days >= 365)
+            {
+                var years = (int)Math.Round(days / 365);
+                Days.Text = years == 1 ? "1 year" : $"{years} years";
+            }
+            else
+            {
+                Days.Text = days == 1 ? "1 day" : $"{days} days";
+            }
 
-            AvailabilityDays.Attributes.Add("ng-init", $"calendar.days={days}");
+            AvailabilityDays.Attributes.Add("ng-init", $"calendar.days={days};calendar.volume={SelectedBooking.TotalVolume};");
             ListingId.Attributes.Add("ng-init", $"calendar.listingId={SelectedBooking.ListingId}");
             StartDate.Attributes.Add("ng-init", $"calendar.startDate=calendar.date('{SelectedBooking.StartDate.ToString("yyy-MM-dd")}')");
             Availability.Visible = SelectedBooking.Id == 0; // !Available;
@@ -144,23 +181,43 @@ namespace Agrishare.Web.Pages.Account.Booking
 
             TransportDistance.Text = SelectedBooking.TransportDistance.ToString("N2") + " km";
             TransportCost.Text = "$" + SelectedBooking.TransportCost.ToString("N2");
-            HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit + "s";
             HireCost.Text = "$" + SelectedBooking.HireCost.ToString("N2");
-            if (SelectedBooking.Listing.CategoryId == Core.Entities.Category.LorriesId)
-                FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
-            else
-                FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit + "s";
-            FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
 
-            CommissionRow.Visible = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
+            if (SelectedBooking.Listing != null)
+            {
+                HireSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.QuantityUnit;
+                if (SelectedBooking.Listing.CategoryId == Category.LorriesId)
+                    FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
+                else
+                    FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.DistanceUnit;
+                FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
+
+                HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;
+                FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId && SelectedBooking.Listing.CategoryId != Category.IrrigationId && SelectedBooking.Listing.CategoryId != Category.LabourId && SelectedBooking.Listing.CategoryId != Category.LandId;
+            }
+            else
+            {
+                HireSize.Text = SelectedBooking.Products.Count == 1 ? "1 product" : $"{SelectedBooking.Products.Count} products";
+            }
+
             Commission.Text = "$" + SelectedBooking.AgriShareCommission.ToString("N2");
 
             Total.Text = "$" + SelectedBooking.Price.ToString("N2");
 
+            /** Land **/
+
+            if (SelectedBooking.Listing?.CategoryId == Category.LandId)
+            {
+                TransportCostRow.Visible = false;
+                FuelCostRow.Visible = false;
+            }
+
             /******************************/
 
             var isSeeker = SelectedBooking.UserId == Master.CurrentUser.Id;
-            var isOfferer = SelectedBooking.Listing.UserId == Master.CurrentUser.Id;
+
+            var isOfferer =
+                SelectedBooking.Listing != null ? SelectedBooking.Listing.UserId == Master.CurrentUser.Id : SelectedBooking.Supplier.Id == Master.CurrentUser.Supplier?.Id;
             
             RequestPanel.Visible = isSeeker && SelectedBooking.Id == 0 && Available;
             AwaitingConfirmPanel.Visible = isSeeker && SelectedBooking.StatusId == Core.Entities.BookingStatus.Pending;
@@ -198,10 +255,34 @@ namespace Agrishare.Web.Pages.Account.Booking
                 
             }
 
-            if (PaymentPanel.Visible && SelectedBooking.ForId == Core.Entities.BookingFor.Me)
+            if (PaymentPanel.Visible && SelectedBooking.ForId == BookingFor.Me)
             {
-                PayerMobileNumber.Text = Master.CurrentUser.Title;
-                PayerMobileNumber.Text = Master.CurrentUser.Telephone;
+                //PayerMobileNumber.Text = Master.CurrentUser.Title;
+                //PayerMobileNumber.Text = Master.CurrentUser.Telephone;
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash))
+                {
+                    PaymentCashPanel.Visible = true;
+                    CashDeliveryAddress.Text = Config.AgriShareOfficeLocation.Replace(@"\n", "<br/>");
+                }
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.BankTransfer))
+                {
+                    PaymentBankPanel.Visible = true;
+                    BankDetails.Text = Config.AgriShareBankDetails.Replace(@"\n", "<br/>");
+                }
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash) &&
+                    SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.BankTransfer))
+                {
+                    PaymentOrPanel.Visible = true;
+                }
+
+                if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.MobileMoney))
+                {
+                    MobileMoneyPanel.Visible = true;
+                }
+
             }
 
             if (CompletePanel.Visible)
@@ -216,8 +297,19 @@ namespace Agrishare.Web.Pages.Account.Booking
                     ReviewDate.Text = rating.DateCreated.ToString("d MMMM yyyy");
                 }
             }
+        }
 
-
+        public void BindProduct(object s, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                var listing = (Core.Entities.Product)e.Item.DataItem;
+                ((HyperLink)e.Item.FindControl("Link")).NavigateUrl = $"/account/seeking/products?id={listing.Id}";
+                if (!string.IsNullOrEmpty(listing.Photo?.Filename))
+                    ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{listing.Photo.ThumbName})");
+                ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(listing.Title);
+                ((Literal)e.Item.FindControl("Description")).Text = $"{Master.CurrentUser.Region.Currency} {listing.DayRate.ToString("N2")}/day";
+            }
         }
 
         public void BindReview(object s, RepeaterItemEventArgs e)
@@ -351,13 +443,16 @@ namespace Agrishare.Web.Pages.Account.Booking
             if (SelectedBooking == null || SelectedBooking.UserId != Master.CurrentUser.Id)
                 Master.Feedback = "Booking not found";
 
+            else if (!SelectedBooking.ListingId.HasValue)
+                Master.Feedback = "Booking does not have a linked listing";
+
             else
             {
                 var rating = new Core.Entities.Rating
                 {
                     BookingId = SelectedBooking.Id,
                     Comments = RatingComments.Text,
-                    ListingId = SelectedBooking.ListingId,
+                    ListingId = SelectedBooking.ListingId.Value,
                     Stars = Convert.ToInt32(RatingStars.Text),
                     User = Master.CurrentUser
                 };
@@ -572,6 +667,18 @@ namespace Agrishare.Web.Pages.Account.Booking
                 Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
             else
                 Master.Feedback = errorMessage.Coalesce("No transactions were created");
+        }
+
+        public void SavePop(object s, EventArgs e)
+        {
+            Master.Feedback = "Please upload your proof of payment";
+            if (PopUpload.Photos.Count == 1)
+            {
+                SelectedBooking.ReceiptPhoto = PopUpload.Photos.First();
+                if (SelectedBooking.PopReceived())
+                    Master.Feedback = "Thank you for the proof of payment. The AgriShare team have been notified and will verify payment.";
+            }
+            Response.Redirect($"/account/booking/details?id={SelectedBooking.Id}");
         }
     }
 

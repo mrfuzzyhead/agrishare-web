@@ -13,15 +13,21 @@ namespace Agrishare.API.Controllers.App
         {
             var list = new List<object>();
 
-            var categories = Entities.Category.List();            
-            var parents = categories.Where(e => !e.Deleted && e.ParentId == null).ToList();
+            var categories = Entities.Category.List();
+            //var parents = Entities.Category.ParentListByListingCount();
+            var parents = categories.Where(e => !e.ParentId.HasValue).ToList();
+            var sortOrder = 1;
             foreach(var item in parents)
             {
                 list.Add(new
                 {
                     item.Id,
                     item.Title,
-                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title })
+                    item.TitleShona,
+                    item.TitleNdebele,
+                    item.TitleLuganda,
+                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title, e.TitleShona, e.TitleNdebele, e.TitleLuganda }),
+                    SortOrder = sortOrder++
                 });
             }
 

@@ -47,5 +47,15 @@ namespace Agrishare.Core.Entities
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<TransactionFee> TransactionFees { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Advert> Adverts { get; set; }
+        public virtual DbSet<BookingComment> BookingComments { get; set; }
+        public virtual DbSet<BookingProduct> BookingProducts { get; set; }
+        public virtual DbSet<BookingTag> BookingTags { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<UserVoucher> UserVouchers { get; set; }
+        public virtual DbSet<Voucher> Vouchers { get; set; }
     }
 }

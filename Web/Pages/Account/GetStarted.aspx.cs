@@ -23,8 +23,15 @@ namespace Agrishare.Web.Pages.Account
                 RegisterForm.Visible = true;
                 LoginForm.Visible = true;
 
+                Region.DataSource = Core.Entities.Region.List();
+                Region.DataTextField = "Title";
+                Region.DataValueField = "Id";
+                Region.DataBind();
+                Region.Items.Insert(0, new ListItem("Select...", ""));
+
                 Gender.Items.Add(new ListItem { Text = $"{Core.Entities.Gender.Male}", Value = Core.Entities.Gender.Male.ToString() });
                 Gender.Items.Add(new ListItem { Text = $"{Core.Entities.Gender.Female}", Value = Core.Entities.Gender.Female.ToString() });
+                Gender.Items.Insert(0, new ListItem("Select...", ""));
             }
         }
 
@@ -47,24 +54,38 @@ namespace Agrishare.Web.Pages.Account
                     DateOfBirth = dob,
                     Roles = new List<Core.Entities.Role> { Core.Entities.Role.User },
                     AuthToken = Guid.NewGuid().ToString(),
-                    StatusId = Core.Entities.UserStatus.Verified
+                    StatusId = Core.Entities.UserStatus.Verified,
+                    LanguageId = Core.Entities.Language.English,
+                    RegionId = Convert.ToInt32(Region.SelectedValue),
+                    Region = Core.Entities.Region.Find(Convert.ToInt32(Region.SelectedValue))
                 };
-                user.Save();
-                Master.DropCookie(user.AuthToken);
-                Master.Feedback = "Your account has been created and you are now logged in.";
-                Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
+
+                if (!user.UniqueEmailAddress())
+                {
+                    Master.Feedback = "Your email address has already been registered";
+                }
+                else if (!user.UniqueTelephone())
+                {
+                    Master.Feedback = "Your telephone number has already been registered";
+                }
+                else
+                {
+                    user.Save();
+                    Master.DropCookie(user.AuthToken);
+                    Master.Feedback = "Your account has been created and you are now logged in.";
+                    Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
+                }
             }
         }
 
         public void AuthenticateUser(object s, EventArgs e)
         {
-            var maxFailedLoginAttempts = 5;
             if (Page.IsValid)
             {
                 var user = Core.Entities.User.Find(Telephone: LoginTelephone.Text);
                 if (user != null && user.Id > 0)
                 {
-                    if (user.FailedLoginAttempts > maxFailedLoginAttempts)
+                    if (user.FailedLoginAttempts > Core.Entities.User.MaxFailedLoginAttempts)
                     {
                         Master.Feedback = "Your account has been locked - please reset your password";
                     }
@@ -107,7 +128,7 @@ namespace Agrishare.Web.Pages.Account
             if (Page.IsValid)
             {
                 var user = Core.Entities.User.Find(Telephone: ResetTelephone.Text);
-                if(user != null && user.Id > 0 && !user.VerificationCode.IsEmpty() && user.VerificationCode == ResetCode.Text)
+                if (user != null && user.Id > 0 && !user.VerificationCode.IsEmpty() && user.VerificationCode == ResetCode.Text)
                 {
                     user.ClearPassword = ResetPIN.Text;
                     user.FailedLoginAttempts = 0;
@@ -118,7 +139,11 @@ namespace Agrishare.Web.Pages.Account
                     Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
                 }
                 else
+                {
                     Master.Feedback = "The verification code has expired - please reset your PIN again";
+                    ResetForm.Visible = false;
+                    ForgotForm.Visible = true;
+                }
             }
         }
     }

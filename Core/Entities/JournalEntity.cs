@@ -14,7 +14,9 @@ namespace Agrishare.Core.Entities
 {
     public partial class Journal : IEntity
     {
-        public static string DefaultSort = "DateCreated DESC";
+        public static decimal CurrentRate => Convert.ToDecimal(Config.Find(Key: "Current USD Rate").Value);
+
+        public static string DefaultSort = "Date DESC";
         public string Type => $"{TypeId}".ExplodeCamelCase();
         public decimal Balance { get; set; }
         public decimal Debit => Amount < 0 ? Math.Abs(Amount) : 0;
@@ -25,6 +27,7 @@ namespace Agrishare.Core.Entities
             if (Id == 0)
                 return new Journal
                 {
+                    Date = DateTime.UtcNow,
                     DateCreated = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow,
                 };
@@ -41,7 +44,7 @@ namespace Agrishare.Core.Entities
         }
 
         public static List<Journal> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int BookingId = 0, int UserId = 0, 
-            DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None)
+            DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -49,6 +52,9 @@ namespace Agrishare.Core.Entities
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -74,7 +80,8 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static int Count(int BookingId = 0, int UserId = 0, DateTime? StartDate = null, DateTime? EndDate = null, JournalType Type = JournalType.None)
+        public static int Count(int BookingId = 0, int UserId = 0, DateTime? StartDate = null, DateTime? EndDate = null, 
+            JournalType Type = JournalType.None, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -82,6 +89,9 @@ namespace Agrishare.Core.Entities
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
+
+                if (RegionId > 0)
+                    query = query.Where(o => o.RegionId == RegionId);
 
                 if (UserId > 0)
                     query = query.Where(o => o.UserId == UserId);
@@ -105,12 +115,13 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static decimal BalanceAt(DateTime Date)
+        public static decimal BalanceAt(DateTime Date, int RegionId)
         {
             using (var ctx = new AgrishareEntities())
             {
                 var query = ctx.Journals.Where(o => !o.Deleted);
-                query = query.Where(o => o.DateCreated <= Date);
+                query = query.Where(o => o.Date <= Date);
+                query = query.Where(o => o.RegionId == RegionId);
                 try
                 {
                     return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
@@ -123,7 +134,7 @@ namespace Agrishare.Core.Entities
 
         }
 
-        public static decimal BalanceAt(int Id)
+        public static decimal BalanceAt(int Id, int RegionId)
         {
             if (Id == 0)
                 return 0;
@@ -132,6 +143,7 @@ namespace Agrishare.Core.Entities
             {
                 var query = ctx.Journals.Where(o => !o.Deleted);
                 query = query.Where(o => o.Id <= Id);
+                query = query.Where(o => o.RegionId == RegionId);
                 try
                 {
                     return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
@@ -157,6 +169,11 @@ namespace Agrishare.Core.Entities
                 UserId = user.Id;
             User = null;
 
+            var region = Region;
+            if (region != null)
+                RegionId = region.Id;
+            Region = null;
+
             if (Id == 0)
                 success = Add();
             else
@@ -164,6 +181,7 @@ namespace Agrishare.Core.Entities
 
             Booking = booking;
             User = user;
+            Region = region;
 
             return success;
         }
@@ -214,24 +232,76 @@ namespace Agrishare.Core.Entities
                 Title,
                 User = User?.Json(),
                 Booking = Booking?.Json(),
+                Region = Region?.Json(),
                 Amount,
                 Credit,
                 Debit,
+                CurrencyAmount,
+                Currency,
+                CurrencyCode = $"{Currency}".ExplodeCamelCase(),
                 Reconciled,
                 EcoCashReference,
                 TypeId,
                 Type,
+                Date,
                 DateCreated,
                 LastModified,
                 Deleted,
                 Balance
             };
         }
+
+        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, GraphView View, int RegionId)
+        {
+            var sql = string.Empty;
+
+            if (View == GraphView.Day)
+            {
+                sql = $@"SELECT DAY(Journals.Date) AS `Day`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY DAY(Journals.Date), MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date), DAY(Journals.Date)";
+            }
+            else if (View == GraphView.Week)
+            {
+                sql = $@"SELECT WEEK(Journals.Date) AS `Week`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY WEEK(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), WEEK(Journals.Date)";
+            }
+            else
+            {
+                sql = $@"SELECT MONTH(Journals.Date) AS `Month`, MONTH(Journals.Date) AS `Month`, YEAR(Journals.Date) AS `Year`, SUM(Journals.Amount) AS 'Amount' 
+                            FROM Journals
+                            WHERE Journals.RegionId = {RegionId} AND DATE(Journals.Date) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND DATE(Journals.Date) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                            GROUP BY MONTH(Journals.Date), YEAR(Journals.Date) ORDER BY YEAR(Journals.Date), MONTH(Journals.Date)";
+            }
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<GraphData>(sql).ToList();
+        }
+
+        public enum GraphView
+        {
+            Day = 1,
+            Week = 2,
+            Month = 3
+        }
+
+        public class GraphData
+        {
+            public int Day { get; set; }
+            public int Week { get; set; }
+            public int Month { get; set; }
+            public int Year { get; set; }
+            public decimal Amount { get; set; }
+        }
     }
 
     public partial class JournalImport : ImportExcel
     {
         private List<Booking> Bookings;
+        public Region Region;
 
         public JournalImport()
         {
@@ -268,7 +338,11 @@ namespace Agrishare.Core.Entities
                     Error += Required(Data);
                     Error += Decimal(Data);
                     break;
-                case 6: // EcoCash Reference
+                case 6: // Type (Agent or Supplier)
+                    Error += Required(Data);
+                    Error += Decimal(Data);
+                    break;
+                case 7: // EcoCash Reference
                     Error += Required(Data);
                     Error += MaxLength(Data, 128);
                     break;
@@ -279,8 +353,10 @@ namespace Agrishare.Core.Entities
 
         public override void ExtractRow(List<string> Row)
         {
+            var ecoCashReference = Row[6];
+
             var booking = Bookings.FirstOrDefault(o => o.Id == Convert.ToInt32(Row[1]));
-            if (booking != null)
+            if (booking != null && !string.IsNullOrEmpty(ecoCashReference))
             {
                 booking.PaidOut = true;
                 booking.Save();
@@ -289,11 +365,13 @@ namespace Agrishare.Core.Entities
                 {
                     Amount = Convert.ToDecimal(Row[4]),
                     Booking = booking,
-                    EcoCashReference = Row[5],
+                    EcoCashReference = ecoCashReference,
                     Reconciled = false,
                     Title = $"Pay out to {Row[2]} {Row[3]}",
                     TypeId = JournalType.Settlement,
-                    UserId = booking.Listing.UserId
+                    UserId = booking.Listing.UserId,
+                    Date = DateTime.UtcNow,
+                    Region = Region
                 }.Save();
             }
         }

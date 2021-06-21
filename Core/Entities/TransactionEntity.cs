@@ -153,6 +153,8 @@ namespace Agrishare.Core.Entities
                 ServerReference,
                 EcoCashReference,
                 Amount,
+                Currency,
+                CurrencyCode = $"{Currency}",
                 StatusId,
                 Status,
                 Error,
@@ -357,15 +359,22 @@ namespace Agrishare.Core.Entities
                 BookingUser.StatusId = BookingUserStatus.Paid;
                 BookingUser.Save();
 
+                if (Booking == null)
+                    Booking = Booking.Find(BookingId);
+
                 new Journal
                 {
-                    Amount = Amount,
+                    Amount = Booking.Price,
                     BookingId = BookingId,
                     EcoCashReference = EcoCashReference,
                     Reconciled = false,
                     Title = $"Payment received from {BookingUser.Name} {BookingUser.Telephone}",
                     TypeId = JournalType.Payment,
-                    UserId = BookingUser.UserId ?? Booking.UserId
+                    UserId = BookingUser.UserId ?? Booking?.UserId,
+                    Date = DateTime.UtcNow,
+                    Currency = Entities.Currency.ZWL,
+                    CurrencyAmount = Amount,
+                    RegionId = Booking.Listing.RegionId
                 }.Save();
                                 
                 var bookingUsers = BookingUser.List(BookingId: BookingId);
@@ -441,7 +450,8 @@ namespace Agrishare.Core.Entities
                     Reconciled = false,
                     Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
                     TypeId = JournalType.Refund,
-                    UserId = BookingUser.Id
+                    UserId = BookingUser.Id,
+                    Date = DateTime.UtcNow
                 }.Save();
 
                 return true;
@@ -539,7 +549,8 @@ namespace Agrishare.Core.Entities
                             Reconciled = false,
                             Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
                             TypeId = JournalType.Refund,
-                            UserId = BookingUser.Id
+                            UserId = BookingUser.Id,
+                            Date = DateTime.UtcNow
                         }.Save();
                     }
 

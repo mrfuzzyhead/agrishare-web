@@ -16,6 +16,7 @@ namespace Agrishare.Core.Entities
         None = 0,
         HectaresPerHour = 1,
         HoursPer100Kms = 2,
-        BagsPerHour = 3
+        BagsPerHour = 3,
+        AcresPerHour = 4
     }
 }

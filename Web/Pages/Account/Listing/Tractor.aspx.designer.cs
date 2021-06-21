@@ -22,42 +22,6 @@ namespace Agrishare.Web.Pages.Account.Listing {
         protected global::System.Web.UI.WebControls.TextBox EquipmentTitle;
         
         /// <summary>
-        /// Description control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Description;
-        
-        /// <summary>
-        /// Brand control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Brand;
-        
-        /// <summary>
-        /// Horsepower control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Horsepower;
-        
-        /// <summary>
-        /// Year control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Year;
-        
-        /// <summary>
         /// AvailableWithFuel control.
         /// </summary>
         /// <remarks>

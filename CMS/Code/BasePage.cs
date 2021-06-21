@@ -1,4 +1,5 @@
 ﻿using Agrishare.Core.Entities;
+using System;
 
 namespace Agrishare.CMS.Code
 {
@@ -33,5 +34,34 @@ namespace Agrishare.CMS.Code
             }
         }
         private User currentUser;
+
+        public Region CurrentRegion
+        {
+            get
+            {
+                if (currentRegion == null)
+                {
+                    try
+                    {
+                        var regionId = Convert.ToInt32(Request.Cookies["region"].Value);
+                        currentRegion = Region.Find(regionId);
+                    }
+                    catch
+                    {
+                        currentRegion = Region.Find(1);
+                    }
+
+                    if (currentRegion == null)
+                        currentRegion = Region.Find(1);
+                }
+
+                return currentRegion;
+            }
+            set
+            {
+                currentRegion = value;
+            }
+        }
+        private Region currentRegion;
     }
 }

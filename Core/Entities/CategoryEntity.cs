@@ -18,6 +18,10 @@ namespace Agrishare.Core.Entities
         public const int TractorTransportServiceId = 18;
         public const int ProcessingId = 3;
         public const int BusId = 17;
+        public const int BusServiceId = 16;
+        public const int IrrigationId = 60;
+        public const int LabourId = 50;
+        public const int LandId = 70;
 
         public static string DefaultSort = "Title";
 
@@ -74,6 +78,26 @@ namespace Agrishare.Core.Entities
                         query = query.Where(e => e.ParentId == ParentId);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
+            }
+        }
+
+        public static List<Category> ParentListByListingCount()
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var idList = ctx.Listings
+                    .GroupBy(e => e.CategoryId)
+                    .Select(e => new { e.FirstOrDefault().CategoryId, Count = e.Count() })
+                    .OrderByDescending(e => e.Count)
+                    .Select(e => e.CategoryId);
+
+                var categories = ctx.Categories.Where(e => !e.ParentId.HasValue && !e.Deleted).ToList();
+
+                var list = new List<Category>();
+                foreach (var id in idList)
+                    list.Add(categories.FirstOrDefault(e => e.Id == id));
+
+                return list;
             }
         }
 

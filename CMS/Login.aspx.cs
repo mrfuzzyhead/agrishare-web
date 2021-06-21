@@ -35,7 +35,13 @@ namespace Agrishare.CMS
             }
 
             var user = Core.Entities.User.Find(Telephone: LoginMobileNumber.Text);
-            if (user.Id == 0 || !user.ValidatePassword(LoginPin.Text))
+            if (user == null)
+            {
+                Feedback.InnerText = "Invalid mobile number or PIN";
+                Feedback.Visible = true;
+                return;
+            }
+            else if (user.Id == 0 || !user.ValidatePassword(LoginPin.Text))
             {
                 if (user.Id > 0)
                 {
@@ -61,7 +67,7 @@ namespace Agrishare.CMS
         public void SendCode(object s, EventArgs e)
         {
             var user = Core.Entities.User.Find(Telephone: ForgotMobileNumber.Text);
-            if (user.Id > 0)
+            if (user?.Id > 0)
                 user.SendVerificationCode();
 
             ResetForm.Visible = true;
@@ -73,7 +79,7 @@ namespace Agrishare.CMS
         {
             var user = Core.Entities.User.Find(Telephone: ResetMobileNumber.Text);
 
-            if (user.Id > 0 && user.VerificationCode == ResetSmsCode.Text && user.VerificationCodeExpiry >= DateTime.Now)
+            if (user?.Id > 0 && user.VerificationCode == ResetSmsCode.Text && user.VerificationCodeExpiry >= DateTime.Now)
             {
                 user.ClearPassword = ResetNewPin.Text;
                 user.FailedLoginAttempts = 0;

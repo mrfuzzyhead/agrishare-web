@@ -14,20 +14,33 @@ namespace Agrishare.API.Controllers.App
     {
         [Route("search")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude, decimal Longitude, 
-            DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For = BookingFor.Me, 
-            decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "")
+        public object List(int PageIndex, int PageSize, string Sort, int CategoryId, decimal Latitude, decimal Longitude,
+            DateTime StartDate, int ServiceId = 0, decimal Size = 0, bool IncludeFuel = true, bool Mobile = false, BookingFor For = BookingFor.Me,
+            decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "", bool HideUnavailable = false,
+            decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
         {
             Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
-            var list = ListingSearchResult.List(PageIndex, PageSize, Sort, CategoryId, ServiceId, Latitude, Longitude, StartDate, Size, IncludeFuel, Mobile, For, DestinationLatitude, DestinationLongitude, TotalVolume, 0, Keywords);
+            if (ServiceId == 0)
+                ServiceId = CategoryId;
+
+            var list = ListingSearchResult.List(PageIndex: PageIndex, PageSize: PageSize, Sort: Sort, CategoryId: CategoryId,
+                ServiceId: ServiceId, Latitude: Latitude, Longitude: Longitude, StartDate: StartDate, Size: Size, IncludeFuel: IncludeFuel, 
+                Mobile: Mobile, For: For, DestinationLatitude: DestinationLatitude, DestinationLongitude: DestinationLongitude, 
+                TotalVolume: TotalVolume, Keywords: Keywords, RegionId: CurrentRegion.Id, HideUnavailable: HideUnavailable,
+                DistanceToWaterSource: DistanceToWaterSource, DepthOfWaterSource: DepthOfWaterSource, LabourServices: LabourServices,
+                LandRegion: LandRegion);
 
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);
 
+            var adverts = Advert.List(Live: true, PageSize: 5, Sort: "Random");
+            Advert.AddImpressions(adverts.Select(e => e.Id).ToList());
+
             return Success(new
             {
-                List = list.Select(e => e.Json())
+                List = list.Select(e => e.Json()),
+                Adverts = adverts.Select(e => e.AppJson())
             });
         }
 
@@ -53,7 +66,7 @@ namespace Agrishare.API.Controllers.App
         {
             var listing = Listing.Find(ListingId);
             var httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
-            var bytes = ListingSearchResult.ListingPDF(listing, StartDate, EndDate, Days, TransportDistance, Size, HireCost);
+            var bytes = ListingSearchResult.ListingPDF(Listing: listing, StartDate: StartDate, EndDate: EndDate, Days: Days, TransportDistance: TransportDistance, Size: Size, HireCost: HireCost, Region: CurrentRegion);
             var dataStream = new MemoryStream(bytes);
             httpResponseMessage.Content = new StreamContent(dataStream);
             httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")

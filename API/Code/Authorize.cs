@@ -26,15 +26,16 @@ namespace Agrishare.API
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            var allowedRoles = Roles.Split(',').Select(e => (Role)Enum.Parse(typeof(Role), e.Trim(), true));
-            if (allowedRoles.Count() == 0)
-                return true;
+            User currentUser = null;
+            Region currentRegion = null;
+
+            #region Find current user
 
             var token = string.Empty;
-
-            var cookie = actionContext.Request.Headers.GetCookies(User.AuthCookieName).FirstOrDefault();
-            if (cookie != null && !(cookie.Cookies.FirstOrDefault()?.Value.IsEmpty() ?? true))
-                token = Encryption.DecryptWithRC4(cookie.Cookies.First().Value, Config.EncryptionSalt);
+            var userCookies = actionContext.Request.Headers.GetCookies(User.AuthCookieName).FirstOrDefault();
+            var encryptedToken = userCookies?.Cookies.FirstOrDefault(e => e.Name == User.AuthCookieName)?.Value ?? string.Empty;
+            if (!string.IsNullOrEmpty(encryptedToken))
+                token = Encryption.DecryptWithRC4(encryptedToken, Config.EncryptionSalt);
             else if (actionContext.Request.Headers.TryGetValues("Authorization", out var authorizationValues))
                 token = authorizationValues.First();
             else
@@ -44,15 +45,29 @@ namespace Agrishare.API
                     token = queryString["Authorization"];
             }
 
-            var user = User.Find(AuthToken: token);
-            if (user?.Roles.Intersect(allowedRoles).Count() > 0)
-            {
-                actionContext.Request.Properties["CurrentUser"] = user;
-                return true;
-            }
+            currentUser = User.Find(AuthToken: token);
 
-            return false;
-            
+            #endregion
+
+            #region Find current region
+
+            var regionCookies = actionContext.Request.Headers.GetCookies("region").FirstOrDefault();
+            var regionId = regionCookies?.Cookies.FirstOrDefault(e => e.Name == "region")?.Value ?? string.Empty;
+            if (!string.IsNullOrEmpty(regionId))
+                currentRegion = Region.Find(Convert.ToInt32(regionId));
+            if (currentRegion == null || currentRegion.Id == 0)
+                currentRegion = currentUser.Region;
+
+            #endregion
+
+            actionContext.Request.Properties["CurrentUser"] = currentUser;
+            actionContext.Request.Properties["CurrentRegion"] = currentRegion;
+
+            var allowedRoles = Roles.Split(',').Select(e => (Role)Enum.Parse(typeof(Role), e.Trim(), true));
+            if (allowedRoles.Count() == 0)
+                return true;
+
+            return currentUser?.Roles.Intersect(allowedRoles).Count() > 0;            
         }
     }
 }

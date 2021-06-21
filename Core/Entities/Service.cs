@@ -32,6 +32,17 @@ namespace Agrishare.Core.Entities
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
+        public decimal MaximumDistanceToWaterSource { get; set; }
+        public decimal MaximumDepthOfWaterSource { get; set; }
+        public bool UnclearedLand { get; set; }
+        public bool ClearedLand { get; set; }
+        public bool NearWaterSource { get; set; }
+        public bool FertileSoil { get; set; }
+        public ServiceLandRegion LandRegion { get; set; }
+        public int MaxRentalYears { get; set; }
+        public decimal AvailableAcres { get; set; }
+        public decimal MinimumAcres { get; set; }
+        public int LabourServices { get; set; }
     
         public virtual Listing Listing { get; set; }
     }

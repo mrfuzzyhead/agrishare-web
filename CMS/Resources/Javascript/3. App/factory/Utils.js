@@ -64,16 +64,11 @@ agrishareApp.factory('Utils', function ($ngConfirm, $timeout, $window, ngToast) 
 
         cookie: {
 
-            create: function (name, value, days) {
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                    var expires = "; expires=" + date.toGMTString();
-                    document.cookie = name + "=" + value + expires + "; path=/";
-                }
-                else {
-                    document.cookie = name + "=" + value + "; path=/";
-                }
+            create: function (name, value, days, domain) {                
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+                document.cookie = name + "=" + value + expires + "; path=/; domain=" + domain + ';';
             },
 
             read: function (name) {

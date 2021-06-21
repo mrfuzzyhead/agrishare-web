@@ -54,6 +54,9 @@
     <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="InfobipClientLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Infobip.Api.Client.1.2.0\lib\net45\InfobipClientLib.dll</HintPath>
+    </Reference>
     <Reference Include="K4os.Compression.LZ4, Version=1.1.11.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Compression.LZ4.1.1.11\lib\net46\K4os.Compression.LZ4.dll</HintPath>
     </Reference>
@@ -99,15 +102,15 @@
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=8.0.24.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=8.0.25.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF6, Version=6.10.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.EntityFramework, Version=8.0.24.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.24\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
+    <Reference Include="MySql.Data.EntityFramework, Version=8.0.25.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.25\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -214,14 +217,18 @@
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
     <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\Ubiety.Dns.Core.dll</HintPath>
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\Ubiety.Dns.Core.dll</HintPath>
     </Reference>
     <Reference Include="Zstandard.Net, Version=1.1.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.24\lib\net452\Zstandard.Net.dll</HintPath>
+      <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\Zstandard.Net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\Redis.cs" />
+    <Compile Include="Entities\Advert.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AdvertEntity.cs" />
     <Compile Include="Entities\Agent.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -237,12 +244,24 @@
     <Compile Include="Entities\Booking.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BookingComment.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookingCommentEntity.cs" />
     <Compile Include="Entities\BookingFor.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookingPaymentStatus.cs" />
+    <Compile Include="Entities\BookingProduct.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BookingStatus.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BookingTag.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookingTagEntity.cs" />
     <Compile Include="Entities\BookingUser.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -256,6 +275,9 @@
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Counter.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Currency.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Device.cs">
@@ -282,6 +304,7 @@
     <Compile Include="Entities\JournalType.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\LabourService.cs" />
     <Compile Include="Entities\Language.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -322,15 +345,35 @@
     <Compile Include="Entities\Page.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PaymentMethod.cs" />
+    <Compile Include="Entities\Product.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ProductEntity.cs" />
     <Compile Include="Entities\QuantityUnit.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Rating.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Region.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RegionEntity.cs" />
     <Compile Include="Entities\Service.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ServiceLandRegion.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Supplier.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SupplierEntity.cs" />
+    <Compile Include="Entities\Tag.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TagEntity.cs" />
     <Compile Include="Entities\Template.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
@@ -393,6 +436,16 @@
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\UserStatus.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserVoucher.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Voucher.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VoucherEntity.cs" />
+    <Compile Include="Entities\VoucherType.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\DateTimeExtension.cs" />

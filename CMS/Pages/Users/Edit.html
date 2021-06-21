@@ -19,16 +19,33 @@
             <gl-dropdown-list gl-label="Language" ng-model="form.entity.LanguageId" gl-source="form.data.Languages" gl-selection="Id"></gl-dropdown-list>
 
             <h2>Contact Details</h2>
-            <gl-textbox gl-label="Email Address" ng-model="form.entity.EmailAddress"></gl-textbox>
-            <gl-textbox gl-label="Telephone" ng-model="form.entity.Telephone" gl-required="true"></gl-textbox>
+            <div flex>
+                <gl-textbox gl-label="Email Address" ng-model="form.entity.EmailAddress"></gl-textbox>
+                <gl-textbox gl-label="Telephone" ng-model="form.entity.Telephone" gl-required="true"></gl-textbox>
+            </div>
+
+            <h2>Payment</h2>
+            <gl-checkbox-list gl-label="Method" ng-model="form.entity.PaymentMethods" gl-source="form.data.PaymentMethods" gl-selection="Id"></gl-checkbox-list>
+            <div flex ng-if="form.entity.PaymentMethods.includes(2)">
+                <gl-textbox gl-label="Bank" ng-model="form.entity.BankAccount.Bank"></gl-textbox>
+                <gl-textbox gl-label="Branch" ng-model="form.entity.BankAccount.Branch"></gl-textbox>
+            </div>
+            <div flex ng-if="form.entity.PaymentMethods.includes(2)">
+                <gl-textbox gl-label="Account Name" ng-model="form.entity.BankAccount.AccountName"></gl-textbox>
+                <gl-textbox gl-label="Account Number" ng-model="form.entity.BankAccount.AccountNumber"></gl-textbox>
+            </div>
 
             <h2>Access Control</h2>
             <gl-textbox gl-label="PIN" ng-model="form.entity.ClearPassword" ng-if="form.entity.Id==0" gl-type="password"></gl-textbox>
             <gl-checkbox-list gl-label="Roles" ng-model="form.entity.Roles" gl-source="form.data.Roles" gl-required="true" gl-selection="Id"></gl-checkbox-list>
 
             <gl-dropdown-list gl-label="Status" ng-model="form.entity.StatusId" gl-source="form.data.Statuses" gl-selection="Id"></gl-dropdown-list>
-            <gl-dropdown-list gl-label="Agent" ng-model="form.entity.Agent" gl-source="form.data.Agents"></gl-dropdown-list>
-            <gl-dropdown-list gl-label="Agent Type" ng-model="form.entity.AgentTypeId" gl-source="form.data.Types" gl-selection="Id" ng-if="form.entity.Agent"></gl-dropdown-list>
+            <div flex>
+                <gl-dropdown-list gl-label="Agent" ng-model="form.entity.Agent" gl-source="form.data.Agents"></gl-dropdown-list>
+                <gl-dropdown-list gl-label="Agent Type" ng-model="form.entity.AgentTypeId" gl-source="form.data.Types" gl-selection="Id" ng-if="form.entity.Agent"></gl-dropdown-list>
+            </div>
+
+            <gl-dropdown-list gl-label="Supplier" ng-model="form.entity.Supplier" gl-source="form.data.Suppliers"></gl-dropdown-list>
 
         </form>
 

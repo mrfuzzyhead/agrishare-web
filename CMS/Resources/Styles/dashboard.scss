@@ -116,6 +116,12 @@
                 text-align: center;
                 padding: 10px;
                 flex: 1;
+                cursor: pointer;
+
+                &:hover {
+                    background: #ccc;
+                    border-radius: 5px;
+                }
 
                 @media all and (max-width: $mobile-breakpoint) {
                     flex: 50%;
@@ -170,8 +176,56 @@
     .graph-view {
         background: none !important;
         padding: 40px 0 0 0;
-        .col>div {
+
+        .col > div {
             border-bottom-style: dashed;
+        }
+    }
+
+    .age-gender-graph {
+        display: flex;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            > div {
+                height: 150px;
+                position: relative;
+                border: solid 1px #eee;
+                border-width: 2px 1px 2px 1px;
+
+                > div {
+                    position: absolute;
+                    width: 100%;
+                    left: 0;
+                    min-height: 32px;
+                    padding: 5px;
+                    text-align: center;
+                    color: white;
+                }
+            }
+
+            .f {
+                > div {
+                    background: $pink;
+                    bottom: 0;
+                }
+            }
+
+            .m {
+                > div {
+                    background: $green;
+                    top: 0;
+                }
+            }
+
+            small {
+                padding: 10px;
+                background: #ddd;
+                text-align: center;
+            }
         }
     }
 }

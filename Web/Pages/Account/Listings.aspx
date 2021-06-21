@@ -8,7 +8,25 @@
     <div class="cols">
         <div>
             
-            <web:PagedRepeater runat="server" ID="List" OnItemDataBound="BindListing" PageSize="5">
+            <web:PagedRepeater runat="server" ID="ListingsList" OnItemDataBound="BindListing" PageSize="5" Visible="false">
+                <HeaderTemplate>
+                    <div class="listings-list">
+                </HeaderTemplate>
+                <ItemTemplate>
+                        <asp:HyperLink runat="server" ID="Link">
+                            <span runat="server" ID="Photo" />
+                            <span>
+                                <strong><asp:Literal runat="server" ID="Title" /></strong>
+                                <span><asp:Literal runat="server" ID="Description" /></span>
+                            </span>
+                        </asp:HyperLink>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </div>
+                </FooterTemplate>
+            </web:PagedRepeater>
+
+            <web:PagedRepeater runat="server" ID="ProductList" OnItemDataBound="BindProduct" PageSize="5" Visible="false">
                 <HeaderTemplate>
                     <div class="listings-list">
                 </HeaderTemplate>
@@ -37,6 +55,11 @@
                 <li><a href="/account/listings?cid=1">Tractors</a></li>
                 <li><a href="/account/listings?cid=2">Lorries</a></li>
                 <li><a href="/account/listings?cid=3">Processing</a></li>
+                <li><a href="/account/listings?cid=17">Buses</a></li>                
+                <li><a href="/account/listings?cid=60">Irrigation</a></li>
+                <li><a href="/account/listings?cid=50">Labour</a></li>
+                <li><a href="/account/listings?cid=70">Land</a></li>
+                <li runat="server" id="EquipmentMenuItem"><a href="/account/listings?cid=0">Equipment</a></li>
             </ul>
         </div>
     </div>

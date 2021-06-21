@@ -61,7 +61,7 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Delete(int Id)
         {
-            var blogs = Entities.User.Find(Id: Id);
+            var blogs = Entities.Blog.Find(Id: Id);
 
             if (blogs.Delete())
                 return Success(new

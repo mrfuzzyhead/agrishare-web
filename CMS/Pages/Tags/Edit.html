@@ -1,0 +1,22 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Tag" ag-selected-url="#/tags/list" ag-api-route="/cms/tags/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <form>
+
+            <gl-textbox gl-label="Title" ng-model="form.entity.Title" gl-required="true"></gl-textbox>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity">Save</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>

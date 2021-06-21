@@ -22,5 +22,7 @@ namespace Agrishare.API.Models
         public DateTime DateOfBirth { get; set; }
         public Language? LanguageId { get; set; }
 
+        public int? RegionId { get; set; }
+
     }
 }

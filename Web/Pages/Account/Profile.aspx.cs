@@ -16,8 +16,13 @@ namespace Agrishare.Web.Pages.Account
             Master.Body.Attributes["class"] += " account ";
 
             DisplayName.Text = HttpUtility.HtmlEncode(Master.CurrentUser.FirstName + " " + Master.CurrentUser.LastName);
+            DisplayCountry.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Region?.Title ?? "-");
+            DisplayGender.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Gender);
+            DisplayDateOfBirth.Text = Master.CurrentUser.DateOfBirth.HasValue ? Master.CurrentUser.DateOfBirth.Value.ToString("d MMMM yyyy") : "-";
             DisplayTelephone.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Telephone);
             DisplayEmailAddress.Text = HttpUtility.HtmlEncode(Master.CurrentUser.EmailAddress);
+            SupplierRow.Visible = Master.CurrentUser.Supplier != null;
+            DisplaySupplier.Text = HttpUtility.HtmlEncode(Master.CurrentUser.Supplier?.Title ?? "-");
 
             if (!Page.IsPostBack)
             {
@@ -29,18 +34,27 @@ namespace Agrishare.Web.Pages.Account
             {
                 case "edit":
                     EditProfileForm.Visible = true;
+                    EditProfileLink.CssClass = "active";
                     if (!Page.IsPostBack)
                     {
+                        Region.DataSource = Core.Entities.Region.List();
+                        Region.DataTextField = "Title";
+                        Region.DataValueField = "Id";
+                        Region.DataBind();
+                        Region.Items.Insert(0, new ListItem("Select...", ""));
+
                         FirstName.Text = Master.CurrentUser.FirstName;
                         LastName.Text = Master.CurrentUser.LastName;
                         EmailAddress.Text = Master.CurrentUser.EmailAddress;
                         Telephone.Text = Master.CurrentUser.Telephone;
                         Gender.SelectedValue = ((int)Master.CurrentUser.GenderId).ToString();
                         DateOfBirth.SelectedDate = Master.CurrentUser.DateOfBirth;
+                        Region.SelectedValue = Master.CurrentUser.Region.Id.ToString();
                     }
                     break;
                 case "notifications":
                     NotificationPreferencesForm.Visible = true;
+                    NotificationPrefsLink.CssClass = "active";
                     if (!Page.IsPostBack)
                     {
                         SMS.Checked = (Master.CurrentUser.NotificationPreferences & (int)Core.Entities.NotificationPreferences.SMS) > 0;
@@ -48,13 +62,29 @@ namespace Agrishare.Web.Pages.Account
                         Email.Checked = (Master.CurrentUser.NotificationPreferences & (int)Core.Entities.NotificationPreferences.Email) > 0;
                     }
                     break;
+                case "payments":
+                    PaymentDetailsForm.Visible = true;
+                    PaymentDetailsLink.CssClass = "active";
+                    if (!Page.IsPostBack)
+                    {
+                        Cash.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.Cash);
+                        BankTransfer.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.BankTransfer);
+                        MobileMoney.Checked = Master.CurrentUser.PaymentMethods.Contains(Core.Entities.PaymentMethod.MobileMoney);
+                        Bank.Text = Master.CurrentUser.BankAccount.Bank;
+                        Branch.Text = Master.CurrentUser.BankAccount.Branch;
+                        AccountName.Text = Master.CurrentUser.BankAccount.AccountName;
+                        AccountNumber.Text = Master.CurrentUser.BankAccount.AccountNumber;
+                    }
+                    break;
                 case "resetpin":
                     ResetForm.Visible = true;
+                    ResetPinLink.CssClass = "active";
                     if (!Page.IsPostBack)
                         Master.CurrentUser.SendVerificationCode();
                     break;
                 case "delete":
                     DeleteForm.Visible = true;
+                    DeleteAccountLink.CssClass = "active";
                     var bookings = Core.Entities.Booking.Count(UserId: Master.CurrentUser.Id, StartDate: DateTime.Now, Upcoming: true);
                     if (bookings > 0)
                         DeleteWarning.Visible = true;
@@ -71,6 +101,9 @@ namespace Agrishare.Web.Pages.Account
                 default:
                     Introduction.Visible = true;
 
+                    if (Master.CurrentUser.PaymentMethods.Count == 0)
+                        PaymentsPrompt.Visible = true;
+
                     AgentName.Text = Master.CurrentUser.Agent?.Title ?? "";
                     AgentDetails.Visible = Master.CurrentUser.AgentId.HasValue && Master.CurrentUser.AgentTypeId == Core.Entities.AgentUserType.Admin;
                     if (AgentDetails.Visible)
@@ -86,18 +119,21 @@ namespace Agrishare.Web.Pages.Account
 
         public void UpdateUser(object s, EventArgs e)
         {
-            Master.CurrentUser.FirstName = FirstName.Text;
-            Master.CurrentUser.LastName = LastName.Text;
-            Master.CurrentUser.EmailAddress = EmailAddress.Text;
-            Master.CurrentUser.Telephone = Telephone.Text;
-            Master.CurrentUser.GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue));
-            Master.CurrentUser.DateOfBirth = DateOfBirth.SelectedDate;
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
 
-            if (!Master.CurrentUser.UniqueTelephone())
+            user.FirstName = FirstName.Text;
+            user.LastName = LastName.Text;
+            user.EmailAddress = EmailAddress.Text;
+            user.Telephone = Telephone.Text;
+            user.GenderId = (Core.Entities.Gender)Enum.ToObject(typeof(Core.Entities.Gender), int.Parse(Gender.SelectedValue));
+            user.DateOfBirth = DateOfBirth.SelectedDate;
+            user.Region = Core.Entities.Region.Find(Convert.ToInt32(Region.SelectedValue));
+
+            if (!user.UniqueTelephone())
                 Master.Feedback = "Telephone number has already been registered";
-            else if (!Master.CurrentUser.UniqueEmailAddress())
+            else if (!user.UniqueEmailAddress())
                 Master.Feedback = "Email address has already been registered";
-            else if (Master.CurrentUser.Save())
+            else if (user.Save())
             {
                 Master.Feedback = "Your details have been updated";
                 Response.Redirect("/account/profile");
@@ -108,18 +144,46 @@ namespace Agrishare.Web.Pages.Account
 
         public void UpdateNotificationPreferences(object s, EventArgs e)
         {
-            Master.CurrentUser.NotificationPreferences = 0;
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.NotificationPreferences = 0;
             if (SMS.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.SMS;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.SMS;
             if (PushNotifications.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.PushNotifications;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.PushNotifications;
             if (Email.Checked)
-                Master.CurrentUser.NotificationPreferences += (int)Core.Entities.NotificationPreferences.Email;
+                user.NotificationPreferences += (int)Core.Entities.NotificationPreferences.Email;
 
-            if (Master.CurrentUser.Save())
+            if (user.Save())
             {
                 Master.Feedback = "Your notification preferences have been updated";
                 Response.Redirect("/account/profile");
+            }
+            else
+                Master.Feedback = "An unknown error occured";
+        }
+
+        public void UpdatePaymentDetails(object s, EventArgs e)
+        {
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.PaymentMethods = new List<Core.Entities.PaymentMethod>();
+            if (Cash.Checked)
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.Cash);
+            if (BankTransfer.Checked)
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.BankTransfer);
+            if (MobileMoney.Checked)
+                user.PaymentMethods.Add(Core.Entities.PaymentMethod.MobileMoney);
+            user.BankAccount.Bank = Bank.Text;
+            user.BankAccount.Branch = Branch.Text;
+            user.BankAccount.AccountName = AccountName.Text;
+            user.BankAccount.AccountNumber = AccountNumber.Text;
+
+            if (user.Save())
+            {
+                Master.Feedback = "Your payment details have been updated";
+                var redir = Request.QueryString["r"];
+                if (string.IsNullOrEmpty(redir))
+                    redir = "/account/profile/payments";
+                Response.Redirect(redir);
             }
             else
                 Master.Feedback = "An unknown error occured";
@@ -143,13 +207,16 @@ namespace Agrishare.Web.Pages.Account
                 }
                 else
                     Master.Feedback = "The verification code has expired - please reset your PIN again";
+
             }
         }
 
         public void Logout(object s, EventArgs e)
         {
-            Master.CurrentUser.AuthToken = string.Empty;
-            Master.CurrentUser.Save();
+            var user = Core.Entities.User.Find(Master.CurrentUser.Id);
+            user.AuthToken = string.Empty;
+            user.Save();
+
             Master.DropCookie(string.Empty);
             Response.Redirect("/");
         }

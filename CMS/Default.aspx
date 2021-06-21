@@ -22,7 +22,10 @@
 
         <nav>
             <h1>
-                <span>AgriShare</span>            
+                <span>
+                    <b>AgriShare</b>
+                    <small>{{app.region.Title}}</small>         
+                </span>            
                 <a class="material-icons" ng-click="app.menuVisible=true" ng-if="!app.menuVisible">menu</a>
                 <a class="material-icons" ng-click="app.menuVisible=false" ng-if="app.menuVisible">close</a>
             </h1>
@@ -38,6 +41,17 @@
                             <a ng-href="{{subitem.url}}">{{subitem.title}}</a>
                         </li>
                     </ul>
+                </li>
+                <li class="region">
+                    <small>Regions</small>
+                </li>
+                <li class="region" ng-repeat="region in app.regions" ng-class="{'active': region.Id===app.region.Id}">
+                    <a ng-click="app.setRegion(region)" >
+                        <i class="material-icons" ng-if="region.Id!==app.region.Id">language</i>
+                        <!--https://www.countryflags.com/-->
+                        <img ng-src="/Resources/Images/Region-{{app.region.Id}}.png" ng-if="region.Id===app.region.Id" />
+                        <span>{{region.Title}}</span>
+                    </a>
                 </li>
             </ul>
             <p ng-class="{'visible': app.menuVisible}">
