@@ -14,7 +14,7 @@ namespace Agrishare.Core.Entities
     {
         public static bool VerificationRequired => Convert.ToBoolean(Config.Find(Key: "User Verification Required")?.Value ?? "True");
 
-        public static int MaxFailedLoginAttempts = 0;
+        public static int MaxFailedLoginAttempts = 5;
         public static int MaxFailedVoucherAttempts = 10;
 
         public static string AuthCookieName = "agrishare";
