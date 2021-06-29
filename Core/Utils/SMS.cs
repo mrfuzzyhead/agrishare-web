@@ -73,7 +73,7 @@ namespace Agrishare.Core.Utils
             if (Log)
                 Entities.Log.Error("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
 
-            return sentMessageInfo.Status.GroupId == 3;
+            return sentMessageInfo.Status.GroupId == 1 || sentMessageInfo.Status.GroupId == 3;
         }
 
         public static bool SendMessages(List<string> RecipientList, string MessageText, Region Region)
@@ -107,7 +107,7 @@ namespace Agrishare.Core.Utils
             if (Log)
                 Entities.Log.Error("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
 
-            return sentMessageInfo.Status.GroupId == 3;
+            return sentMessageInfo.Status.GroupId == 1 || sentMessageInfo.Status.GroupId == 3;
         }
 
         private static string FormatNumber(string Number, Region Region)

@@ -77,6 +77,11 @@ namespace Agrishare.API.Controllers.App
                 if (user.AuthToken.IsEmpty())
                     user.AuthToken = Guid.NewGuid().ToString();
             }
+            else
+            {
+                user.StatusId = UserStatus.Pending;
+                user.AuthToken = string.Empty;
+            }
 
             if (user.Save())
             {
