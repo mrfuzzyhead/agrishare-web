@@ -32,7 +32,7 @@
             <div>     
                 <a href="/">
                     <strong>AgriShare</strong>
-                    <small>Connecting you to farm equipment</small>
+                    <small>Connecting you to farm resources</small>
                 </a>
             </div>
             <nav ng-class="{ 'visible': menu.visible }">

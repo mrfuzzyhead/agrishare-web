@@ -15,8 +15,8 @@
             <p><a href="/account/get-started">Get Started</a></p>
         </div>
         <div ng-class="{'visible': index==1 }">
-            <h2>Linking farmers in Africa to agricultural equipment</h2>
-            <p>AgriShare is an app to hire or rent out agricultural equipment between farmers and equipment manufacturers securely and with ease.</p>
+            <h2>Linking farmers in Africa to agricultural resources</h2>
+            <p>AgriShare is an app to hire or rent out agricultural resources between farmers and equipment manufacturers securely and with ease.</p>
             <p><a href="/account/get-started">Get Started</a></p>
         </div>
         <div ng-class="{'visible': index==2 }">
@@ -30,13 +30,13 @@
         <div>
             <img src="/Resources/Images/Tout-Seeking.svg" />
             <h2>Seeking</h2>
-            <p>Are you looking for some agricultural equipment to hire? Look through the listings to find something in your area and check if it is available.</p>
+            <p>Are you looking for some agricultural resources to hire? Look through the listings to find something in your area and check if it is available.</p>
             <p><a href="/account/get-started" class="button">Get Started</a></p>
         </div>        
         <div>
             <img src="/Resources/Images/Tout-Offering.svg" />
             <h2>Offering</h2>
-            <p>Would you like to hire out your farming equipment to other farmers for extra money? Register on the app or the site, and add your equipment to hire it out.</p>
+            <p>Would you like to hire out your farming resources to other farmers for extra money? Register on the app or the site, and add your equipment to hire it out.</p>
             <p><a href="/account/get-started" class="button">Get Started</a></p>
         </div>
     </div>

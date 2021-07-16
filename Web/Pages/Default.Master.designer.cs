@@ -13,15 +13,6 @@ namespace Agrishare.Web.Pages {
     public partial class Default {
         
         /// <summary>
-        /// Head control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        
-        
-        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
