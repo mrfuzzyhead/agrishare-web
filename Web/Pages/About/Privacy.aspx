@@ -2,8 +2,13 @@
 <%@ Page Title="Privacy Policy" Language="C#" MasterPageFile="~/Pages/Default.Master" AutoEventWireup="true" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-    
-    <div id="english">
+    <p ng-init="language = 'english'">
+        <a ng-click="language = 'english'">English</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'shona'">Shona</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'ndebele'">Ndebele</a>
+    </p>
+
+    <div id="english" ng-show="language === 'english'">
         <h1>AgriShare Privacy Notice</h1>
     
         <p>We, Zimbabwe Welthungerhilfe, take the protection of your personal data seriously. We treat your personal data 
@@ -288,7 +293,7 @@
             receive information on your data, change or delete it, please contact us.</p>
     </div>
 
-    <div id="shona">
+    <div id="shona" ng-show="language === 'shona'">
         <h1>Chiziviso Chezvekuchengetedzeka Kweruzivo KuAgriShare</h1>
         <p>Isu, ve Zimbabwe Welthungerhilfe, tinokoshesa kuchengetedzeka kweruzivo rwunechekuita newe sedungamunhu zvakanyanyisa kwazvo. Ruzivo rwese rwunechekuita newe ipfimbi yedu yatisina kana mumwe watinoudza, uye tinorwuchengetedza rwakavanzika tichitevedzera mitemo yezvekuchengetedzwa kweruzivo pamwechete neChiziviso icho chino.</p>
 
@@ -417,7 +422,7 @@
         <p>Wakasununguka kubata mukuru wedu anoona nezvekuchengetedzwa kweruzivo kana unemibvunzo, mazano aungade kupanga, kana zvichemo zvaungade kusvitsa maererano neChiziviso chedu Chezvekuchengetedzwa Kweruzivo. Mukuru wedu anoona nezvekuchengetedzwa kweruzivo anobatika netsambagetsi pakero inoti <a href="mailto:datenschutz@welthungerhilfe.de" class="s6" target="_blank">datenschutz@welthungerhilfe.de</a> kana kuti netsamba pakero yedu yeposvo, iyo yaunofanirwa kunyora pamusoro kuti &quot;Kuna Mukuru wezvekuchengetedzwa kweruzivo&quot; (kana kuti &quot;To the data protection officer&quot;). Kana ungadewo kuziva nezveruzivo rwunechekuita newe sedungamunhu rwatinarwo, kurwushandura kana kurwudzima, tapota tibatewo zvekare.</p>
     </div>
 
-    <div id="ndebele">
+    <div id="ndebele" ng-show="language === 'ndebele'">
         <h1>ISaziso se-AgriShare Esiphathelane LeMfihlo YoMuntu</h1>
         <p>Thina, njengabe Welthungerhilfe eZimbabwe, siqakathekisa ukugcinakala kuyimfihlo, kolwazi oluphathelane lomuntu siqu sakhe kakhulukazi. Ulwazi oluphathelane lawe siqu sakho siluphatha njengemfihlo njalo silandela iziqondiso zemithetho ehola ukuvikelwa kolwazi kanye lasonalesi Saziso esiphathelane leMfihlo yoMuntu.</p>
 
