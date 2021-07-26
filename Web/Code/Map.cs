@@ -4,6 +4,7 @@
  * License: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/legalcode) */
 
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Web;
 using System.Web.UI;
@@ -14,6 +15,25 @@ namespace Agrishare.Web.Controls
     public class Map : WebControl
     {
         public string ApiKey => Core.Entities.Config.Find(Key: "Google Maps API Key").Value;
+
+        public User CurrentUser
+        {
+            get
+            {
+                if ((currentUser == null || currentUser.Id == 0) && HttpContext.Current.Request.Cookies[User.AuthCookieName] != null)
+                {
+                    var authToken = HttpContext.Current.Request.Cookies[User.AuthCookieName].Value;
+                    if (!authToken.IsEmpty())
+                        currentUser = User.Find(AuthToken: authToken);
+                }
+                return currentUser ?? new User();
+            }
+            set
+            {
+                currentUser = value;
+            }
+        }
+        private User currentUser;
 
         private decimal latitude = -17.824858M;
         public decimal Latitude
@@ -54,6 +74,22 @@ namespace Agrishare.Web.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             base.AddAttributesToRender(writer);
+
+            if ((CurrentUser.Region?.Id ?? CurrentUser.RegionId) == (int)Regions.Zimbabwe)
+            {
+                latitude = -17.824858M;
+                longitude = 31.053028M;
+            }
+            else if ((CurrentUser.Region?.Id ?? CurrentUser.RegionId) == (int)Regions.Uganda)
+            {
+                latitude = 0.347596M;
+                longitude = 32.582520M;
+            }
+            else
+            {
+                latitude = 0M;
+                longitude = 0M;
+            }
 
             writer.WriteLine($@"<input type=""hidden"" id=""{ClientID}_Latitude"" name=""{ClientID}_Latitude"" value=""{Latitude}"" />");
             writer.WriteLine($@"<input type=""hidden"" id=""{ClientID}_Longitude"" name=""{ClientID}_Longitude"" value=""{Longitude}"" />");
