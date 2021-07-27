@@ -10,19 +10,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Agrishare.Core.dll">
-      <publishTime>07/19/2021 09:16:56</publishTime>
+      <publishTime>07/26/2021 15:59:40</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll.config">
-      <publishTime>07/17/2021 14:13:40</publishTime>
+      <publishTime>07/19/2021 12:31:12</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.pdb">
-      <publishTime>07/19/2021 09:16:56</publishTime>
+      <publishTime>07/26/2021 15:59:40</publishTime>
     </File>
     <File Include="bin/Agrishare.Web.dll">
-      <publishTime>07/19/2021 09:17:09</publishTime>
+      <publishTime>07/27/2021 10:52:12</publishTime>
     </File>
     <File Include="bin/Agrishare.Web.pdb">
-      <publishTime>07/19/2021 09:17:09</publishTime>
+      <publishTime>07/27/2021 10:52:12</publishTime>
     </File>
     <File Include="bin/AWSSDK.dll">
       <publishTime>03/16/2019 00:24:03</publishTime>
@@ -568,7 +568,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/19/2018 10:53:53</publishTime>
     </File>
     <File Include="Pages/About/Privacy.aspx">
-      <publishTime>07/19/2021 08:53:12</publishTime>
+      <publishTime>07/19/2021 12:31:12</publishTime>
     </File>
     <File Include="Pages/About/Rules.aspx">
       <publishTime>03/16/2019 00:24:01</publishTime>
@@ -595,16 +595,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Bus.aspx">
-      <publishTime>03/11/2021 15:43:07</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Irrigation.aspx">
-      <publishTime>03/11/2021 15:43:12</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Labour.aspx">
-      <publishTime>03/11/2021 15:43:16</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Land.aspx">
-      <publishTime>03/11/2021 15:43:21</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Lorry.aspx">
       <publishTime>06/21/2021 17:02:00</publishTime>
@@ -613,7 +613,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Product.aspx">
-      <publishTime>03/12/2021 12:26:58</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Reviews.aspx">
       <publishTime>03/16/2019 00:24:01</publishTime>
@@ -637,16 +637,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Bus.aspx">
-      <publishTime>11/26/2020 15:49:00</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Irrigation.aspx">
-      <publishTime>03/11/2021 15:43:45</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Labour.aspx">
-      <publishTime>03/11/2021 15:43:51</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Land.aspx">
-      <publishTime>03/12/2021 12:36:23</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Lorry.aspx">
       <publishTime>06/21/2021 17:02:00</publishTime>
@@ -655,7 +655,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Products.aspx">
-      <publishTime>03/12/2021 15:32:12</publishTime>
+      <publishTime>06/21/2021 17:02:00</publishTime>
     </File>
     <File Include="Pages/Account/Seeking/Results.aspx">
       <publishTime>06/21/2021 17:02:00</publishTime>
@@ -667,7 +667,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Pages/Default.Master">
-      <publishTime>07/17/2021 14:13:40</publishTime>
+      <publishTime>07/19/2021 12:31:12</publishTime>
     </File>
     <File Include="Pages/Error404.html">
       <publishTime>03/16/2019 00:24:01</publishTime>
@@ -676,7 +676,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Pages/Homepage.aspx">
-      <publishTime>07/17/2021 14:13:40</publishTime>
+      <publishTime>07/19/2021 12:31:12</publishTime>
     </File>
     <File Include="Pages/Listing.aspx">
       <publishTime>01/13/2020 09:46:05</publishTime>
@@ -847,7 +847,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/12/2021 14:41:11</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/19/2021 11:55:32</publishTime>
+      <publishTime>07/27/2021 10:52:13</publishTime>
     </File>
   </ItemGroup>
 </Project>
