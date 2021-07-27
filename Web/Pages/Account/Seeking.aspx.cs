@@ -30,14 +30,14 @@ namespace Agrishare.Web.Pages.Account.Seeking
             if (Master.CurrentUser.AgentId.HasValue)
             {
                 LeftSummaryTitle.Text = "My Commission";
-                LeftSummaryAmount.Text = "$" + Core.Entities.Booking.SeekingSummaryAgentCommission(Master.CurrentUser.Id).ToString("N2");
+                LeftSummaryAmount.Text = Master.CurrentCurrency + Core.Entities.Booking.SeekingSummaryAgentCommission(Master.CurrentUser.Id).ToString("N2");
             }
             else
             {
                 LeftSummaryTitle.Text = "This Month";
-                LeftSummaryAmount.Text = "$" + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
+                LeftSummaryAmount.Text = Master.CurrentCurrency + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id, startDate).ToString("N2");
             }
-            AllTimeSummary.Text = "$" + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id).ToString("N2");
+            AllTimeSummary.Text = Master.CurrentCurrency + Core.Entities.Booking.SeekingSummary(Master.CurrentUser.Id).ToString("N2");
         }
 
         public void BindNotification(object s, RepeaterItemEventArgs e)
@@ -99,7 +99,7 @@ namespace Agrishare.Web.Pages.Account.Seeking
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Supplier.Logo.ThumbName}");
                 ((Literal)e.Item.FindControl("Date")).Text = booking.StartDate.ToString("d MMMM yyyy");
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing?.Title ?? booking.Supplier?.Title ?? "Booking");
-                ((Literal)e.Item.FindControl("Price")).Text = "$" + booking.Price.ToString("N2");
+                ((Literal)e.Item.FindControl("Price")).Text = Master.CurrentCurrency + booking.Price.ToString("N2");
             }
         }
     }

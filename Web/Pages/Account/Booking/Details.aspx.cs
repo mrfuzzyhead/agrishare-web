@@ -180,8 +180,8 @@ namespace Agrishare.Web.Pages.Account.Booking
             Unavaiable.Visible = !Available;
 
             TransportDistance.Text = SelectedBooking.TransportDistance.ToString("N2") + " km";
-            TransportCost.Text = "$" + SelectedBooking.TransportCost.ToString("N2");
-            HireCost.Text = "$" + SelectedBooking.HireCost.ToString("N2");
+            TransportCost.Text = Master.CurrentCurrency + SelectedBooking.TransportCost.ToString("N2");
+            HireCost.Text = Master.CurrentCurrency + SelectedBooking.HireCost.ToString("N2");
 
             if (SelectedBooking.Listing != null)
             {
@@ -190,7 +190,7 @@ namespace Agrishare.Web.Pages.Account.Booking
                     FuelSize.Text = SelectedBooking.TransportDistance.ToString("N2") + "km";
                 else
                     FuelSize.Text = SelectedBooking.Quantity + " " + SelectedBooking.Service.DistanceUnit;
-                FuelCost.Text = "$" + SelectedBooking.FuelCost.ToString("N2");
+                FuelCost.Text = Master.CurrentCurrency + SelectedBooking.FuelCost.ToString("N2");
 
                 HireCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId;
                 FuelCostRow.Visible = SelectedBooking.Listing.CategoryId != Category.BusId && SelectedBooking.Listing.CategoryId != Category.IrrigationId && SelectedBooking.Listing.CategoryId != Category.LabourId && SelectedBooking.Listing.CategoryId != Category.LandId;
@@ -200,9 +200,9 @@ namespace Agrishare.Web.Pages.Account.Booking
                 HireSize.Text = SelectedBooking.Products.Count == 1 ? "1 product" : $"{SelectedBooking.Products.Count} products";
             }
 
-            Commission.Text = "$" + SelectedBooking.AgriShareCommission.ToString("N2");
+            Commission.Text = Master.CurrentCurrency + SelectedBooking.AgriShareCommission.ToString("N2");
 
-            Total.Text = "$" + SelectedBooking.Price.ToString("N2");
+            Total.Text = Master.CurrentCurrency + SelectedBooking.Price.ToString("N2");
 
             /** Land **/
 

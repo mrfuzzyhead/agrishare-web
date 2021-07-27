@@ -31,6 +31,8 @@ namespace Agrishare.Web.Pages
         }
         private User currentUser;
 
+        public string CurrentCurrency => $"{CurrentUser.Region?.Currency}"; 
+
         public List<Product> Cart
         {
             get

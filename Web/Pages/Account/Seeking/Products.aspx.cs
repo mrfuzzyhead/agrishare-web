@@ -59,8 +59,8 @@ namespace Agrishare.Web.Pages.Account.Seeking
 
                 ProductPageTitle.Text = "Products";
                 ProductList.Visible = true;
-                ProductList.RecordCount = Product.Count(SupplierId: Master.CurrentUser.Supplier.Id, Keywords: query);
-                ProductList.DataSource = Product.List(PageIndex: ProductList.CurrentPageIndex, PageSize: ProductList.PageSize, SupplierId: Master.CurrentUser.Supplier.Id, Keywords: query);
+                ProductList.RecordCount = Product.Count(Keywords: query);
+                ProductList.DataSource = Product.List(PageIndex: ProductList.CurrentPageIndex, PageSize: ProductList.PageSize, Keywords: query);
                 ProductList.DataBind();
 
                 ProductSearch.Visible = true;
