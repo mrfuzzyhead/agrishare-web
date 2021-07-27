@@ -85,7 +85,7 @@ namespace Agrishare.Web.Pages.Account.Offering
                     ((HtmlContainerControl)e.Item.FindControl("Photo")).Style.Add("background-image", $"url({Core.Entities.Config.CDNURL}/{booking.Listing.Photos.FirstOrDefault().ThumbName}");
                 ((Literal)e.Item.FindControl("Date")).Text = booking.StartDate.ToString("d MMMM yyyy");
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(booking.Listing.Title);
-                ((Literal)e.Item.FindControl("Price")).Text = "$" + booking.Price.ToString("N2");
+                ((Literal)e.Item.FindControl("Price")).Text = Master.CurrentCurrency + booking.Price.ToString("N2");
             }
         }
     }

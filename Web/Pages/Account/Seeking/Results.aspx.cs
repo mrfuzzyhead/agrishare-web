@@ -85,7 +85,7 @@ namespace Agrishare.Web.Pages.Account.Seeking
                     ((Literal)e.Item.FindControl("Distance")).Text = Math.Round(result.Distance) == 0 ? "Nearby" : $"{Math.Round(result.Distance)}kms away";
 
                 ((Literal)e.Item.FindControl("Title")).Text = HttpUtility.HtmlEncode(result.Title);
-                ((Literal)e.Item.FindControl("Price")).Text = "$" + result.Price.ToString("N2");
+                ((Literal)e.Item.FindControl("Price")).Text = Master.CurrentCurrency + result.Price.ToString("N2");
                 ((Literal)e.Item.FindControl("Status")).Text = result.Available ? "Available" : "Not available";
 
                 var qs = new NameValueCollection(Request.QueryString)
