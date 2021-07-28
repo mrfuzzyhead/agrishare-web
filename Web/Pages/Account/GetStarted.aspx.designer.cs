@@ -94,6 +94,33 @@ namespace Agrishare.Web.Pages.Account {
         protected global::System.Web.UI.WebControls.TextBox DateOfBirth;
         
         /// <summary>
+        /// VerifyForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder VerifyForm;
+        
+        /// <summary>
+        /// VerifyUserId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField VerifyUserId;
+        
+        /// <summary>
+        /// VerifyPin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox VerifyPin;
+        
+        /// <summary>
         /// ForgotForm control.
         /// </summary>
         /// <remarks>

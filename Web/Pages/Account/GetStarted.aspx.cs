@@ -1,4 +1,5 @@
 ﻿using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,11 +71,73 @@ namespace Agrishare.Web.Pages.Account
                 }
                 else
                 {
+                    if (!Core.Entities.User.VerificationRequired)
+                    {
+                        user.StatusId = UserStatus.Verified;
+                        if (user.AuthToken.IsEmpty())
+                            user.AuthToken = Guid.NewGuid().ToString();
+                        user.Save();
+
+                        Counter.Hit(user.Id, Counters.Register);
+
+                        Master.DropCookie(user.AuthToken);
+                        Master.Feedback = "Your account has been created and you are now logged in.";
+                        Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
+                    }
+                    else
+                    {
+                        user.StatusId = UserStatus.Pending;
+                        user.AuthToken = string.Empty;
+                        user.Save();
+
+                        Counter.Hit(user.Id, Counters.Register);
+
+                        user.SendVerificationCode();
+
+                        Master.Feedback = "Please check your inbox for a verification code to complete your registration.";
+                        RegisterForm.Visible = false;
+
+                        VerifyUserId.Value = user.Id.ToString();
+                        VerifyForm.Visible = true;
+                    }
+                }
+            }
+        }
+
+        public void VerifyAccount(object s, EventArgs e)
+        {
+            var userId = Convert.ToInt32(VerifyUserId.Value);
+            var user = Core.Entities.User.Find(userId);
+
+            if (user?.FailedLoginAttempts > Core.Entities.User.MaxFailedLoginAttempts)
+                Master.Feedback = "Your account has been locked - please reset your PIN.";
+
+            else if (user?.VerificationCode == VerifyPin.Text)
+            {
+                if (user.VerificationCodeExpiry < DateTime.UtcNow)
+                    Master.Feedback = "This code has expired";
+                else
+                {
+                    user.VerificationCode = string.Empty;
+                    user.StatusId = Core.Entities.UserStatus.Verified;
+                    user.AuthToken = Guid.NewGuid().ToString();
                     user.Save();
+
                     Master.DropCookie(user.AuthToken);
                     Master.Feedback = "Your account has been created and you are now logged in.";
                     Response.Redirect(Request.QueryString["r"] ?? DashboardUrl);
                 }
+            }
+
+            if (user.Id > 0)
+            {
+                user.FailedLoginAttempts += 1;
+                user.Save();
+                Master.Feedback = "Invalid code - please try again";
+            }
+            else
+            {
+                Master.Feedback = "An unknown error occurred - please try again";
             }
         }
 
@@ -88,6 +151,10 @@ namespace Agrishare.Web.Pages.Account
                     if (user.FailedLoginAttempts > Core.Entities.User.MaxFailedLoginAttempts)
                     {
                         Master.Feedback = "Your account has been locked - please reset your password";
+                    }
+                    else if (user.StatusId != UserStatus.Verified)
+                    {
+                        Master.Feedback = "Your account has not been verified - please contact support";
                     }
                     else if (user.ValidatePassword(LoginPIN.Text))
                     {
