@@ -18,27 +18,27 @@
 
         <div class="summary-view" ng-show="!list.busy && list.data.length>0 && !list.filter">
             <div>
-                <strong>{{list.summary.Total}}</strong>
+                <strong>{{list.summary.Total | number}}</strong>
                 <small>
-                    {{list.summary.TotalAgents}} Agents &bull; {{list.summary.TotalRegular}} Regular
+                    {{list.summary.TotalAgents | number}} Agents &bull; {{list.summary.TotalRegular | number}} Regular
                 </small>
             </div>
             <div>
-                <strong>{{list.summary.Active}}</strong>
+                <strong>{{list.summary.Active | number}}</strong>
                 <small>Active Users</small>
             </div>
             <div>
-                <strong>{{list.summary.Male}}</strong>
+                <strong>{{list.summary.Male | number}}</strong>
                 <small>Male</small>
             </div>
             <div>
-                <strong>{{list.summary.Female}}</strong>
+                <strong>{{list.summary.Female | number}}</strong>
                 <small>Female</small>
             </div>
             <ul>
-                <li><strong>{{list.summary.Deleted}}</strong> Deleted Users</li>
-                <li><strong>{{list.summary.LockedOut}}</strong> Locked Out Users</li>
-                <li><a ng-click="app.go('/users/unverified?'+app.returnUrlQs())" style="text-decoration: underline"><strong>{{list.summary.Unverified}}</strong> Unverified Users</a></li>
+                <li><strong>{{list.summary.Deleted | number}}</strong> Deleted Users</li>
+                <li><strong>{{list.summary.LockedOut | number}}</strong> Locked Out Users</li>
+                <li><a ng-click="app.go('/users/unverified?'+app.returnUrlQs())" style="text-decoration: underline"><strong>{{list.summary.Unverified | number}}</strong> Unverified Users</a></li>
             </ul>
         </div>
 
@@ -59,7 +59,7 @@
                 <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
                     <strong>{{item.FirstName}} {{item.LastName}}</strong><br />
                     <small ng-if="item.Supplier">{{item.Supplier.Title}} &bull; </small>
-                    <small>{{item.Telephone}} &bull; {{item.Language}}</small>
+                    <small>{{item.Telephone}} &bull; {{item.Language}}  &bull; {{item.DateCreated | date : 'd MMMM yyyy'}}</small>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
