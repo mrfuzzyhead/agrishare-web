@@ -81,6 +81,24 @@
 
             </asp:PlaceHolder>
 
+            <asp:PlaceHolder runat="server" ID="VerifyForm" Visible="false">
+
+                <h2> Verify Account</h2>
+
+                <asp:HiddenField runat="server" ID="VerifyUserId" />
+
+                <div class="form-row">
+                    <asp:Label runat="server" AssociatedControlID="VerifyPin" Text="One Time PIN *" />
+                    <asp:TextBox runat="server" ID="VerifyPin" MaxLength="10" />
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="VerifyPin" Text="One Time PIN is required" Display="Dynamic" ValidationGroup="Verify" />
+                </div>
+
+                <p>
+                    <asp:Button runat="server" Text="Verify PIN" CssClass="button" OnClick="VerifyAccount" ValidationGroup="Verify" />
+                </p>
+
+            </asp:PlaceHolder>
+
             <asp:PlaceHolder runat="server" ID="ForgotForm" Visible="false">
 
                 <h2>Forgot PIN</h2>

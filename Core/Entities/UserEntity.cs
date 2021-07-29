@@ -149,7 +149,7 @@ namespace Agrishare.Core.Entities
                     .Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
-                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()) || o.Telephone.Equals(Keywords));
 
                 if (!StartsWith.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().StartsWith(Keywords.ToLower()));
@@ -206,7 +206,7 @@ namespace Agrishare.Core.Entities
                 var query = ctx.Users.Where(o => o.Deleted == Deleted);
 
                 if (!Keywords.IsEmpty())
-                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
+                    query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()) || o.Telephone.Equals(Keywords));
 
                 if (!StartsWith.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().StartsWith(Keywords.ToLower()));
@@ -662,7 +662,8 @@ namespace Agrishare.Core.Entities
                 StatusId,
                 Telephone,
                 Language,
-                Region = Region?.Json()
+                Region = Region?.Json(),
+                DateCreated
             };
         }
 
