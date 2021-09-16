@@ -114,9 +114,9 @@ namespace Agrishare.API.Controllers.CMS
 
             var data = new
             {
-                activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id),
+                activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id, StartDate: startDate, EndDate: endDate),
                 activeUsers = Entities.Counter.ActiveUsers(startDate, endDate, RegionId: CurrentRegion.Id), //Entities.Counter.Count(UniqueUser: true),
-                completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete, RegionId: CurrentRegion.Id),
+                completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete, RegionId: CurrentRegion.Id, StartDate: startDate, EndDate: endDate),
                 totalBookingAmount,
                 totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
                 agrishareCommission,

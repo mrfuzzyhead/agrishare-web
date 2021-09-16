@@ -195,6 +195,7 @@
     <Content Include="Resources\Javascript\2. Angular\angular-map.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-round-progress.min.js" />
     <Content Include="Resources\Javascript\3. App\controller\DashboardView.js" />
+    <Content Include="Resources\Javascript\3. App\controller\SmsFormView.js" />
     <Content Include="Resources\Javascript\3. App\controller\FormView.js" />
     <Content Include="Resources\Javascript\3. App\controller\DetailView.js" />
     <Content Include="Resources\Javascript\3. App\controller\ListingsMap.js" />
