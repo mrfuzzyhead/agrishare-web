@@ -2,6 +2,7 @@
 using Agrishare.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -45,7 +46,9 @@ namespace Agrishare.CMS
                 Response.Redirect("/login.aspx");
             }
             else if (!userRoles.Contains(Role.Administrator) && !userRoles.Contains(Role.Dashboard))
+            {
                 Response.Redirect("/login.aspx");
+            }
         }
 
     }

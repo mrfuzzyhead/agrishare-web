@@ -4,6 +4,13 @@
     <ag-title-bar>
         <gl-icon-button gl-icon="receipt" ng-click="app.redirect('/pages/settlementreport.aspx')" ng-if="app.hasRole('Administrator')">Download Settlement Report</gl-icon-button>
         <gl-icon-button gl-icon="insights" ng-click="app.go('#/settings/edit/39?'+app.returnUrlQs())" ng-if="app.hasRole('Administrator')&&app.region.Id===1">USD1.00 = {{dashboard.data.currentUsdRate | currency : 'ZWL'}}</gl-icon-button>
+
+
+        <span flex style="align-items: center; margin-left: 20px">
+            <gl-date gl-placeholder="From" ng-model="dashboard.activity.filter.startDate"></gl-date>
+            <span>&nbsp;→&nbsp;</span>
+            <gl-date gl-placeholder="To" ng-model="dashboard.activity.filter.endDate"></gl-date>
+        </span>
     </ag-title-bar>
 
     <ag-section ag-controller="dashboard">
@@ -19,13 +26,28 @@
                 </ul>
             </div>
 
+            <div class="activity">
+
+                <h2 class="filter">
+                    <a ng-click="dashboard.activity.filter.overview='Listings'" ng-class="{'active':dashboard.activity.filter.overview=='Listings'}">Listings</a>
+                    <a ng-click="dashboard.activity.filter.overview='Bookings'" ng-class="{'active':dashboard.activity.filter.overview=='Bookings'}">Bookings</a>
+                </h2>
+
+                <div class="chart-view">
+                    <canvas class="chart chart-bar"
+                            chart-data="dashboard.data.overviewGraph.Data"
+                            chart-labels="dashboard.data.overviewGraph.Labels"
+                            chart-series="dashboard.data.overviewGraph.Series"
+                            chart-dataset-override="dashboard.graph.datasetOverride"
+                            chart-colors="dashboard.graph.colors"
+                            chart-options="dashboard.graph.options"
+                            height="100"></canvas>
+                </div>
+
+            </div>
+
             <h2 flex>
                 <span style="flex: 1">Finance</span>
-                <span flex style="align-items: center">
-                    <gl-date gl-placeholder="From" ng-model="dashboard.activity.filter.startDate"></gl-date>
-                    <span>&nbsp;→&nbsp;</span>
-                    <gl-date gl-placeholder="To" ng-model="dashboard.activity.filter.endDate"></gl-date>
-                </span>
             </h2>
 
             <div class="settlement">

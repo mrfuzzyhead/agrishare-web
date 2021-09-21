@@ -527,7 +527,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, int RegionId = 0, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6, int AgentId = 0)
+        public static List<GraphData> Graph(DateTime StartDate, DateTime EndDate, int RegionId = 0, int UserId = 0, BookingStatus Status = BookingStatus.None, int CategoryId = 0, int Count = 6, int AgentId = 0, string AdministrativeAreaLevel1 = "")
         {
             var sql = $@"SELECT MONTH(Bookings.StartDate) AS `Month`, YEAR(Bookings.StartDate) AS `Year`, COUNT(Bookings.Id) AS 'Count' 
                             FROM Bookings
@@ -552,10 +552,41 @@ namespace Agrishare.Core.Entities
             if (Status != BookingStatus.None)
                 sql += $"AND Bookings.StatusId = {(int)Status} ";
 
+            if (!string.IsNullOrEmpty(AdministrativeAreaLevel1))
+                sql += $"AND Listings.AdministrativeAreaLevel1 = '{SQL.Safe(AdministrativeAreaLevel1)}'";
+
             sql += $@"GROUP BY MONTH(Bookings.StartDate), YEAR(Bookings.StartDate) ORDER BY YEAR(Bookings.StartDate), MONTH(Bookings.StartDate) LIMIT {Count}";
 
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<GraphData>(sql).ToList();
+        }
+
+        public static List<CountData> CountByArea(DateTime StartDate, DateTime EndDate, int RegionId)
+        {
+            var sql = $@"SELECT 
+                            Listings.AdministrativeAreaLevel1 AS Label, 
+                            COUNT(Listings.Id) AS Count
+                        FROM 
+                            Bookings 
+                        INNER JOIN 
+                            Listings ON Listings.Id = Bookings.ListingId
+                        WHERE 
+                            Listings.RegionId = {RegionId} AND 
+                            Bookings.Deleted = 0 AND 
+                            Listings.Deleted = 0 AND 
+                            DATE(Bookings.StartDate) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND 
+                            DATE(Bookings.EndDate) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                        GROUP BY 
+                            Listings.AdministrativeAreaLevel1";
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<CountData>(sql).ToList();
+        }
+
+        public class CountData
+        {
+            public string Label { get; set; }
+            public int Count { get; set; }
         }
 
         public class GraphData
