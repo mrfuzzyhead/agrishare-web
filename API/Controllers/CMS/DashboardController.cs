@@ -17,7 +17,7 @@ namespace Agrishare.API.Controllers.CMS
     {
         [Route("dashboard/summary")]
         [AcceptVerbs("GET")]
-        public object Summary(string Type = "", DateTime? StartDate = null, DateTime? EndDate = null, int Category = 0)
+        public object Summary(string Type = "", DateTime? StartDate = null, DateTime? EndDate = null, int Category = 0, string overview = "")
         {
             var startDate = (StartDate ?? DateTime.MinValue).StartOfDay();
             if (startDate.Year < 2018)
@@ -110,6 +110,35 @@ namespace Agrishare.API.Controllers.CMS
                     femaleHeight = (ageGenderData.FirstOrDefault(e => e.AgeRangeIndex == i && e.Gender == Entities.Gender.Female)?.Count ?? 0) / max * 100M
                 });
 
+            #region Bookings or Listings by Date and AdministrativeAreaLevel1
+
+            //var filterProvinces = Entities.Listing.DistinctAdministrativeAreaLevel1(RegionId: CurrentRegion.Id);
+
+            var overviewAmounts = new List<int>();
+            var regionLabels = new List<string>();
+
+            if (overview == "Bookings")
+            {
+                var countData = Entities.Booking.CountByArea(StartDate: startDate, EndDate: endDate,RegionId: CurrentRegion.Id);
+                regionLabels = countData.Select(e => e.Label).ToList();
+                overviewAmounts = countData.Select(e => e.Count).ToList();
+            }
+            else if (overview == "Listings")
+            {
+                var countData = Entities.Listing.CountByArea(StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id);
+                regionLabels = countData.Select(e => e.Label).ToList();
+                overviewAmounts = countData.Select(e => e.Count).ToList();
+            }
+
+            var overviewGraph = new
+            {
+                Labels = regionLabels,
+                Data = new List<object> { overviewAmounts },
+                Series = new List<string> { overview }
+            };
+
+            #endregion
+
             var smsBalance = SMS.GetBalance(CurrentRegion);
 
             var data = new
@@ -157,6 +186,7 @@ namespace Agrishare.API.Controllers.CMS
                 bookingsGraph,
                 profitGraph,
                 ageGenderGraph,
+                overviewGraph,
                 currentUsdRate = Entities.Journal.CurrentRate
             };
 

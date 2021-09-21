@@ -52,7 +52,7 @@
         <AssociationConnector Association="AgrishareModel.users_ibfk_1" />
         <EntityTypeShape EntityType="AgrishareModel.TransactionFee" Width="1.5" PointX="6.75" PointY="4.75" />
         <AssociationConnector Association="AgrishareModel.counters_ibfk_4" />
-        <EntityTypeShape EntityType="AgrishareModel.Message" Width="1.5" PointX="8.125" PointY="36" />
+        <EntityTypeShape EntityType="AgrishareModel.Message" Width="1.5" PointX="10.25" PointY="36.625" />
         <AssociationConnector Association="AgrishareModel.messages_ibfk_1" />
         <EntityTypeShape EntityType="AgrishareModel.Advert" Width="1.5" PointX="3" PointY="46" />
         <EntityTypeShape EntityType="AgrishareModel.BookingComment" Width="1.5" PointX="19.75" PointY="34.75" />

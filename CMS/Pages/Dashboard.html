@@ -26,6 +26,26 @@
                 </ul>
             </div>
 
+            <div class="activity">
+
+                <h2 class="filter">
+                    <a ng-click="dashboard.activity.filter.overview='Listings'" ng-class="{'active':dashboard.activity.filter.overview=='Listings'}">Listings</a>
+                    <a ng-click="dashboard.activity.filter.overview='Bookings'" ng-class="{'active':dashboard.activity.filter.overview=='Bookings'}">Bookings</a>
+                </h2>
+
+                <div class="chart-view">
+                    <canvas class="chart chart-bar"
+                            chart-data="dashboard.data.overviewGraph.Data"
+                            chart-labels="dashboard.data.overviewGraph.Labels"
+                            chart-series="dashboard.data.overviewGraph.Series"
+                            chart-dataset-override="dashboard.graph.datasetOverride"
+                            chart-colors="dashboard.graph.colors"
+                            chart-options="dashboard.graph.options"
+                            height="100"></canvas>
+                </div>
+
+            </div>
+
             <h2 flex>
                 <span style="flex: 1">Finance</span>
             </h2>

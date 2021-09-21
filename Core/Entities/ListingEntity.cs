@@ -162,6 +162,12 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<string> DistinctAdministrativeAreaLevel1(int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+                return ctx.Listings.Where(e => e.RegionId == RegionId && !e.Deleted).Select(e => e.AdministrativeAreaLevel1).Distinct().ToList();
+        }
+
         public bool Save()
         {
             var success = false;
@@ -183,6 +189,24 @@ namespace Agrishare.Core.Entities
             if (region != null)
                 RegionId = region.Id;
             Region = null;
+
+            if (Country.IsEmpty())
+
+            {
+                try
+                {
+                    var address = Utils.Google.ReverseGeoCode(Latitude, Longitude);
+                    Locality = address.Locality;
+                    Sublocality = address.Sublocality;
+                    ColloquialArea = address.ColloquialArea;
+                    AdministrativeAreaLevel1 = address.AdministrativeAreaLevel1;
+                    Country = address.Country;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Google.ReverseGeoCode", ex);
+                }
+            }
 
             if (Id == 0)
                 success = Add();
@@ -208,6 +232,13 @@ namespace Agrishare.Core.Entities
             }
 
             return success;
+        }
+
+        public static void SaveAll()
+        {
+            var listings = List();
+            foreach (var listing in listings)
+                listing.Save();
         }
 
         private bool Add()
@@ -272,6 +303,11 @@ namespace Agrishare.Core.Entities
                 User = IncludeUser ? User?.Json() : null,
                 Url = $"{Config.WebURL}{UrlPath}",
                 Trending,
+                Locality,
+                ColloquialArea,
+                Sublocality,
+                AdministrativeAreaLevel1,
+                Country,
                 DateCreated,
                 LastModified
             };
@@ -312,6 +348,33 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<ListingData>(sql).ToList();
+        }
+
+
+
+        public static List<CountData> CountByArea(DateTime StartDate, DateTime EndDate, int RegionId)
+        {
+            var sql = $@"SELECT 
+                            Listings.AdministrativeAreaLevel1 AS Label, 
+                            COUNT(Listings.Id) AS Count
+                        FROM 
+                            Listings
+                        WHERE 
+                            Listings.RegionId = {RegionId} AND 
+                            Listings.Deleted = 0 AND 
+                            DATE(Listings.DateCreated) <= DATE('{EndDate.ToString("yyyy-MM-dd")}') AND 
+                            DATE(Listings.DateCreated) >= DATE('{StartDate.ToString("yyyy-MM-dd")}') 
+                        GROUP BY 
+                            Listings.AdministrativeAreaLevel1";
+
+            using (var ctx = new AgrishareEntities())
+                return ctx.Database.SqlQuery<CountData>(sql).ToList();
+        }
+
+        public class CountData
+        {
+            public string Label { get; set; }
+            public int Count { get; set; }
         }
     }
 
