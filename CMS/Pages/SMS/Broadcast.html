@@ -1,5 +1,5 @@
 ﻿
-<div ng-controller="FormViewController" ag-title="Broadcast SMS" ag-selected-url="#/sms/broadcast" ag-api-route="/cms/sms/">
+<div ng-controller="SmsFormViewController" ag-title="Broadcast SMS" ag-selected-url="#/sms/broadcast" ag-api-route="/cms/sms/">
 
     <ag-title-bar></ag-title-bar>
 
@@ -11,8 +11,15 @@
 
         <form ng-if="!form.entity.Sent">
 
+            <h2>Recipients</h2>
+            <div flex>
+                <gl-dropdown-list gl-placeholder="Segment" ng-model="form.entity.FilterView" gl-source="form.data.Views" gl-selection="Id"></gl-dropdown-list>
+                <gl-dropdown-list gl-placeholder="Category" ng-model="form.entity.CategoryId" gl-source="form.data.Categories" gl-selection="Id" ng-if="form.entity.FilterView===22"></gl-dropdown-list>
+            </div>
+
             <h2>Message</h2>
-            <p>Your message will be broadcast to {{form.entity.RecipientCount}} recipients (based on user notification preferences).</p>            
+            <p ng-if="form.entity.RecipientCount!==null">Your message will be broadcast to {{form.entity.RecipientCount}} recipients (based on user notification preferences).</p>
+            <p ng-if="form.entity.RecipientCount===null">Counting recipients...</p>
             <gl-textbox gl-label="Message" ng-model="form.entity.Message" gl-required="true" gl-max-length="140"></gl-textbox>
 
         </form>
@@ -21,7 +28,7 @@
 
     <ag-status-bar>
 
-        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity && !form.entity.Sent">Save</gl-icon-button>
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy || form.entity.RecipientCount===0" ng-if="form.entity && !form.entity.Sent">Send</gl-icon-button>
 
     </ag-status-bar>
 

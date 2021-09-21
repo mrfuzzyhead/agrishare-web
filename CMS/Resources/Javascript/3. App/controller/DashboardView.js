@@ -26,6 +26,8 @@ agrishareApp.controller('DashboardViewController', function ($attrs, $controller
     dashboard.activity = {
         filter: {
             type: 'User',
+            overview: 'Listings',
+            province: '',
             timespan: 7,
             category: 0,
             startDate: new moment().add(-6, 'days').toDate(),
@@ -59,7 +61,12 @@ agrishareApp.controller('DashboardViewController', function ($attrs, $controller
         var endDate = new moment(dashboard.activity.filter.endDate);
         if (!endDate.isValid()) endDate = new moment();    
 
-        var url = dashboard.apiUrl + '?type=' + dashboard.activity.filter.type + '&startDate=' + startDate.format('YYYY-MM-DDTHH:mm:ss') + '&endDate=' + endDate.format('YYYY-MM-DDTHH:mm:ss') + '&category=' + dashboard.activity.filter.category;
+        var url = dashboard.apiUrl +
+            '?type=' + dashboard.activity.filter.type +
+            '&startDate=' + startDate.format('YYYY-MM-DDTHH:mm:ss') +
+            '&endDate=' + endDate.format('YYYY-MM-DDTHH:mm:ss') +
+            '&category=' + dashboard.activity.filter.category +
+            '&overview=' + dashboard.activity.filter.overview;
 
         $http({
             url: url,

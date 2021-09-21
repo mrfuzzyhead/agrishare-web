@@ -44,6 +44,11 @@ namespace Agrishare.Core.Entities
         public bool Deleted { get; set; }
         public int RegionId { get; set; }
         public bool Trending { get; set; }
+        public string Sublocality { get; set; }
+        public string Locality { get; set; }
+        public string ColloquialArea { get; set; }
+        public string AdministrativeAreaLevel1 { get; set; }
+        public string Country { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -257,6 +257,11 @@
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
+          <Property Name="Sublocality" Type="varchar" MaxLength="256" />
+          <Property Name="Locality" Type="varchar" MaxLength="256" />
+          <Property Name="ColloquialArea" Type="varchar" MaxLength="256" />
+          <Property Name="AdministrativeAreaLevel1" Type="varchar" MaxLength="256" />
+          <Property Name="Country" Type="varchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1445,6 +1450,11 @@
           <Property Name="RegionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Region" Relationship="AgrishareModel.listings_ibfk_3" FromRole="Listing" ToRole="Region" />
           <Property Name="Trending" Type="Boolean" Nullable="false" />
+          <Property Name="Sublocality" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Locality" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ColloquialArea" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="AdministrativeAreaLevel1" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -2950,6 +2960,11 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="AdministrativeAreaLevel1" ColumnName="AdministrativeAreaLevel1" />
+                <ScalarProperty Name="ColloquialArea" ColumnName="ColloquialArea" />
+                <ScalarProperty Name="Locality" ColumnName="Locality" />
+                <ScalarProperty Name="Sublocality" ColumnName="Sublocality" />
                 <ScalarProperty Name="Trending" ColumnName="Trending" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="AvailableWithFuel" ColumnName="AvailableWithFuel" />

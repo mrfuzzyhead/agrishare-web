@@ -456,6 +456,7 @@
     <Compile Include="Utils\Encryption.cs" />
     <Compile Include="Encryption\HexEncoding.cs" />
     <Compile Include="Encryption\Rc4Encryption.cs" />
+    <Compile Include="Utils\Google.cs" />
     <Compile Include="Utils\PDF.cs" />
     <Compile Include="Utils\ImportExcel.cs" />
     <Compile Include="Utils\SMS.cs" />
