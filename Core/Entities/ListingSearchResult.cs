@@ -187,6 +187,17 @@ namespace Agrishare.Core.Entities
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
             bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
         {
+            if (CategoryId == Category.LabourId || CategoryId == Category.LandId || CategoryId == Category.IrrigationId)
+                ServiceId = CategoryId;
+
+            if (CategoryId == Category.LorriesId)
+                ServiceId = Category.LorriesServiceId;
+
+            if (CategoryId == Category.BusId)
+                ServiceId = Category.BusServiceId;
+
+            // Tractors, Processing => custom service ID
+
             var sort = ListingSearchResultSort.Distance;
             try { sort = (ListingSearchResultSort)Enum.Parse(typeof(ListingSearchResultSort), Sort); }
             catch { }
@@ -324,11 +335,10 @@ namespace Agrishare.Core.Entities
                     sql.AppendLine($"AND {TotalVolume} <= Services.AvailableAcres AND {TotalVolume} >= Services.MinimumAcres");
 
                 if (LabourServices > 0)
-                    sql.AppendLine($"AND (Services.LabourServices & {LabourServices}) = {LabourServices}");
+                    sql.AppendLine($"AND (Services.LabourServices & {LabourServices}) > 0");
 
                 if (LandRegion > 0)
                     sql.AppendLine($"AND Services.LandRegion = {LandRegion}");
-
 
                 if (For == BookingFor.Group)
                     sql.AppendLine($"AND Listings.GroupServices = 1");
