@@ -296,7 +296,7 @@ namespace Agrishare.Core.Entities
                 Photos = Photos?.Select(e => e.JSON()),
                 AverageRating,
                 RatingCount,
-                Services = Services?.Select(e => e.Json()),
+                Services = Services?.Where(e => !e.Deleted).Select(e => e.Json()),
                 StatusId,
                 Status,
                 User?.PaymentMethods,
@@ -349,8 +349,6 @@ namespace Agrishare.Core.Entities
             using (var ctx = new AgrishareEntities())
                 return ctx.Database.SqlQuery<ListingData>(sql).ToList();
         }
-
-
 
         public static List<CountData> CountByArea(DateTime StartDate, DateTime EndDate, int RegionId)
         {
