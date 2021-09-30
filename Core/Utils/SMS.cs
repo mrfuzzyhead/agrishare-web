@@ -71,7 +71,7 @@ namespace Agrishare.Core.Utils
             var sentMessageInfo = response.Messages[0];
 
             if (Log)
-                Entities.Log.Error("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
+                Entities.Log.Debug("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
 
             return sentMessageInfo.Status.GroupId == 1 || sentMessageInfo.Status.GroupId == 3;
         }
@@ -105,7 +105,7 @@ namespace Agrishare.Core.Utils
             var sentMessageInfo = response.Messages[0];
 
             if (Log)
-                Entities.Log.Error("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
+                Entities.Log.Debug("SMS.SendMessage", JsonConvert.SerializeObject(sentMessageInfo));
 
             return sentMessageInfo.Status.GroupId == 1 || sentMessageInfo.Status.GroupId == 3;
         }
