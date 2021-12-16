@@ -15,6 +15,10 @@
 
     <ag-section ag-controller="list">
 
+        <div class="filter-view">
+            <gl-dropdown-list gl-placeholder="Language" ng-model="list.filter.LanguageId" gl-source="list.response.Languages" gl-selection="Id"></gl-dropdown-list>
+        </div>
+
         <gl-list gl-controller="list" gl-infinite="list.next()">
             <div ng-repeat="item in list.data">
                 <icon>
