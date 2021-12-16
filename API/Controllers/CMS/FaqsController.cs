@@ -1,5 +1,6 @@
 ﻿using Agrishare.API;
 using Agrishare.Core;
+using Agrishare.Core.Entities;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -13,17 +14,22 @@ namespace Agrishare.API.Controllers.CMS
     {
         [Route("faqs/list")]
         [AcceptVerbs("GET")]
-        public object List(int PageIndex = 0, int PageSize = 25, string Query = "")
+        public object List(int PageIndex = 0, int PageSize = 25, string Query = "", Language LanguageId = Language.English)
         {
-            var recordCount = Entities.Faq.Count(Keywords: Query);
-            var list = Entities.Faq.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
+            var recordCount = Entities.Faq.Count(Keywords: Query, Language: LanguageId);
+            var list = Entities.Faq.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, Language: LanguageId);
 
             var data = new
             {
                 Count = recordCount,
                 Sort = Entities.Faq.DefaultSort,
                 List = list.Select(e => e.Json()),
-                Title = "Faqs"
+                Title = "FAQs",
+                Languages = EnumInfo.ToList<Entities.Language>(),
+                Filter = new
+                {
+                    LanguageId
+                }
             };
 
             return Success(data);

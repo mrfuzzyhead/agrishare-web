@@ -1,11 +1,13 @@
-﻿<%@ MasterType TypeName="Agrishare.Web.Pages.Default" %>
+﻿    <%@ MasterType TypeName="Agrishare.Web.Pages.Default" %>
 <%@ Page Title="Privacy Policy" Language="C#" MasterPageFile="~/Pages/Default.Master" AutoEventWireup="true" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <p ng-init="language = 'english'">
-        <a ng-click="language = 'english'">English</a>&nbsp;/&nbsp;
-        <a ng-click="language = 'shona'">Shona</a>&nbsp;/&nbsp;
-        <a ng-click="language = 'ndebele'">Ndebele</a>
+        <a ng-click="language = 'english'">Zimbabwe English</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'shona'">Zimbabwe Shona</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'ndebele'">Zimbabwe Ndebele</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'ugenglish'">Uganda English</a>&nbsp;/&nbsp;
+        <a ng-click="language = 'luganda'">Uganda Luganda</a>
     </p>
 
     <div id="english" ng-show="language === 'english'">
@@ -549,6 +551,435 @@
 
         <h2>11.	Imibuzo yakho noma Okunye Ongakutsho</h2>
         <p>Ukhululekile ukuthinta Omkhulu wethu wezokuvikelwa kolwazi nxa ulemibuzo, imibono loba izikhalazo ofisa ukuzinikeza maqondana leSaziso sethu esiphathelane leMfihlo. Ungathinta Omkhulu wethu wezokuvikelwa kolwazi ngencwadi ka-email kukheli ethi <a href="mailto:datenschutz@welthungerhilfe.de" class="s6" target="_blank">datenschutz@welthungerhilfe.de</a> kumbe ngokuthumeza incwadi ngabeposo kukheli yethu, ubhale phezulu ukuthi &quot;KuMkhulu wezokuvikelwa kolwazi&quot; (kumbe &quot;To the data protection officer&quot;). Nxa ufisa ukwazi ngolwazi oluqondane lawe, ukuluguqula noma ukulucitsha, sicela usithinte.</p>
+    </div>
+    
+    <div id="ugenglish" ng-show="language === 'ugenglish'">
+        <h1>Terms of Service</h1>
+
+        <p>These Terms of Service regulate your access to and use of the AgriShare services, along with its related websites, SMS, email notifications, commerce services, and other connected services. By using the AgriShare service, you agree to be bound to the Terms of Service. In these policy documents, &ldquo;We&rdquo;/&rdquo; Our&rdquo; refers to Welthungerhilfe (WHH) in its capacity as developer and operator of the AgriShare platform, &ldquo;You&rdquo;/ &ldquo;Your&rdquo; refers to the User who makes use of the AgriShare service.</p>
+
+        <h2>1. Who May Use the AgriShare Service?</h2>
+
+        <p>AgriShare is a mobile phone enabled platform that links farmers without assets with commercial or private hiring services for production, processing and transporting. The platform is open to all users permitted by Uganda law to hire out farming related services. The platform is also open to all users permitted by Uganda law to hire or rent farming related equipment or services or resources. This includes users in the form of legal entities such as companies, co-operatives, Trusts, and community-based organisations. In any case, human users must be at least 18 years old. If you are accepting these Terms and using the Services on behalf of a legal entity, you represent and warrant that you are authorised to do so and have the authority to bind such entity to these Terms, in which case the words &ldquo;you&rdquo; and &ldquo;your&rdquo; as used in these Terms shall refer to such entity.</p>
+
+        <h2>2. Privacy</h2>
+
+        <p>Our Privacy Policy describes how we handle the data generated on the AgriShare platform. Your use of the AgriShare Services means you consent to the collection and use of this information as set out in the Privacy Policy.</p>
+
+        <h2>3. Using the AgriShare Services</h2>
+
+        <p><strong>Content</strong><br />
+        Content shared on the AgriShare services will be in the form of listings, bookings, and messages shared between service providers and prospective lessors of equipment or services or resources. Listings are posts made on the AgriShare services by service providers. Listings may be exclusively text or may be a combination of text and visual media that includes but is not limited to still photographs, video clips, and diagrams.</p>
+
+        <p>You are responsible for your use of the Services and for any content you provide, including compliance with laws that apply to the use of that content. We do not guarantee the completeness, truthfulness, accuracy, or reliability of any Content or communications posted on the AgriShare Service. We may monitor and where necessary control the content posted but we are not responsible for postings that are either intentionally or negligently mislabeled or are otherwise deceptive, all content remains the responsibility of the person who originated such content. Users that post content on the AgriShare service retain ownership of that content.</p>
+
+        <p><strong>Suspension and/or Termination of Service</strong><br />
+        We reserve the right to take down content that violates these Terms of Service, including for example, when such content infringes on copyright, harassment, or amounts to harassment. Users are able to report abusive, harmful or illegal content posted on the platform through the &lsquo;contact us&rsquo; section on the App and website. We reserve the right to remove or refuse to distribute any content on the AgriShare Services, suspend, or terminate user accounts without liability to you.</p>
+
+        <p>We reserve the right to suspend or terminate user accounts that we have sufficient reason to believe are carrying out fraudulent financial transactions on AgriShare services. There is an appeals mechanism set out in the AgriShare Rules.</p>
+
+        <p>You may end your legal agreement with AgriShare by deactivating your account and discontinuing your use of the AgriShare Services. Users cannot deactivate their user accounts within 7 business days of pending or outstanding service deliveries and/or payments. The Privacy Policy has information on what happens to your information after you delete your account.</p>
+
+        <p><strong>Financial Transactions</strong><br />
+        By registering, sharing or adding your mobile/airtel money/bank account information you represent and warrant that you are authorised to do so and have the authority to transact with that account. You and we are independent contractors and nothing in these Terms of Service will be construed to create, evidence, or imply any agency, employment, partnership, or joint venture between you and us.</p>
+
+        <h2>4. Limitations of Liability</h2>
+
+        <p>To the maximum extent permitted by applicable law, AgriShare shall not be liable for any indirect, incidental, special, consequential or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from:</p>
+
+        <ol>
+	        <li>your access to or use of or inability to access or use the services;</li>
+	        <li>any conduct or content of any third party on the services, including without limitation, any defamatory, offensive or illegal conduct of other users or third parties;</li>
+	        <li>any content obtained from the services; or</li>
+	        <li>unauthorised access, use, or alteration of your transmissions or content.</li>
+        </ol>
+
+        <p>We are not liable for any inaccurate, misleading, or fraudulent payment details shared on the AgriShare service. Payments made on AgriShare services are held in escrow until the service provider has completed its services as confirmed by the customer, it remains your responsibility to always transact in a safe and cautious manner. AgriShare will not be liable for any damages arising from transactions carried out by minors. This Agreement does not create or imply any partnership, agency, or joint venture between AgriShare and any users of AgriShare services.</p>
+
+        <h2>5. General</h2>
+
+        <p>We may revise these Terms of Service from time to time. The changes are not retroactive, and the most current version of the Terms, will govern our relationship with you. We will notify you of material revisions, for example via a service notification or an email to the email associated with your account. By continuing to access or use the Services after those revisions become effective, you agree to be bound by the revised Terms.</p>
+
+        <h1><strong>Privacy Policy</strong></h1>
+
+        <p>This Privacy Policy explains generally how AgriShare services receive information about you, and what we do with that information once we have it. This is in fulfilment of our commitment to being transparent and open.</p>
+
+        <h2>Definitions</h2>
+
+        <p><strong>What is your &ldquo;personal information?&rdquo;</strong><br />
+        For us, &ldquo;personal information&rdquo; means information that identifies you, like your name or email address. Any information that falls outside of this definition is &ldquo;non-personal information.&rdquo;</p>
+
+        <p><strong>How do we learn information about you?</strong><br />
+        We learn information about you when:</p>
+
+        <ul>
+	        <li>you give it to us directly (e.g., when you create an account or input your location);</li>
+	        <li>we collect it automatically through our mobile phone Application (e.g., when the AgriShare Application on your phone connects with our servers for updates, or in download statistics provided by Google Play). Data may be collected when you search for listings, add listings, send and receive notifications and when you make a booking for services and goods listed in the App; For avoidance of doubt, by use of the Application, you consent to such collection of your personal information and</li>
+	        <li>when you add your mobile money account or bank account information (we will only know your account numbers and the transactions you carry out on the AgriShare service)</li>
+        </ul>
+
+        <p><strong>What do we do with your information once we have it?</strong><br />
+        Generally, we use your information to help us provide and improve our software and services for you. Your information also helps us connect you to service providers. Non-personal information may be included in AgriShare performance reports, and for AgriShare&rsquo;s promotional purposes.</p>
+
+        <p><strong>When do we share your information with others?</strong><br />
+        We do not share your information with any third parties. But where the law requires it, for example during a criminal investigation we will be obliged to turn over information that may include personal information to the investigating entities once we are certain that they have the lawful permission to access such information.</p>
+
+        <p><strong>How do we store and protect your personal information?</strong><br />
+        We are committed to protecting your personal information once we have it. We implement physical, business, and technical security measures. Despite our efforts, if we learn of a security breach, to the extent permitted by law we will notify you so that you can take appropriate protective steps.</p>
+
+        <p>We also do not want your personal information for any longer than we need it, so we only keep it long enough to do what we collected it for. Once we do not need it, we take steps to destroy it unless we are required by law to keep it longer. Personal information from deactivated accounts is archived for one calendar year; it is permanently erased from our servers at the lapse of the one-year period.</p>
+
+        <p>AgriShare may keep non-personal and depersonalised information for longer periods for reporting purposes and in situations where laws make it necessary to keep such information.</p>
+
+        <p><strong>How can you manage or delete information about you?</strong><br />
+        We provide you with the ability to access, rectify, port and erase your data. To learn more, visit the settings on the App.</p>
+
+        <p><strong>What else should you know?</strong><br />
+        We store your information on servers located in South Africa. By giving us information, you consent to this kind of transfer of your information. We comply with applicable law and will also abide by the commitments we make in this privacy policy.</p>
+
+        <p>We do not allow children under the age of 18 years to register on the AgriShare service. If you are under 18 years of age, we do not want your personal information, and you must not provide it to us. If you are a parent and believe that your child who is under 18 years of age has provided us with personal information, please contact us to have your child&rsquo;s information removed.</p>
+
+        <p>You may at any time request for a copy of all the information that we have about you. This allows you to check such information for accuracy and where necessary help us correct any inaccurate information we might have on you. We will respond to information requests within a reasonable amount of time that will not exceed 7 business days.</p>
+
+        <p><strong>What if we change this privacy policy or any of our privacy notices?</strong><br />
+        We may need to change this policy and our notices. The updates will be posted online (and/or be printed out at our offices). Your continued use of the product or service after the effective date of such changes constitutes your acceptance of such changes. To make your review more convenient, we will post an effective date at the top of the page.</p>
+
+        <p><strong>How to contact us</strong></p>
+
+        <p>If you have any questions about this policy, you can contact us as described below.</p>
+
+        <p>Email: <a href="mailto:services.uganda@agrishare.app">services.uganda@agrishare.app</a></p>
+
+        <p>Phone: +256 759 260260.</p>
+
+        <p><strong>What are your rights?</strong></p>
+
+        <p>Should the personal data concerning yourself be incorrect, you have the right to immediately demand the rectification of inaccurate personal data or the completion of incomplete personal data.</p>
+
+        <p>You have the right to demand that personal data concerning yourself be immediately deleted insofar as one of the particular reasons listed in the Data Protection and Privacy Act, 2019, for example if the data are no longer required for their intended purpose (right to erasure).</p>
+
+        <p>You have the right to object at any time to the processing of personal data concerning yourself for reasons arising from your particular situation. Our company will then cease to process said personal data unless we can prove compelling grounds for the processing or the processing serves to establish, exercise, or defend legal claims.</p>
+
+        <p>Without prejudice to any other administrative or judicial remedy, you have the right to file a complaint with the relevant authority if you believe that the processing of personal data concerning yourself infringes the Data Protection and Privacy Act, 2019.</p>
+
+        <p><strong>Cookies and Reach Measurement</strong></p>
+
+        <p>Cookies are data which are transmitted from our web server or from third-party web servers to the user&#39;s web browser and stored there for future retrieval. Cookies may take the form of small files or other forms of information storage. In accordance with this Privacy Notice, you will be informed of any cookies employed for pseudonymous reach measurement.</p>
+
+        <p>If you do not want any cookies to be stored on your computer, you are requested to deactivate the corresponding option in your browser&rsquo;s system settings. Stored cookies can be cleared in the browser&rsquo;s system settings. Deactivating cookies may limit the Website&rsquo;s functionality.</p>
+
+        <p>You can also opt out of the use of cookies for reach measurement and marketing purposes via the Network Advertising Initiative&rsquo;s deactivation page (http://optout.networkadvertising.org/) and via the US website&nbsp; (http://www.aboutads.info/choices) or the European website (http://www.youronlinechoices.com/uk/your-ad-choices/).</p>
+
+        <h1>AgriShare Rules</h1>
+
+        <p>1. Using AgriShare</p>
+
+        <ol>
+	        <li>These rules shall govern the operation and interaction of AgriShare and its users. In case any of the below stated rules are violated, AgriShare reserves the right to block or delete accounts or take legal action.</li>
+	        <li>AgriShare shall be used for the sole purpose of providing farming and farm related services in Uganda.</li>
+	        <li>The name &ldquo;AgriShare&rdquo; may not be used for any other purposes by the users except for the app itself.</li>
+        </ol>
+
+        <p>2. Listings</p>
+
+        <ol>
+	        <li>Service providers can add their services using the offering option on AgriShare.</li>
+	        <li>Your equipment or resource or service needs to be listed under the categories provided by AgriShare.</li>
+	        <li>All information you give about the offered equipment must be accurate and honest.</li>
+	        <li>You can hide the equipment or resource or service at any time, such equipment or resource or service will not be available for booking until you press the unhide button. Hiding equipment or resource or service does not result in cancelation of already confirmed bookings. Those need to be cancelled manually. Read more in Section 3.</li>
+	        <li>You can delete the equipment or resource or service only if there is no active booking on the equipment. Read more on cancelling bookings in Section 3.</li>
+	        <li>It is your responsibility to ensure that all equipment or resource or service in your listing that is unhidden is available and operational.</li>
+        </ol>
+
+        <p>3. Bookings</p>
+
+        <ol>
+	        <li>Bookings are done through the seeking section. All details as intended by the seeker are to be entered truthfully.</li>
+	        <li>Information entered by the seeker will be matched with the listed equipment or resource or service. In case of non-availability of the equipment or resource or service, the seeker has the chance to adjust the dates of the requested service.</li>
+	        <li>Once the seeker requests the equipment or resource or service, the equipment or resource or service owner will receive a message that requests confirmation of the availability of the service.</li>
+	        <li>If a service provider fails to confirm a service in three consecutive times, such service provider&rsquo;s account will be suspended for three months.</li>
+	        <li>Once the service provider has confirmed the service, it shall be the responsibility of the seeker to pay for the service. Failing to pay for a service three consecutive times after having sent a request shall result in blocking the service for three months.</li>
+	        <li>After payment, the equipment or resource or service owner will receive the contact details of the seeker to discuss details of the booking.</li>
+	        <li>Both the equipment or resource or service owner and seeker shall be able to cancel a booking. However, cancelation of an already paid booking shall result in a 5% penalty on the next booking charged on the person who cancelled the booking.</li>
+	        <li>If a booking is cancelled, the seeker shall be able to choose a different booking within AgriShare and the previous amount will be credited to the new booking OR the seeker can request to receive the money back. In the latter event AgriShare will refund the amount within 5 business days.</li>
+        </ol>
+
+        <p>4. Communication</p>
+
+        <ol>
+	        <li>Before any payment is concluded on AgriShare no direct communication shall be possible between the equipment or resource owner and the seeker.</li>
+	        <li>Once the payment is concluded by the seeker the equipment or resource owner receives the phone number of seekers.</li>
+	        <li>It is the responsibility of all users of AgriShare to always maintain their account details up to date.</li>
+	        <li>AgriShare users can choose the mode of communication with AgriShare on their profile under notification preferences. The modes of communication offered are push notifications, SMS and email.</li>
+	        <li>Users can contact AgriShare at any time through the feedback sections of the App and website. This shall also be used to report any abuses, sensitive content, complaints or any other information that may be relevant for AgriShare or can improve the services offered by AgriShare.</li>
+        </ol>
+
+        <p>5. AgriShare on your device</p>
+
+        <ol>
+	        <li>The installation of AgriShare is free.</li>
+	        <li>To use AgriShare you need a valid Ugandan phone number.</li>
+	        <li>The installation of AgriShare shall be through Google Play store or any means of phone-to-phone sharing which include but are not limited to ShareIt, Cshare, Bluetooth, Wi-Fi-direct and any other mode of sharing.</li>
+	        <li>Logging out of the application is done by pressing on the &ldquo;Logout&rdquo; function listed under the profile section. Logging out does not delete the user account but is rather the temporary exit from a user account within your device. All activity such as bookings remain active even in the event of a logout.</li>
+        </ol>
+
+        <p>6. Website and app integrations</p>
+
+        <ol>
+	        <li>AgriShare services shall be available on the web and through a mobile phone Application.</li>
+	        <li>The same rules apply for both services.</li>
+	        <li>Equipment or resource listed will be available via both web and app.</li>
+        </ol>
+
+        <p>7. Managing your account</p>
+
+        <ol>
+	        <li>First time users of the AgriShare service will be required to create an AgriShare account. This requires the submission of the region, user&rsquo;s name, mobile phone number, date of birth and gender. An email address is required when registering for the Web based AgriShare application only. Please see our Privacy Policy for more information on how data collected on the AgriShare Platform is stored and managed.</li>
+	        <li>It is your responsibility to always keep your account details up to date.</li>
+	        <li>You can choose your preferred mode of communication. If selected, even when logged out or offline you will receive information from AgriShare via SMS, email, call, social media (like WhatsApp), among others.</li>
+	        <li>You can delete your account at any time when there are no pending bookings. If there are pending bookings, you can delete your account after 7 days of last service delivery.</li>
+        </ol>
+
+        <p>8. Safety, security and complaints</p>
+
+        <ol>
+	        <li>The account shall be protected through your Pin. AgriShare will not at any time ask you to share your pin. Users are reminded not to share their 4-digit pin with anyone.</li>
+	        <li>If you forgot your Pin, you will receive a new verification code on the phone number you registered with AgriShare.</li>
+	        <li>If you take note of any misuse and abuse of your account, please report those immediately through the feedback section on our App or website.</li>
+	        <li>If you receive suspicious emails or SMS from AgriShare, please report those immediately through our feedback section and do not respond to them until AgriShare verified the truthfulness of its content.</li>
+	        <li>The privacy of your data is important to us. Any reports produced and publicized will be de-personalized and will be guided by our privacy policy.</li>
+	        <li>If you have any complaints about our services no matter which nature, please report them to us immediately via the feedback section, email, contact, or social media. We will respond to any request within 5 business days.</li>
+        </ol>
+
+        <p>&nbsp;</p>
+
+    </div>
+
+    <div id="luganda" ng-show="language === 'luganda'">
+        <h1>Endagaano wakati w&rsquo;awa obuwereeza n&rsquo;ayagala okubukozesa mu mateeka</h1>
+
+        <p>Endagaano eno efuga enfuna n&rsquo;enkozesa yo ey&rsquo;obuwereeza bwa Agrishare awamu n&rsquo;obuwereeza bwayo obw&rsquo;emitimbagano, obubaka obw&rsquo;oku ssimu, obulango bwa yimeyiro, obuwereeza obw&rsquo;eby&rsquo;obusuubuzi n&rsquo;obuwereeza obulala obuyungiddwako).Bw&rsquo;okozesa obuwereeza bwa Agrishare, okkiriza okugoberera endagaano eri wakati w&rsquo;agaba obuwereeza n&rsquo;ayagala okubukozesa eri mu mateeka). &rdquo;Ffe&rdquo;/Ebyaffe&rdquo; kikwatagana ku kitongole kya Welthungerhilfe (WHH), mu busobozi bwakyo ng&rsquo;ekikulakulanya n&rsquo;okuddukanya ku mutimbagano gw&rsquo;Agrishare.&ldquo;Ggwe&rdquo;/Ekikyo&rdquo; kikwatagana kw&rsquo;akozesa obuwereeza bw&rsquo;Agrishare.</p>
+
+        <h2>Ani ayinza okukozesa obuwereeza bw&rsquo;AgriShare?</h2>
+
+        <p>AgriShare gwe mutimbagano okukolera ku ssimu oguyunga abalimi abatalina bintu bikozesebwa n&rsquo;obuwereeza obw&rsquo;okusasulira oba obw&rsquo;okupangisa ku bannanyini ku lw&rsquo;okulima, okusunsula n&rsquo;entambuza. Omutimbagano muggule eri abagukozesa bonna abakkiriziddwa amateeka g&rsquo;ensi y&rsquo;e Uganda okupangisa obuwereeza obukwatagana n&rsquo;obulimi. Omutimbagano era muggule eri abagukozesa bonna abakkiriziddwa amateeka g&rsquo;ensi y&rsquo;e Uganda okupangisa ebikozesebwa mu bulimi. Kino kizingiramu abagukozesa mu butongole ggamba nga zi kkampuni, ebibiina by&rsquo;obwegassi, ebitongole ebikwasaganya zi bizinesi z&rsquo;abalala n&rsquo;ebitongole ebikolerera enkulakulana y&rsquo;ebitundu. Mu buli ngeri, abantu abagukozesa balina okuba n&rsquo;ekitono emyaka 18 egy&rsquo;obukulu. Bw&rsquo;oba okkiriza endagaano zino n&rsquo;okukozesa obuwereeza ku lw&rsquo;ekitongole, okikirira era okakasa nti owereeddwa olukusa okukola ekyo era olina&rsquo;obuyinza okukwataganya ekitongole n&rsquo;endagaano zino, ku lw&rsquo;ensonga eyo, ebigambo &ldquo;ggwe&rdquo; ne &ldquo;kikyo&rdquo; nga bwe bikozeseddwa mu ndagaano zino kijja kutegeeza kitongole ekyo.</p>
+
+        <h2>Eby&rsquo;ekyama</h2>
+
+        <p>Etteeka lyaffe ery&rsquo;ekyama linnyonnyola engeri gye tukwatamu ebifulumizibwa ku mutimbagano gw&rsquo;Agrishare. Enkozesa yo ey&rsquo;obuwereeza bwa Agrishare etegeeza nti okkiriziganya ku nkungaanya n&rsquo;enkozesa y&rsquo;ebyetaaga okumanyibwa bino nga bwe birambikibwa mu tteeka ery&rsquo;ekyama.</p>
+
+        <h2>Okukozesa obuwereeza bw&rsquo;AgriShare</h2>
+
+        <p><strong>Ebirimu</strong></p>
+
+        <p>Ebirimu ebigabaniddwa ku buwereeza bw&rsquo;AgriShare bijja kuba mu ngeri ya LISITINGI (listings), okwekwata ebikozesebwa n&rsquo;obubaka obugabanibwa wakati w&rsquo;abawa obuwereeza ne bannanyini bikozesebwa oba obuwereeza eby&rsquo;okupangisa. LISITINGI by&rsquo;ebisindikibwa ku buwereeza bw&rsquo;AgriShare okuva ew&rsquo;abagaba obuwereeza. LISITINGI biyinza okuba biwandiiko byokka oba ebiwandiiko ebyegattiddwako ebifaananyi ebirabibwa omuli, ng&rsquo;ogyeeko ebirala, ebifaananyi bya kkamera, buvidiyo n&rsquo;ebifaananyi ebikube n&rsquo;engalo.</p>
+
+        <p>Ovunaanyizibwa ku nkozesa yo ey&rsquo;obuwereeza n&rsquo;ebiri mw&rsquo;ebyo by&rsquo;oteekayo, omuli okugoberera amateeka agakwatagana n&rsquo;enkozesa y&rsquo;ebyo by&rsquo;ataddeyo. Tetwekakasa bujjuvu, mazima, butuufu oba okwesigika kw&rsquo;ebyo byonna ebiteekebwayo oba okuwuliziganya okuteekebwa ku buwereeza bw&rsquo;AgriShare. Tuyinza okulondoola ate ne wekyetaagisa okusalawo kw&rsquo;ebyo ebiteekebwayo naye tetuvunaanyizibwa ku biteekebwayo ebirambikiddwa n&rsquo;ekigenderwa mu bukyamu oba mu bulagajjavu oba ssi ekyo mu bulimba, ebiteekebwayo byonna bisigala buvunaanyizibwa bw&rsquo;omuntu eyabiwandiika. Abakozesa abateekayo ebyabwe ku buwereeza bw&rsquo;AgriShare basigaza obwa nnannyini ku bye bataddeyo ebyo.</p>
+
+        <p><strong>Okuyimiriza n&rsquo;/oba Okukomya obuwereeza</strong></p>
+
+        <p>Twesigaliza obuyinza okuggyayo ebiteekebwayo ebimenya endagaano zino omuli, eky&rsquo;okulabirako, singa ebiteekebwayo bino bivvoola obwa nannyini ku nkozesa y&rsquo;ekintu, bivaako okutulugunyizibwa oba ekyenkanankana n&rsquo;okutulugunyizibwa. Abakozesa basobola okuwa alipoota ku biteekebwayo nga bivuma, bya bulabe oba bimenya amateeka ebiteekeddwa ku pulaatifoomu nga bayita mu katunduka tutukirire akali ku Apu ne ku kibanja ky&rsquo;omutimbagano. Twesigaliza obuyinza okuggyako oba okugaana okusaasaanya ebiteekebwayo byonna ku buwereeza bw&rsquo;AgriShare, okuyimiriza oba okuggala akawunta z&rsquo;abakozesa awatali kusasulirwa mu mateeka.</p>
+
+        <p>Twesigaliza obuyinza okuyimiriza oba okuggalawo akawunta z&rsquo;abakozesa obuwereeza be tulinako ensonga emmala okukkiriza nga benyigira mu kuguliziganyaokw&rsquo;ekibbi ku buwereeza bw&rsquo;AgriShare. Waliwo enkola y&rsquo;okwekubira enduulu mu kkooti eteekeddwa mu mateeka agagobererwa AgriShare.</p>
+
+        <p>Oyinza okukomya endagaano yo mu butongole ne AgriShare ng&rsquo;ojjako akawunta yo n&rsquo;okulekerawo okukozesa obuwereeza bw&rsquo;AgriShare. Abakozesa tebasobola kujjako akawunta zaabwe mu nnaku z&rsquo;obusuubuzi 7 ez&rsquo;obuwereeza obulindirira oba obusigaddeyo ne/oba okusasulibwa. Etteeka ery&rsquo;ekyama lirina ebyetaaga okumanya ku bikukwatako oluvannyuma lw&rsquo;okusangula akawunta yo.</p>
+
+        <p><strong>Enkwata y&rsquo;ensimbi</strong></p>
+
+        <p>Bwe wewandiisa, bw&rsquo;ogaba oba bw&rsquo;ogattako ebikwata ku Mobile/Airtel Money akawunta yo, oyimirirawo ate era n&rsquo;okakasa nti okkirizibbwa okukola bw&rsquo;otyo era olina obuyinza okukozesa akawunta eyo. Ggwe, naffe tuli abawereeza abeetongodde era tewali kintu na kimu mu ndagaano zino kijja kutaputibwa okuteekawo, okulaga oba okutegeeza ekitongole kyonna ekipangisibwa okukola emirimu, eby&rsquo;emirimu, okuba ba ppatana ob&rsquo;obusuubuzi obw&rsquo;awamu wakati wo naffe.</p>
+
+        <p><strong>Ekkomo ly&rsquo;amateeka</strong></p>
+
+        <p>Ekinene ennyo ekirizibwa amateeka agafuga, AgriShare tejja kubaako kuvunaanyizibwa kwonna mu mateeka ku kufiirizibwa okutalabibwa mangu, ku kufiirizibwa okutonotono, ku kumenyebwa kw&rsquo;endagaano oba ku kufiirizibwa okuva mu bulagajjavu, oba okufiirizibwa kwonna okw&rsquo;amagoba ob&rsquo;ennyingiza, ng&rsquo;ekoleddwa mu bugenderevu oba mu butali bugenderevu oba okufiirizibwa kwonna okw&rsquo;ebikunganyizibwa, kiyite data, enkozesa, enkolagana ennungi oba okufiirizibwa okutono ennyo nga kuva mu:</p>
+
+        <p>a. kufuna kwo oba okukozesa kwo oba olw&rsquo;obutasobola kufuna oba okukozesa obuwereeza;</p>
+
+        <p>b. nneeyisa yonna oba ebyogera ku muntu owokusatu ku buwereeza, omuli awatali kkomo, ekintu kyonna ekyonoona erinnya, ekinyiiza oba enneeyisa etali mu mateeka ey&rsquo;abakozesa oba abantu abokusatu;</p>
+
+        <p>c. biteekebwayo byonna ebiggyiddwa mu buwereeza; oba</p>
+
+        <p>d. butakkirizibwa kufuna, kukozesa oba kukyusa ntambuzayo oba by&rsquo;oteekayo.</p>
+
+        <p>Tetuvunaanyizibwa ku kulaga ensasula enkyamu, ebuzabuuza oba ey&rsquo;ekibbi eteekebwa ku buwereeza bw&rsquo;AgriShare. Okusasula okukolebwa ku AgriShare kusooka ne kukwatibwa okutuusa ng&rsquo;omuwereeza amalirizza obuwereeza nga bwe kikakasibwa kasitoma, busigala buvunaanyizibwa bwo okuguliziganya mu ngeri eterimu kufiirizibwa era ey&rsquo;obwegendereza ekiseera kyonna. AgriShare tejja kuvunaanyizibwa ku kufiirizibwa kwonna okuva mu kuguliziganya okukoleddwa abaana abato. Endagaano eno teteekawo oba okutegeezaku kuba bappatana, bizinesi epangisibwa okukola emirimu oba obusuubuzi obw&rsquo;awamu wakati wa AgriShare ne bonna abagikozesa</p>
+
+        <p><strong>Eby&rsquo;awamu</strong></p>
+
+        <p>Tuyinza okyusa mu ndagaano eno oluvannyuma lw&rsquo;ebbanga eritali ggere. Ebitereezebwa tebirina kye bikyusa okuva ku lunaku nga tebinnakyusibwa, era endagaano esinga obupya, y&rsquo;ejja okulamula enkolagana yaffe naawe. Tujja kukutegeeza ku kukyusibwa kw&rsquo;ebintu, eky&rsquo;okulabirako okuyita mu kalango k&rsquo;obuwereeza oba yimeyiro ku yimeyiro ekwatagana ne akawunta yo. Ng&rsquo;ogenda mu maaso n&rsquo;okufuna oba okukozesa obuwereeza oluvannyuma lw&rsquo;enkyukakyuka ezo nga zitereeddwa mu nkola, okkiriza okugoberera endagaano ezikyusiddwa.</p>
+
+        <p><strong>Etteeka ery&rsquo;ekyama</strong></p>
+
+        <p>Lino etteeka lyaffe ery&rsquo;ekyama linnyonnyola, okutwalira awamu, engeri obuwereeza bw&rsquo;AgriShare gye bufunamu ebikukwatako, ne kye tukozesa ebikukwatako ebyo nga tubifunye. Kino kiri mu kutuukiriza obweyamo bwaffe obw&rsquo;okubeera abeerufu era abawuliriza.</p>
+
+        <p><strong>Eby&rsquo;okunnyonnyolako</strong></p>
+
+        <p><strong>&ldquo;Personal information&rdquo; yo kye kiki?</strong></p>
+
+        <p>Ku lw&rsquo;okukikozesa, &ldquo;personal information&rdquo; kitegeeza ebikukwatako ebikwawula, ggamba erinnya lyo oba yimeyiro adulesi yo. Ekikukwatako kyonna ekigwa wa bweru w&rsquo;okunnyonnyola kuno kiri&ldquo;non-personal information&rdquo;.</p>
+
+        <p><strong>Tuyiga tutya ebikwata ku ggwe?</strong></p>
+
+        <p>Tuyiga ebikwata ku ggwe bwe:</p>
+
+        <p>obituwa obutereevu, (eky&rsquo;okulabirako, bw&rsquo;oggulawo akawunta oba bw&rsquo;ojjuzaamu endagiriro yo);</p>
+
+        <p>tubikungaanya nga tuyita mu Apu yaffe ku ssimu, (eky&rsquo;okulabirako, singa Apu y&rsquo;Agrishare ku ssimu yo yeyunga ku ssaava (server) zaffe okufuna ebipya n&rsquo;okujjako ebikaddiye), oba mu ku kkopolola ebisomebwa kompyuta ebiwereezebwa Google Play (Google Play). Data (data) ayinza okukungaanyizibwa bw&rsquo;onoonya LISITINGI, bw&rsquo;ogattako LISITINGI, bw&rsquo;osindika n&rsquo;okufuna obulango ne bwe wekwata obuwereeza n&rsquo;ebyamaguzi ebiragibwa ku lukalala mu Apu ne,</p>
+
+        <p>bw&rsquo;oteekako ebikwata ku akawunto yo ey&rsquo;mobile money oba airtel money. (Tujja kumanya nnamba yo yokka eya mobile money oba eya airtel money n&rsquo;okuguliziganya kw&rsquo;okolera ku buwereeza bw&rsquo;AgriShare)</p>
+
+        <p><strong>Kiki kye tukozesa ebikukwatako nga tubifunye?</strong></p>
+
+        <p>Okutwalira awamu, ebikukwatako bituyamba okuwa n&rsquo;okwongera omutindo gwa pulogulamu zaffe eziddukanya kompyuta (Software) n&rsquo;obuwereeza bwaffe ku lulwo. Ebikukwatako era bituyamba okukuyunga ku bawereeza. Non-personal information eyinza okuteekebwa mu alipoota eziraga okukola kw&rsquo;AgriShare, ne ku lw&rsquo;ensonga ezikwata ku kweranga kw&rsquo;AgriShare.</p>
+
+        <p><strong>Ddi lwe tugabana ebikukwatako n&rsquo;abalala?</strong></p>
+
+        <p>Tetugaba bikukwatako n&rsquo;omuntu owokusatu yenna. Naye amateeka we gakyetagira eky&rsquo;okulabirako, nga wabaawo okunoonyereza ku musango ogwazzibwa, tujja kuwalirizibwa okuwaayo ebikukwatako, omuli &ldquo;personal information&rdquo; eri ebitongole ebikola ku kunoonyereza singa tukakasa nti balina olukusa olutangole okufuna ebyo ebikukwatako).</p>
+
+        <p><strong>Tutereka tutya n&rsquo;okukuuma &ldquo;personal information&rdquo; yo?</strong></p>
+
+        <p>Tuvunaanyizibwa okukuuma &ldquo;personal information&rdquo; yo singa tugifuna. Tukozesa obukuumi obuteekebwa ku bintu ebikalu, obuteekebwa ku bizinesi n&rsquo;obuteekebwa ku tekinologiya wa kompyuta. Yadde tuteekamu amaanyi gaffe, bwe tumanya ku kumenyebwa kw&rsquo;obukuumi, tujja kukutegeeza osobole okukozesa emitendera gy&rsquo;obukuumi egisaanidde.</p>
+
+        <p>Ffe era tetwetaaga &ldquo;personal information&rdquo; yo okumala ekiseera ekiwanvu okusinga ku ky&rsquo;ekyo wetugyetagira, n&rsquo;olw&rsquo;ekyo tugikuuma ebbanga erimala okukola kye twagikungaanyiriza. Bwe tuba tetugyetaaga, tugenda mu maaso n&rsquo;okugisaanyawo okugyako nga ki twetaagisa mu mateeka okugitereka ebbanga erisingako. &ldquo;Personal information&rdquo; okuva ku akawunta ezigyiddwako eterekebwa okumala omwaka ggumu ogwa kalenda; esangulibwa ddala okuva mu zissaava zaffe ku nkomerero y&rsquo;ebbanga ery&rsquo;omwaka ogumu.</p>
+
+        <p>AgriShare eyinza okukuuma &ldquo;non-personal&rdquo; ne &ldquo;depersonalized information&rdquo;ebbanga eggwanvuko ku lw&rsquo;okuba ne zalipoota ne mu mbeera amateeka we gakyetaagisa okukuuma ebyetaaga okumanyibwa.</p>
+
+        <p><strong>Osabola tutya okukuuma oba okusangula ebikukwatako?</strong></p>
+
+        <p>Tukuwa obusobozi okufuna, okutereeza, okukyusa n&rsquo;okusangula data akukwatako. Okweyongera okuyiga ebisingawo, genda ku pano (giyite panel) ekozesebwa okukyusa endabika n&rsquo;ebikolebwa ku Apu.</p>
+
+        <p><strong>Biki ebirala by&rsquo;olina okumanya?</strong></p>
+
+        <p>Tutereka ebikukwatako ku zissaava ezisangibwa mu ggwanga lya South Africa. Bw&rsquo;otuwa ebikukwatako, okkiriziganya n&rsquo;enkola eno ey&rsquo;okutambuza ebikukwatako ebyo. Tugondera amateeka agafuga era tujja kuyimirira ne bye tweyama okukola mu tteeka lyaffe lino ery&rsquo;ekyama.</p>
+
+        <p>Tetukkiriza baana bali wansi wa myaka 18 okwewandiisa ku buwereeza bw&rsquo;AgriShare. Bw&rsquo;obeera wansi w&rsquo;emyaka 18 egy&rsquo;obukulu tetwagala &ldquo;personal information&rdquo; yo era toteekeddwa kugituwa. Bw&rsquo;oba omuzadde era ng&rsquo;okkiriza nti omwana wo ali wansi w&rsquo;emyaka 18 egy&rsquo;obukulu atuwadde &ldquo;personal information&rdquo; ye, bambi tutukirire tusobole okugyayo ebikwata ku mwana wo.</p>
+
+        <p>Oyinza w&rsquo;oyagalira wonna okusaba kkopi y&rsquo;ebikukwatako byonna. Kino kikusobozesa okukebera ebyo ebikukwatako ku lw&rsquo;obutuufu bwabyo era we kyetaagisa otuyambe okutereeza byonna ebitali bituufu ku bikukwtatko bye tuyinza okuba nabyo. Tujja kuddamu okusaba ku bikukwatako mu budde obwetaagisa obutasussa nnaku 7 ez&rsquo;okukola.</p>
+
+        <p><strong>Watya nga tukyusiza etteeka lino ery&rsquo;ekyama oba akamu ku bulango bwaffe obw&rsquo;ekyama?</strong></p>
+
+        <p>Tuyinza okwetaaga okukyusa etteeka lino n&rsquo;obulango bwaffe. Ebikyusiddwa bijja kuteekebwa ku mutimbagano era/oba okufulumizibwa mu buwandiike ku woofisi zaffe. Okusigala ng&rsquo;okozesa ekikozesebwa oba obuwereeza okuva ku lunaku olw&rsquo;enkyukakyuka kitegeeza okukkiriza kwo okw&rsquo;enkyukakyuka ezo. By&rsquo;ozudde okwongera okukkolera), tujja kuteeka olunaku lwe nnyini olw&rsquo;enkukakyuka waggulu wa peegi.</p>
+
+        <p><strong>Engeri y&rsquo;okututukirira</strong></p>
+
+        <p>Bw&rsquo;oba ng&rsquo;olina ebibuuzo byonna ebikwata ku tteeka lino, osobola okututukirira nga bwe kinnyonnyoddwa wammanga ;</p>
+
+        <p>Yimeyiro: <a href="mailto:services.uganda@agrishare.app">services.uganda@agrishare.app</a></p>
+
+        <p>(Essimu: +256 759 260260)</p>
+
+        <p><strong>Buliwa obuyinza bwo?</strong></p>
+
+        <p>1. Bwe kiba nga data akwogerako simutuufu, olina obuyinza okusaba mbagirawo, okutereeza data akwogerako atali mutuufu oba okujjuza data akwogerako atajjudde).</p>
+
+        <p>2. Olina obuyinza okusaba nti data akwogerako amangu n&rsquo;embiro asangulibwe ng&rsquo;emu ku nsonga enkulu ewandikiiddwa mu Tteeka ly&rsquo;Okukuuma n&rsquo;Okutereka Data mu Kyama, 2019-(liyite, Data Protection and Privacy Act, 2019), eky&rsquo;okulabirako, singa data aba nga takyetaagibwa ku lw&rsquo;ensonga emusuubirwamu (obuyinza obw&rsquo;okumujjawo).</p>
+
+        <p>3. Olina obuyinza okugaana, ekiseera kyonna okuteekateeka data akwogerako ku nsonga eziva mu bikukwatako. Kkampuni yaffe ejja, oluvannyuma okuyimiriza okuteekateeka data ayogerwako akukwatako okujjako nga tusobola okulaga ebyesigamizibwako ku kumuteekateeka oba ng&rsquo;okumuteekateeka kugendererwamu kussaawo, kukozesa oba kuwagira okusaba okuba n&rsquo;obuyinza mu mateeka).</p>
+
+        <p>Awatali kuziimula kiragiro kyonna ekitaweereddwa oba ekiweereddwa kkooti, olina obuyinza okuteekayo okwemulugunya mu b&rsquo;obuyinza be kikwatako singa okiriza nti okuteekateeka data akwogerako kimenya Etteeka ly&rsquo;Okukuuma n&rsquo;Okutereka Data mu Kyama, 2019 (liyite, Data Protection and Privacy Act, 2019).</p>
+
+        <p><strong>&ldquo;ZiKuki&rdquo; n&rsquo;Empima y&rsquo;Omuwendo gw&rsquo;Abantu ab&rsquo;Enjawulo abalaba ebikukwatako</strong></p>
+
+        <p>&ldquo;Zikuki&rdquo; (ziyite Cookies) ye data awerezebbwa okuva ku kyuma ekiddukanya ekibanja ky&rsquo;omutimbagano gwaffe oba okuva ku byuma ebiddukanya ebibanja by&rsquo;emitimbagano gya bakayungirizi okutuuka ku bibangirizi by&rsquo;abakozesa omutimbagano era n&rsquo;aterekebwa eyo ku lw&rsquo;okusobozesebwa okumufuna mu biseera eby&rsquo;omu maaso. &ldquo;Zikuki&rdquo; ziyinza okubeera mu ngeri ya bu fayiro obutono oba engeri endala eziterekebwamu ebyetaagibwa okumanyibwa. Nga tusinziira ku nnambika y&rsquo;ETteeka lino ery&rsquo;Ekyama, ojja kumanyisibwa buli &ldquo;kuki&rdquo; yonna ekozeseddwa ku lw&rsquo;okupima omuwendo gw&rsquo;abantu abalaba ebikukwatako okutali kutuufu).</p>
+
+        <p>&nbsp;Bw&rsquo;oba nga toyagala &ldquo;kuki&rdquo; yonna kuterekebwa ku kompyuta yo, osabibwa okuggyako awalagibwa okuziggyako mu ndagiriro eyateekebwa mu pulogulamu yo. &ldquo;Zikuki&rdquo; eziterekeddwa zisobola okuggibwa mu ndagiriro eyateekebwa mu pulogulamu. Okuggyako &ldquo;zikuki&rdquo; kisobola okutataaganya enkola y&rsquo;ekibanja ky&rsquo;omutimbagano).</p>
+
+        <p>&nbsp;Osobola ate era okwewala okukozesa &ldquo;zikuki&rdquo; ku lw&rsquo;okupima omuwendo gw&rsquo;abantu abalaba ebikukwatako n&rsquo;ensonga z&rsquo;obusuubuzi ng&rsquo;oyita ku peegi ya Network Advertising Initiatives eziggyako (http://optout.networkadvertising.org/) ne ku kibanja ky&rsquo;omutimbagano eky&rsquo;America (http://www.aboutads.info/choices) oba ku kibanja ky&rsquo;omutimbagano eky&rsquo;Abazungu (<a href="http://www.youronlinechoices.com/uk/your-ad-choices/">http://www.youronlinechoices.com/uk/your-ad-choices/</a>).</p>
+
+        <h1>Amateeka agakwata ku Agrishare</h1>
+
+        <h2>1. Okukozesa AgriShare</h2>
+
+        <p>1. Amateeka gano gajja kufuga enkola n&rsquo;enkwatagana y&rsquo;Agrishare n&rsquo;abagikozesa. Singa wabaawo etteeka lyonna kw&rsquo;ago agalambikiddwa wammanga erimenyeddwa, Agrishare yesigaliza obuyinza okusalako oba okusangula za akawunta oba okugenda mu mateeka.</p>
+
+        <p>2. AgriShare ejja kukozesebwa ku lw&rsquo;omulimu gwokka ogw&rsquo;okuwa obuwereeza ku by&rsquo;obulimi n&rsquo;obuwereeza obukwatagana ne faamu mu Uganda.</p>
+
+        <p>3. Erinnya &ldquo;AgriShare&rdquo; terikozesebwenga bakozesa ku lw&rsquo;ensonga ndala zonna okujjako ku lw&rsquo;Apu yennyini.</p>
+
+        <h2>2. LISITINGI (Listings)</h2>
+
+        <p>1. Abawereeza bayinza okuteekako obuwereeza bwabwe nga bakozesa eky&rsquo;okusalawo kw&rsquo;okuwaayo ku AgriShare.</p>
+
+        <p>2. Ekikozesebwa kyo kyetaaga okuwandiikibwa mu lukalala lw&rsquo;ebika by&rsquo;ebikozesebwa ebiwereeddwa AgriShare.</p>
+
+        <p>3. Byonna ebyetaaga okumanyibwa by&rsquo;owa ebikwata ku kikozesebwa ky&rsquo;owaayo byetaaga okuba nga tebiriimu nsobi ng&rsquo;ate bya mazima.</p>
+
+        <p>4. Osobola okukweka ekikozesebwa w&rsquo;oyagalidde, ekikozesebwa ekyo tekijja kufunika ku lw&rsquo;okukyekwata okutuusa ng&rsquo;onyize epeesa ery&rsquo;okukwekula. Okukweka ebikozesebwa tekuviirako kusazibwamu kw&rsquo;okwekwata ebikozesebwa okumaze okukakasibwa. Ezo zetaaga kusazibwamu na mukono. Weyongere okubisomako mu kitundu ekyokusatu.</p>
+
+        <p>5. Oyinza okusangula ekikozesebwa bwe waba nga tewali kukyekwata kugenda maaso. Weyongere osome ku kusazaamu okwekwata ebikozesebwa mu kitundu ekyokusatu.</p>
+
+        <p>6. Buvunaanyizibwa bwo okukakasa nti ebikozesebwa byonna mu LISITINGI yo ebitakwekeddwa bifunika era bikola bulungi).</p>
+
+        <h2>3. Okwekwata ebikozesebwa</h2>
+
+        <p>1. Okwekwata ebikozesebwa kukolebwa okuyita mu kitundu eky&rsquo;okunoonya.</p>
+
+        <p>2. Byonna ebyetaaga okumanya nga bwe kyetaagibwa anoonya byakuteekebwamu mu mazima.Ebyetaaga okumanyibwa ebiteekeddwamu anoonya bijja kugerageranyizibwa n&rsquo;ebikozesebwa ebiragiddwa mu lukalala. Singa kisangibwa ng&rsquo;ekikozesebwa tekifunika, anoonya alina omukisa okukyusa ennaku z&rsquo;obuwereeza obusabiddwa.</p>
+
+        <p>3. Anoonya bw&rsquo;asaba ekikozesebwa, nannyini kikozesebwa ajja kufuna obubaka obusaba okukakasibwa kw&rsquo;okubeeraawo kw&rsquo;obuwereeza.</p>
+
+        <p>4. Singa omuwereeza alemererwa okukakasa obuwereeza emirundu esatu egy&rsquo;omudiringanwa, akawunta y&rsquo;omuwereeza oyo ejja kiyimirizibwa okumala emyezi esatu.</p>
+
+        <p>5. Singa omuwereeza akakasizza obuwereeza, kijja kuba buvunaanyizibwa bw&rsquo;anoonya okusasulira obuwereeza. Okulemererwa okusasulira obuwereeza emirundi esatu egy&rsquo;omudiringanwa oluvannyuma lw&rsquo;okusindika okusaba kijja kuviirako okuyimiriza obuwereeza okumala emyezi esatu.</p>
+
+        <p>6. Oluvannyuma lw&rsquo;okusasula, nannyini kikozesebwa ajja kufuna ebimuyamba okutuukirira anoonya okwogera ku kwekwata ekikozesebwa.</p>
+
+        <p>7. Bombi, nannyini kikozesebwa n&rsquo;anoonya bajja kusobola okusazaamu okwekwata ekikozesebwa. Wabula, okusazaamu kw&rsquo;okwekwata ekikozesebwa okumaze okusasulibwa kujja kuviirako penati ya butundutundu butaano ku buli kikumi (5%) ku kwekwata ekikozesebwa okuddako okuteekebwa ku muntu eyakusazaamu.</p>
+
+        <p>8. Singa okwekwata ekikozesebwa kusazibwamu, anoonya ajja kusobola okulonda okwekwata ekikozesebwa okw&rsquo;enjawulo mu Agrishareera omuwendo gwa ssente og&rsquo;emabega gujja kuteekebwa ku kwekwata ekikozesebwa okupya OBA anoonya asobola okusaba okuddizibwa ssente ze. Ng&rsquo;osinziira ku kisembyeyo, Agrishare ejja kumuddize ssente ze mu nnaku 5 ez&rsquo;okukola.</p>
+
+        <h2>4. Empuliziganya</h2>
+
+        <p>1. Nga tewannabaawo kusasula kwonna kukomekerezeddwa ku Agrishare, tewali mpuliziganya ya butereevu eneeba esoboka wakati wa nannyini kikozesebwa n&rsquo;anoonya.</p>
+
+        <p>2. Bwe kuba ng&rsquo;okusasula kukomekkerezeddwa anoonya, nannyini kikozesebwa afuna ennamba y&rsquo;essimu y&rsquo;anoonya.</p>
+
+        <p>3. Buvunaanyizibwa bw&rsquo;abakozesa ba Agrishare bonna okukuuma ebikwata ku akawunta zaabwe nga zituukiridde.</p>
+
+        <p>4. Abakozesa AgriShare basobola okulonda engeri y&rsquo;okuwuliziganyamu ne AgriShare ku biboogerako mu bulango. Engeri z&rsquo;okuwuliziganyamu eziwereeddwa ze zino; obulango obusindikibwa okuyita mu Apu, mesegi ne yimeyiro.</p>
+
+        <p>5. Abakozesa basobola okutuukirira Agrishare webagalira wonna nga bayita mu kitundu kya Apu awafunirwa okuddibwamu ne ku kibanja ekiri ku mutimbagano. Kino ate era kijja kukozesebwa okuwa alipoota ku nkozesa embi, ebiteekebwayo ebisasamaza, okwemulugunya oba ekyetaagibwa okumanya kyonna ekiyinza okukwatagana ku lw&rsquo;Agrishare oba ekisobola okulongoosa empereeza eweebwa Agrishare.</p>
+
+        <h2>5. AgriShare ku ssimu yo</h2>
+
+        <p>1. Okuteekebwako kw&rsquo;AgriShare kwa bwereere.</p>
+
+        <p>2. Okukozesa AgriShare wetaaga ennamba ey&rsquo;essimu entongole ey&rsquo;e Uganda).</p>
+
+        <p>3. Okuteekebwako kw&rsquo;AgriShare kujja kuyita ku Gugo (Google Playstore) oba engeri endala yonna ey&rsquo;okugabana okuva ku ssimu okudda ku ndala omuli, wabula nga ssi bino byokka, ShareIt, Cshare, Bluetooth, Wifi-direct na buli ngeri ndala yonna ey&rsquo;okugabanamu).</p>
+
+        <p>4. Okuva ku Apu kikolebwa ng&rsquo;onyiga w&rsquo;oviira ku mutimbagano awali mu lukalala lw&rsquo;ekitundu eky&rsquo;ebikukwatako. Okuva ku mutimbagano tekisangula akawunta y&rsquo;omukozesa wabula kuba kuva mu akawunta y&rsquo;omukozesa okw&rsquo;ekiseera mu ssimu yo). Ebikolwa byonna ggamba ng&rsquo;okwekwata ekikozesebwa bisigala nga bikyakola ne mu kiseera eky&rsquo;okuva ku mutimbagano.</p>
+
+        <h2>6. Enkwatagana y&rsquo;ekibanja ku mutimbagano (kiyite website) ne Apu</h2>
+
+        <p>1. Obuwereeza bw&rsquo;AgriShare bujja kufunika ku kibanja ky&rsquo;omutimbagano n&rsquo;okuyita mu Apu y&rsquo;essimu.</p>
+
+        <p>2. Amateeka geegamu agateekebwa mu nkola ku buwereeza bw&rsquo;emirundi ebiri.</p>
+
+        <p>3. Olukalala lw&rsquo;ebikozesebwa lujja kufunika okuyita mu byombi, ekibanja ku mutimbagano ne Apu.</p>
+
+        <h2>7. Okuddukanya akawunta yo</h2>
+
+        <p>1. Abasooka okukozesa obuwereeza bw&rsquo;AgriShare kijja kubetaagisa okutandikawo AgriShare akawunta. Kino kyetaagisa okuwaayo erinnya ly&rsquo;agikozesa, ennamba y&rsquo;essimu, olunaku lw&rsquo;okuzaalibwako n&rsquo;ekikula kye, kiyite gender. Endagiriro ya Yimeyiro yetaagibwa nga wewandiisa ku Agrishare Apu ekolera ku kibanja ky&rsquo;omutimbagano. Bambi, laba etteeka lyaffe ery&rsquo;ekyama ku lw&rsquo;okweyongera okumanya ebyetagibwa ku ngeri DATA akungaanyiziddwa ku Apu y&rsquo;AgriShare gy&rsquo;aterekebwa n&rsquo;okukwatibwamu.</p>
+
+        <p>2. Buvunaanyizibwa bwo okukuuma ebikwata kw&rsquo;akawunta yo nga bituukiridde ekiseera kyonna.</p>
+
+        <p>3. Osobola okulonda engeri yo gy&rsquo;osiimye ey&rsquo;okuwuliziganya. Bw&rsquo;oba olondeddwa, newankubadde ng&rsquo;ovudde ku mutimbagano oba nga toli ku mutimbagano ojja kufuna ebyetaaga okumanya okuva ku AgriShare okuyita mu mesegi, yimeyiro, amassimu agakubibwa, omutimbagano gwa social media, nga WhatsApp n&rsquo;ebiringa ebyo.</p>
+
+        <p>4. Osobola okusangula akawunta yo ekiseera kyonna bwe waba nga tewali kwekwata bikozesebwa kulindiridde. Bwe waba nga waliwo okwekwata ebikozesebwa okulindiridde oyinza okusangula akawunta yo oluvannyuma lw&rsquo;ennaku 7 ez&rsquo;okuwa obuwereeza obusemba yo.</p>
+
+        <h2>8. Okwekuuma, okwerinda ebigwa tebiraze n&lsquo;okwemulugunya</h2>
+
+        <p>1. &nbsp;Akawunta ejja kukumibwa ng&rsquo;oyita mu piini yo. AgriShare terina mulundi na gumu lweli kusaba kugabana piini yo. Abakozesa bajjukizibwa obutagabana piini yaabwe ey&rsquo;ennukuta ennya n&rsquo;omuntu yenna.</p>
+
+        <p>2.&nbsp; Singa werabidde piini yo, ojja kufuna koodi empya ekakasa ku ssimu gye wewandiisa ne AgriShare.</p>
+
+        <p>3. Bwe wetegereza nga waliwo enkozesa embi yonna n&rsquo;okwonoona akawunta yo, bambi, ebyo biloope mbagirawo ng&rsquo;oyita mu kitundu ky&rsquo;okuddibwamu ku Apu yaffe oba ku kibanja ekiri ku mutimbagano.</p>
+
+        <p>4. Singa ofuna yimeyiro oba mesegi bye weekengera okuva mu AgriShare, bambi ebyo biloope mbagirawo ng&rsquo;oyita mu kitundu ky&rsquo;okuddibwamu era tobaddamu okutuusa ng&rsquo;AgriShare emaze okukakasa obutuufu bw&rsquo;ebirimu.</p>
+
+        <p>5. Okukuuma data wo mu kyama kikulu gye tuli. Alipoota zonna efulumizibwa n&rsquo;okuwereeza mu lujjudde zijja kugibwako obwa nannyini era zijja kulungamizibwa tteeka lyaffe ery&rsquo;ekyama.</p>
+
+        <p>6. Singa olina okwemulugunya kwonna okukwata ku buwereeza bwaffe ne bwe kuba kwenkana kutya, bambi kuloope gye tuli mu bunnambiro ng&rsquo;oyita mu kitundu ky&rsquo;okuddibwamu. Tujja kuddamu okusaba kwonna mu nnaku 5 ez&rsquo;okukola.</p>
+
     </div>
 
     <p><a class="button" onclick="chooseCookies()">Update your cookie preferences</a></p>
