@@ -21,8 +21,8 @@ namespace Agrishare.API.Controllers.CMS
             if (Filter.Trending == 1)
                 trending = true;
 
-            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
-            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending);
+            var recordCount = Entities.Listing.Count(Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending, StartDate: Filter.StartDate, EndDate: Filter.EndDate);
+            var list = Entities.Listing.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, UserId: Filter.UserId, CategoryId: Filter.CategoryId, RegionId: CurrentRegion.Id, Trending: trending, StartDate: Filter.StartDate, EndDate: Filter.EndDate);
             var title = "Listings";
 
             if (Filter.UserId > 0)
@@ -67,6 +67,9 @@ namespace Agrishare.API.Controllers.CMS
                 });
             }
 
+            int lastWeekCount = Entities.Listing.Count(StartDate: DateTime.Now.AddDays(-7), EndDate: DateTime.Now, RegionId: CurrentRegion.Id);
+            decimal lastWeekHeight = graphData.Count == 0 ? 0 : (decimal)lastWeekCount / (decimal)graphData.Max(d => d.Count) * 100M;
+
             var data = new
             {
                 Count = recordCount,
@@ -86,7 +89,12 @@ namespace Agrishare.API.Controllers.CMS
                     Reviews = reviews,
                     AverageRating = averageRating,
                     OneStar = onestar,
-                    Graph
+                    Graph,
+                    LastWeek = new
+                    {
+                        Height = lastWeekHeight,
+                        Count = lastWeekCount
+                    }
                 }
             };
 

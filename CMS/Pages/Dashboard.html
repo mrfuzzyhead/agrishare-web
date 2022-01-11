@@ -5,7 +5,6 @@
         <gl-icon-button gl-icon="receipt" ng-click="app.redirect('/pages/settlementreport.aspx')" ng-if="app.hasRole('Administrator')">Download Settlement Report</gl-icon-button>
         <gl-icon-button gl-icon="insights" ng-click="app.go('#/settings/edit/39?'+app.returnUrlQs())" ng-if="app.hasRole('Administrator')&&app.region.Id===1">USD1.00 = {{dashboard.data.currentUsdRate | currency : 'ZWL'}}</gl-icon-button>
 
-
         <span flex style="align-items: center; margin-left: 20px">
             <gl-date gl-placeholder="From" ng-model="dashboard.activity.filter.startDate"></gl-date>
             <span>&nbsp;→&nbsp;</span>
@@ -19,9 +18,10 @@
 
             <div class="overview">
                 <ul>
-                    <li><big>{{dashboard.data.activeListingCount}}</big><strong>Live<br />Listings</strong></li>
-                    <li><big>{{dashboard.data.activeUsers}}</big><strong>Active<br />Users<br /><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Active User is a user who has used the app (performed any function within the app) during the selected time frame.">info</a></strong></li>
-                    <li><big>{{dashboard.data.completeBookingCount}}</big><strong>Paid<br />Bookings</strong></li>
+                    <li><big>{{dashboard.data.activeListingCount | number}}</big><strong>Live<br />Listings</strong></li>
+                    <li><big>{{dashboard.data.activeUsers | number}}</big><strong>Active<br />Users<br /><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Active User is a user who has used the app (performed any function within the app) during the selected time frame.">info</a></strong></li>
+                    <li><big>{{dashboard.data.inactiveUsers | number}}</big><strong>Inactive<br />Users<br /><a class="material-icons" tooltips tooltip-side="bottom" tooltip-template="An Inactive User is a user who has NOT used the app during the selected time frame.">info</a></strong></li>
+                    <li><big>{{dashboard.data.completeBookingCount | number}}</big><strong>Paid<br />Bookings</strong></li>
                     <li><big>{{dashboard.data.smsBalance | currency : '€'}}</big><strong>SMS<br />Balance</strong></li>
                 </ul>
             </div>
