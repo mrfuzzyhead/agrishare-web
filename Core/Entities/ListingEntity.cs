@@ -63,7 +63,7 @@ namespace Agrishare.Core.Entities
 
         public static List<Listing> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", 
             string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, 
-            bool Deleted = false, int RegionId = 0, bool? Trending = null)
+            bool Deleted = false, int RegionId = 0, bool? Trending = null, DateTime? StartDate = null, DateTime? EndDate = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -91,6 +91,18 @@ namespace Agrishare.Core.Entities
 
                 if (Trending.HasValue)
                     query = query.Where(e => e.Trending == Trending);
+
+                if (StartDate.HasValue)
+                {
+                    var date = StartDate.Value.StartOfDay();
+                    query = query.Where(e => e.DateCreated >= date);
+                }
+
+                if (EndDate.HasValue)
+                {
+                    var date = EndDate.Value.EndOfDay();
+                    query = query.Where(e => e.DateCreated <= date);
+                }
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }

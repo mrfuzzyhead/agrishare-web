@@ -42,7 +42,7 @@ namespace Agrishare.API.Controllers.CMS
                 list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id, RegisterFromDate: Filter.StartDate, RegisterToDate: Filter.EndDate);
             }
 
-            int total = 0, active = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
+            int total = 0, active = 0, inactive = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;
             if (PageIndex == 0)
             {
                 total = Entities.User.Count(RegionId: CurrentRegion.Id);
@@ -53,6 +53,7 @@ namespace Agrishare.API.Controllers.CMS
                 deleted = Entities.User.Count(Deleted: true, RegionId: CurrentRegion.Id);
                 lockedout = Entities.User.Count(FailedLoginAttempts: Entities.User.MaxFailedLoginAttempts, RegionId: CurrentRegion.Id);
                 active = Entities.Counter.Count(UniqueUser: true, RegionId: CurrentRegion.Id);
+                inactive = Entities.User.Count(RegionId: CurrentRegion.Id) - active;
                 unverified = Entities.User.Count(Status: Entities.UserStatus.Pending, RegionId: CurrentRegion.Id);
             }
 
@@ -90,6 +91,7 @@ namespace Agrishare.API.Controllers.CMS
                     TotalAgents = totalAgents,
                     TotalRegular = totalRegular,
                     Active = active,
+                    Inactive = inactive,
                     Male =  male,
                     Female = female,
                     Deleted = deleted,

@@ -81,6 +81,9 @@ namespace Agrishare.API.Controllers.App
             if (original == null || original.User.Id != CurrentUser.Id)
                 return Error("Message not found");
 
+            original.StatusId = Entities.MessageStatus.Unread;
+            original.Save();
+
             var message = new Entities.Message
             {
                 ParentId = Model.ParentId,
