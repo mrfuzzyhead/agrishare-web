@@ -58,6 +58,13 @@
 
         <div class="graph-view" ng-if="list.summary.Graph.length">
 
+            <div class="col">
+                <div>
+                    <span style="min-height: {{list.summary.LastWeek.Height}}%">{{list.summary.LastWeek.Count}}</span>
+                </div>
+                <span>Last Week</span>
+            </div>
+
             <div class="col" ng-repeat="item in list.summary.Graph">
                 <div>
                     <span style="min-height: {{item.Height}}%">{{item.Count}}</span>
@@ -65,6 +72,11 @@
                 <span>{{item.Label}}</span>
             </div>
 
+        </div>
+
+        <div class="filter-view">
+            <gl-date gl-placeholder="From" ng-model="list.filter.startDate"></gl-date>
+            <gl-date gl-placeholder="To" ng-model="list.filter.endDate"></gl-date>
         </div>
 
         <gl-list gl-controller="list" gl-infinite="list.next()">

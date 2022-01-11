@@ -140,11 +140,14 @@ namespace Agrishare.API.Controllers.CMS
             #endregion
 
             var smsBalance = SMS.GetBalance(CurrentRegion);
+            var activeUsers = Entities.Counter.ActiveUsers(startDate, endDate, RegionId: CurrentRegion.Id);
+            var inactiveUsers = Entities.User.Count(RegionId: CurrentRegion.Id) - activeUsers;
 
             var data = new
             {
                 activeListingCount = Entities.Listing.Count(Status: Entities.ListingStatus.Live, RegionId: CurrentRegion.Id, StartDate: startDate, EndDate: endDate),
-                activeUsers = Entities.Counter.ActiveUsers(startDate, endDate, RegionId: CurrentRegion.Id), //Entities.Counter.Count(UniqueUser: true),
+                activeUsers,
+                inactiveUsers,
                 completeBookingCount = Entities.Booking.Count(Status: Entities.BookingStatus.Complete, RegionId: CurrentRegion.Id, StartDate: startDate, EndDate: endDate),
                 totalBookingAmount,
                 totalRegistrations = Entities.Counter.Count(Event: Entities.Counters.Register, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
