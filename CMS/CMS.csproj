@@ -129,6 +129,11 @@
     <Content Include="Pages\Adverts\Detail.html" />
     <Content Include="Pages\Adverts\Edit.html" />
     <Content Include="Pages\Adverts\List.html" />
+    <Content Include="Pages\Journals\Detail.html" />
+    <Content Include="Pages\Journals\Expense.html" />
+    <Content Include="Pages\Journals\Export.html" />
+    <Content Include="Pages\Journals\Income.html" />
+    <Content Include="Pages\Journals\Ledger.aspx" />
     <Content Include="Pages\Messages\Detail.html" />
     <Content Include="Pages\Messages\Edit.html" />
     <Content Include="Pages\Messages\List.html" />
@@ -316,6 +321,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Journals\Ledger.aspx.cs">
+      <DependentUpon>Ledger.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Journals\Ledger.aspx.designer.cs">
+      <DependentUpon>Ledger.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettlementReport.aspx.cs">
       <DependentUpon>SettlementReport.aspx</DependentUpon>
