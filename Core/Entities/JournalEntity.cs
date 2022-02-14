@@ -34,7 +34,11 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Journals.Include(o => o.User).Include(o => o.Booking).Where(o => !o.Deleted);
+                var query = ctx.Journals
+                    .Include(o => o.User)
+                    .Include(o => o.Region)
+                    .Include(o => o.Booking)
+                    .Where(o => !o.Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -48,7 +52,11 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Journals.Include(o => o.User).Include(o => o.Booking).Where(o => !o.Deleted);
+                var query = ctx.Journals
+                    .Include(o => o.User)
+                    .Include(o => o.Booking)
+                    .Include(o => o.Region)
+                    .Where(o => !o.Deleted);
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
@@ -159,6 +167,9 @@ namespace Agrishare.Core.Entities
         {
             var success = false;
 
+            if (Currency == Currency.None && Region != null)
+                Currency = Region.Currency;
+
             var booking = Booking;
             if (booking != null)
                 BookingId = booking.Id;
@@ -188,7 +199,7 @@ namespace Agrishare.Core.Entities
 
         private bool Add()
         {
-            if (!UqniueEcoCashReference())
+            if (!UniqueEcoCashReference())
                 return false;
 
             using (var ctx = new AgrishareEntities())
@@ -209,8 +220,11 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        private bool UqniueEcoCashReference()
+        private bool UniqueEcoCashReference()
         {
+            if (string.IsNullOrEmpty(EcoCashReference))
+                return true;
+
             using (var ctx = new AgrishareEntities())
                 return ctx.Journals.Count(j => j.Id != Id && !j.Deleted && j.EcoCashReference == EcoCashReference) == 0;
         }
