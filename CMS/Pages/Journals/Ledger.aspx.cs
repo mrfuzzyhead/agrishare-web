@@ -27,8 +27,8 @@ namespace Agrishare.CMS.Pages.Journals
 
                 csv.Append(item.DateCreated.ToString("yyyy-MM-dd HH:mm:ss") + ",");
                 csv.Append(item.Title.Replace("\"", "\\\"") + ",");
-                csv.Append(item.Amount.ToString("N0") + ",");
-                csv.Append(item.Balance.ToString("N0"));
+                csv.Append(item.Amount.ToString("F2") + ",");
+                csv.Append(item.Balance.ToString("F2"));
                 csv.AppendLine();
             }
 
