@@ -163,6 +163,36 @@ namespace Agrishare.Core.Entities
             }
         }
 
+
+
+        public static decimal Total(DateTime StartDate, DateTime EndDate, JournalType Type, int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                StartDate = StartDate.StartOfDay();
+                EndDate = EndDate.EndOfDay();
+
+                var query = ctx.Journals
+                    .Where(o => !o.Deleted)
+                    .Where(o => o.Date >= StartDate)
+                    .Where(o => o.Date <= EndDate)
+                    .Where(o => o.RegionId == RegionId);
+
+                if (Type != JournalType.None)
+                    query = query.Where(e => e.TypeId == Type);
+
+                try
+                {
+                    return query.Select(o => o.Amount).DefaultIfEmpty(0).Sum();
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+
+        }
+
         public bool Save()
         {
             var success = false;
