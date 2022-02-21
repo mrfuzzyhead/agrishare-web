@@ -34,6 +34,12 @@ namespace Agrishare.API.Controllers.CMS
             var agentsCommission = Entities.Booking.TotalAgentsCommission(startDate, endDate, RegionId: CurrentRegion.Id);
             var feesIncurred = Entities.Booking.TotalFeesIncurred(startDate, endDate, RegionId: CurrentRegion.Id);
 
+            // adjust based on ledger
+            var incomeAmount = Math.Abs(Entities.Journal.Total(startDate, endDate, Entities.JournalType.Income, CurrentRegion.Id));
+            totalBookingAmount += incomeAmount;
+            var expensesAmount = Math.Abs(Entities.Journal.Total(startDate, endDate, Entities.JournalType.Expense, CurrentRegion.Id));
+            feesIncurred += expensesAmount;
+
             var locations = Entities.Booking.List(StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id);
 
             var graphData = Entities.Booking.Graph(StartDate: DateTime.Now.AddMonths(-12), EndDate: DateTime.Now, Count: 12, RegionId: CurrentRegion.Id);
@@ -154,6 +160,8 @@ namespace Agrishare.API.Controllers.CMS
                 agrishareCommission,
                 agentsCommission,
                 feesIncurred,
+                incomeAmount,
+                expensesAmount,
                 searchCount = new
                 {
                     Male = Entities.Counter.Count(Event: Entities.Counters.Search, Gender: Entities.Gender.Male, UniqueUser: uniqueUser, CategoryId: Category, StartDate: startDate, EndDate: endDate, RegionId: CurrentRegion.Id),
