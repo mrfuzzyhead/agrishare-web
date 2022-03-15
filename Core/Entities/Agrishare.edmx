@@ -2833,6 +2833,7 @@
           <Member Name="USD" Value="1" />
           <Member Name="ZWL" Value="2" />
           <Member Name="USh" Value="3" />
+          <Member Name="MWK" Value="4" />
         </EnumType>
         <EnumType Name="ServiceLandRegion" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
