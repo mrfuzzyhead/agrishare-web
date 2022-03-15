@@ -23,5 +23,6 @@ namespace Agrishare.Core.Entities
         public string TitleShona { get; set; }
         public string TitleNdebele { get; set; }
         public string TitleLuganda { get; set; }
+        public string TitleChichewa { get; set; }
     }
 }

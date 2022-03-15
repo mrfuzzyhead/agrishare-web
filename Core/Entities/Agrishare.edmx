@@ -155,6 +155,7 @@
           <Property Name="TitleShona" Type="varchar" MaxLength="256" />
           <Property Name="TitleNdebele" Type="varchar" MaxLength="256" />
           <Property Name="TitleLuganda" Type="varchar" MaxLength="256" />
+          <Property Name="TitleChichewa" Type="varchar" MaxLength="256" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -1394,6 +1395,7 @@
           <Property Name="TitleShona" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="TitleNdebele" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="TitleLuganda" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="TitleChichewa" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -2919,6 +2921,7 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="AgrishareModel.Category">
               <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="TitleChichewa" ColumnName="TitleChichewa" />
                 <ScalarProperty Name="TitleLuganda" ColumnName="TitleLuganda" />
                 <ScalarProperty Name="TitleNdebele" ColumnName="TitleNdebele" />
                 <ScalarProperty Name="TitleShona" ColumnName="TitleShona" />
