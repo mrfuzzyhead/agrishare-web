@@ -13,7 +13,8 @@ namespace Agrishare.Core.Entities
     public enum Regions: int
     {
         Zimbabwe = 1,
-        Uganda = 2
+        Uganda = 2,
+        Malawi = 3
     }
 
     public partial class Region : IEntity

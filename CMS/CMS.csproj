@@ -195,6 +195,7 @@
     <Content Include="Resources\Images\Marker-3.png" />
     <Content Include="Resources\Images\Region-1.png" />
     <Content Include="Resources\Images\Region-2.png" />
+    <Content Include="Resources\Images\Region-3.png" />
     <Content Include="Resources\Javascript\1. jQuery\jquery.2.1.0.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-charts.min.js" />
     <Content Include="Resources\Javascript\2. Angular\angular-map.min.js" />

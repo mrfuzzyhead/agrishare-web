@@ -16,6 +16,7 @@ namespace Agrishare.Core.Entities
         None = 0,
         USD = 1,
         ZWL = 2,
-        USh = 3
+        USh = 3,
+        MWK = 4
     }
 }
