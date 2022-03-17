@@ -23,11 +23,8 @@ namespace Agrishare.API.Controllers.App
                 {
                     item.Id,
                     item.Title,
-                    item.TitleShona,
-                    item.TitleNdebele,
-                    item.TitleLuganda,
-                    item.TitleChichewa,
-                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title, e.TitleShona, e.TitleNdebele, e.TitleLuganda, e.TitleChichewa }),
+                    item.Translations,
+                    Services = categories.Where(e => !e.Deleted && e.ParentId == item.Id).ToList().Select(e => new { e.Id, e.Title, e.Translations }),
                     SortOrder = sortOrder++
                 });
             }
