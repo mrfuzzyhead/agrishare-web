@@ -366,4 +366,4 @@ C:\Users\stefa\source\repos\Agrishare\API\obj\Release\API.csproj.CoreCompileInpu
 C:\Users\stefa\source\repos\Agrishare\API\obj\Release\API.csproj.CopyComplete
 C:\Users\stefa\source\repos\Agrishare\API\obj\Release\Agrishare.API.dll
 C:\Users\stefa\source\repos\Agrishare\API\obj\Release\Agrishare.API.pdb
-C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csproj.AssemblyReference.cache
+C:\Users\brad\Documents\Working Files\AgriShare Web\API\obj\Release\API.csprojAssemblyReference.cache

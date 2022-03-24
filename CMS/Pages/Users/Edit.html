@@ -16,7 +16,10 @@
                 <gl-date gl-label="Date of birth" ng-model="form.entity.DateOfBirth"></gl-date>
                 <gl-dropdown-list gl-label="Gender" ng-model="form.entity.GenderId" gl-source="form.data.Genders" gl-selection="Id"></gl-dropdown-list>
             </div>
-            <gl-dropdown-list gl-label="Language" ng-model="form.entity.LanguageId" gl-source="form.data.Languages" gl-selection="Id"></gl-dropdown-list>
+            <div flex>
+                <gl-dropdown-list gl-label="Region" ng-model="form.entity.Region" gl-source="form.data.Regions"></gl-dropdown-list>
+                <gl-dropdown-list gl-label="Language" ng-model="form.entity.LanguageId" gl-source="form.data.Languages" gl-selection="Id"></gl-dropdown-list>
+            </div>
 
             <h2>Contact Details</h2>
             <div flex>

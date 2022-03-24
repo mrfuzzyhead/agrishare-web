@@ -73,6 +73,8 @@ namespace Agrishare.CMS
             ResetForm.Visible = true;
             LoginForm.Visible = false;
             ForgotForm.Visible = false;
+
+            Feedback.InnerText = "Check your inbox or phone for a code";
         }
 
         public void ResetPin(object s, EventArgs e)
