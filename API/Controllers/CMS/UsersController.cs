@@ -157,6 +157,12 @@ namespace Agrishare.API.Controllers.CMS
             if (User.DateOfBirth.HasValue)
                 User.DateOfBirth = User.DateOfBirth.Value.AddMinutes(UTCOffset);
 
+            if (!User.UniqueEmailAddress())
+                return Error("Email address is already in use");
+
+            if (!User.UniqueTelephone())
+                return Error("Telephone number is already in use");
+
             if (User.Id > 0)
             {
                 var u = Entities.User.Find(Id: User.Id);
