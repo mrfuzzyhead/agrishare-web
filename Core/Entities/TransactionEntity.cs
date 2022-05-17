@@ -47,7 +47,7 @@ namespace Agrishare.Core.Entities
             }
         }
 
-        public static List<Transaction> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", 
+        public static List<Transaction> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "",
             int BookingId = 0, int BookingUserId = 0, TransactionStatus StatusId = TransactionStatus.None)
         {
             using (var ctx = new AgrishareEntities())
@@ -158,6 +158,7 @@ namespace Agrishare.Core.Entities
                 StatusId,
                 Status,
                 Error,
+                Gateway,
                 DateCreated
             };
         }
@@ -167,9 +168,516 @@ namespace Agrishare.Core.Entities
             //TODO send payment notification
         }
 
+        #region Generic payment methods - use Payment Gateway enum
+
+        public void RequestStatus()
+        {
+            switch (Gateway)
+            {
+                case PaymentGateway.EcoCashZimbabwe:
+                    RequestEcoCashStatus();
+                    break;
+                case PaymentGateway.AirtelUganda:
+                    RequestAirtelStatus();
+                    break;
+                case PaymentGateway.MTNUganda:
+                    RequestMtnStatus();
+                    break;
+                default:
+                    RequestEcoCashStatus();
+                    break;
+            }
+        }
+
+        public bool RequestPayment()
+        {
+            switch (Gateway)
+            {
+                case PaymentGateway.EcoCashZimbabwe:
+                    return RequestEcoCashPayment();
+                case PaymentGateway.AirtelUganda:
+                    return RequestAirtelPayment();
+                case PaymentGateway.MTNUganda:
+                    return RequestMtnPayment();
+                default:
+                    return RequestEcoCashPayment();
+            }
+        }
+
+        public bool RequestRefund()
+        {
+            switch (Gateway)
+            {
+                case PaymentGateway.EcoCashZimbabwe:
+                    return RequestEcoCashRefund();
+                case PaymentGateway.AirtelUganda:
+                    return RequestAirtelRefund();
+                case PaymentGateway.MTNUganda:
+                    return RequestMtnRefund();
+                default:
+                    return RequestEcoCashRefund();
+            }
+        }
+
+        public void PaymentComplete()
+        {
+            BookingUser.StatusId = BookingUserStatus.Paid;
+            BookingUser.Save();
+
+            if (Booking == null)
+                Booking = Booking.Find(BookingId);
+
+            new Journal
+            {
+                Amount = Booking.Price,
+                BookingId = BookingId,
+                EcoCashReference = EcoCashReference,
+                Reconciled = false,
+                Title = $"Payment received from {BookingUser.Name} {BookingUser.Telephone}",
+                TypeId = JournalType.Payment,
+                UserId = BookingUser.UserId ?? Booking?.UserId,
+                Date = DateTime.UtcNow,
+                Currency = Entities.Currency.ZWL,
+                CurrencyAmount = Amount,
+                RegionId = Booking.Listing.RegionId
+            }.Save();
+
+            var bookingUsers = BookingUser.List(BookingId: BookingId);
+            if (bookingUsers.Count(e => e.StatusId != BookingUserStatus.Paid) == 0)
+            {
+                var booking = Booking.Find(BookingId);
+                booking.StatusId = BookingStatus.InProgress;
+
+                var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
+                if (transactionFee != null)
+                {
+                    if (transactionFee.FeeType == FeeType.Fixed)
+                        booking.TransactionFee = transactionFee.Fee;
+                    else
+                        booking.TransactionFee = (booking.Price - booking.AgriShareCommission) * transactionFee.Fee;
+                }
+
+                booking.IMTT = (booking.Price - booking.AgriShareCommission) * IMTT;
+                booking.Save();
+
+                var notifications = Notification.List(BookingId: booking.Id, Type: NotificationType.BookingConfirmed);
+                foreach (var notification in notifications)
+                {
+                    notification.StatusId = NotificationStatus.Complete;
+                    notification.Save();
+                }
+
+                new Notification
+                {
+                    Booking = booking,
+                    GroupId = NotificationGroup.Offering,
+                    TypeId = NotificationType.PaymentReceived,
+                    User = User.Find(Id: booking.Listing.UserId)
+                }.Save(Notify: true);
+
+                new Notification
+                {
+                    Booking = booking,
+                    GroupId = NotificationGroup.Seeking,
+                    TypeId = NotificationType.PaymentReceived,
+                    User = User.Find(Id: booking.UserId)
+                }.Save(Notify: false);
+
+                Counter.Hit(UserId: BookingUser.UserId ?? 0, Event: Counters.CompletePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                SendPaymentNotification();
+            }
+        }
+
+        public void RefundComplete(int originalId)
+        {
+            StatusId = TransactionStatus.Completed;
+
+            Amount *= -1;
+
+            var originalTransaction = Find(Id: originalId);
+            originalTransaction.StatusId = TransactionStatus.Refunded;
+            originalTransaction.Save();
+
+            new Journal
+            {
+                Amount = Amount,
+                BookingId = BookingId,
+                EcoCashReference = EcoCashReference,
+                Reconciled = false,
+                Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
+                TypeId = JournalType.Refund,
+                UserId = BookingUser.Id,
+                Date = DateTime.UtcNow
+            }.Save();
+        }
+
+        #endregion
+
+        #region MTN
+
+        private static string MTNUrl => Config.Find(Key: "MTN URL").Value;
+        private static string MTNSubscriptionKey => Config.Find(Key: "MTN Subscription Key").Value;
+        private static string MTNUserId => Config.Find(Key: "MTN User ID").Value;
+        private static string MTNApiKey => Config.Find(Key: "MTN API Key").Value;
+        private static string MTNEnvironment => Config.Find(Key: "MTN Environment").Value;
+        private static bool MTNLog => Config.Find(Key: "MTN Log").Value.Equals("True", StringComparison.InvariantCultureIgnoreCase);
+
+        private string _mtnAccessToken = "";
+        private string MTNAccessToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_mtnAccessToken))
+                {
+                    try
+                    {
+                        var client = new RestClient($"{MTNUrl}/collection/oauth2/token/");
+                        var request = new RestRequest(Method.POST);
+                        request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                        request.AddHeader("Cache-Control", "no-cache");
+
+                        string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(MTNUserId + ":" + MTNApiKey));
+                        request.AddHeader("Authorization", $"Basic {svcCredentials}");
+                        request.AddHeader("X-Target-Environment", MTNEnvironment);
+                        request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
+
+                        request.AddParameter("grant_type", "urn:openid:params:grant-type:ciba");
+                        request.AddParameter("auth_req_id", Guid.NewGuid().ToString());
+
+                        var response = client.Execute<dynamic>(request);
+
+                        if (AirtelLog)
+                            Entities.Log.Debug(
+                                "Transaction.MTNAccessToken",
+                                client.BaseUrl +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                JsonConvert.SerializeObject(response) +
+                                Environment.NewLine +
+                                Environment.NewLine);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                            _airtelAccessToken = response.Data["access_token"];
+                    }
+                    catch (Exception ex)
+                    {
+                        Entities.Log.Error("Transaction.MTNAccessToken", ex);
+                    }
+                }
+
+                return _mtnAccessToken;
+            }
+        }
+
+        public bool RequestMtnPayment()
+        {
+            return false;
+        }
+
+        public bool RequestMtnRefund()
+        {
+            return false;
+        }
+
+        public void RequestMtnStatus()
+        {
+        }
+
+        #endregion
+
+        #region airtel
+
+        private static string SanitiseUgMobileNumber(string MobileNumber)
+        {
+            MobileNumber = Regex.Replace(MobileNumber, " ", "").Trim();
+
+            if (MobileNumber.StartsWith("0"))
+                return Regex.Replace(MobileNumber, "^0", "");
+            else if (MobileNumber.StartsWith("256"))
+                return Regex.Replace(MobileNumber, "^256", "");
+
+            return MobileNumber;
+        }
+
+        private static string AirtelUrl => Config.Find(Key: "Airtel URL").Value;
+        private static string AirtelClientId => Config.Find(Key: "Airtel Client ID").Value;
+        private static string AirtelClientSecret => Config.Find(Key: "Airtel Client Secret").Value;
+        private static bool AirtelLog => Config.Find(Key: "Airtel Log").Value.Equals("True", StringComparison.InvariantCultureIgnoreCase);
+
+        private string _airtelAccessToken = "";
+        private string AirtelAccessToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_airtelAccessToken))
+                {
+                    try
+                    {
+                        var client = new RestClient($"{AirtelUrl}/auth/oauth2/token");
+                        var request = new RestRequest(Method.POST);
+                        request.AddHeader("Content-Type", "application/json");
+                        request.AddHeader("Cache-Control", "no-cache");
+                        var body = new
+                        {
+                            client_id = AirtelClientId,
+                            client_secret = AirtelClientSecret,
+                            grant_type = "client_credentials"
+                        };
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+                        var response = client.Execute<dynamic>(request);
+
+                        if (AirtelLog)
+                            Entities.Log.Debug(
+                                "Transaction.AirtelAccessToken",
+                                client.BaseUrl +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                JsonConvert.SerializeObject(response) +
+                                Environment.NewLine +
+                                Environment.NewLine);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                            _airtelAccessToken = response.Data["access_token"];
+                    }
+                    catch (Exception ex)
+                    {
+                        Entities.Log.Error("Transaction.AirtelAccessToken", ex);
+                    }
+                }
+
+                return _airtelAccessToken;
+            }
+        }
+
+        public bool RequestAirtelPayment()
+        {
+            Save();
+
+            if (!LivePayments)
+            {
+                ServerReference = "DEMO-" + Guid.NewGuid().ToString();
+                StatusId = TransactionStatus.PendingSubscriberValidation; // Updated when polled
+                Save();
+
+                return true;
+            }
+
+            try
+            {
+                var client = new RestClient($"{AirtelUrl}/merchant/v1/payments/");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                request.AddHeader("X-Country", "UG");
+                request.AddHeader("X-Currency", "UGX");
+                request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+                var body = new
+                {
+                    reference = "",
+                    subscriber = new
+                    {
+                        country = "UG",
+                        currency = "UGX",
+                        msisdn = SanitiseUgMobileNumber(BookingUser.Telephone)
+                    },
+                    transaction = new
+                    {
+                        amount = Amount.ToString("0.##"),
+                        country = "UG",
+                        currency = "UGX",
+                        id = Title
+                    }
+                };
+                request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+                var response = client.Execute<dynamic>(request);
+
+                if (AirtelLog)
+                    Entities.Log.Debug(
+                        "Transaction.RequestAirtelPayment",
+                        client.BaseUrl +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        JsonConvert.SerializeObject(response) +
+                        Environment.NewLine +
+                        Environment.NewLine);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var response_code = response.Data["status"]["code"];
+                    var response_message = response.Data["status"]["message"].ToString();
+
+                    if (response_code == "DP00800001001")
+                    {
+                        StatusId = TransactionStatus.Completed;
+                        Save();
+                        PaymentComplete();
+                        return true;
+                    }
+                    else if (response_code == "DP00800001006")
+                    {
+                        StatusId = TransactionStatus.PendingSubscriberValidation;
+                        Save();
+                        return true;
+                    }
+                    else
+                    {
+                        Error = response_message;
+                        StatusId = TransactionStatus.Error;
+                        Save();
+                        return false;
+                    }                    
+                }
+            }
+            catch (Exception ex)
+            {
+                Entities.Log.Error("Transaction.RequestAirtelPayment", ex);
+            }
+
+            Error = "An unknown error occurred";
+            StatusId = TransactionStatus.Error;
+            Save();
+            return false;
+        }
+
+        public bool RequestAirtelRefund()
+        {
+            var originalId = Id;
+            Id = 0;
+
+            if (!LivePayments)
+            {
+                RefundComplete(originalId);
+                return true;
+            }
+
+            try
+            {
+                var client = new RestClient($"{AirtelUrl}/standard/v1/payments/refund");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                request.AddHeader("X-Country", "UG");
+                request.AddHeader("X-Currency", "UGX");
+                request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+                var body = new
+                {
+                    transaction = new
+                    {
+                        airtel_money_id = EcoCashReference
+                    }
+                };
+                request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+                var response = client.Execute<dynamic>(request);
+
+                if (AirtelLog)
+                    Entities.Log.Debug(
+                        "Transaction.RequestAirtelRefund",
+                        client.BaseUrl +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        JsonConvert.SerializeObject(response) +
+                        Environment.NewLine +
+                        Environment.NewLine);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var status = response.Data["data"]["transaction"]["status"];
+                    var airtel_money_id = response.Data["data"]["transaction"]["airtel_money_id"];
+                    var response_message = response.Data["status"]["message"].ToString();
+
+                    if (status == "SUCCESS")
+                    {
+                        StatusId = TransactionStatus.Completed;
+                        RefundComplete(originalId);
+                        return true;
+                    }
+                    else
+                    {
+                        Error = response_message;
+                        StatusId = TransactionStatus.Error;
+                        Save();
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Entities.Log.Error("Transaction.RequestAirtelRefund", ex);
+            }
+
+            Error = "An unknown error occurred";
+            StatusId = TransactionStatus.Error;
+            Save();
+            return false;
+        }
+
+        public void RequestAirtelStatus()
+        {
+            var previousStatusId = StatusId;
+
+            if (!LivePayments)
+            {
+                StatusId = TransactionStatus.Completed;
+                EcoCashReference = "ECO-" + Guid.NewGuid().ToString();
+            }
+            else
+            {
+                try
+                {
+                    var client = new RestClient($"{AirtelUrl}/standard/v1/payments/{Title}");
+                    var request = new RestRequest(Method.GET);
+                    request.AddHeader("Content-Type", "application/json");
+                    request.AddHeader("Cache-Control", "no-cache");
+                    request.AddHeader("X-Country", "UG");
+                    request.AddHeader("X-Currency", "UGX");
+                    request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+
+                    var response = client.Execute<dynamic>(request);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var response_code = response.Data["status"]["code"];
+                        var response_message = response.Data["status"]["message"];
+                        var airtel_money_id = response.Data["transaction"]["airtel_money_id"];
+
+                        if (response_code == "DP00800001001")
+                        {
+                            StatusId = TransactionStatus.Completed;
+                            EcoCashReference = airtel_money_id;
+                        }
+                        else if (response_code == "DP00800001006")
+                        {
+                            StatusId = TransactionStatus.PendingSubscriberValidation;
+                        }
+                        else
+                        {
+                            Error = response_message;
+                            StatusId = TransactionStatus.Error;
+                        }
+                    }
+                    else
+                    {
+                        Error = "An unknown error occurred";
+                        StatusId = TransactionStatus.Error;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Entities.Log.Error("Transaction.RequestAirtelStatus", ex);
+                }
+            }
+
+            Save();
+
+            if (previousStatusId != TransactionStatus.Completed && StatusId == TransactionStatus.Completed)
+                PaymentComplete();
+        }
+
+        #endregion
+
         #region EcoCash
 
-        private static string SanitiseMobileNumber(string MobileNumber)
+        private static string SanitiseZwMobileNumber(string MobileNumber)
         {
             if (MobileNumber.StartsWith("0"))
                 return Regex.Replace(Regex.Replace(MobileNumber, "^0", "263"), " ", "");
@@ -202,14 +710,14 @@ namespace Agrishare.Core.Entities
             }
 
             var resourceUri = $"{EcoCashUrl}transactions/amount";
-            
+
             var json = JsonConvert.SerializeObject(new
             {
                 clientCorrelator = ClientCorrelator,
                 notifyUrl = $"http://197.211.236.157:9800/transactions/ecocash/notify",
                 referenceCode = Title,
                 tranType = "MER",
-                endUserId = SanitiseMobileNumber(BookingUser.Telephone),
+                endUserId = SanitiseZwMobileNumber(BookingUser.Telephone),
                 remarks = Config.ApplicationName,
                 transactionOperationStatus = "Charged",
                 paymentAmount = new
@@ -231,7 +739,7 @@ namespace Agrishare.Core.Entities
                 merchantPin = EcoCashMerchantPin,
                 merchantNumber = EcoCashMerchantNumber,
                 currencyCode = "RTGS",
-                countryCode = "ZW", 
+                countryCode = "ZW",
                 terminalID = "001",
                 location = "api.agrishare.app",
                 superMerchantName = "WHH",
@@ -291,7 +799,7 @@ namespace Agrishare.Core.Entities
 
             if (LivePayments)
             {
-                var resourceUri = $"{EcoCashUrl}{SanitiseMobileNumber(BookingUser.Telephone)}/transactions/amount/{ClientCorrelator}";
+                var resourceUri = $"{EcoCashUrl}{SanitiseZwMobileNumber(BookingUser.Telephone)}/transactions/amount/{ClientCorrelator}";
 
                 var client = new RestClient(resourceUri)
                 {
@@ -326,8 +834,8 @@ namespace Agrishare.Core.Entities
                         if (StatusId == TransactionStatus.Completed)
                         {
                             if (EcoCashLog)
-                                Log += Environment.NewLine + Environment.NewLine + 
-                                    resourceUri + Environment.NewLine + Environment.NewLine + 
+                                Log += Environment.NewLine + Environment.NewLine +
+                                    resourceUri + Environment.NewLine + Environment.NewLine +
                                     JsonConvert.SerializeObject(response);
 
                             ServerReference = response.Data["serverReferenceCode"];
@@ -355,73 +863,7 @@ namespace Agrishare.Core.Entities
             Save();
 
             if (previousStatusId != TransactionStatus.Completed && StatusId == TransactionStatus.Completed)
-            {
-                BookingUser.StatusId = BookingUserStatus.Paid;
-                BookingUser.Save();
-
-                if (Booking == null)
-                    Booking = Booking.Find(BookingId);
-
-                new Journal
-                {
-                    Amount = Booking.Price,
-                    BookingId = BookingId,
-                    EcoCashReference = EcoCashReference,
-                    Reconciled = false,
-                    Title = $"Payment received from {BookingUser.Name} {BookingUser.Telephone}",
-                    TypeId = JournalType.Payment,
-                    UserId = BookingUser.UserId ?? Booking?.UserId,
-                    Date = DateTime.UtcNow,
-                    Currency = Entities.Currency.ZWL,
-                    CurrencyAmount = Amount,
-                    RegionId = Booking.Listing.RegionId
-                }.Save();
-                                
-                var bookingUsers = BookingUser.List(BookingId: BookingId);
-                if (bookingUsers.Count(e => e.StatusId != BookingUserStatus.Paid) == 0)
-                {
-                    var booking = Booking.Find(BookingId);
-                    booking.StatusId = BookingStatus.InProgress;
-
-                    var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
-                    if (transactionFee != null)
-                    {
-                        if (transactionFee.FeeType == FeeType.Fixed)
-                            booking.TransactionFee = transactionFee.Fee;
-                        else
-                            booking.TransactionFee = (booking.Price - booking.AgriShareCommission) * transactionFee.Fee;
-                    }
-
-                    booking.IMTT = (booking.Price - booking.AgriShareCommission) * IMTT;
-                    booking.Save();
-
-                    var notifications = Notification.List(BookingId: booking.Id, Type: NotificationType.BookingConfirmed);
-                    foreach (var notification in notifications)
-                    {
-                        notification.StatusId = NotificationStatus.Complete;
-                        notification.Save();
-                    }
-
-                    new Notification
-                    {
-                        Booking = booking,
-                        GroupId = NotificationGroup.Offering,
-                        TypeId = NotificationType.PaymentReceived,
-                        User = User.Find(Id: booking.Listing.UserId)
-                    }.Save(Notify: true);
-
-                    new Notification
-                    {
-                        Booking = booking,
-                        GroupId = NotificationGroup.Seeking,
-                        TypeId = NotificationType.PaymentReceived,
-                        User = User.Find(Id: booking.UserId)
-                    }.Save(Notify: false);
-
-                    Counter.Hit(UserId: BookingUser.UserId ?? 0, Event: Counters.CompletePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
-                    SendPaymentNotification();
-                }
-            }
+                PaymentComplete();
         }
 
         public bool RequestEcoCashRefund()
@@ -434,26 +876,7 @@ namespace Agrishare.Core.Entities
 
             if (!LivePayments)
             {
-                StatusId = TransactionStatus.Completed;
-
-                Amount *= -1;
-
-                var originalTransaction = Find(Id: originalId);
-                originalTransaction.StatusId = TransactionStatus.Refunded;
-                originalTransaction.Save();
-
-                new Journal
-                {
-                    Amount = Amount,
-                    BookingId = BookingId,
-                    EcoCashReference = EcoCashReference,
-                    Reconciled = false,
-                    Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
-                    TypeId = JournalType.Refund,
-                    UserId = BookingUser.Id,
-                    Date = DateTime.UtcNow
-                }.Save();
-
+                RefundComplete(originalId);
                 return true;
             }
 
@@ -465,7 +888,7 @@ namespace Agrishare.Core.Entities
                 notifyUrl = $"{Config.APIURL}/transactions/ecocash/notify",
                 referenceCode = Title,
                 tranType = "REF",
-                endUserId = SanitiseMobileNumber(BookingUser.Telephone),
+                endUserId = SanitiseZwMobileNumber(BookingUser.Telephone),
                 remarks = Config.ApplicationName,
                 transactionOperationStatus = "Refunded",
                 originalEcocashReference = EcoCashReference,
@@ -534,25 +957,7 @@ namespace Agrishare.Core.Entities
                         StatusId = TransactionStatus.Failed;
 
                     if (StatusId == TransactionStatus.Completed)
-                    {
-                        Amount *= -1;
-
-                        var originalTransaction = Find(Id: originalId);
-                        originalTransaction.StatusId = TransactionStatus.Refunded;
-                        originalTransaction.Save();
-
-                        new Journal
-                        {
-                            Amount = Amount,
-                            BookingId = BookingId,
-                            EcoCashReference = EcoCashReference,
-                            Reconciled = false,
-                            Title = $"Payment refunded to {BookingUser.Name} {BookingUser.Telephone}",
-                            TypeId = JournalType.Refund,
-                            UserId = BookingUser.Id,
-                            Date = DateTime.UtcNow
-                        }.Save();
-                    }
+                        RefundComplete(originalId);
 
                     Save();
 
@@ -604,4 +1009,5 @@ namespace Agrishare.Core.Entities
 
         #endregion
     }
+
 }

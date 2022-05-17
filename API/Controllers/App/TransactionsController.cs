@@ -19,10 +19,19 @@ namespace Agrishare.API.Controllers.App
             return Success(Model);
         }
 
+        // Support legacy apps (Zimbabwe only)
         [@Authorize(Roles = "User")]
         [Route("transactions/ecocash/poll")]
         [AcceptVerbs("GET")]
         public object PollEcoCash(int BookingId)
+        {
+            return Poll(BookingId);
+        }
+
+        [@Authorize(Roles = "User")]
+        [Route("transactions/poll")]
+        [AcceptVerbs("GET")]
+        public object Poll(int BookingId)
         {
             var booking = Entities.Booking.Find(Id: BookingId);
             if (booking == null || booking.UserId != CurrentUser.Id)
@@ -36,8 +45,8 @@ namespace Agrishare.API.Controllers.App
                 if (transaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
                 {
                     transaction.Booking = booking;
-                    transaction.RequestEcoCashStatus();
-                }                    
+                    transaction.RequestStatus();
+                }
 
             var bookingUsers = Entities.BookingUser.List(BookingId: BookingId);
             if (bookingUsers.Count(e => e.StatusId != Entities.BookingUserStatus.Paid) == 0)
@@ -61,6 +70,10 @@ namespace Agrishare.API.Controllers.App
         {
             if (!ModelState.IsValid)
                 return Error(ModelState);
+
+            // Support legacy apps (Zimbabwe only)
+            if (Model.Gateway == Entities.PaymentGateway.None)
+                Model.Gateway = Entities.PaymentGateway.EcoCashZimbabwe;
 
             var booking = Entities.Booking.Find(Id: Model.BookingId);
             if (booking == null || booking.UserId != CurrentUser.Id)
@@ -137,14 +150,14 @@ namespace Agrishare.API.Controllers.App
                     transaction = new Entities.Transaction
                     {
                         Amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate,
-                        Currency = Entities.Currency.ZWL,
+                        Currency = booking.Listing.Region.Currency,
                         Booking = booking,
                         BookingUser = bookingUser,
                         StatusId = Entities.TransactionStatus.Pending
                     };
 
                     transaction.Save();
-                    transaction.RequestEcoCashPayment();
+                    transaction.RequestPayment();
                     transactions.Add(transaction);
 
                     Entities.Counter.Hit(UserId: bookingUser.UserId ?? 0, Event: Entities.Counters.InitiatePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);

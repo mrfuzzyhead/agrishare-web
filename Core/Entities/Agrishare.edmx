@@ -473,6 +473,7 @@
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
+          <Property Name="Gateway" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1534,6 +1535,7 @@
           <NavigationProperty Name="Booking" Relationship="Self.transactions_ibfk_2" FromRole="Transactions" ToRole="Bookings" />
           <NavigationProperty Name="BookingUser" Relationship="Self.transactions_ibfk_3" FromRole="Transactions" ToRole="BookingUsers" />
           <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
+          <Property Name="Gateway" Type="AgrishareModel.PaymentGateway" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2848,6 +2850,12 @@
           <Member Name="Value" Value="1" />
           <Member Name="Percentage" Value="2" />
         </EnumType>
+        <EnumType Name="PaymentGateway" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="EcoCashZimbabwe" Value="1" />
+          <Member Name="AirtelUganda" Value="2" />
+          <Member Name="MTNUganda" Value="3" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3061,6 +3069,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="AgrishareModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
                 <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />
