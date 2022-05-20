@@ -9,9 +9,19 @@ namespace Agrishare.API.Controllers.App
 {
     public class TransactionsController : BaseApiController
     {
-        [Route("transactions/ecocash/notify")]
+        [Route("transactions/mtn/notify")]
         [AcceptVerbs("POST")]
-        public object EcoCashNotification(EcoCashModel Model)
+        public object MtnNotification(EcoCashModel Model)
+        {
+            if (Model.TransactionOperationStatus == "COMPLETED")
+                Entities.Transaction.Find(ClientCorrelator: Model.ClientCorrelator).RequestEcoCashStatus();
+
+            return Success(Model);
+        }
+
+        [Route("transactions/airtel/notify")]
+        [AcceptVerbs("POST")]
+        public object AirtelNotification(EcoCashModel Model)
         {
             if (Model.TransactionOperationStatus == "COMPLETED")
                 Entities.Transaction.Find(ClientCorrelator: Model.ClientCorrelator).RequestEcoCashStatus();

@@ -331,18 +331,14 @@ namespace Agrishare.Core.Entities
                 {
                     try
                     {
-                        var client = new RestClient($"{MTNUrl}/collection/oauth2/token/");
+                        var client = new RestClient($"{MTNUrl}/collection/token/");
                         var request = new RestRequest(Method.POST);
                         request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
                         request.AddHeader("Cache-Control", "no-cache");
 
-                        string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(MTNUserId + ":" + MTNApiKey));
+                        string svcCredentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(MTNUserId + ":" + MTNApiKey));
                         request.AddHeader("Authorization", $"Basic {svcCredentials}");
-                        request.AddHeader("X-Target-Environment", MTNEnvironment);
                         request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
-
-                        request.AddParameter("grant_type", "urn:openid:params:grant-type:ciba");
-                        request.AddParameter("auth_req_id", Guid.NewGuid().ToString());
 
                         var response = client.Execute<dynamic>(request);
 
@@ -357,7 +353,7 @@ namespace Agrishare.Core.Entities
                                 Environment.NewLine);
 
                         if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                            _airtelAccessToken = response.Data["access_token"];
+                            _mtnAccessToken = response.Data["access_token"];
                     }
                     catch (Exception ex)
                     {
@@ -371,6 +367,75 @@ namespace Agrishare.Core.Entities
 
         public bool RequestMtnPayment()
         {
+            Save();
+
+            if (!LivePayments)
+            {
+                ServerReference = "DEMO-" + Guid.NewGuid().ToString();
+                StatusId = TransactionStatus.PendingSubscriberValidation; // Updated when polled
+                Save();
+
+                return true;
+            }
+
+            try
+            {
+                ServerReference = Guid.NewGuid().ToString();
+
+                var client = new RestClient($"{MTNUrl}/collection/v1_0/requesttopay");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                request.AddHeader("Authorization", $"Bearer {MTNAccessToken}");
+                request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
+                request.AddHeader("X-Reference-Id", ServerReference);
+                request.AddHeader("X-Target-Environment", MTNEnvironment);
+                var body = new
+                {
+                    amount = Amount.ToString("0.##"),
+                    currency = "EUR",
+                    externalId = Id.ToString(),
+                    payer = new
+                    {
+                        partyIdType = "MSISDN",
+                        partyId = SanitiseUgMobileNumber(BookingUser.Telephone)
+                    },
+                    payerMessage = "Agrishare booking",
+                    payerNote = Title
+                };
+                request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+                var response = client.Execute<dynamic>(request);
+
+                if (AirtelLog)
+                    Entities.Log.Debug(
+                        "Transaction.RequestMtnPayment",
+                        client.BaseUrl +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        JsonConvert.SerializeObject(response) +
+                        Environment.NewLine +
+                        Environment.NewLine);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
+                {
+                    StatusId = TransactionStatus.PendingSubscriberValidation;
+                    Save();
+                }
+                else
+                {
+                    StatusId = TransactionStatus.Error;
+                    Error = response.Data["message"].ToString();
+                    Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                Entities.Log.Error("Transaction.RequestMtnPayment", ex);
+            }
+
+            Error = "An unknown error occurred";
+            StatusId = TransactionStatus.Error;
+            Save();
             return false;
         }
 
@@ -381,6 +446,59 @@ namespace Agrishare.Core.Entities
 
         public void RequestMtnStatus()
         {
+            var previousStatusId = StatusId;
+
+            if (!LivePayments)
+            {
+                StatusId = TransactionStatus.Completed;
+                EcoCashReference = "DEM-" + Guid.NewGuid().ToString();
+            }
+            else
+            {
+                try
+                {
+                    var client = new RestClient($"{MTNUrl}/collection/v1_0/requesttopay/{ServerReference}");
+                    var request = new RestRequest(Method.GET);
+                    request.AddHeader("Cache-Control", "no-cache");
+                    request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+                    request.AddHeader("X-Target-Environment", MTNEnvironment);
+                    request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
+
+                    var response = client.Execute<dynamic>(request);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var status = response.Data["status"];
+                        var reason_message = response.Data["reason"]["message"];
+                        var financial_transaction_id = response.Data["financial_transaction_id"];
+
+                        if (status == "SUCCESSFUL")
+                        {
+                            StatusId = TransactionStatus.Completed;
+                            EcoCashReference = financial_transaction_id;
+                        }
+                        else if (status == "FAILED")
+                        {
+                            Error = reason_message;
+                            StatusId = TransactionStatus.Error;
+                        }
+                    }
+                    else
+                    {
+                        Error = "An unknown error occurred";
+                        StatusId = TransactionStatus.Error;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Entities.Log.Error("Transaction.RequestMtnStatus", ex);
+                }
+            }
+
+            Save();
+
+            if (previousStatusId != TransactionStatus.Completed && StatusId == TransactionStatus.Completed)
+                PaymentComplete();
         }
 
         #endregion
@@ -473,7 +591,7 @@ namespace Agrishare.Core.Entities
                 request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
                 var body = new
                 {
-                    reference = "",
+                    reference = "Agrishare booking",
                     subscriber = new
                     {
                         country = "UG",
@@ -485,7 +603,7 @@ namespace Agrishare.Core.Entities
                         amount = Amount.ToString("0.##"),
                         country = "UG",
                         currency = "UGX",
-                        id = Title
+                        id = Id.ToString()
                     }
                 };
                 request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
@@ -618,13 +736,13 @@ namespace Agrishare.Core.Entities
             if (!LivePayments)
             {
                 StatusId = TransactionStatus.Completed;
-                EcoCashReference = "ECO-" + Guid.NewGuid().ToString();
+                EcoCashReference = "DEM-" + Guid.NewGuid().ToString();
             }
             else
             {
                 try
                 {
-                    var client = new RestClient($"{AirtelUrl}/standard/v1/payments/{Title}");
+                    var client = new RestClient($"{AirtelUrl}/standard/v1/payments/{Id}");
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("Content-Type", "application/json");
                     request.AddHeader("Cache-Control", "no-cache");
