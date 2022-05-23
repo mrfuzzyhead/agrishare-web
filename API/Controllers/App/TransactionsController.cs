@@ -1,5 +1,6 @@
 ﻿using Agrishare.API.Models;
 using Agrishare.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Agrishare.API.Controllers.App
     public class TransactionsController : BaseApiController
     {
         [Route("transactions/mtn/notify")]
-        [AcceptVerbs("PUT,POST")]
+        [AcceptVerbs("POST")]
         public object MtnNotification(MtnCallbackModel Model)
         {
             if (Model.status == "SUCCESSFUL")
@@ -27,10 +28,9 @@ namespace Agrishare.API.Controllers.App
         {
             if (Model.transaction.status_code == "TS")
             {
-                var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, "^AGR-[0]*", ""));
-                Entities.Transaction.Find(Id: id).RequestStatus();
+                var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, @"^AGR\-[0]*", ""));
+                Entities.Transaction.Find(Id: id)?.RequestStatus();
             }
-
             return Success(Model);
         }
 
