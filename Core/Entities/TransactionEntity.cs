@@ -611,7 +611,7 @@ namespace Agrishare.Core.Entities
                         amount = Amount.ToString("0.##"),
                         country = "UG",
                         currency = "UGX",
-                        id = Id.ToString()
+                        id = Title
                     }
                 };
                 request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
@@ -750,7 +750,7 @@ namespace Agrishare.Core.Entities
             {
                 try
                 {
-                    var client = new RestClient($"{AirtelUrl}/standard/v1/payments/{Id}");
+                    var client = new RestClient($"{AirtelUrl}/standard/v1/payments/{Title}");
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("Content-Type", "application/json");
                     request.AddHeader("Cache-Control", "no-cache");

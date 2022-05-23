@@ -3,6 +3,7 @@ using Agrishare.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
 
@@ -26,7 +27,7 @@ namespace Agrishare.API.Controllers.App
         {
             if (Model.transaction.status_code == "TS")
             {
-                var id = Convert.ToInt32(Model.transaction.id);
+                var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, "^AGR-[0]*", ""));
                 Entities.Transaction.Find(Id: id).RequestStatus();
             }
 
