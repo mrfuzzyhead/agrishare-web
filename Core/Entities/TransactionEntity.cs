@@ -25,9 +25,9 @@ namespace Agrishare.Core.Entities
         public string Title => "AGR-" + Id.ToString().PadLeft(8, '0');
         public string Status => $"{StatusId}".ExplodeCamelCase();
 
-        public static Transaction Find(int Id = 0, string ClientCorrelator = "")
+        public static Transaction Find(int Id = 0, string ClientCorrelator = "", string EcoCashReference = "")
         {
-            if (Id == 0 && ClientCorrelator.IsEmpty())
+            if (Id == 0 && ClientCorrelator.IsEmpty() && EcoCashReference.IsEmpty())
                 return new Transaction
                 {
                     DateCreated = DateTime.UtcNow,
@@ -42,6 +42,8 @@ namespace Agrishare.Core.Entities
                     query = query.Where(e => e.Id == Id);
                 if (!ClientCorrelator.IsEmpty())
                     query = query.Where(e => e.ClientCorrelator == ClientCorrelator);
+                if (!EcoCashReference.IsEmpty())
+                    query = query.Where(e => e.EcoCashReference == EcoCashReference);
 
                 return query.FirstOrDefault();
             }
@@ -320,6 +322,7 @@ namespace Agrishare.Core.Entities
         private static string MTNUserId => Config.Find(Key: "MTN User ID").Value;
         private static string MTNApiKey => Config.Find(Key: "MTN API Key").Value;
         private static string MTNEnvironment => Config.Find(Key: "MTN Environment").Value;
+        private static string MTNCurrency => Config.Find(Key: "MTN Currency").Value;
         private static bool MTNLog => Config.Find(Key: "MTN Log").Value.Equals("True", StringComparison.InvariantCultureIgnoreCase);
 
         private string _mtnAccessToken = "";
@@ -390,10 +393,12 @@ namespace Agrishare.Core.Entities
                 request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
                 request.AddHeader("X-Reference-Id", ServerReference);
                 request.AddHeader("X-Target-Environment", MTNEnvironment);
+                // TODO on production
+                //request.AddHeader("X-Callback-Url", $"{Config.APIURL}/transactions/mtn/notify");
                 var body = new
                 {
                     amount = Amount.ToString("0.##"),
-                    currency = "EUR",
+                    currency = MTNCurrency,
                     externalId = Id.ToString(),
                     payer = new
                     {
@@ -505,8 +510,11 @@ namespace Agrishare.Core.Entities
 
         #region airtel
 
-        private static string SanitiseUgMobileNumber(string MobileNumber)
+        public static string SanitiseUgMobileNumber(string MobileNumber)
         {
+            if (string.IsNullOrEmpty(MobileNumber))
+                return string.Empty;
+
             MobileNumber = Regex.Replace(MobileNumber, " ", "").Trim();
 
             if (MobileNumber.StartsWith("0"))
