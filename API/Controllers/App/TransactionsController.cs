@@ -28,8 +28,15 @@ namespace Agrishare.API.Controllers.App
         {
             if (Model.transaction.status_code == "TS")
             {
-                var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, @"^AGR\-[0]*", ""));
-                Entities.Transaction.Find(Id: id)?.RequestStatus();
+                try
+                {
+                    var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, @"^AGR\-[0]*", ""));
+                    Entities.Transaction.Find(Id: id)?.RequestStatus();
+                }
+                catch
+                {
+                    Entities.Log.Debug("TransactionsController.AirtelNotification", JsonConvert.SerializeObject(Model));
+                }
             }
             return Success(Model);
         }
