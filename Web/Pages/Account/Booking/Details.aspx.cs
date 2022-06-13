@@ -263,13 +263,17 @@ namespace Agrishare.Web.Pages.Account.Booking
                 if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash))
                 {
                     PaymentCashPanel.Visible = true;
-                    CashDeliveryAddress.Text = Config.AgriShareOfficeLocation.Replace(@"\n", "<br/>");
+
+                    var officeLocation = Config.Find(Key: $"Office Location {SelectedBooking.Listing?.Region?.Title}")?.Value ?? "N/A";
+                    CashDeliveryAddress.Text = officeLocation.Replace(@"\n", "<br/>");
                 }
 
                 if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.BankTransfer))
                 {
                     PaymentBankPanel.Visible = true;
-                    BankDetails.Text = Config.AgriShareBankDetails.Replace(@"\n", "<br/>");
+
+                    var bankDetails = Config.Find(Key: $"Bank Details {SelectedBooking.Listing?.Region?.Title}")?.Value ?? "N/A";
+                    BankDetails.Text = bankDetails.Replace(@"\n", "<br/>");
                 }
 
                 if (SelectedBooking.Listing.User.PaymentMethods.Contains(PaymentMethod.Cash) &&

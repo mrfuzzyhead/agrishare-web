@@ -12,6 +12,8 @@ namespace Agrishare.API.Models
 
         public int VoucherId { get; set; }
 
+        public PaymentGateway Gateway { get; set; } = PaymentGateway.None;
+
         [Required]
         public List<BookingUserModel> Users { get; set; }
     }

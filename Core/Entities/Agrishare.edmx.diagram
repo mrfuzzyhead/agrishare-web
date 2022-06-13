@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="52">
+      <Diagram DiagramId="f49fb05094a048a188b3286fabeb77f2" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="AgrishareModel.Booking" Width="1.75" PointX="17.25" PointY="26.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.BookingUser" Width="2" PointX="19.75" PointY="25.125" IsExpanded="true" />
         <EntityTypeShape EntityType="AgrishareModel.Category" Width="1.5" PointX="5.875" PointY="23.75" IsExpanded="true" />

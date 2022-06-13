@@ -346,6 +346,8 @@ namespace Agrishare.API.Controllers.App
             var bookingUsers = Entities.BookingUser.List(BookingId: booking.Id);
 
             var isOwner = CurrentUser.Id == booking.Listing?.UserId || (booking.Supplier != null && CurrentUser.SupplierId == booking.Supplier?.Id);
+            var officeLocation = Entities.Config.Find(Key: $"Office Location {CurrentUser.Region?.Title}")?.Value ?? "N/A";
+            var bankDetails = Entities.Config.Find(Key: $"Bank Details {CurrentUser.Region?.Title}")?.Value ?? "N/A";
 
             return Success(new
             {
@@ -353,8 +355,8 @@ namespace Agrishare.API.Controllers.App
                 Users = bookingUsers.Select(e => e.Json()),
                 Rated = ratingCount > 0,
                 Entities.Journal.CurrentRate,
-                Entities.Config.AgriShareBankDetails,
-                Entities.Config.AgriShareOfficeLocation,
+                AgriShareBankDetails = bankDetails,
+                AgriShareOfficeLocation = officeLocation,
                 IsOwner = isOwner
             });
         }

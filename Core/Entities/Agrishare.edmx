@@ -152,9 +152,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParentId" Type="int" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
-          <Property Name="TitleShona" Type="varchar" MaxLength="256" />
-          <Property Name="TitleNdebele" Type="varchar" MaxLength="256" />
-          <Property Name="TitleLuganda" Type="varchar" MaxLength="256" />
+          <Property Name="Translations" Type="text" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -475,6 +473,7 @@
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
+          <Property Name="Gateway" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1388,12 +1387,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParentId" Type="Int32" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="TranslationsJson" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="TitleShona" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="TitleNdebele" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="TitleLuganda" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -1538,6 +1535,7 @@
           <NavigationProperty Name="Booking" Relationship="Self.transactions_ibfk_2" FromRole="Transactions" ToRole="Bookings" />
           <NavigationProperty Name="BookingUser" Relationship="Self.transactions_ibfk_3" FromRole="Transactions" ToRole="BookingUsers" />
           <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
+          <Property Name="Gateway" Type="AgrishareModel.PaymentGateway" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2262,6 +2260,13 @@
           <Member Name="Shona" Value="2" />
           <Member Name="Ndebele" Value="3" />
           <Member Name="Luganda" Value="4" />
+          <Member Name="Chichewa" Value="5" />
+          <Member Name="Acholi" Value="6" />
+          <Member Name="Ateso" Value="7" />
+          <Member Name="Lango" Value="8" />
+          <Member Name="Runyankore" Value="9" />
+          <Member Name="Runyoro" Value="10" />
+          <Member Name="Swahili" Value="11" />
         </EnumType>
         <EntityType Name="Blog">
           <Key>
@@ -2831,6 +2836,7 @@
           <Member Name="USD" Value="1" />
           <Member Name="ZWL" Value="2" />
           <Member Name="USh" Value="3" />
+          <Member Name="MWK" Value="4" />
         </EnumType>
         <EnumType Name="ServiceLandRegion" UnderlyingType="Int16">
           <Member Name="None" Value="0" />
@@ -2843,6 +2849,12 @@
           <Member Name="None" Value="0" />
           <Member Name="Value" Value="1" />
           <Member Name="Percentage" Value="2" />
+        </EnumType>
+        <EnumType Name="PaymentGateway" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="EcoCashZimbabwe" Value="1" />
+          <Member Name="AirtelUganda" Value="2" />
+          <Member Name="MTNUganda" Value="3" />
         </EnumType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2919,9 +2931,7 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="AgrishareModel.Category">
               <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="TitleLuganda" ColumnName="TitleLuganda" />
-                <ScalarProperty Name="TitleNdebele" ColumnName="TitleNdebele" />
-                <ScalarProperty Name="TitleShona" ColumnName="TitleShona" />
+                <ScalarProperty Name="TranslationsJson" ColumnName="Translations" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -3059,6 +3069,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="AgrishareModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="EcoCashReference" ColumnName="EcoCashReference" />
                 <ScalarProperty Name="ServerReference" ColumnName="ServerReference" />

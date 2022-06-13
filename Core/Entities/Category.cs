@@ -17,11 +17,9 @@ namespace Agrishare.Core.Entities
         public int Id { get; set; }
         public Nullable<int> ParentId { get; set; }
         public string Title { get; set; }
+        public string TranslationsJson { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime LastModified { get; set; }
         public bool Deleted { get; set; }
-        public string TitleShona { get; set; }
-        public string TitleNdebele { get; set; }
-        public string TitleLuganda { get; set; }
     }
 }

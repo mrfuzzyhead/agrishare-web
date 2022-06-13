@@ -30,6 +30,23 @@ namespace Agrishare.Core.Entities
             return $"Category:{Id}";
         }
 
+        private List<Translation> _translations;
+        public List<Translation> Translations
+        {
+            get
+            {
+                if (_translations == null && !string.IsNullOrEmpty(TranslationsJson))
+                    _translations = JsonConvert.DeserializeObject<List<Translation>>(TranslationsJson);
+                if (_translations == null)
+                    _translations = new List<Translation>();
+                return _translations;
+            }
+            set
+            {
+                _translations = value;
+            }
+        }
+
         public static Category Find(int Id = 0)
         {
             if (Id > 0)
@@ -121,8 +138,9 @@ namespace Agrishare.Core.Entities
 
         public bool Save()
         {
-            var success = false;
+            TranslationsJson = JsonConvert.SerializeObject(Translations);
 
+            bool success;
             if (Id == 0)
                 success = Add();
             else
@@ -166,6 +184,16 @@ namespace Agrishare.Core.Entities
             {
                 Id,
                 Title
+            };
+        }
+
+        public object AppJson()
+        {
+            return new
+            {
+                Id,
+                Title,
+                Translations = Translations.Select(e => new { e.Language, e.Text })
             };
         }
     }

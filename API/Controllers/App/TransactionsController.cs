@@ -1,7 +1,10 @@
 ﻿using Agrishare.API.Models;
 using Agrishare.Core;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
 
@@ -9,49 +12,43 @@ namespace Agrishare.API.Controllers.App
 {
     public class TransactionsController : BaseApiController
     {
+        [Route("transactions/mtn/notify")]
+        [AcceptVerbs("POST")]
+        public object MtnNotification(MtnCallbackModel Model)
+        {
+            if (Model.status == "SUCCESSFUL")
+                Entities.Transaction.Find(Id: Model.externalId).RequestStatus();
+
+            return Success(Model);
+        }
+
+        [Route("transactions/airtel/notify")]
+        [AcceptVerbs("POST")]
+        public object AirtelNotification(AirtelCallbackModel Model)
+        {
+            if (Model.transaction.status_code == "TS")
+            {
+                try
+                {
+                    var id = Convert.ToInt32(Regex.Replace(Model.transaction.id, @"^AGR\-[0]*", ""));
+                    Entities.Transaction.Find(Id: id)?.RequestStatus();
+                }
+                catch
+                {
+                    Entities.Log.Debug("TransactionsController.AirtelNotification", JsonConvert.SerializeObject(Model));
+                }
+            }
+            return Success(Model);
+        }
+
         [Route("transactions/ecocash/notify")]
         [AcceptVerbs("POST")]
         public object EcoCashNotification(EcoCashModel Model)
         {
             if (Model.TransactionOperationStatus == "COMPLETED")
-                Entities.Transaction.Find(ClientCorrelator: Model.ClientCorrelator).RequestEcoCashStatus();
+                Entities.Transaction.Find(ClientCorrelator: Model.ClientCorrelator).RequestStatus();
 
             return Success(Model);
-        }
-
-        [@Authorize(Roles = "User")]
-        [Route("transactions/ecocash/poll")]
-        [AcceptVerbs("GET")]
-        public object PollEcoCash(int BookingId)
-        {
-            var booking = Entities.Booking.Find(Id: BookingId);
-            if (booking == null || booking.UserId != CurrentUser.Id)
-                return Error("Transaction not found");
-
-            var transactions = Entities.Transaction.List(BookingId: booking.Id).Where(e => e.StatusId != Entities.TransactionStatus.Error);
-            if (transactions.Count() == 0)
-                return Error("There are no transactions for this booking");
-
-            foreach (var transaction in transactions)
-                if (transaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
-                {
-                    transaction.Booking = booking;
-                    transaction.RequestEcoCashStatus();
-                }                    
-
-            var bookingUsers = Entities.BookingUser.List(BookingId: BookingId);
-            if (bookingUsers.Count(e => e.StatusId != Entities.BookingUserStatus.Paid) == 0)
-                return Success("Payment complete");
-
-            // NB assumes there is only one transaction required per booking (no more group users)
-            var lastTransaction = transactions.OrderByDescending(e => e.DateCreated).First();
-            if (lastTransaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
-                return Success(new
-                {
-                    Transactions = new List<object>()
-                });
-
-            return Error(lastTransaction.Status);
         }
 
         [@Authorize(Roles = "User")]
@@ -137,17 +134,40 @@ namespace Agrishare.API.Controllers.App
                     transaction = new Entities.Transaction
                     {
                         Amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate,
-                        Currency = Entities.Currency.ZWL,
+                        Currency = booking.Listing.Region.Currency,
                         Booking = booking,
                         BookingUser = bookingUser,
                         StatusId = Entities.TransactionStatus.Pending
                     };
 
-                    transaction.Save();
-                    transaction.RequestEcoCashPayment();
-                    transactions.Add(transaction);
+                    var telephone = Entities.Transaction.SanitiseUgMobileNumber(bookingUser.Telephone);
+                    if (!string.IsNullOrEmpty(telephone) || telephone.Length != 9)
+                    {
+                        switch (CurrentRegion.Id)
+                        {
+                            case (int)Entities.Regions.Zimbabwe:
+                                transaction.Gateway = Entities.PaymentGateway.EcoCashZimbabwe;
+                                break;
+                            case (int)Entities.Regions.Uganda:
+                                var prefix = telephone.Substring(0, 4);
+                                var mtnPrefixes = new List<string> { "772", "782", "774" };
+                                if (mtnPrefixes.Contains(prefix))
+                                    transaction.Gateway = Entities.PaymentGateway.MTNUganda;
+                                var airtelPrefixes = new List<string> { "752", "740" };
+                                if (airtelPrefixes.Contains(prefix))
+                                    transaction.Gateway = Entities.PaymentGateway.AirtelUganda;
+                                break;
+                            default:
+                                transaction.Gateway = Entities.PaymentGateway.None;
+                                break;
+                        }
 
-                    Entities.Counter.Hit(UserId: bookingUser.UserId ?? 0, Event: Entities.Counters.InitiatePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                        transaction.Save();
+                        transaction.RequestPayment();
+                        transactions.Add(transaction);
+
+                        Entities.Counter.Hit(UserId: bookingUser.UserId ?? 0, Event: Entities.Counters.InitiatePayment, CategoryId: booking.Service.CategoryId, BookingId: booking.Id);
+                    }
 
                     if (transaction.StatusId != Entities.TransactionStatus.PendingSubscriberValidation)
                     {
@@ -167,6 +187,41 @@ namespace Agrishare.API.Controllers.App
         }
 
         [@Authorize(Roles = "User")]
+        [Route("transactions/poll")]
+        [AcceptVerbs("GET")]
+        public object Poll(int BookingId)
+        {
+            var booking = Entities.Booking.Find(Id: BookingId);
+            if (booking == null || booking.UserId != CurrentUser.Id)
+                return Error("Transaction not found");
+
+            var transactions = Entities.Transaction.List(BookingId: booking.Id).Where(e => e.StatusId != Entities.TransactionStatus.Error);
+            if (transactions.Count() == 0)
+                return Error("There are no transactions for this booking");
+
+            foreach (var transaction in transactions)
+                if (transaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
+                {
+                    transaction.Booking = booking;
+                    transaction.RequestStatus();
+                }
+
+            var bookingUsers = Entities.BookingUser.List(BookingId: BookingId);
+            if (bookingUsers.Count(e => e.StatusId != Entities.BookingUserStatus.Paid) == 0)
+                return Success("Payment complete");
+
+            // NB assumes there is only one transaction required per booking (no more group users)
+            var lastTransaction = transactions.OrderByDescending(e => e.DateCreated).First();
+            if (lastTransaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
+                return Success(new
+                {
+                    Transactions = new List<object>()
+                });
+
+            return Error(lastTransaction.Status);
+        }
+
+        [@Authorize(Roles = "User")]
         [Route("transactions")]
         [AcceptVerbs("GET")]
         public object TransactionList(int BookingId)
@@ -182,5 +237,18 @@ namespace Agrishare.API.Controllers.App
                 Transactions = transactions.Select(e => e.Json())
             });
         }
+
+        #region Deprecated
+
+        // Support legacy apps (Zimbabwe only)
+        [@Authorize(Roles = "User")]
+        [Route("transactions/ecocash/poll")]
+        [AcceptVerbs("GET")]
+        public object PollEcoCash(int BookingId)
+        {
+            return Poll(BookingId);
+        }
+
+        #endregion
     }
 }
