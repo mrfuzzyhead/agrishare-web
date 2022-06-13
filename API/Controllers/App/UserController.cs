@@ -58,8 +58,8 @@ namespace Agrishare.API.Controllers.App
                 user.Region = Region.Find((int)Regions.Zimbabwe);
             }
 
-            if (!Regex.IsMatch(user.Telephone, @"^07[\d]{8}"))
-                return Error($"{user.Telephone} is not a valid cell number. The number should start with 07 and contain 10 digits.");
+            if (!Regex.IsMatch(user.Telephone, @"^0[\d]{9}"))
+                return Error($"{user.Telephone} is not a valid cell number. The number should start with 0 and contain 10 digits.");
 
             if (!user.UniqueTelephone())
                 return Error($"{user.Telephone} has already been registered");
@@ -256,8 +256,8 @@ namespace Agrishare.API.Controllers.App
             if (newTelephone)
                 CurrentUser.StatusId = Entities.UserStatus.Pending;
 
-            if (!Regex.IsMatch(CurrentUser.Telephone, @"^07[\d]{8}"))
-                return Error($"{CurrentUser.Telephone} is not a valid cell number. The number should start with 07 and contain 10 digits.");
+            if (!Regex.IsMatch(CurrentUser.Telephone, @"^0[\d]{9}"))
+                return Error($"{CurrentUser.Telephone} is not a valid cell number. The number should start with 0 and contain 10 digits.");
 
             if (!CurrentUser.UniqueTelephone())
                 return Error($"{CurrentUser.Telephone} has already been registered");

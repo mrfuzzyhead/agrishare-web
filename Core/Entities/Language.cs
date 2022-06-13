@@ -16,6 +16,13 @@ namespace Agrishare.Core.Entities
         English = 1,
         Shona = 2,
         Ndebele = 3,
-        Luganda = 4
+        Luganda = 4,
+        Chichewa = 5,
+        Acholi = 6,
+        Ateso = 7,
+        Lango = 8,
+        Runyankore = 9,
+        Runyoro = 10,
+        Swahili = 11
     }
 }

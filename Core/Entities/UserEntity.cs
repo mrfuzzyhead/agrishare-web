@@ -17,7 +17,7 @@ namespace Agrishare.Core.Entities
         public static int MaxFailedLoginAttempts = 5;
         public static int MaxFailedVoucherAttempts = 10;
 
-        public static string AuthCookieName = "agrishare";
+        public static string AuthCookieName = "dev_agrishare_1";
         public static string DefaultSort = "FirstName";
         public string FullName => $"{FirstName} {LastName}".Trim();
         public string Title => FullName;
@@ -746,6 +746,7 @@ namespace Agrishare.Core.Entities
                 Agent = Agent?.Json(),
                 AgentTypeId,
                 AgentType,
+                RegionId,
                 Region = Region?.Json(),
                 BankAccount,
                 PaymentMethods

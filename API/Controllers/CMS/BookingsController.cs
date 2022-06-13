@@ -261,7 +261,7 @@ namespace Agrishare.API.Controllers.CMS
 
             var transactions = Entities.Transaction.List(BookingId: booking.Id);
             foreach (var transaction in transactions)
-                transaction.RequestEcoCashStatus();
+                transaction.RequestStatus();
 
             var data = new
             {
@@ -279,7 +279,7 @@ namespace Agrishare.API.Controllers.CMS
         {
             var transaction = Entities.Transaction.Find(Id: Id);
 
-            if (transaction.RequestEcoCashRefund())
+            if (transaction.RequestRefund())
             {
                 var data = new
                 {

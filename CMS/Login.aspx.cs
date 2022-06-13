@@ -29,27 +29,30 @@ namespace Agrishare.CMS
         {
             if (LoginMobileNumber.Text.IsEmpty() || LoginPin.Text.IsEmpty())
             {
-                Feedback.InnerText = "Invalid mobile number or PIN.";
+                Feedback.InnerText = "Please complete both fields to continue";
                 Feedback.Visible = true;
                 return;
             }
 
             var user = Core.Entities.User.Find(Telephone: LoginMobileNumber.Text);
-            if (user == null)
+            if (user == null || user.Id == 0)
             {
-                Feedback.InnerText = "Invalid mobile number or PIN";
+                Feedback.InnerText = "Mobile number not recognised";
                 Feedback.Visible = true;
                 return;
             }
-            else if (user.Id == 0 || !user.ValidatePassword(LoginPin.Text))
-            {
-                if (user.Id > 0)
-                {
-                    user.FailedLoginAttempts += 1;
-                    user.Save();
-                }
+            else if (!user.ValidatePassword(LoginPin.Text))
+            {                
+                user.FailedLoginAttempts += 1;
+                user.Save();
 
-                Feedback.InnerText = "Invalid mobile number or PIN";
+                Feedback.InnerText = "The password you entered is not correct";
+                Feedback.Visible = true;
+                return;
+            }
+            else if (user.FailedLoginAttempts > 5)
+            {
+                Feedback.InnerText = "Your account is locked - please reset your password";
                 Feedback.Visible = true;
                 return;
             }
@@ -73,6 +76,8 @@ namespace Agrishare.CMS
             ResetForm.Visible = true;
             LoginForm.Visible = false;
             ForgotForm.Visible = false;
+
+            Feedback.InnerText = "Check your inbox or phone for a code";
         }
 
         public void ResetPin(object s, EventArgs e)

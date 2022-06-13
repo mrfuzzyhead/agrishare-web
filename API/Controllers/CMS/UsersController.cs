@@ -134,6 +134,7 @@ namespace Agrishare.API.Controllers.CMS
                 Roles = EnumInfo.ToList<Entities.Role>(),
                 Genders = EnumInfo.ToList<Entities.Gender>(),
                 Languages = EnumInfo.ToList<Entities.Language>(),
+                Regions = Region.List().Select(e => new { e.Id, e.Title }),
                 Agents = Entities.Agent.List().Select(a => a.Json()),
                 Statuses = EnumInfo.ToList<Entities.UserStatus>().Where(s => s.Id > 0),
                 Types = EnumInfo.ToList<AgentUserType>(),
@@ -155,6 +156,12 @@ namespace Agrishare.API.Controllers.CMS
 
             if (User.DateOfBirth.HasValue)
                 User.DateOfBirth = User.DateOfBirth.Value.AddMinutes(UTCOffset);
+
+            if (!User.UniqueEmailAddress())
+                return Error("Email address is already in use");
+
+            if (!User.UniqueTelephone())
+                return Error("Telephone number is already in use");
 
             if (User.Id > 0)
             {

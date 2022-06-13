@@ -11,12 +11,11 @@ namespace Agrishare.Core.Entities
 {
     using System;
     
-    public enum Currency : short
+    public enum PaymentGateway : short
     {
         None = 0,
-        USD = 1,
-        ZWL = 2,
-        USh = 3,
-        MWK = 4
+        EcoCashZimbabwe = 1,
+        AirtelUganda = 2,
+        MTNUganda = 3
     }
 }
