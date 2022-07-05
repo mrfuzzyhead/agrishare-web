@@ -10,19 +10,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Agrishare.Core.dll">
-      <publishTime>07/26/2021 15:59:40</publishTime>
+      <publishTime>06/14/2022 08:28:35</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.dll.config">
       <publishTime>07/19/2021 12:31:12</publishTime>
     </File>
     <File Include="bin/Agrishare.Core.pdb">
-      <publishTime>07/26/2021 15:59:40</publishTime>
+      <publishTime>06/14/2022 08:28:35</publishTime>
     </File>
     <File Include="bin/Agrishare.Web.dll">
-      <publishTime>07/27/2021 10:52:12</publishTime>
+      <publishTime>06/14/2022 08:29:09</publishTime>
     </File>
     <File Include="bin/Agrishare.Web.pdb">
-      <publishTime>07/27/2021 10:52:12</publishTime>
+      <publishTime>06/14/2022 08:29:09</publishTime>
     </File>
     <File Include="bin/AWSSDK.dll">
       <publishTime>03/16/2019 00:24:03</publishTime>
@@ -568,7 +568,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/19/2018 10:53:53</publishTime>
     </File>
     <File Include="Pages/About/Privacy.aspx">
-      <publishTime>07/19/2021 12:31:12</publishTime>
+      <publishTime>12/16/2021 11:55:29</publishTime>
     </File>
     <File Include="Pages/About/Rules.aspx">
       <publishTime>03/16/2019 00:24:01</publishTime>
@@ -592,7 +592,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2020 09:46:05</publishTime>
     </File>
     <File Include="Pages/Account/GetStarted.aspx">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>07/29/2021 14:26:24</publishTime>
     </File>
     <File Include="Pages/Account/Listing/Bus.aspx">
       <publishTime>06/21/2021 17:02:00</publishTime>
@@ -766,61 +766,61 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/account.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/account.scss">
       <publishTime>03/10/2021 13:24:13</publishTime>
     </File>
     <File Include="Resources/Styles/base.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/base.scss">
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/blogs.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/blogs.scss">
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/cookies.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/cookies.scss">
       <publishTime>11/26/2020 15:49:00</publishTime>
     </File>
     <File Include="Resources/Styles/faqs.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/faqs.scss">
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/footer.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/footer.scss">
       <publishTime>11/26/2020 15:49:00</publishTime>
     </File>
     <File Include="Resources/Styles/forms.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/forms.scss">
       <publishTime>03/10/2021 14:14:56</publishTime>
     </File>
     <File Include="Resources/Styles/global.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/global.scss">
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/header.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/header.scss">
       <publishTime>11/26/2020 15:49:00</publishTime>
     </File>
     <File Include="Resources/Styles/homepage.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/homepage.scss">
       <publishTime>11/26/2020 15:49:00</publishTime>
@@ -832,16 +832,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/16/2019 00:24:01</publishTime>
     </File>
     <File Include="Resources/Styles/main.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/main.scss">
       <publishTime>03/09/2021 12:51:37</publishTime>
     </File>
     <File Include="Resources/Styles/message.min.css">
-      <publishTime>04/29/2021 14:36:37</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/products.min.css">
-      <publishTime>06/21/2021 17:02:00</publishTime>
+      <publishTime>06/01/2022 16:21:27</publishTime>
     </File>
     <File Include="Resources/Styles/products.scss">
       <publishTime>03/12/2021 14:41:11</publishTime>
