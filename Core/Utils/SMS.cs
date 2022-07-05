@@ -123,6 +123,8 @@ namespace Agrishare.Core.Utils
                     return "+263" + Number;
                 case "Uganda":
                     return "+256" + Number;
+                case "Malawi":
+                    return "+265" + Number;
             }
             return string.Empty;
         }
