@@ -14,6 +14,23 @@ namespace Agrishare.Core.Entities
         public static string DefaultSort = "SortOrder";
         public string Title => Question;
 
+        private List<Region> _regions;
+        public List<Region> Regions
+        {
+            get
+            {
+                if (_regions == null && !string.IsNullOrEmpty(RegionsJson))
+                    _regions = JsonConvert.DeserializeObject<List<Region>>(RegionsJson);
+                if (_regions == null)
+                    _regions = new List<Region>();
+                return _regions;
+            }
+            set
+            {
+                _regions = value;
+            }
+        }
+
         public static Faq Find(int Id = 0)
         {
             if (Id == 0)
@@ -69,6 +86,8 @@ namespace Agrishare.Core.Entities
         public bool Save()
         {
             var success = false;
+
+            RegionsJson = JsonConvert.SerializeObject(Regions.Select(e => e.FaqsJson()));
 
             if (Id == 0)
                 success = Add();
@@ -142,6 +161,7 @@ namespace Agrishare.Core.Entities
                 Question,
                 Answer,
                 LanguageId,
+                Regions = Regions.Select(e => e.FaqsJson()),
                 SortOrder,
                 DateCreated,
                 LastModified

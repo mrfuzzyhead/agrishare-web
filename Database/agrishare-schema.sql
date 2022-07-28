@@ -197,9 +197,7 @@ CREATE TABLE `Categories` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `ParentId` int(11) DEFAULT NULL,
   `Title` varchar(256) DEFAULT NULL,
-  `TitleShona` varchar(256) DEFAULT NULL,
-  `TitleNdebele` varchar(256) DEFAULT NULL,
-  `TitleLuganda` varchar(256) DEFAULT NULL,
+  `Translations` text,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -216,7 +214,7 @@ CREATE TABLE `Config` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Counters` */
 
@@ -264,6 +262,7 @@ CREATE TABLE `Faqs` (
   `Question` varchar(4096) DEFAULT NULL,
   `Answer` text,
   `SortOrder` int(11) NOT NULL DEFAULT '0',
+  `Regions` varchar(256) DEFAULT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -350,7 +349,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1598 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1600 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Messages` */
 
@@ -591,6 +590,7 @@ CREATE TABLE `Transactions` (
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `Gateway` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   KEY `BookingId` (`BookingId`),
   KEY `BookingUserId` (`BookingUserId`),
