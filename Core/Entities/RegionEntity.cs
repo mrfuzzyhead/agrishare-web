@@ -124,6 +124,15 @@ namespace Agrishare.Core.Entities
             };
         }
 
+        public object FaqsJson()
+        {
+            return new
+            {
+                Id,
+                Title
+            };
+        }
+
         public string CmsJsonString()
         {
             return JsonConvert.SerializeObject(Json(), Formatting.None);

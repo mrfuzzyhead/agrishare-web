@@ -203,6 +203,7 @@
           <Property Name="Question" Type="varchar" MaxLength="4096" />
           <Property Name="Answer" Type="text" />
           <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Regions" Type="varchar" MaxLength="64" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -1415,6 +1416,7 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="LanguageId" Type="AgrishareModel.Language" Nullable="false" />
+          <Property Name="RegionsJson" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Listing">
           <Key>
@@ -2956,6 +2958,7 @@
           <EntitySetMapping Name="Faqs">
             <EntityTypeMapping TypeName="AgrishareModel.Faq">
               <MappingFragment StoreEntitySet="Faqs">
+                <ScalarProperty Name="RegionsJson" ColumnName="Regions" />
                 <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Question" ColumnName="Question" />

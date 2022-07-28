@@ -16,9 +16,12 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            var faqs = Entities.Faq.List(Language: CurrentUser.LanguageId);
+            var regionFaqs = faqs.Where(e => e.Regions.Count == 0 || e.Regions.Count(r => r.Id == CurrentRegion.Id) > 0);
+
             return Success(new
             {
-                List = Entities.Faq.List(Language: CurrentUser.LanguageId).Select(e => e.Json())
+                List = regionFaqs.Select(e => e.Json())
             });
         }
 

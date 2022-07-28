@@ -11,10 +11,13 @@
 
                 <div class="header">
                     <div>
-                        <strong>{{detail.entity.Question}}</strong>
+                        <strong>{{detail.entity.Question}}</strong><br/>
+                        <small ng-repeat="region in detail.entity.Regions">
+                            {{region.Title}}
+                            <span ng-if="$index<detail.entity.Regions.length-1">&bull;</span>
+                        </small>
                     </div>
                 </div>
-
                 <div style="padding: 20px">
                     {{detail.entity.Answer}}
                 </div>

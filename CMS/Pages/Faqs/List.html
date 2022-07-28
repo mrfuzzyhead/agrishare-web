@@ -25,7 +25,11 @@
                     <i class="material-icons">description</i>
                 </icon>
                 <row ng-click="app.go('/faqs/detail/'+item.Id+'?'+app.returnUrlQs())">
-                    <strong>{{item.Title}}</strong>
+                    <strong>{{item.Title}}</strong> &nbsp;
+                    <small ng-repeat="region in item.Regions">
+                        {{region.Title}}
+                        <span ng-if="$index<item.Regions.length-1">&bull;</span>
+                    </small>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">
