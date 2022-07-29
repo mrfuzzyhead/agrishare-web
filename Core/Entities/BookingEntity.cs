@@ -84,6 +84,7 @@ namespace Agrishare.Core.Entities
                 var query = ctx.Bookings
                     .Include(o => o.User)
                     .Include(o => o.Service)
+                    .Include(o => o.Listing.User)
                     .Include(o => o.Listing.Region)
                     .Include(o => o.Voucher)
                     .Include(o => o.Supplier)
