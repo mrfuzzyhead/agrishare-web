@@ -775,6 +775,9 @@ namespace Agrishare.Core.Entities
 
         public bool UniqueEmailAddress()
         {
+            if (string.IsNullOrEmpty(EmailAddress))
+                return true;
+
             using (var ctx = new AgrishareEntities())
                 return ctx.Users.Count(o => !o.Deleted && o.Id != Id && o.EmailAddress == EmailAddress) == 0;
         }
