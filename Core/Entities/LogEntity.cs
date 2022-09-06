@@ -188,6 +188,9 @@ namespace Agrishare.Core.Entities
 
         public static void Debug(string Title, string Message)
         {
+            if (Message.Length > int.MaxValue /*4294967295*/)
+                Message = Message.Substring(0, int.MaxValue);
+
             new Log
             {
                 Description = Message,
