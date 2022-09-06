@@ -262,7 +262,7 @@ namespace Agrishare.API.Controllers.CMS
             user.ClearPassword = User.ClearPassword;
             user.FailedLoginAttempts = 0;
 
-            if (User.Save())
+            if (user.Save())
                 return Success(new
                 {
                     Entity = User.AdminJson()
