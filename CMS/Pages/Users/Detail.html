@@ -96,6 +96,28 @@
             </div>
 
             <div class="box">
+                <h2>Referral</h2>
+                <ul class="details">
+                    <li ng-if="detail.entity.AgentName">
+                        <strong>Agent Name</strong>
+                        <span>{{detail.entity.AgentName}}</span>
+                    </li>
+                    <li ng-if="detail.data.ReferredBy">
+                        <strong>Referred By</strong>
+                        <span>{{detail.data.ReferredBy}}</span>
+                    </li>
+                    <li>
+                        <strong>Referral Code</strong>
+                        <span>{{detail.entity.ReferralCode}}</span>
+                    </li>
+                    <li>
+                        <strong>Referral Count</strong>
+                        <span>{{detail.entity.ReferralCount | number}}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box">
                 <h2>Advanced</h2>
                 <ul class="details">
                     <li>

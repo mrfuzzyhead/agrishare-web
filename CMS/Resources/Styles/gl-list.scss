@@ -169,6 +169,21 @@ gl-list {
                     }
                 }
 
+                &.user {
+                    display: flex;
+                    align-items: center;
+
+                    .title {
+                        flex: 1;
+                    }
+
+                    .agent,
+                    .referral {
+                        flex: 0 0 140px;
+                        text-align: right;
+                    }
+                }
+
                 &.listing {
                     display: flex;
                     align-items: center;

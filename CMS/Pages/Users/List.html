@@ -60,10 +60,20 @@
                     <i class="material-icons" ng-if="!item.Agent && !item.Roles.includes('Administrator')">person</i>
                     <i class="material-icons" ng-if="item.Agent && !item.Roles.includes('Administrator')">assignment_ind</i>
                 </icon>
-                <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())">
-                    <strong>{{item.FirstName}} {{item.LastName}}</strong><br />
-                    <small ng-if="item.Supplier">{{item.Supplier.Title}} &bull; </small>
-                    <small>{{item.Telephone}} &bull; {{item.Language}}  &bull; {{item.DateCreated | date : 'd MMMM yyyy'}}</small>
+                <row ng-click="app.go('/users/detail/'+item.Id+'?'+app.returnUrlQs())" class="user">
+                    <div class="title">
+                        <strong>{{item.FirstName}} {{item.LastName}}</strong><br />
+                        <small ng-if="item.Supplier">{{item.Supplier.Title}} &bull; </small>
+                        <small>{{item.Telephone}} &bull; {{item.Language}}  &bull; {{item.DateCreated | date : 'd MMMM yyyy'}}</small>
+                    </div>
+                    <div ng-if="item.AgentName" class="agent">
+                        <small>Agent</small><br />
+                        {{item.AgentName}}
+                    </div>
+                    <div class="referral">
+                        <em class="lozenge">{{item.ReferralCount}}</em><br/>
+                        <small>Referral code: {{item.ReferralCode}}</small>
+                    </div>
                 </row>
                 <action>
                     <gl-popup-menu gl-position="top right">

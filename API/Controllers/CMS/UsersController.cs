@@ -128,9 +128,15 @@ namespace Agrishare.API.Controllers.CMS
             var Suppliers = Entities.Supplier.List();
             Suppliers.Insert(0, new Supplier { Id = 0, Title = "None" });
 
+            var user = Entities.User.Find(Id: Id);
+
+            User referredBy = null;
+            if (user != null && user.Id > 0 && user.ReferredById.HasValue)
+                referredBy = Entities.User.Find(Id: user.ReferredById.Value);
+
             var data = new
             {
-                Entity = Entities.User.Find(Id: Id).AdminJson(),
+                Entity = user.AdminJson(),
                 Roles = EnumInfo.ToList<Entities.Role>(),
                 Genders = EnumInfo.ToList<Entities.Gender>(),
                 Languages = EnumInfo.ToList<Entities.Language>(),
@@ -141,7 +147,8 @@ namespace Agrishare.API.Controllers.CMS
                 Entities.User.MaxFailedLoginAttempts,
                 Entities.User.MaxFailedVoucherAttempts,
                 PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(e => e.Id != 0),
-                Suppliers = Suppliers.Select(e => new { e.Id, e.Title })
+                Suppliers = Suppliers.Select(e => new { e.Id, e.Title }),
+                ReferredBy = referredBy?.FullName
             };
 
             return Success(data);

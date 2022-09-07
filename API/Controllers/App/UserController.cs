@@ -46,8 +46,19 @@ namespace Agrishare.API.Controllers.App
                 DateOfBirth = User.DateOfBirth,
                 GenderId = User.GenderId,
                 ClearPassword = User.PIN,
-                LanguageId = User.LanguageId ?? Language.English
+                LanguageId = User.LanguageId ?? Language.English,
+                AgentName = User.AgentName
             };
+
+            Entities.User referredBy = null;
+            if (!string.IsNullOrEmpty(User.ReferralCode))
+            {
+                referredBy = Entities.User.Find(ReferralCode: User.ReferralCode);
+                if (referredBy != null && referredBy.Id > 0)
+                    user.ReferredById = referredBy.Id;
+                else
+                    return Error("The referral code you entered was not recognised");
+            }
 
             try
             {
@@ -94,6 +105,12 @@ namespace Agrishare.API.Controllers.App
                         user.Delete();
                         return Error("Unable to send verification code - please try again");
                     }
+                }
+
+                if (referredBy != null)
+                {
+                    referredBy.ReferralCount += 1;
+                    referredBy.Save();
                 }
 
                 return Success(new

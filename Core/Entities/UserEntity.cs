@@ -93,7 +93,7 @@ namespace Agrishare.Core.Entities
             return $"User:{AuthToken}";
         }
 
-        public static User Find(int Id = 0, string EmailAddress = "", string Telephone = "", string AuthToken = "", bool Deleted = false)
+        public static User Find(int Id = 0, string EmailAddress = "", string Telephone = "", string AuthToken = "", bool Deleted = false, string ReferralCode = "")
         {
             if (!AuthToken.IsEmpty())
             {
@@ -107,7 +107,7 @@ namespace Agrishare.Core.Entities
                 }
             }
 
-            if (Id == 0 && EmailAddress.IsEmpty() && Telephone.IsEmpty() && AuthToken.IsEmpty())
+            if (Id == 0 && EmailAddress.IsEmpty() && Telephone.IsEmpty() && AuthToken.IsEmpty() && ReferralCode.IsEmpty())
                 return new User {
                     DateCreated = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow,
@@ -131,6 +131,9 @@ namespace Agrishare.Core.Entities
 
                 if (!AuthToken.IsEmpty())
                     query = query.Where(e => e.AuthToken.Equals(AuthToken));
+
+                if (!ReferralCode.IsEmpty())
+                    query = query.Where(e => e.ReferralCode.Equals(ReferralCode, StringComparison.InvariantCultureIgnoreCase));
 
                 return query.FirstOrDefault();
             }
@@ -602,6 +605,16 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
+                var safeLoop = 0;
+                do
+                {
+                    ReferralCode = GenerateCode(6);
+                    safeLoop += 1;
+                    if (safeLoop > 99)
+                        break;
+                }
+                while (ctx.Users.Count(e => e.ReferralCode == ReferralCode) > 0);
+
                 ctx.Users.Attach(this);
                 ctx.Entry(this).State = EntityState.Added;
                 return ctx.SaveChanges() > 0;
@@ -645,7 +658,10 @@ namespace Agrishare.Core.Entities
                 AgentTypeId,
                 AgentType,
                 Region = Region?.Json(),
-                Supplier = Supplier?.TitleJson()
+                Supplier = Supplier?.TitleJson(),
+                ReferralCount,
+                ReferralCode,
+                AgentName
             };
         }
 
@@ -677,7 +693,10 @@ namespace Agrishare.Core.Entities
                 Telephone,
                 Language,
                 Region = Region?.Json(),
-                DateCreated
+                DateCreated,
+                ReferralCount,
+                ReferralCode,
+                AgentName
             };
         }
 
@@ -711,7 +730,10 @@ namespace Agrishare.Core.Entities
                 AgentType,
                 Region = Region?.Json(),
                 BankAccount,
-                PaymentMethods
+                PaymentMethods,
+                ReferralCount,
+                ReferralCode,
+                AgentName
             };
         }
 
@@ -749,7 +771,10 @@ namespace Agrishare.Core.Entities
                 RegionId,
                 Region = Region?.Json(),
                 BankAccount,
-                PaymentMethods
+                PaymentMethods,
+                ReferralCount,
+                ReferralCode,
+                AgentName
             };
         }
 
@@ -832,6 +857,14 @@ namespace Agrishare.Core.Entities
             var randomString = "";
             for (int i = 0; i < length; i++)
                 randomString = randomString + (char)random.Next(48, 58);
+            return randomString;
+        }
+
+        public static string GenerateCode(int length)
+        {
+            var randomString = "";
+            for (int i = 0; i < length; i++)
+                randomString = randomString + (char)random.Next(65, 90);
             return randomString;
         }
 
