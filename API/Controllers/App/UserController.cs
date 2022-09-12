@@ -58,6 +58,9 @@ namespace Agrishare.API.Controllers.App
                 user.Region = Region.Find((int)Regions.Zimbabwe);
             }
 
+            if (user.LastName.Trim() == "asdaasd")
+                return Error("An unknown error hasdaasd occurred!!");
+
             if (!Regex.IsMatch(user.Telephone, @"^0[\d]{9}"))
                 return Error($"{user.Telephone} is not a valid cell number. The number should start with 0 and contain 10 digits.");
 
