@@ -29,6 +29,7 @@ namespace Agrishare.Core.Entities
         public string EmailAddress { get; set; }
         public string Telephone { get; set; }
         public string GUID { get; set; }
+        public int RegionId { get; set; }
     
         public virtual User User { get; set; }
     }

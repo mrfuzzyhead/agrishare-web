@@ -81,6 +81,7 @@
         <AssociationConnector Association="AgrishareModel.users_ibfk_3" />
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_1" />
         <AssociationConnector Association="AgrishareModel.uservouchers_ibfk_2" />
+        <AssociationConnector Association="AgrishareModel.users_ibfk_4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,8 +15,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex, int PageSize, string Query = "")
         {
-            var recordCount = Entities.Message.Count(Keywords: Query);
-            var list = Entities.Message.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query);
+            var recordCount = Entities.Message.Count(Keywords: Query, RegionId: CurrentRegion.Id);
+            var list = Entities.Message.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Query, RegionId: CurrentRegion.Id);
 
             var data = new
             {
