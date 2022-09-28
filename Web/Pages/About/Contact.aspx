@@ -35,6 +35,12 @@
             </div>
 
             <div class="form-row">
+                <asp:Label runat="server" AssociatedControlID="Region" Text="Region *" />
+                <asp:DropDownList runat="server" ID="Region" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Region" Text="Region is required" Display="Dynamic" />
+            </div>
+
+            <div class="form-row">
                 <asp:Label runat="server" AssociatedControlID="Message" Text="Message *" />
                 <asp:TextBox runat="server" ID="Message" TextMode="MultiLine" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Message" Text="Message is required" Display="Dynamic" />

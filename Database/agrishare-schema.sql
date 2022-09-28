@@ -246,6 +246,8 @@ CREATE TABLE `Devices` (
   `UserId` int(11) NOT NULL,
   `Token` varchar(1024) DEFAULT NULL,
   `EndpointARN` varchar(1024) DEFAULT NULL,
+  `SubscriptionARN` varchar(1024) DEFAULT NULL,
+  `Enabled` tinyint(1) NOT NULL DEFAULT '1',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -356,6 +358,7 @@ CREATE TABLE `Log` (
 CREATE TABLE `Messages` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `GUID` varchar(128) DEFAULT NULL,
+  `RegionId` int(11) NOT NULL DEFAULT '1',
   `UserId` int(11) DEFAULT NULL,
   `ParentId` int(11) DEFAULT NULL,
   `Name` varchar(32) DEFAULT NULL,
@@ -646,13 +649,20 @@ CREATE TABLE `Users` (
   `PaymentMethod` smallint(6) NOT NULL DEFAULT '0',
   `BankAccount` varchar(4096) DEFAULT NULL,
   `SupplierId` int(11) DEFAULT NULL,
+  `AgentName` varchar(64) DEFAULT NULL,
+  `ReferredBy` int(11) DEFAULT NULL,
+  `ReferralCount` int(11) NOT NULL DEFAULT '0',
+  `ReferralCode` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `AgentId` (`AgentId`),
   KEY `RegionId` (`RegionId`),
   KEY `SupplierId` (`SupplierId`),
+  KEY `ReferredBy` (`ReferredBy`),
+  KEY `ReferralCode` (`ReferralCode`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`AgentId`) REFERENCES `Agents` (`Id`),
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`),
-  CONSTRAINT `users_ibfk_3` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`)
+  CONSTRAINT `users_ibfk_3` FOREIGN KEY (`SupplierId`) REFERENCES `Suppliers` (`Id`),
+  CONSTRAINT `users_ibfk_4` FOREIGN KEY (`ReferredBy`) REFERENCES `Users` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10011 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Vouchers` */
@@ -679,6 +689,23 @@ DELIMITER $$
 BEGIN
 	RETURN ST_Distance(POINT(a, b), POINT(c, d));
     END */$$
+DELIMITER ;
+
+/* Function  structure for function  `RandString` */
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` FUNCTION `RandString`(length SMALLINT(3)) RETURNS varchar(100) CHARSET utf8
+begin
+    SET @returnStr = '';
+    SET @allowedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    SET @i = 0;
+    WHILE (@i < length) DO
+        SET @returnStr = CONCAT(@returnStr, substring(@allowedChars, FLOOR(RAND() * LENGTH(@allowedChars) + 1), 1));
+        SET @i = @i + 1;
+    END WHILE;
+    RETURN @returnStr;
+END */$$
 DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

@@ -347,5 +347,40 @@ namespace Agrishare.API.Controllers.CMS
 
             return Error();
         }
+
+        /* Broadcast */
+
+        [Route("users/broadcast/find")]
+        [AcceptVerbs("GET")]
+        public object BroadcastFind(int Id = 0)
+        {
+            var entity = new SmsModel();
+
+            var data = new
+            {
+                Entity = entity
+            };
+
+            return Success(data);
+        }
+
+        [Route("users/broadcast/save")]
+        [AcceptVerbs("POST")]
+        public object BroadcastSend(SmsModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Error(ModelState);
+
+            Model.Sent = true;
+
+            if (Core.Utils.SNS.SendBulkMessage(Model.Message, ErrorMessage: out var errorMessage))
+                return Success(new
+                {
+                    Entity = Model,
+                    Feedback = "Broadcast push notification sent!"
+                });
+
+            return Error(errorMessage);
+        }
     }
 }

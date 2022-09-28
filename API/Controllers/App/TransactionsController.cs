@@ -139,9 +139,8 @@ namespace Agrishare.API.Controllers.App
                         BookingUser = bookingUser,
                         StatusId = Entities.TransactionStatus.Pending
                     };
-
-                    var telephone = Entities.Transaction.SanitiseUgMobileNumber(bookingUser.Telephone);
-                    if (!string.IsNullOrEmpty(telephone) || telephone.Length != 9)
+                    
+                    if (!string.IsNullOrEmpty(bookingUser.Telephone))
                     {
                         switch (CurrentRegion.Id)
                         {
@@ -149,6 +148,7 @@ namespace Agrishare.API.Controllers.App
                                 transaction.Gateway = Entities.PaymentGateway.EcoCashZimbabwe;
                                 break;
                             case (int)Entities.Regions.Uganda:
+                                var telephone = Entities.Transaction.SanitiseUgMobileNumber(bookingUser.Telephone);
                                 var prefix = telephone.Substring(0, 4);
                                 var mtnPrefixes = new List<string> { "772", "782", "774" };
                                 if (mtnPrefixes.Contains(prefix))

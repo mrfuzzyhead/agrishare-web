@@ -17,6 +17,7 @@ namespace Agrishare.Core.Utils
     public class SNS
     {
         private static string ApplicationARN => Entities.Config.Find(Key: "AWS Application ARN").Value;
+        private static string BulkTopicARN => Entities.Config.Find(Key: "AWS Bulk Topic ARN").Value;
         private static string AccessKey => Entities.Config.Find(Key: "AWS Access Key").Value;
         private static string SecretKey => Entities.Config.Find(Key: "AWS Secret Key").Value;
         private static RegionEndpoint Region => RegionEndpoint.GetBySystemName(Entities.Config.Find(Key: "AWS Region").Value);
@@ -139,6 +140,107 @@ namespace Agrishare.Core.Utils
                 }
             }
         }
-        
+
+        public static bool SubscribeToBulkTopic(string DeviceARN, out string SubscriptionARN)
+        {
+            var request = new SubscribeRequest
+            {
+                TopicArn = BulkTopicARN,
+                Endpoint = DeviceARN,
+                Protocol = "application"
+            };
+
+            try
+            {
+                var resp = CreateClient().Subscribe(request);
+                var success = resp.HttpStatusCode == System.Net.HttpStatusCode.OK;
+                if (success)
+                {
+                    SubscriptionARN = resp.SubscriptionArn;
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Entities.Log.Error("PushNotification.SubscribeToTopic", ex);
+            }
+
+            SubscriptionARN = null;
+            return false;
+        }
+
+        public static bool UnsubscribeFromTopic(string SubscriptionARN)
+        {
+            try
+            {
+                var request = new UnsubscribeRequest()
+                {
+                    SubscriptionArn = SubscriptionARN
+                };
+
+                var resp = CreateClient().Unsubscribe(request);
+                return resp.HttpStatusCode == System.Net.HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                Entities.Log.Error("PushNotification.UnsubscribeFromTopic", ex);
+                return false;
+            }
+        }
+
+        public static bool SendBulkMessage(string Message, out string ErrorMessage, string Category = "", Dictionary<string, object> Params = null)
+        {
+            var success = false;
+            ErrorMessage = string.Empty;
+
+            dynamic apnsPayload = new Dictionary<string, Object>();
+            apnsPayload["aps"] = new
+            {
+                alert = Message,
+                sound = "default",
+                category = Category
+            };
+
+            dynamic gcmPayload = new ExpandoObject();
+            gcmPayload.data = new ExpandoObject();
+            gcmPayload.data.message = Message;
+            gcmPayload.data.category = Category;
+
+            if (Params != null)
+                foreach (var item in Params)
+                {
+                    ((IDictionary<string, object>)gcmPayload.data)[item.Key] = item.Value;
+                    ((IDictionary<string, object>)apnsPayload)[item.Key] = item.Value.ToString();
+                }
+
+            var payload = string.Format(@"{{""default"":{0},""APNS_SANDBOX"":{1},""APNS"":{1},""GCM_SANDBOX"":{2},""GCM"":{2}}}",
+              JsonConvert.SerializeObject(Message),
+              JsonConvert.SerializeObject(JsonConvert.SerializeObject(apnsPayload)),
+              JsonConvert.SerializeObject(JsonConvert.SerializeObject(gcmPayload)));
+
+            if (Log)
+                Entities.Log.Debug("PushNotification.SendMessage", JsonConvert.SerializeObject(payload));
+
+            var request = new PublishRequest
+            {
+                TopicArn = BulkTopicARN,
+                Message = payload,
+                MessageStructure = "json"
+            };
+
+            try
+            {
+                var resp = CreateClient().Publish(request);
+                success = resp.HttpStatusCode == System.Net.HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Entities.Log.Error("PushNotification.SendBulkMessage", ex);
+            }
+
+            return success;
+        }
+
     }
 }
