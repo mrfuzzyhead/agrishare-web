@@ -36,7 +36,7 @@ namespace Agrishare.Core.Entities
                     .FirstOrDefault();
         }
 
-        public static List<Message> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int UserId = 0, int? ParentId = null)
+        public static List<Message> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "", int UserId = 0, int? ParentId = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -51,11 +51,14 @@ namespace Agrishare.Core.Entities
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
 
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
-        public static int Count(string Keywords = "", int UserId = 0, int? ParentId = null)
+        public static int Count(string Keywords = "", int UserId = 0, int? ParentId = null, int RegionId = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -68,6 +71,9 @@ namespace Agrishare.Core.Entities
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => o.Title.ToLower().Contains(Keywords.ToLower()));
+
+                if (RegionId > 0)
+                    query = query.Where(e => e.RegionId == RegionId);
 
                 return query.Count();
             }

@@ -21,6 +21,7 @@ namespace Agrishare.Core.Entities
             this.Messages = new HashSet<Message>();
             this.BookingComments = new HashSet<BookingComment>();
             this.UserVouchers = new HashSet<UserVoucher>();
+            this.Users1 = new HashSet<User>();
         }
     
         public int Id { get; set; }
@@ -52,6 +53,10 @@ namespace Agrishare.Core.Entities
         public int RegionId { get; set; }
         public int FailedVoucherAttempts { get; set; }
         public Nullable<int> SupplierId { get; set; }
+        public string AgentName { get; set; }
+        public Nullable<int> ReferredBy { get; set; }
+        public int ReferralCount { get; set; }
+        public string ReferralCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }
@@ -64,5 +69,8 @@ namespace Agrishare.Core.Entities
         public virtual Supplier Supplier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserVoucher> UserVouchers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users1 { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

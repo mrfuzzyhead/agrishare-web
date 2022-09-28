@@ -15,6 +15,15 @@ namespace Agrishare.Web.Pages.About
         {
             var script = new Literal { Text = $"<script src=\"https://www.google.com/recaptcha/api.js\" async defer></script>" };
             Master.Head.Controls.Add(script);
+
+            if (!Page.IsPostBack)
+            {
+                Region.DataSource = Core.Entities.Region.List();
+                Region.DataTextField = "Title";
+                Region.DataValueField = "Id";
+                Region.DataBind();
+                Region.Items.Insert(0, new ListItem("Select", ""));
+            }
         }
 
         public void SendMessage(object s, EventArgs e)
@@ -27,7 +36,8 @@ namespace Agrishare.Web.Pages.About
                     EmailAddress = EmailAddress.Text,
                     Name = Name.Text,
                     Telephone = Telephone.Text,
-                    Title = Subject.Text
+                    Title = Subject.Text,
+                    RegionId = Convert.ToInt32(Region.SelectedValue)
                 }.Save();
 
                 Master.Feedback = "Your message has been sent";

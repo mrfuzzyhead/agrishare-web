@@ -58,7 +58,8 @@ namespace Agrishare.API.Controllers.App
                 User = CurrentUser,
                 Title = Model.Title,
                 Content = Model.Content,
-                StatusId = Entities.MessageStatus.Unread
+                StatusId = Entities.MessageStatus.Unread,
+                RegionId = CurrentUser.RegionId
             };
 
             if (message.Save())
@@ -90,7 +91,8 @@ namespace Agrishare.API.Controllers.App
                 User = CurrentUser,
                 Title = $"REPLY: {original.Title}",
                 Content = Model.Content,
-                StatusId = Entities.MessageStatus.Unread
+                StatusId = Entities.MessageStatus.Unread,
+                RegionId = CurrentUser.RegionId
             };
 
             if (message.Save())

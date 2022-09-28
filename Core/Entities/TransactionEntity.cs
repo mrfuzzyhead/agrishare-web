@@ -394,7 +394,7 @@ namespace Agrishare.Core.Entities
                 request.AddHeader("X-Reference-Id", ServerReference);
                 request.AddHeader("X-Target-Environment", MTNEnvironment);
                 // TODO on production
-                //request.AddHeader("X-Callback-Url", $"{Config.APIURL}/transactions/mtn/notify");
+                request.AddHeader("X-Callback-Url", $"{Config.APIURL}/transactions/mtn/notify");
                 var body = new
                 {
                     amount = Amount.ToString("0.##"),
