@@ -190,6 +190,8 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Token" Type="varchar" MaxLength="1024" />
           <Property Name="EndpointARN" Type="varchar" MaxLength="1024" />
+          <Property Name="SubscriptionARN" Type="varchar" MaxLength="1024" />
+          <Property Name="Enabled" Type="bool" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Deleted" Type="bool" Nullable="false" />
@@ -2152,6 +2154,8 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="AgrishareModel.devices_ibfk_1" FromRole="Device" ToRole="User" />
+          <Property Name="SubscriptionARN" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="devices_ibfk_1">
           <End Type="AgrishareModel.User" Role="User" Multiplicity="1">
@@ -3241,6 +3245,8 @@
           <EntitySetMapping Name="Devices">
             <EntityTypeMapping TypeName="AgrishareModel.Device">
               <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="SubscriptionARN" ColumnName="SubscriptionARN" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

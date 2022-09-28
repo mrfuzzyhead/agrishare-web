@@ -246,6 +246,8 @@ CREATE TABLE `Devices` (
   `UserId` int(11) NOT NULL,
   `Token` varchar(1024) DEFAULT NULL,
   `EndpointARN` varchar(1024) DEFAULT NULL,
+  `SubscriptionARN` varchar(1024) DEFAULT NULL,
+  `Enabled` tinyint(1) NOT NULL DEFAULT '1',
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',

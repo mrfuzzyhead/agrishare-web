@@ -94,10 +94,15 @@ namespace Agrishare.Core.Entities
             User = null;
 
             if (EndpointARN.IsEmpty() && !Token.IsEmpty())
+            {
                 if (SNS.AddDevice(Token, out var arn))
+                {
                     EndpointARN = arn;
-                else
-                    return false;
+                    if (SNS.SubscribeToBulkTopic(EndpointARN, out var subscriptionArn))
+                        SubscriptionARN = subscriptionArn;
+                }
+                else return false;
+            }
 
             if (Id == 0)
                 success = Add();
@@ -134,7 +139,7 @@ namespace Agrishare.Core.Entities
             if (Id == 0)
                 return false;
 
-            if (SNS.RemoveDevice(EndpointARN))
+            if (SNS.UnsubscribeFromTopic(SubscriptionARN) && SNS.RemoveDevice(EndpointARN))
             {
                 Deleted = true;
                 return Update();

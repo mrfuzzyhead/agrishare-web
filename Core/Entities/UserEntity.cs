@@ -269,9 +269,27 @@ namespace Agrishare.Core.Entities
             }
         }
 
+        public static List<User> BroadcastPushList(int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.PushNotifications) > 0);
+                return query.ToList();
+            }
+        }
+
+        public static int BroadcastPushCount(int RegionId)
+        {
+            using (var ctx = new AgrishareEntities())
+            {
+                var query = ctx.Users.Where(o => o.Deleted == false && o.RegionId == RegionId && (o.NotificationPreferences & (int)Entities.NotificationPreferences.PushNotifications) > 0);
+                return query.Count();
+            }
+        }
+
         public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None,
             int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
-            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null)
+            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -380,6 +398,9 @@ namespace Agrishare.Core.Entities
 
                 if (BulkSms.HasValue && BulkSms.Value)
                     query = query.Where(o => (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+
+                if (BroadcastPush.HasValue && BroadcastPush.Value)
+                    query = query.Where(o => (o.NotificationPreferences & (int)Entities.NotificationPreferences.PushNotifications) > 0);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));
@@ -409,7 +430,7 @@ namespace Agrishare.Core.Entities
         public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue,
             string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
             bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
-            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null)
+            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -518,6 +539,9 @@ namespace Agrishare.Core.Entities
 
                 if (BulkSms.HasValue && BulkSms.Value)
                     query = query.Where(o => (o.NotificationPreferences & (int)Entities.NotificationPreferences.BulkSMS) > 0);
+
+                if (BroadcastPush.HasValue && BroadcastPush.Value)
+                    query = query.Where(o => (o.NotificationPreferences & (int)Entities.NotificationPreferences.PushNotifications) > 0);
 
                 if (!Keywords.IsEmpty())
                     query = query.Where(o => (o.FirstName + " " + o.LastName).ToLower().Contains(Keywords.ToLower()));

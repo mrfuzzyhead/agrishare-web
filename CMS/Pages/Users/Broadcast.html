@@ -1,0 +1,26 @@
+﻿
+<div ng-controller="FormViewController" ag-title="Broadcast Push Notification" ag-selected-url="#/users/broadcast" ag-api-route="/cms/users/broadcast/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="form">
+
+        <div ng-if="form.entity.Sent" class="feedback">
+            <i class="material-icons md-48">sentiment_very_satisfied</i><span>Push notification broadcast sent</span>
+        </div>
+
+        <form ng-if="!form.entity.Sent">
+
+            <gl-textbox gl-label="Message" ng-model="form.entity.Message" gl-required="true" gl-max-length="140"></gl-textbox>
+
+        </form>
+
+    </ag-section>
+
+    <ag-status-bar>
+
+        <gl-icon-button ng-click="form.save()" class="accent" ng-disabled="EditForm.$invalid || form.busy" ng-if="form.entity && !form.entity.Sent">Send</gl-icon-button>
+
+    </ag-status-bar>
+
+</div>
