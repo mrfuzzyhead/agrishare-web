@@ -149,13 +149,15 @@ namespace Agrishare.API.Controllers.App
                                 break;
                             case (int)Entities.Regions.Uganda:
                                 var telephone = Entities.Transaction.SanitiseUgMobileNumber(bookingUser.Telephone);
-                                var prefix = telephone.Substring(0, 4);
-                                var mtnPrefixes = new List<string> { "772", "782", "774" };
+                                var prefix = telephone.Substring(0, 2);
+                                var mtnPrefixes = new List<string> { "76", "77", "78", "31", "39" };
                                 if (mtnPrefixes.Contains(prefix))
                                     transaction.Gateway = Entities.PaymentGateway.MTNUganda;
-                                var airtelPrefixes = new List<string> { "752", "740" };
-                                if (airtelPrefixes.Contains(prefix))
+                                else
                                     transaction.Gateway = Entities.PaymentGateway.AirtelUganda;
+                                //var airtelPrefixes = new List<string> { "752", "740" };
+                                //if (airtelPrefixes.Contains(prefix))
+                                //  transaction.Gateway = Entities.PaymentGateway.AirtelUganda;
                                 break;
                             default:
                                 transaction.Gateway = Entities.PaymentGateway.None;
