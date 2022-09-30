@@ -131,9 +131,15 @@ namespace Agrishare.API.Controllers.App
 
                 if (transaction == null)
                 {
+                    var amount = 0M;
+                    if (CurrentRegion.Id == (int)Entities.Regions.Zimbabwe)
+                        amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate;
+                    else
+                        amount = booking.Price * bookingUser.Ratio;
+
                     transaction = new Entities.Transaction
                     {
-                        Amount = booking.Price * bookingUser.Ratio * Entities.Journal.CurrentRate,
+                        Amount = amount,
                         Currency = booking.Listing.Region.Currency,
                         Booking = booking,
                         BookingUser = bookingUser,
