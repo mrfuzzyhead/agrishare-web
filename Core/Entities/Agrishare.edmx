@@ -1603,11 +1603,9 @@
           <NavigationProperty Name="Supplier" Relationship="AgrishareModel.users_ibfk_3" FromRole="User" ToRole="Supplier" />
           <NavigationProperty Name="UserVouchers" Relationship="AgrishareModel.uservouchers_ibfk_1" FromRole="User" ToRole="UserVoucher" />
           <Property Name="AgentName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="ReferredBy" Type="Int32" />
+          <Property Name="ReferredById" Type="Int32" />
           <Property Name="ReferralCount" Type="Int32" Nullable="false" />
           <Property Name="ReferralCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Users1" Relationship="AgrishareModel.users_ibfk_4" FromRole="User" ToRole="User1" />
-          <NavigationProperty Name="User1" Relationship="AgrishareModel.users_ibfk_4" FromRole="User1" ToRole="User" />
         </EntityType>
         <Association Name="bookings_ibfk_1">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -2902,7 +2900,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="User1">
-              <PropertyRef Name="ReferredBy" />
+              <PropertyRef Name="ReferredById" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3143,7 +3141,7 @@
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="ReferralCode" ColumnName="ReferralCode" />
                 <ScalarProperty Name="ReferralCount" ColumnName="ReferralCount" />
-                <ScalarProperty Name="ReferredBy" ColumnName="ReferredBy" />
+                <ScalarProperty Name="ReferredById" ColumnName="ReferredBy" />
                 <ScalarProperty Name="AgentName" ColumnName="AgentName" />
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="FailedVoucherAttempts" ColumnName="FailedVoucherAttempts" />
