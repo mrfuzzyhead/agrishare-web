@@ -24,5 +24,8 @@ namespace Agrishare.API.Models
 
         public int? RegionId { get; set; }
 
+        public string AgentName { get; set; }
+        public string ReferralCode { get; set; }
+
     }
 }
