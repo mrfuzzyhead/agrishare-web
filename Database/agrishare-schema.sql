@@ -330,6 +330,7 @@ CREATE TABLE `Listings` (
   `ColloquialArea` varchar(256) DEFAULT NULL,
   `AdministrativeAreaLevel1` varchar(256) DEFAULT NULL,
   `Country` varchar(256) DEFAULT NULL,
+  `Verified` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `CategoryId` (`CategoryId`),
