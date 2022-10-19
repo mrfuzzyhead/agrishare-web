@@ -263,6 +263,7 @@
           <Property Name="ColloquialArea" Type="varchar" MaxLength="256" />
           <Property Name="AdministrativeAreaLevel1" Type="varchar" MaxLength="256" />
           <Property Name="Country" Type="varchar" MaxLength="256" />
+          <Property Name="Verified" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1477,6 +1478,7 @@
           <Property Name="ColloquialArea" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="AdministrativeAreaLevel1" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Country" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="VerifiedDate" Type="DateTime" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -3019,6 +3021,7 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
+                <ScalarProperty Name="VerifiedDate" ColumnName="Verified" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="AdministrativeAreaLevel1" ColumnName="AdministrativeAreaLevel1" />
                 <ScalarProperty Name="ColloquialArea" ColumnName="ColloquialArea" />

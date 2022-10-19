@@ -185,7 +185,8 @@ namespace Agrishare.Core.Entities
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
-            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
+            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, 
+            int LandRegion = 0, bool ShowVerified = false)
         {
             if (CategoryId == Category.LabourId || CategoryId == Category.LandId || CategoryId == Category.IrrigationId)
                 ServiceId = CategoryId;
@@ -350,6 +351,10 @@ namespace Agrishare.Core.Entities
 
                 if (ListingId > 0)
                     sql.AppendLine($"AND Listings.Id = {ListingId}");
+
+                // verified
+                if (ShowVerified)
+                    sql.AppendLine("AND Listings.Verified IS NOT NULL");
 
                 if (!string.IsNullOrEmpty(Keywords))
                     sql.AppendLine($@"AND Listings.Title LIKE '%{Keywords.SqlSafe()}%'");

@@ -205,6 +205,22 @@ namespace Agrishare.API.Controllers.CMS
             return Error("An unknown error occurred");
         }
 
+        [Route("listings/verified/toggle")]
+        [AcceptVerbs("GET")]
+        public object ToggleVerified(int Id)
+        {
+            var listing = Entities.Listing.Find(Id: Id);
+            if (listing?.Id == 0)
+                return Error("Listing not found");
+
+            listing.VerifiedDate = listing.Verified ? (DateTime?)null : DateTime.Now;
+
+            if (listing.Save())
+                return Find(Id);
+
+            return Error("An unknown error occurred");
+        }
+
         /* Deleted */
 
         [Route("listings/deleted/list")]

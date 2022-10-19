@@ -89,8 +89,10 @@
                         <small>{{item.Category.Title}}</small>
                         <small ng-if="item.Brand">&bull; {{item.Brand}}</small>
                     </div>
-                    <div>
+                    <div class="status">
                         <em class="status outline">{{item.Status}}</em>
+                        <em class="status outline" ng-if="item.Verified">Verified</em><br />
+                        <small ng-if="item.Verified">{{item.VerifiedDate | date:'d MMMM yyyy'}}</small>
                     </div>
                     <div class="trending">
                         <i class="material-icons" ng-click="list.async($index, app.apiUrl + '/cms/listings/trending/toggle?id='+item.Id)" ng-class="{'active':item.Trending}">trending_up</i>
