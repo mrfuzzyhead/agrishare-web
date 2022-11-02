@@ -55,11 +55,11 @@
     </div>
 
     <div class="social">
-        <div>
+        <%--<div>
             <a class="twitter-timeline" href="https://twitter.com/agri_share?ref_src=twsrc%5Etfw">Tweets by agri_share</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </div>
-        <div>
-            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAgriShareZim%2F&tabs=timeline&width=480&height=4000&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=146461798748713" width="480" height="4000" data-adapt-container-width="true" style="border:none;overflow:hidden; width: 100% !important;" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+        </div>--%>
+        <div style="text-align:center">
+            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAgriShareZim%2F&tabs=timeline&width=480&height=4000&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=146461798748713" width="480" height="4000" data-adapt-container-width="true" style="border:none;overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
         </div>
     </div>
 

@@ -1372,7 +1372,7 @@
           <Property Name="IMTT" Type="Decimal" Nullable="false" />
           <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
           <Property Name="ReceiptPhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
+          <Property Name="PaymentMethodId" Type="AgrishareModel.PaymentMethod" Nullable="false" />
           <Property Name="VoucherId" Type="Int32" />
           <Property Name="VoucherTotal" Type="Decimal" Nullable="false" />
           <Property Name="PaymentStatusId" Type="Int16" Nullable="false" />
@@ -2200,6 +2200,7 @@
           <Member Name="Cancelled" Value="5" />
           <Member Name="Incomplete" Value="6" />
           <Member Name="Paid" Value="7" />
+          <Member Name="AwaitingPayment" Value="8" />
         </EnumType>
         <EnumType Name="BookingUserStatus" UnderlyingType="Int16">
           <Member Name="Pending" Value="0" />
@@ -2906,6 +2907,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="PaymentMethod" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="MobileMoney" Value="1" />
+          <Member Name="Cash" Value="2" />
+          <Member Name="BankTransfer" Value="3" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

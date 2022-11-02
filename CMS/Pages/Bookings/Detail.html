@@ -121,7 +121,7 @@
                     </li>
                 </ul>
 
-                <div ng-if="[1,7].includes(detail.entity.StatusId)" class="booking-payment-form">
+                <div ng-if="[8].includes(detail.entity.StatusId)" class="booking-payment-form">
                     <div flex>
                         <gl-dropdown-list gl-placeholder="Currency" ng-model="detail.data.Payment.Currency" gl-required="true" gl-source="detail.data.Currencies" gl-selection="Id"></gl-dropdown-list>
                         <gl-textbox gl-placeholder="Amount" ng-model="detail.data.Payment.Amount" gl-required="true" gl-type="number"></gl-textbox>

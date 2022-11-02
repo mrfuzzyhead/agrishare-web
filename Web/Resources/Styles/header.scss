@@ -19,23 +19,6 @@ header {
     }
 
     > div:first-child {
-        border-right: solid 1px white;
-        padding-right: 20px;
-
-        @media all and (max-width: $mobile-breakpoint) {
-            padding-right: 10px;
-        }
-
-        img {
-            width: 100px;
-
-            @media all and (max-width: $mobile-breakpoint) {
-                width: 50px;
-            }
-        }
-    }
-
-    > div:nth-child(2) {
         padding-left: 20px;
 
         @media all and (max-width: $mobile-breakpoint) {

@@ -87,6 +87,28 @@ namespace Agrishare.API.Controllers.App
             return Error("An unknown error occurred");
         }
 
+        [Route("bookings/cash")]
+        [AcceptVerbs("GET")]
+        public object CashBooking(int BookingId)
+        {
+            var booking = Entities.Booking.Find(Id: BookingId);
+            if (booking == null || booking.UserId != CurrentUser.Id)
+                return Error("Booking not found");
+
+            if (booking.StatusId == Entities.BookingStatus.AwaitingPayment)
+                return Error("This booking has already been updated");
+
+            booking.StatusId = Entities.BookingStatus.AwaitingPayment;
+            booking.PaymentMethodId = Entities.PaymentMethod.Cash;
+
+            if (booking.Save())
+            {
+                return BookingDetail(BookingId);
+            }
+
+            return Error("An unknown error occurred");
+        }
+
         [Route("bookings/confirm")]
         [AcceptVerbs("GET")]
         public object ConfirmBooking(int BookingId)
