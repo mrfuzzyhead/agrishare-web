@@ -222,9 +222,13 @@
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="CurrencyAmount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Currency" Type="smallint" Nullable="false" />
+          <Property Name="AgrishareCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
+          <Property Name="Gateway" Type="smallint" Nullable="false" />
+          <Property Name="ReceiptNo" Type="varchar" MaxLength="64" />
           <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -2340,6 +2344,10 @@
           <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
+          <Property Name="Gateway" Type="AgrishareModel.PaymentGateway" Nullable="false" />
+          <Property Name="ReceiptNo" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AgrishareCommission" Type="Decimal" Nullable="false" />
+          <Property Name="AgentCommission" Type="Decimal" Nullable="false" />
         </EntityType>
         <Association Name="journals_ibfk_2">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2894,6 +2902,7 @@
           <Member Name="EcoCashZimbabwe" Value="1" />
           <Member Name="AirtelUganda" Value="2" />
           <Member Name="MTNUganda" Value="3" />
+          <Member Name="Cash" Value="4" />
         </EnumType>
         <Association Name="users_ibfk_4">
           <End Type="AgrishareModel.User" Role="User" Multiplicity="0..1" />
@@ -3281,6 +3290,10 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="AgentCommission" ColumnName="AgentCommission" />
+                <ScalarProperty Name="AgrishareCommission" ColumnName="AgrishareCommission" />
+                <ScalarProperty Name="ReceiptNo" ColumnName="ReceiptNo" />
+                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />

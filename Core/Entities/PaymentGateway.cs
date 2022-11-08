@@ -16,6 +16,7 @@ namespace Agrishare.Core.Entities
         None = 0,
         EcoCashZimbabwe = 1,
         AirtelUganda = 2,
-        MTNUganda = 3
+        MTNUganda = 3,
+        Cash = 4
     }
 }

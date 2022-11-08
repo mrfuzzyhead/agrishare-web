@@ -370,7 +370,7 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("bookings/paid")]
         [AcceptVerbs("GET")]
-        public object BookingPaid(int Id, Currency Currency, decimal Amount)
+        public object BookingPaid(int Id, Currency Currency, decimal Amount, string ReceiptNo)
         {
             var booking = Booking.Find(Id: Id);
             if (booking == null || booking.Id == 0)
@@ -386,6 +386,8 @@ namespace Agrishare.API.Controllers.CMS
                 if (booking.Listing.Region.Id == (int)Regions.Zimbabwe && Currency == Currency.ZWL)
                     rate = Amount / booking.Price;
 
+                var agent = Agent.Find(booking.User?.AgentId ?? 0);
+
                 new Journal
                 {
                     Amount = booking.Price,
@@ -398,7 +400,11 @@ namespace Agrishare.API.Controllers.CMS
                     TypeId = JournalType.Payment,
                     CurrencyAmount = Amount,
                     Currency = Currency,
-                    UserId = booking.UserId
+                    UserId = booking.UserId,
+                    Gateway = PaymentGateway.Cash,
+                    ReceiptNo = ReceiptNo,
+                    AgrishareCommission = Transaction.AgriShareCommission,
+                    AgentCommission = agent?.Commission ?? 0
                 }.Save();
 
                 var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);
