@@ -112,7 +112,7 @@
                     </li>
                     <li>
                         <strong>Referral Count</strong>
-                        <span>{{detail.entity.ReferralCount | number}}</span>
+                        <span><a href="#/users/list/filter/referredby/{{detail.entity.Id}}?{{app.returnUrlQs()}}">{{detail.entity.ReferralCount | number}}</a></span>
                     </li>
                 </ul>
             </div>
