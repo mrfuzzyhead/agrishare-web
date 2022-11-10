@@ -11,10 +11,29 @@ namespace Tools
     {
         static void Main(string[] args)
         {
+            UpdateReferrals();
+        }
+
+        private static void UpdateReferrals()
+        {
+            Console.WriteLine("--Updating Users--");
+
+            var list = Agrishare.Core.Entities.User.List();
+            foreach (var user in list)
+            {
+                Agrishare.Core.Entities.User.UpdateReferralCount(user.Id);
+                Console.WriteLine(user.Title);
+            }
+
+            Console.WriteLine($"--Processed {list.Count} users--");
+        }
+
+        private static void UpdateDeviceSubscriptions()
+        {
             Console.WriteLine("Processing device subscriptions");
 
             var list = Agrishare.Core.Entities.Device.List();
-            foreach(var device in list)
+            foreach (var device in list)
             {
                 if (string.IsNullOrEmpty(device.EndpointARN))
                 {
@@ -27,7 +46,7 @@ namespace Tools
                     Console.WriteLine($"{device.User.Title} - skipping - already subscribed");
                     continue;
                 }
-                
+
                 Console.WriteLine($"{device.User.Title} - subscribing to topic...");
                 if (SNS.SubscribeToBulkTopic(device.EndpointARN, out var arn))
                 {

@@ -197,7 +197,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(e => e.SupplierId == SupplierId);
 
                 if (ReferredById > 0)
-                    query = query.Where(e => e.ReferredById == ReferredById);
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -254,7 +254,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(e => e.RegionId == RegionId);
 
                 if (ReferredById > 0)
-                    query = query.Where(e => e.ReferredById == ReferredById);
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.Count();
             }
@@ -433,7 +433,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.RegionId == RegionId);
 
                 if (ReferredById > 0)
-                    query = query.Where(e => e.ReferredById == ReferredById);
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.Count();
             }
@@ -577,7 +577,7 @@ namespace Agrishare.Core.Entities
                     query = query.Where(o => o.RegionId == RegionId);
 
                 if (ReferredById > 0)
-                    query = query.Where(e => e.ReferredById == ReferredById);
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -824,6 +824,17 @@ namespace Agrishare.Core.Entities
                     ctx.Entry(user).State = EntityState.Deleted;
                 return ctx.SaveChanges();
             }
+        }
+
+        public static void UpdateReferralCount(int UserId)
+        {
+            var sql = $@"
+                UPDATE users 
+                INNER JOIN (SELECT COUNT(Id) AS Val FROM users WHERE ReferredBy = {UserId}) AS Counter
+                SET ReferralCount = Counter.Val
+                WHERE Id = {UserId}";
+            using (var ctx = new AgrishareEntities())
+                ctx.Database.ExecuteSqlCommand(sql);
         }
 
         #region Authorisation

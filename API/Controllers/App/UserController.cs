@@ -110,11 +110,12 @@ namespace Agrishare.API.Controllers.App
                     }
                 }
 
-                if (referredBy != null)
-                {
-                    referredBy.ReferralCount += 1;
-                    referredBy.Save();
-                }
+                // Only update the referral count when the user is verified
+                //if (referredBy != null)
+                //{
+                //    referredBy.ReferralCount += 1;
+                //    referredBy.Save();
+                //}
 
                 return Success(new
                 {
@@ -143,6 +144,9 @@ namespace Agrishare.API.Controllers.App
                 user.StatusId = Entities.UserStatus.Verified;
                 user.AuthToken = Guid.NewGuid().ToString();
                 user.Save();
+
+                if (user.ReferredById.HasValue)
+                    Entities.User.UpdateReferralCount(user.ReferredById.Value);
 
                 return new
                 {
