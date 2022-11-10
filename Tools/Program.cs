@@ -21,8 +21,11 @@ namespace Tools
             var list = Agrishare.Core.Entities.User.List();
             foreach (var user in list)
             {
-                Agrishare.Core.Entities.User.UpdateReferralCount(user.Id);
-                Console.WriteLine(user.Title);
+                if (user.ReferralCount > 0)
+                {
+                    Agrishare.Core.Entities.User.UpdateReferralCount(user.Id);
+                    Console.WriteLine(user.Title);
+                }
             }
 
             Console.WriteLine($"--Processed {list.Count} users--");
