@@ -830,7 +830,7 @@ namespace Agrishare.Core.Entities
         {
             var sql = $@"
                 UPDATE users 
-                INNER JOIN (SELECT COUNT(Id) AS Val FROM users WHERE ReferredBy = {UserId}) AS Counter
+                INNER JOIN (SELECT COUNT(Id) AS Val FROM users WHERE ReferredBy = {UserId} AND StatusId = 2) AS Counter
                 SET ReferralCount = Counter.Val
                 WHERE Id = {UserId}";
             using (var ctx = new AgrishareEntities())
