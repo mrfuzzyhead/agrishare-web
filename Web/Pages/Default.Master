@@ -28,6 +28,11 @@
         <header>
             <div>     
                 <a href="/">
+                    <img src="/Resources/Images/Logo.svg" />
+                </a>
+            </div>
+            <div>
+                <a href="/">
                     <strong>AgriShare</strong>
                     <small>Connecting you to farm resources</small>
                 </a>

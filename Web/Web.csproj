@@ -181,6 +181,7 @@
     <Content Include="Resources\Images\Irrigation.svg" />
     <Content Include="Resources\Images\Labour.svg" />
     <Content Include="Resources\Images\Land.svg" />
+    <Content Include="Resources\Images\Logo.svg" />
     <Content Include="Resources\Images\Lorry.svg" />
     <Content Include="Resources\Images\Phinneas.jpg" />
     <Content Include="Resources\Images\Processing.svg" />
