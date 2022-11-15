@@ -19,7 +19,7 @@ namespace Tools
         {
             Console.WriteLine("--Cleaning Users--");
 
-            var list = Agrishare.Core.Entities.User.List();
+            var list = Agrishare.Core.Entities.User.List(Deleted: true);
             foreach (var user in list)
             {
                 // check if user has been deleted
