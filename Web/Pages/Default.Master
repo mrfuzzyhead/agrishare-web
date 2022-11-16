@@ -25,7 +25,7 @@
 
         <header>
             <div>
-                <a href="/"><img src="/Resources/Images/WHH-Logo.svg" title="Welthungerhilfe" /></a>
+                <a href="/"><img src="/Resources/Images/Logo.svg" title="Agrishare" /></a>
             </div>
             <div>     
                 <a href="/">
@@ -61,7 +61,7 @@
             </ul>
             <div>
                 <p>                
-                    &copy; Copyright <%=DateTime.Now.Year %> <a href="https://www.welthungerhilfe.org/">Welthungerhilfe</a>. All rights reserved.
+                    &copy; Copyright <%=DateTime.Now.Year %> AgriShare. All rights reserved.
                 </p>
                 <p>
                     <span>Digital solution by</span> <a href="https://www.c2.co.zw/"><img src="/Resources/Images/C2-Logo.svg" title="C2 Digital" /></a>
