@@ -22,6 +22,9 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            if (CurrentUser.StatusId != Entities.UserStatus.Verified)
+                return Error("Please download the latest app update and verify your account to make a booking");
+
             var service = Entities.Service.Find(Id: Model.ServiceId);
             if (service == null)
                 return Error("Invalid service selected");

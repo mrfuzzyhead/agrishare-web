@@ -32,6 +32,14 @@
             <div class="box">
                 <h2>Contact Details</h2>
                 <ul class="details">
+                    <li>
+                        <strong>Status</strong>
+                        <span>{{detail.entity.Status}}</span>
+                    </li>
+                    <li ng-if="detail.entity.StatusId!==2">
+                        <strong>OTP Requests</strong>
+                        <span>{{detail.entity.OtpRequests}}</span>
+                    </li>
                     <li ng-show="detail.entity.Telephone">
                         <strong>Telephone</strong>
                         <span><gl-autolink gl-type="tel" ng-model="detail.entity.Telephone"></gl-autolink></span>
@@ -41,6 +49,9 @@
                         <span><gl-autolink gl-type="mail" ng-model="detail.entity.EmailAddress"></gl-autolink></span>
                     </li>
                 </ul>
+                <div style="background: #eee; padding: 20px; text-align: right" ng-if="detail.entity.StatusId!==2">
+                    <gl-icon-button gl-icon="check" class="border" ng-click="detail.async('/cms/users/verify?id='+detail.entity.Id)">Verify Account</gl-icon-button>
+                </div>
             </div>
 
             <div class="box">
@@ -129,6 +140,11 @@
                         <strong>Failed Voucher Count</strong>
                         <span>{{detail.entity.FailedVoucherAttempts}}</span>
                         <i class="material-icons" ng-click="detail.async('/cms/users/failedvoucherattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
+                    </li>
+                    <li>
+                        <strong>Failed OTP Count</strong>
+                        <span>{{detail.entity.FailedOtpAttempts}}</span>
+                        <i class="material-icons" ng-click="detail.async('/cms/users/failedotpattempts/reset?id='+detail.entity.Id)" style="cursor: pointer">refresh</i>
                     </li>
                 </ul>
             </div>

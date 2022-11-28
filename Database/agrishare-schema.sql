@@ -639,6 +639,8 @@ CREATE TABLE `Users` (
   `AuthToken` varchar(1024) DEFAULT NULL,
   `FailedLoginAttempts` int(11) NOT NULL DEFAULT '0',
   `FailedVoucherAttempts` int(11) NOT NULL DEFAULT '0',
+  `FailedOtpAttempts` int(11) NOT NULL DEFAULT '0',
+  `OtpRequests` int(11) NOT NULL DEFAULT '0',
   `VerificationCode` varchar(8) DEFAULT NULL,
   `VerificationCodeExpiry` datetime DEFAULT NULL,
   `NotificationPreferences` smallint(6) NOT NULL DEFAULT '0',

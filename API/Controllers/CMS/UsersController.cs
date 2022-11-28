@@ -244,6 +244,28 @@ namespace Agrishare.API.Controllers.CMS
             return Error();
         }
 
+        [Route("users/failedotpattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedOtpAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedOtpAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
+        [Route("users/verify")]
+        [AcceptVerbs("GET")]
+        public object VerifyAccount(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.StatusId = UserStatus.Verified;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
         /* Password */
 
         [Route("users/password/find")]
