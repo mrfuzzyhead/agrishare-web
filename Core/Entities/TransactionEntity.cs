@@ -467,7 +467,7 @@ namespace Agrishare.Core.Entities
                     var client = new RestClient($"{MTNUrl}/collection/v1_0/requesttopay/{ServerReference}");
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("Cache-Control", "no-cache");
-                    request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+                    request.AddHeader("Authorization", $"Bearer {MTNAccessToken}");
                     request.AddHeader("X-Target-Environment", MTNEnvironment);
                     request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
 
