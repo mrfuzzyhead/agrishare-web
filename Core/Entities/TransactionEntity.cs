@@ -432,6 +432,8 @@ namespace Agrishare.Core.Entities
                     Error = response.Data["message"].ToString();
                     Save();
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
