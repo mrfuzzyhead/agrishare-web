@@ -98,7 +98,7 @@ namespace Agrishare.API
             var isCMS = HttpContext.Current.Request.Path.StartsWith("/cms/");
             var isPolling = HttpContext.Current.Request.Path.StartsWith("/transactions/ecocash/poll") || HttpContext.Current.Request.Path.StartsWith("/transactions/poll");
 
-            if (LogAPI && !isCMS)
+            if (LogAPI && !isCMS && !isPolling)
             {
                 new Log
                 {

@@ -45,6 +45,7 @@ agrishareApp.factory('App', function ($location, Utils) {
                     { title: "Suppliers", url: "#/suppliers/list", roles: 'Administrator' },
                     { title: "Tags", url: "#/tags/list", roles: 'Administrator' },
                     { title: "Templates", url: "#/templates/list", roles: 'Administrator' },
+                    { title: "Transactions", url: "#/transactions/list", roles: 'Administrator' },
                     { title: "Transaction Fees", url: "#/transactionfees/list", roles: 'Administrator' },
                     { title: "Vouchers", url: "#/vouchers/list", roles: 'Administrator' }
                 ]

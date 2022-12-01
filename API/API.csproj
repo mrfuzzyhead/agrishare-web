@@ -183,6 +183,7 @@
     <Compile Include="Controllers\CMS\RegionsController.cs" />
     <Compile Include="Controllers\CMS\SuppliersController.cs" />
     <Compile Include="Controllers\CMS\TagsController.cs" />
+    <Compile Include="Controllers\CMS\TransactionsController.cs" />
     <Compile Include="Controllers\CMS\TransactionFeeController.cs" />
     <Compile Include="Controllers\CMS\AgentsController.cs" />
     <Compile Include="Controllers\CMS\JournalsController.cs" />
