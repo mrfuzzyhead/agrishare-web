@@ -1,0 +1,67 @@
+﻿
+<div ng-controller="DetailViewController" ag-title="Transaction" ag-selected-url="#/transactions/list" ag-api-route="/cms/transactions/">
+
+    <ag-title-bar></ag-title-bar>
+
+    <ag-section ag-controller="detail">
+
+        <div class="detail-view">
+
+            <div class="box">
+
+                <div class="header">
+                    <div>
+                        <strong>{{detail.entity.BookingUser.Name}}</strong><br />
+                        <small>Booking #{{detail.entity.BookingId}}</small>
+                    </div>
+                </div>
+
+                <ul class="details">
+                    <li>
+                        <strong>Date</strong>
+                        <span>{{detail.entity.DateCreated | date:'d MMMM yyyy h:mma'}}</span>
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        <span>{{detail.entity.Amount | currency:detail.entity.CurrencyCode}}</span>
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span>
+                            <em class="status">{{detail.entity.Status}}</em>
+                        </span>
+                    </li>
+                    <li ng-if="detail.entity.Error">
+                        <strong>Error</strong>
+                        <span>{{detail.entity.Error}}</span>
+                    </li>
+                    <li>
+                        <strong>Gateway</strong>
+                        <span>{{detail.entity.GatewayName}}</span>
+                    </li>
+                    <li>
+                        <strong>Server Reference</strong>
+                        <span>{{detail.entity.ServerReference || '-'}}</span>
+                    </li>
+                    <li>
+                        <strong>Gateway Reference</strong>
+                        <span>{{detail.entity.EcoCashReference || '-'}}</span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="box" ng-if="detail.entity.Log">
+                <h2>Log</h2>
+                <div class="padded">
+                    <pre>{{detail.entity.Log}}</pre>
+                </div>
+            </div>
+
+        </div>
+
+</ag-section>
+
+    <ag-status-bar></ag-status-bar>
+
+</div>
