@@ -95,9 +95,12 @@ namespace Agrishare.API
 
         public object Success(object ResponseData = null)
         {
-            if (LogAPI && !HttpContext.Current.Request.Path.StartsWith("/cms/") && !HttpContext.Current.Request.Path.StartsWith("/transactions/ecocash/poll"))
+            var isCMS = HttpContext.Current.Request.Path.StartsWith("/cms/");
+            var isPolling = HttpContext.Current.Request.Path.StartsWith("/transactions/ecocash/poll") || HttpContext.Current.Request.Path.StartsWith("/transactions/poll");
+
+            if (LogAPI && !isCMS && !isPolling)
             {
-                new Entities.Log
+                new Log
                 {
                     Description = Log(JsonConvert.SerializeObject(ResponseData)),
                     LevelId = Entities.LogLevel.Log,

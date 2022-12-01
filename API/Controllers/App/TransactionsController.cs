@@ -16,9 +16,7 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("POST")]
         public object MtnNotification(MtnCallbackModel Model)
         {
-            if (Model.status == "SUCCESSFUL")
-                Entities.Transaction.Find(Id: Model.externalId).RequestStatus();
-
+            Entities.Transaction.Find(Id: Model.externalId).RequestStatus();
             return Success(Model);
         }
 
@@ -203,8 +201,12 @@ namespace Agrishare.API.Controllers.App
             if (booking == null || booking.UserId != CurrentUser.Id)
                 return Error("Transaction not found");
 
-            var transactions = Entities.Transaction.List(BookingId: booking.Id).Where(e => e.StatusId != Entities.TransactionStatus.Error);
-            if (transactions.Count() == 0)
+            var transactions = Entities.Transaction
+                .List(BookingId: booking.Id)
+                .Where(e => e.StatusId != Entities.TransactionStatus.Error)
+                .ToList();
+
+            if (transactions.Count == 0)
                 return Error("There are no transactions for this booking");
 
             foreach (var transaction in transactions)
@@ -219,7 +221,10 @@ namespace Agrishare.API.Controllers.App
                 return Success("Payment complete");
 
             // NB assumes there is only one transaction required per booking (no more group users)
-            var lastTransaction = transactions.OrderByDescending(e => e.DateCreated).First();
+            var lastTransaction = transactions.FirstOrDefault();
+            if (lastTransaction == null)
+                return Error("Transaction not found!");
+
             if (lastTransaction.StatusId == Entities.TransactionStatus.PendingSubscriberValidation)
                 return Success(new
                 {

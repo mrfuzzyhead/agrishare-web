@@ -16,8 +16,8 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object List(int PageIndex = 0, int PageSize = 25, string Query = "")
         {
-            var recordCount = Entities.TransactionFee.Count();
-            var list = Entities.TransactionFee.List(PageIndex: PageIndex, PageSize: PageSize);
+            var recordCount = TransactionFee.Count();
+            var list = TransactionFee.List(PageIndex: PageIndex, PageSize: PageSize);
 
             var data = new
             {
@@ -34,7 +34,7 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Find(int Id = 0)
         {
-            var transactionfee = Entities.TransactionFee.Find(Id: Id);
+            var transactionfee = TransactionFee.Find(Id: Id);
 
             var data = new
             {
@@ -47,7 +47,7 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("transactionfees/save")]
         [AcceptVerbs("POST")]
-        public object Save(Entities.TransactionFee TransactionFee)
+        public object Save(TransactionFee TransactionFee)
         {
             if (!ModelState.IsValid)
                 return Error(ModelState);
@@ -65,7 +65,7 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object Delete(int Id)
         {
-            var transactionfees = Entities.User.Find(Id: Id);
+            var transactionfees = TransactionFee.Find(Id: Id);
 
             if (transactionfees.Delete())
                 return Success(new
