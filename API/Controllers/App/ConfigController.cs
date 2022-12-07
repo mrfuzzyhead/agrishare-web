@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Entities = Agrishare.Core.Entities;
 
 namespace Agrishare.API.Controllers.App
@@ -14,6 +12,16 @@ namespace Agrishare.API.Controllers.App
             return Success(new
             {
                 Version = Entities.Config.Find(Key: "App Version")?.Value ?? "1.0.0"
+            });
+        }
+
+        [Route("config/contactdetails")]
+        [AcceptVerbs("GET")]
+        public object ContactDetails()
+        {
+            return Success(new
+            {
+                Text = Entities.Config.Find(Key: "Contact Details")?.Value
             });
         }
     }
