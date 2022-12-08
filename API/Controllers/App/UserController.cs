@@ -50,10 +50,9 @@ namespace Agrishare.API.Controllers.App
                 AgentName = User.AgentName
             };
 
-            Entities.User referredBy = null;
             if (!string.IsNullOrEmpty(User.ReferralCode))
             {
-                referredBy = Entities.User.Find(ReferralCode: User.ReferralCode);
+                User referredBy = Entities.User.Find(ReferralCode: User.ReferralCode);
                 if (referredBy != null && referredBy.Id > 0)
                     user.ReferredById = referredBy.Id;
                 else
@@ -84,38 +83,12 @@ namespace Agrishare.API.Controllers.App
             user.RoleList = $"{Role.User}";
             user.NotificationPreferences = (int)Entities.NotificationPreferences.PushNotifications + (int)Entities.NotificationPreferences.SMS + (int)Entities.NotificationPreferences.BulkSMS;
             user.StatusId = UserStatus.Pending;
-
-            if (!Entities.User.VerificationRequired)
-            {
-                user.StatusId = UserStatus.Verified;
-                if (user.AuthToken.IsEmpty())
-                    user.AuthToken = Guid.NewGuid().ToString();
-            }
-            else
-            {
-                user.StatusId = UserStatus.Pending;
-                user.AuthToken = string.Empty;
-            }
+            if (user.AuthToken.IsEmpty())
+                user.AuthToken = Guid.NewGuid().ToString();
 
             if (user.Save())
             {
                 Counter.Hit(CurrentUser.Id, Counters.Register);
-
-                if (Entities.User.VerificationRequired)
-                {
-                    if (!user.SendVerificationCode())
-                    {
-                        user.Delete();
-                        return Error("Unable to send verification code - please try again");
-                    }
-                }
-
-                // Only update the referral count when the user is verified
-                //if (referredBy != null)
-                //{
-                //    referredBy.ReferralCount += 1;
-                //    referredBy.Save();
-                //}
 
                 return Success(new
                 {
