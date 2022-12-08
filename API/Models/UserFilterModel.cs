@@ -11,5 +11,6 @@ namespace Agrishare.API.Models
         public UserFilterView View { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public int ReferredBy { get; set; }
     }
 }

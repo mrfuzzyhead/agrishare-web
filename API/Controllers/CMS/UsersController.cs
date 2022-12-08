@@ -33,13 +33,13 @@ namespace Agrishare.API.Controllers.CMS
 
             if ((int)Filter.View > 10)
             {
-                recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
-                list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id);
+                recordCount = Entities.User.FilteredCount(FilterView: Filter.View, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id, ReferredById: Filter.ReferredBy);
+                list = Entities.User.FilteredList(FilterView: Filter.View, PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, FilterStartDate: Filter.StartDate, FilterEndDate: Filter.EndDate, RegionId: CurrentRegion.Id, ReferredById: Filter.ReferredBy);
             }
             else
             {
-                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id, RegisterFromDate: Filter.StartDate, RegisterToDate: Filter.EndDate);
-                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id, RegisterFromDate: Filter.StartDate, RegisterToDate: Filter.EndDate);
+                recordCount = Entities.User.Count(Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id, RegisterFromDate: Filter.StartDate, RegisterToDate: Filter.EndDate, ReferredById: Filter.ReferredBy);
+                list = Entities.User.List(PageIndex: PageIndex, PageSize: PageSize, Keywords: Filter.Query, Gender: Filter.Gender, Agent: Filter.View == UserFilterView.Agent ? (bool?)true : null, Administrator: Filter.View == UserFilterView.Administrator ? (bool?)true : null, RegionId: CurrentRegion.Id, RegisterFromDate: Filter.StartDate, RegisterToDate: Filter.EndDate, ReferredById: Filter.ReferredBy);
             }
 
             int total = 0, active = 0, inactive = 0, male = 0, female = 0, deleted = 0, lockedout = 0, unverified = 0, totalAgents = 0, totalRegular = 0;

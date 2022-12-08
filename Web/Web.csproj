@@ -197,6 +197,7 @@
     <Content Include="Resources\Javascript\2. Angular\angular-1.5.8.min.js" />
     <Content Include="Resources\Javascript\3. App\app.js" />
     <Content Include="Resources\Javascript\moment.min.js" />
+    <Content Include="Resources\Styles\.fonts.css" />
     <Content Include="Resources\Styles\jquery.datepicker.min.css" />
     <Content Include="Resources\Styles\jquery.uploadifive.css" />
     <Content Include="Web.config" />
@@ -467,6 +468,18 @@
     <Content Include="Resources\Styles\blogs.scss" />
     <Content Include="Resources\Styles\cookies.scss" />
     <Content Include="Resources\Styles\message.scss" />
+    <Content Include="Resources\Fonts\MaterialIcons-Regular.woff" />
+    <Content Include="Resources\Fonts\MaterialIcons-Regular.woff2" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-300.woff" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-300.woff2" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-500.woff" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-500.woff2" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-700.woff" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-700.woff2" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-italic.woff" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-italic.woff2" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-regular.woff" />
+    <Content Include="Resources\Fonts\roboto-v27-latin-regular.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

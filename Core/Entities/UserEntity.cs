@@ -144,7 +144,7 @@ namespace Agrishare.Core.Entities
         public static List<User> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", string Keywords = "",
             string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
             bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? RegisterFromDate = null,
-            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0, int SupplierId = 0)
+            DateTime? RegisterToDate = null, bool? Agent = null, bool? Administrator = null, int RegionId = 0, int SupplierId = 0, int ReferredById = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -198,13 +198,16 @@ namespace Agrishare.Core.Entities
                 if (SupplierId > 0)
                     query = query.Where(e => e.SupplierId == SupplierId);
 
+                if (ReferredById > 0)
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
         public static int Count(string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
             bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, bool? Agent = null, DateTime? RegisterFromDate = null,
-            DateTime? RegisterToDate = null, bool? Administrator = null, int RegionId = 0)
+            DateTime? RegisterToDate = null, bool? Administrator = null, int RegionId = 0, int ReferredById = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -252,6 +255,9 @@ namespace Agrishare.Core.Entities
                 if (RegionId > 0)
                     query = query.Where(e => e.RegionId == RegionId);
 
+                if (ReferredById > 0)
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
+
                 return query.Count();
             }
         }
@@ -294,7 +300,7 @@ namespace Agrishare.Core.Entities
 
         public static int FilteredCount(UserFilterView FilterView, string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None,
             int FailedLoginAttempts = 0, bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
-            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null)
+            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null, int ReferredById = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -427,6 +433,9 @@ namespace Agrishare.Core.Entities
 
                 if (RegionId > 0)
                     query = query.Where(o => o.RegionId == RegionId);
+
+                if (ReferredById > 0)
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.Count();
             }
@@ -435,7 +444,7 @@ namespace Agrishare.Core.Entities
         public static List<User> FilteredList(UserFilterView FilterView, int PageIndex = 0, int PageSize = int.MaxValue,
             string Sort = "", string Keywords = "", string StartsWith = "", Gender Gender = Entities.Gender.None, int FailedLoginAttempts = 0,
             bool Deleted = false, int AgentId = 0, UserStatus Status = UserStatus.None, DateTime? FilterStartDate = null,
-            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null)
+            DateTime? FilterEndDate = null, int RegionId = 0, int? EquipmentCategoryId = null, bool? BulkSms = null, bool? BroadcastPush = null, int ReferredById = 0)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -568,6 +577,9 @@ namespace Agrishare.Core.Entities
 
                 if (RegionId > 0)
                     query = query.Where(o => o.RegionId == RegionId);
+
+                if (ReferredById > 0)
+                    query = query.Where(e => e.ReferredById == ReferredById && e.StatusId == UserStatus.Verified);
 
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
@@ -817,6 +829,17 @@ namespace Agrishare.Core.Entities
                     ctx.Entry(user).State = EntityState.Deleted;
                 return ctx.SaveChanges();
             }
+        }
+
+        public static void UpdateReferralCount(int UserId)
+        {
+            var sql = $@"
+                UPDATE users 
+                INNER JOIN (SELECT COUNT(Id) AS Val FROM users WHERE ReferredBy = {UserId} AND StatusId = 2) AS Counter
+                SET ReferralCount = Counter.Val
+                WHERE Id = {UserId}";
+            using (var ctx = new AgrishareEntities())
+                ctx.Database.ExecuteSqlCommand(sql);
         }
 
         #region Authorisation

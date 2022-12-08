@@ -36,7 +36,10 @@ namespace Agrishare.Core.Entities
 
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Transactions.Include(o => o.BookingUser).Where(o => !o.Deleted);
+                var query = ctx.Transactions
+                    .Include(o => o.BookingUser.User)
+                    .Include(o => o.Booking)
+                    .Where(o => !o.Deleted);
 
                 if (Id > 0)
                     query = query.Where(e => e.Id == Id);
@@ -54,7 +57,10 @@ namespace Agrishare.Core.Entities
         {
             using (var ctx = new AgrishareEntities())
             {
-                var query = ctx.Transactions.Include(o => o.BookingUser).Where(o => !o.Deleted);
+                var query = ctx.Transactions
+                    .Include(o => o.BookingUser.User)
+                    .Include(o => o.Booking)
+                    .Where(o => !o.Deleted);
 
                 if (BookingId > 0)
                     query = query.Where(o => o.BookingId == BookingId);
@@ -151,6 +157,7 @@ namespace Agrishare.Core.Entities
             {
                 Id,
                 BookingId,
+                Booking = Booking?.Title,
                 BookingUser = BookingUser?.Json(),
                 ServerReference,
                 EcoCashReference,
@@ -161,7 +168,30 @@ namespace Agrishare.Core.Entities
                 Status,
                 Error,
                 Gateway,
+                GatewayName = $"{Gateway}".ExplodeCamelCase(),
                 DateCreated
+            };
+        }
+        public object DetailJson()
+        {
+            return new
+            {
+                Id,
+                BookingId,
+                Booking = Booking?.Json(),
+                BookingUser = BookingUser?.Json(),
+                ServerReference,
+                EcoCashReference,
+                Amount,
+                Currency,
+                CurrencyCode = $"{Currency}",
+                StatusId,
+                Status,
+                Error,
+                Gateway,
+                GatewayName = $"{Gateway}".ExplodeCamelCase(),
+                DateCreated,
+                Log
             };
         }
 
@@ -351,7 +381,7 @@ namespace Agrishare.Core.Entities
 
                         var response = client.Execute<dynamic>(request);
 
-                        if (AirtelLog)
+                        if (MTNLog)
                             Entities.Log.Debug(
                                 "Transaction.MTNAccessToken",
                                 client.BaseUrl +
@@ -399,7 +429,6 @@ namespace Agrishare.Core.Entities
                 request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
                 request.AddHeader("X-Reference-Id", ServerReference);
                 request.AddHeader("X-Target-Environment", MTNEnvironment);
-                // TODO on production
                 request.AddHeader("X-Callback-Url", $"{Config.APIURL}/transactions/mtn/notify");
                 var body = new
                 {
@@ -409,7 +438,7 @@ namespace Agrishare.Core.Entities
                     payer = new
                     {
                         partyIdType = "MSISDN",
-                        partyId = SanitiseUgMobileNumber(BookingUser.Telephone)
+                        partyId = "256" + SanitiseUgMobileNumber(BookingUser.Telephone)
                     },
                     payerMessage = "Agrishare booking",
                     payerNote = Title
@@ -417,7 +446,7 @@ namespace Agrishare.Core.Entities
                 request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
                 var response = client.Execute<dynamic>(request);
 
-                if (AirtelLog)
+                if (MTNLog)
                     Entities.Log.Debug(
                         "Transaction.RequestMtnPayment",
                         client.BaseUrl +
@@ -438,6 +467,8 @@ namespace Agrishare.Core.Entities
                     Error = response.Data["message"].ToString();
                     Save();
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -471,27 +502,43 @@ namespace Agrishare.Core.Entities
                     var client = new RestClient($"{MTNUrl}/collection/v1_0/requesttopay/{ServerReference}");
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("Cache-Control", "no-cache");
-                    request.AddHeader("Authorization", $"Bearer {AirtelAccessToken}");
+                    request.AddHeader("Authorization", $"Bearer {MTNAccessToken}");
                     request.AddHeader("X-Target-Environment", MTNEnvironment);
                     request.AddHeader("Ocp-Apim-Subscription-Key", MTNSubscriptionKey);
 
                     var response = client.Execute<dynamic>(request);
 
+                    if (MTNLog)
+                        Entities.Log.Debug(
+                            "Transaction.RequestMtnStatus",
+                            client.BaseUrl +
+                            Environment.NewLine +
+                            Environment.NewLine +
+                            JsonConvert.SerializeObject(response) +
+                            Environment.NewLine +
+                            Environment.NewLine);
+
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var status = response.Data["status"];
-                        var reason_message = response.Data["reason"]["message"];
-                        var financial_transaction_id = response.Data["financial_transaction_id"];
 
                         if (status == "SUCCESSFUL")
                         {
                             StatusId = TransactionStatus.Completed;
-                            EcoCashReference = financial_transaction_id;
+                            try
+                            {
+                                EcoCashReference = response.Data["financial_transaction_id"];
+                            }
+                            catch { }
                         }
                         else if (status == "FAILED")
                         {
-                            Error = reason_message;
                             StatusId = TransactionStatus.Error;
+                            try
+                            {
+                                Error = response.Data["reason"];
+                            }
+                            catch { }
                         }
                     }
                     else

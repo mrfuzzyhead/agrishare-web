@@ -1,0 +1,52 @@
+﻿
+<div ng-controller="ListViewController" ag-title="Agents" ag-selected-url="#/transactions/list" ag-api-route="/cms/transactions/">
+
+    <ag-title-bar>
+
+        <ag-title-bar-search ag-controller="list"></ag-title-bar-search>
+
+        <gl-popup-menu gl-position="top right" class="responsive">
+            <gl-menu-item gl-icon="add" ng-click="app.go('/transactionfees/edit?'+app.returnUrlQs())">Add</gl-menu-item>
+            <gl-menu-item gl-icon="refresh" gl-label-optional="true" ng-click="list.refresh()">Refresh</gl-menu-item>
+        </gl-popup-menu>
+
+    </ag-title-bar>
+
+    <ag-section ag-controller="list">
+
+        <gl-list gl-controller="list" gl-infinite="list.next()">
+            <div ng-repeat="item in list.data">
+                <icon>
+                    <i class="material-icons">credit_card</i>
+                </icon>
+                <row class="transactionfee" ng-click="app.go('/transactions/detail/'+item.Id+'?'+app.returnUrlQs())" flex>
+                    <div flex="1">
+                        <strong>{{item.BookingUser.User.Title}}</strong><br />
+                        <small>Booking #{{item.Booking}}</small>
+                    </div>
+                    <div style="text-align: right">
+                        <span>{{item.Amount | currency:item.CurrencyCode}}</span><br />
+                        <small>
+                            {{item.GatewayName}} &bull;
+                            <em class="status outline">{{item.Status}}</em>
+                        </small>
+                    </div>
+                    <div style="flex: 0 0 150px; text-align: right">
+                        {{item.DateCreated | date:'d MMMM yyyy'}}<br/>
+                        <small>{{item.DateCreated | date:'h:mma'}}</small>
+                    </div>
+                </row>
+                <action>
+                    <gl-popup-menu gl-position="top right">
+                        <gl-menu-item gl-icon="info" ng-click="app.go('/transactions/detail/'+item.Id+'?'+app.returnUrlQs())">View details</gl-menu-item>
+                        <gl-menu-item gl-icon="refresh" ng-click="list.async($index, app.apiUrl + '/cms/transactions/status?id=' + item.Id)">Check status</gl-menu-item>
+                    </gl-popup-menu>
+                </action>
+            </div>
+        </gl-list>
+
+    </ag-section>
+
+    <ag-status-bar></ag-status-bar>
+
+</div>
