@@ -22,6 +22,9 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            if (CurrentUser.StatusId != Entities.UserStatus.Verified)
+                return Error("Please download the latest app update and verify your account to make a booking");
+
             var service = Entities.Service.Find(Id: Model.ServiceId);
             if (service == null)
                 return Error("Invalid service selected");
@@ -82,6 +85,28 @@ namespace Agrishare.API.Controllers.App
                 {
                     Booking = booking.Json()
                 });
+            }
+
+            return Error("An unknown error occurred");
+        }
+
+        [Route("bookings/cash")]
+        [AcceptVerbs("GET")]
+        public object CashBooking(int BookingId)
+        {
+            var booking = Entities.Booking.Find(Id: BookingId);
+            if (booking == null || booking.UserId != CurrentUser.Id)
+                return Error("Booking not found");
+
+            if (booking.StatusId == Entities.BookingStatus.AwaitingPayment)
+                return Error("This booking has already been updated");
+
+            booking.StatusId = Entities.BookingStatus.AwaitingPayment;
+            booking.PaymentMethodId = Entities.PaymentMethod.Cash;
+
+            if (booking.Save())
+            {
+                return BookingDetail(BookingId);
             }
 
             return Error("An unknown error occurred");

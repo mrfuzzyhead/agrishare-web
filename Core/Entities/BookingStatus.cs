@@ -21,6 +21,7 @@ namespace Agrishare.Core.Entities
         None = -1,
         Cancelled = 5,
         Incomplete = 6,
-        Paid = 7
+        Paid = 7,
+        AwaitingPayment = 8
     }
 }

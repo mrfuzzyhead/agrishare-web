@@ -29,6 +29,10 @@ namespace Agrishare.Core.Entities
         public decimal CurrencyAmount { get; set; }
         public Currency Currency { get; set; }
         public System.DateTime Date { get; set; }
+        public PaymentGateway Gateway { get; set; }
+        public string ReceiptNo { get; set; }
+        public decimal AgrishareCommission { get; set; }
+        public decimal AgentCommission { get; set; }
     
         public virtual Booking Booking { get; set; }
         public virtual User User { get; set; }

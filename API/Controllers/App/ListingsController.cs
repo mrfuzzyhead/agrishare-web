@@ -59,6 +59,9 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
+            if (CurrentUser.StatusId != Entities.UserStatus.Verified)
+                return Error("Please download the latest app update and verify your account to add a listing");
+
             if (!Model.Latitude.HasValue || !Model.Longitude.HasValue)
                 return Error("Location is required");
 

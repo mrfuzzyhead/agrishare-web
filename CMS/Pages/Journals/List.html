@@ -29,8 +29,15 @@
                         <strong>{{item.Title}}</strong><br />
                         <small>
                             {{item.Type}}
-                            <span ng-if="item.Booking"> &bull; Booking #{{item.Booking.Title}}</span>
-                        </small>
+                            <span ng-if="item.TransactionId"> &bull; Booking #{{item.TransactionId}}</span>
+                            <span ng-if="item.Listing.Category"> &bull; {{item.Listing.Category}}</span>
+                        </small><br/>
+                                <small ng-if="item.Listing.Title">
+                                    Resource: {{item.Listing.Category}} &bull; {{item.Owner.Name}} &bull; {{item.Owner.Telephone}}
+                                </small>
+                    </div>
+                    <div>
+                        {{item.Booking.Listing}}
                     </div>
                     <div style="width: 200px; text-align: right">
                         <span ng-if="item.Debit>0">{{item.Debit | currency : app.region.CurrencyCode}}</span><br />

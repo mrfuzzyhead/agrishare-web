@@ -19,6 +19,7 @@ namespace Agrishare.Core.Entities
         public string Status => $"{StatusId}".ExplodeCamelCase();
         public List<File> Photos => PhotoPaths?.Split(',').Select(e => new File(e)).ToList();
         public string UrlPath => $"/listing/{Id}/{Title.UrlPath()}";
+        public bool Verified => VerifiedDate.HasValue;
 
         private Category _category;
         public Category Category
@@ -63,7 +64,7 @@ namespace Agrishare.Core.Entities
 
         public static List<Listing> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", 
             string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, ListingStatus Status = ListingStatus.None, 
-            bool Deleted = false, int RegionId = 0, bool? Trending = null, DateTime? StartDate = null, DateTime? EndDate = null)
+            bool Deleted = false, int RegionId = 0, bool? Trending = null, DateTime? StartDate = null, DateTime? EndDate = null, bool? Verified = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -104,13 +105,19 @@ namespace Agrishare.Core.Entities
                     query = query.Where(e => e.DateCreated <= date);
                 }
 
+                if (Verified.HasValue)
+                    if (Verified.Value)
+                        query = query.Where(e => e.VerifiedDate.HasValue);
+                    else
+                        query = query.Where(e => !e.VerifiedDate.HasValue);
+
                 return query.OrderBy(Sort.Coalesce(DefaultSort)).Skip(PageIndex * PageSize).Take(PageSize).ToList();
             }
         }
 
         public static int Count(string Keywords = "", string StartsWith = "", int UserId = 0, int CategoryId = 0, 
             ListingStatus Status = ListingStatus.None, bool Deleted = false, int RegionId = 0, bool? Trending = null,
-            DateTime? StartDate = null, DateTime? EndDate = null)
+            DateTime? StartDate = null, DateTime? EndDate = null, bool? Verified = null)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -148,6 +155,12 @@ namespace Agrishare.Core.Entities
                     var date = EndDate.Value.EndOfDay();
                     query = query.Where(e => e.DateCreated <= date);
                 }
+
+                if (Verified.HasValue)
+                    if (Verified.Value)
+                        query = query.Where(e => e.VerifiedDate.HasValue);
+                    else
+                        query = query.Where(e => !e.VerifiedDate.HasValue);
 
                 return query.Count();
             }
@@ -321,7 +334,9 @@ namespace Agrishare.Core.Entities
                 AdministrativeAreaLevel1,
                 Country,
                 DateCreated,
-                LastModified
+                LastModified,
+                Verified,
+                VerifiedDate
             };
         }
 

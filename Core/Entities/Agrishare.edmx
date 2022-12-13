@@ -222,9 +222,13 @@
           <Property Name="Amount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="CurrencyAmount" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Currency" Type="smallint" Nullable="false" />
+          <Property Name="AgrishareCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="AgentCommission" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Reconciled" Type="bool" Nullable="false" />
           <Property Name="EcoCashReference" Type="varchar" MaxLength="128" />
           <Property Name="TypeId" Type="smallint" Nullable="false" />
+          <Property Name="Gateway" Type="smallint" Nullable="false" />
+          <Property Name="ReceiptNo" Type="varchar" MaxLength="64" />
           <Property Name="Date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -263,6 +267,7 @@
           <Property Name="ColloquialArea" Type="varchar" MaxLength="256" />
           <Property Name="AdministrativeAreaLevel1" Type="varchar" MaxLength="256" />
           <Property Name="Country" Type="varchar" MaxLength="256" />
+          <Property Name="Verified" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -496,6 +501,8 @@
           <Property Name="AuthToken" Type="varchar" MaxLength="1024" />
           <Property Name="FailedLoginAttempts" Type="int" Nullable="false" />
           <Property Name="FailedVoucherAttempts" Type="int" Nullable="false" />
+          <Property Name="FailedOtpAttempts" Type="int" Nullable="false" />
+          <Property Name="OtpRequests" Type="int" Nullable="false" />
           <Property Name="VerificationCode" Type="varchar" MaxLength="8" />
           <Property Name="VerificationCodeExpiry" Type="datetime" Precision="0" />
           <Property Name="NotificationPreferences" Type="smallint" Nullable="false" />
@@ -1371,7 +1378,7 @@
           <Property Name="IMTT" Type="Decimal" Nullable="false" />
           <Property Name="TransactionFee" Type="Decimal" Nullable="false" />
           <Property Name="ReceiptPhotoPath" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
+          <Property Name="PaymentMethodId" Type="AgrishareModel.PaymentMethod" Nullable="false" />
           <Property Name="VoucherId" Type="Int32" />
           <Property Name="VoucherTotal" Type="Decimal" Nullable="false" />
           <Property Name="PaymentStatusId" Type="Int16" Nullable="false" />
@@ -1477,6 +1484,7 @@
           <Property Name="ColloquialArea" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="AdministrativeAreaLevel1" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Country" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="VerifiedDate" Type="DateTime" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1606,6 +1614,8 @@
           <Property Name="ReferredById" Type="Int32" />
           <Property Name="ReferralCount" Type="Int32" Nullable="false" />
           <Property Name="ReferralCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="FailedOtpAttempts" Type="Int32" Nullable="false" />
+          <Property Name="OtpRequests" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="bookings_ibfk_1">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -2198,6 +2208,7 @@
           <Member Name="Cancelled" Value="5" />
           <Member Name="Incomplete" Value="6" />
           <Member Name="Paid" Value="7" />
+          <Member Name="AwaitingPayment" Value="8" />
         </EnumType>
         <EnumType Name="BookingUserStatus" UnderlyingType="Int16">
           <Member Name="Pending" Value="0" />
@@ -2337,6 +2348,10 @@
           <Property Name="Currency" Type="AgrishareModel.Currency" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Region" Relationship="AgrishareModel.journals_ibfk_3" FromRole="Journal" ToRole="Region" />
+          <Property Name="Gateway" Type="AgrishareModel.PaymentGateway" Nullable="false" />
+          <Property Name="ReceiptNo" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AgrishareCommission" Type="Decimal" Nullable="false" />
+          <Property Name="AgentCommission" Type="Decimal" Nullable="false" />
         </EntityType>
         <Association Name="journals_ibfk_2">
           <End Type="AgrishareModel.Booking" Role="Booking" Multiplicity="0..1">
@@ -2891,6 +2906,7 @@
           <Member Name="EcoCashZimbabwe" Value="1" />
           <Member Name="AirtelUganda" Value="2" />
           <Member Name="MTNUganda" Value="3" />
+          <Member Name="Cash" Value="4" />
         </EnumType>
         <Association Name="users_ibfk_4">
           <End Type="AgrishareModel.User" Role="User" Multiplicity="0..1" />
@@ -2904,6 +2920,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="PaymentMethod" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="MobileMoney" Value="1" />
+          <Member Name="Cash" Value="2" />
+          <Member Name="BankTransfer" Value="3" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3019,6 +3041,7 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="AgrishareModel.Listing">
               <MappingFragment StoreEntitySet="Listings">
+                <ScalarProperty Name="VerifiedDate" ColumnName="Verified" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="AdministrativeAreaLevel1" ColumnName="AdministrativeAreaLevel1" />
                 <ScalarProperty Name="ColloquialArea" ColumnName="ColloquialArea" />
@@ -3139,6 +3162,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AgrishareModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="OtpRequests" ColumnName="OtpRequests" />
+                <ScalarProperty Name="FailedOtpAttempts" ColumnName="FailedOtpAttempts" />
                 <ScalarProperty Name="ReferralCode" ColumnName="ReferralCode" />
                 <ScalarProperty Name="ReferralCount" ColumnName="ReferralCount" />
                 <ScalarProperty Name="ReferredById" ColumnName="ReferredBy" />
@@ -3271,6 +3296,10 @@
           <EntitySetMapping Name="Journals">
             <EntityTypeMapping TypeName="AgrishareModel.Journal">
               <MappingFragment StoreEntitySet="Journals">
+                <ScalarProperty Name="AgentCommission" ColumnName="AgentCommission" />
+                <ScalarProperty Name="AgrishareCommission" ColumnName="AgrishareCommission" />
+                <ScalarProperty Name="ReceiptNo" ColumnName="ReceiptNo" />
+                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />

@@ -121,11 +121,12 @@
                     </li>
                 </ul>
 
-                <div ng-if="[1,7].includes(detail.entity.StatusId)" class="booking-payment-form">
+                <div ng-if="[8].includes(detail.entity.StatusId)" class="booking-payment-form">
                     <div flex>
                         <gl-dropdown-list gl-placeholder="Currency" ng-model="detail.data.Payment.Currency" gl-required="true" gl-source="detail.data.Currencies" gl-selection="Id"></gl-dropdown-list>
                         <gl-textbox gl-placeholder="Amount" ng-model="detail.data.Payment.Amount" gl-required="true" gl-type="number"></gl-textbox>
-                        <gl-icon-button ng-click="detail.async('/cms/bookings/paid?id='+detail.entity.Id+'&currency='+detail.data.Payment.Currency+'&amount='+detail.data.Payment.Amount)" class="accent">Payment Received</gl-icon-button>
+                        <gl-textbox gl-placeholder="Receipt No." ng-model="detail.data.Payment.ReceiptNo" gl-required="true"></gl-textbox>
+                        <gl-icon-button ng-click="detail.async('/cms/bookings/paid?id='+detail.entity.Id+'&currency='+detail.data.Payment.Currency+'&amount='+detail.data.Payment.Amount+'&receiptno='+detail.data.Payment.ReceiptNo)" class="accent">Payment Received</gl-icon-button>
                     </div>
                 </div>
 

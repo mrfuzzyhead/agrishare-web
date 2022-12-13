@@ -14,6 +14,8 @@ namespace Agrishare.Core.Entities
     {
         public static bool VerificationRequired => Convert.ToBoolean(Config.Find(Key: "User Verification Required")?.Value ?? "True");
 
+        public static int MaxOtpRequests = 3;
+        public static int MaxFailedOtpAttempts = 5;
         public static int MaxFailedLoginAttempts = 5;
         public static int MaxFailedVoucherAttempts = 10;
 
@@ -769,7 +771,8 @@ namespace Agrishare.Core.Entities
                 PaymentMethods,
                 ReferralCount,
                 ReferralCode,
-                AgentName
+                AgentName,
+                StatusId
             };
         }
 
@@ -788,6 +791,8 @@ namespace Agrishare.Core.Entities
                 AuthToken,
                 FailedLoginAttempts,
                 FailedVoucherAttempts,
+                FailedOtpAttempts,
+                OtpRequests,
                 VerificationCode,
                 VerificationCodeExpiry,
                 NotificationPreferences,
@@ -862,6 +867,8 @@ namespace Agrishare.Core.Entities
 
         public bool SendVerificationCode()
         {
+            OtpRequests += 1;
+
             if (VerificationCode.IsEmpty() || VerificationCodeExpiry < DateTime.UtcNow)
                 VerificationCode = GeneratePIN(4);
 

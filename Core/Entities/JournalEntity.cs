@@ -37,7 +37,8 @@ namespace Agrishare.Core.Entities
                 var query = ctx.Journals
                     .Include(o => o.User)
                     .Include(o => o.Region)
-                    .Include(o => o.Booking)
+                    .Include(o => o.Booking.Listing)
+                    .Include(o => o.Booking.Listing.User.Agent)
                     .Where(o => !o.Deleted);
 
                 if (Id > 0)
@@ -54,7 +55,8 @@ namespace Agrishare.Core.Entities
             {
                 var query = ctx.Journals
                     .Include(o => o.User)
-                    .Include(o => o.Booking)
+                    .Include(o => o.Booking.Listing)
+                    .Include(o => o.Booking.Listing.User.Agent)
                     .Include(o => o.Region)
                     .Where(o => !o.Deleted);
 
@@ -162,9 +164,7 @@ namespace Agrishare.Core.Entities
                 }
             }
         }
-
-
-
+        
         public static decimal Total(DateTime StartDate, DateTime EndDate, JournalType Type, int RegionId)
         {
             using (var ctx = new AgrishareEntities())
@@ -270,27 +270,48 @@ namespace Agrishare.Core.Entities
 
         public object Json()
         {
+            var agrishareCommission = Amount * AgrishareCommission;
+            var agentCommission = Amount * AgentCommission;
+
             return new
             {
                 Id,
+                Date,
                 Title,
-                User = User?.Json(),
-                Booking = Booking?.Json(),
-                Region = Region?.Json(),
-                Amount,
+                TransactionId = Booking?.Id,
+                User = new
+                {
+                    Name = User?.Title,
+                    Telephone = User?.Telephone
+                },
+                Listing = new
+                {
+                    Title = Booking?.Listing?.Title,
+                    Category = Booking?.Listing?.Category?.Title
+                },
+                Owner = new
+                {
+                    Name = Booking?.Listing?.User?.Title,
+                    Telephone = Booking?.Listing?.User?.Telephone
+                },
+                Payment = new
+                {
+                    Method = $"{Gateway}".ExplodeCamelCase(),
+                    Amount,
+                    Currency = $"{Currency}".ExplodeCamelCase()
+                },
+                Reconciled,
+                ReceiptNo,
+                Type,
+                Agent = new 
+                {
+                    Title = Booking?.Listing?.User?.Agent?.Title,
+                    Commission = agentCommission
+                },
+                Commission = agrishareCommission + agentCommission,
+                AgrishareCommission = agrishareCommission,
                 Credit,
                 Debit,
-                CurrencyAmount,
-                Currency,
-                CurrencyCode = $"{Currency}".ExplodeCamelCase(),
-                Reconciled,
-                EcoCashReference,
-                TypeId,
-                Type,
-                Date,
-                DateCreated,
-                LastModified,
-                Deleted,
                 Balance
             };
         }

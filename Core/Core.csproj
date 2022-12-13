@@ -347,7 +347,9 @@
     <Compile Include="Entities\PaymentGateway.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\PaymentMethod.cs" />
+    <Compile Include="Entities\PaymentMethod.cs">
+      <DependentUpon>Agrishare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Product.cs">
       <DependentUpon>Agrishare.tt</DependentUpon>
     </Compile>

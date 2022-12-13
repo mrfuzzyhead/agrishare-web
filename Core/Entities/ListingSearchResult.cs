@@ -38,6 +38,9 @@ namespace Agrishare.Core.Entities
         public int Days { get; set; }
         public int Trips { get; set; }
 
+        public DateTime? VerifiedDate { get; set; }
+        public bool Verified => VerifiedDate.HasValue;
+
         public static int Count(int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, int Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
@@ -185,7 +188,8 @@ namespace Agrishare.Core.Entities
         public static List<ListingSearchResult> List(int PageIndex, int PageSize, string Sort, int CategoryId, int ServiceId, decimal Latitude,
             decimal Longitude, DateTime StartDate, decimal Size, bool IncludeFuel, bool Mobile, BookingFor For, decimal DestinationLatitude,
             decimal DestinationLongitude, decimal TotalVolume, int ListingId = 0, string Keywords = "", int RegionId = 0, 
-            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
+            bool HideUnavailable = false, decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, 
+            int LandRegion = 0, bool ShowVerified = false)
         {
             if (CategoryId == Category.LabourId || CategoryId == Category.LandId || CategoryId == Category.IrrigationId)
                 ServiceId = CategoryId;
@@ -214,6 +218,7 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine("Listings.ConditionId AS ConditionId,");
                 sql.AppendLine("Listings.AverageRating AS AverageRating,");
                 sql.AppendLine("Listings.Photos AS PhotoPaths,");
+                sql.AppendLine("Listings.Verified AS VerifiedDate,");
                 sql.AppendLine($"{TotalVolume} AS TotalVolume,");
 
                 // distances
@@ -317,8 +322,8 @@ namespace Agrishare.Core.Entities
                 sql.AppendLine($"AND Services.Mobile = {SQL.Safe(Mobile)}");
                 sql.AppendLine($"AND Services.CategoryId = {ServiceId}");
 
-                if (HideUnavailable)
-                    sql.AppendLine($"AND Available = 1");
+                if (ShowVerified)
+                    sql.AppendLine("AND Listings.Verified IS NOT NULL");
 
                 //BS: 2020-02-26 removed limitation checks
                 //sql.AppendLine($"AND {Size} >= MinimumQuantity");
@@ -354,11 +359,16 @@ namespace Agrishare.Core.Entities
                 if (!string.IsNullOrEmpty(Keywords))
                     sql.AppendLine($@"AND Listings.Title LIKE '%{Keywords.SqlSafe()}%'");
 
-                sql.AppendLine($"GROUP BY Services.Id ORDER BY {sort} LIMIT {PageIndex * PageSize}, {PageSize}");
+                sql.AppendLine($"GROUP BY Services.Id");
 
-                #if DEBUG
+                if (HideUnavailable)
+                    sql.AppendLine($"HAVING Available = 1");
+
+                sql.AppendLine($"ORDER BY {sort} LIMIT {PageIndex * PageSize}, {PageSize}");
+
+#if DEBUG
                 Log.Debug("Search SQL", sql.ToString());
-                #endif
+#endif
 
                 return ctx.Database.SqlQuery<ListingSearchResult>(sql.ToString()).ToList();
             }
@@ -387,7 +397,8 @@ namespace Agrishare.Core.Entities
                 Available,
                 StartDate,
                 EndDate,
-                Days
+                Days,
+                Verified
             };
         }
 
