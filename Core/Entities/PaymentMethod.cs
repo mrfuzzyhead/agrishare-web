@@ -14,8 +14,8 @@ namespace Agrishare.Core.Entities
     public enum PaymentMethod : short
     {
         None = 0,
-        Cash = 1,
-        BankTransfer = 2,
-        MobileMoney = 4
+        MobileMoney = 1,
+        Cash = 2,
+        BankTransfer = 3
     }
 }

@@ -19,18 +19,8 @@ header {
     }
 
     > div:first-child {
-        padding-right: 20px;
-
-        @media all and (max-width: $mobile-breakpoint) {
-            padding-right: 10px;
-        }
-
         img {
             width: 100px;
-
-            @media all and (max-width: $mobile-breakpoint) {
-                width: 50px;
-            }
         }
     }
 

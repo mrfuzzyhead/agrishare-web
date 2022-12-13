@@ -188,33 +188,38 @@ namespace Agrishare.Core.Utils
             }
         }
 
-        public static bool SendBulkMessage(string Message, out string ErrorMessage, string Category = "", Dictionary<string, object> Params = null)
+        public static bool SendBulkMessage(MessageModel Model, out string ErrorMessage)
         {
             var success = false;
             ErrorMessage = string.Empty;
 
-            dynamic apnsPayload = new Dictionary<string, Object>();
+            dynamic apnsPayload = new Dictionary<string, object>();
             apnsPayload["aps"] = new
             {
-                alert = Message,
+                alert = new Dictionary<string, object>
+                {
+                    { "title", Model.Title },
+                    { "body", Model.Message },
+                },
                 sound = "default",
-                category = Category
+                category = Model.Category
             };
 
             dynamic gcmPayload = new ExpandoObject();
             gcmPayload.data = new ExpandoObject();
-            gcmPayload.data.message = Message;
-            gcmPayload.data.category = Category;
+            gcmPayload.data.title = Model.Title;
+            gcmPayload.data.message = Model.Message;
+            gcmPayload.data.category = Model.Category;
 
-            if (Params != null)
-                foreach (var item in Params)
+            if (Model.Params != null)
+                foreach (var item in Model.Params)
                 {
                     ((IDictionary<string, object>)gcmPayload.data)[item.Key] = item.Value;
                     ((IDictionary<string, object>)apnsPayload)[item.Key] = item.Value.ToString();
                 }
 
             var payload = string.Format(@"{{""default"":{0},""APNS_SANDBOX"":{1},""APNS"":{1},""GCM_SANDBOX"":{2},""GCM"":{2}}}",
-              JsonConvert.SerializeObject(Message),
+              JsonConvert.SerializeObject(Model.Message),
               JsonConvert.SerializeObject(JsonConvert.SerializeObject(apnsPayload)),
               JsonConvert.SerializeObject(JsonConvert.SerializeObject(gcmPayload)));
 
@@ -240,6 +245,14 @@ namespace Agrishare.Core.Utils
             }
 
             return success;
+        }
+
+        public class MessageModel
+        {
+            public string Title { get; set; }
+            public string Message { get; set; }
+            public string Category { get; set; }
+            public Dictionary<string, object> Params { get; set; }
         }
 
     }

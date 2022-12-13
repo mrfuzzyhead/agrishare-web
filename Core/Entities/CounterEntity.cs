@@ -28,7 +28,8 @@ namespace Agrishare.Core.Entities
         CompleteBooking = 12,
         CancelBooking = 13,
         IncompleteBooking = 14,
-        DeclineBooking = 15
+        DeclineBooking = 15,
+        RequestOTP = 16
     }
 
     public partial class Counter : IEntity

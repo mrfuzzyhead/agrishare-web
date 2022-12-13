@@ -10,6 +10,7 @@ namespace Agrishare.API.Models
         public int UserId { get; set; }
         public int AgentId { get; set; }
         public int Status { get; set; } = -1;
+        public PaymentMethod Method { get; set; } = PaymentMethod.None;
         public int Category { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

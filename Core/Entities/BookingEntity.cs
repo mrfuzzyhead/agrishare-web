@@ -100,7 +100,7 @@ namespace Agrishare.Core.Entities
 
         public static List<Booking> List(int PageIndex = 0, int PageSize = int.MaxValue, string Sort = "", int ListingId = 0, int UserId = 0, int AgentId = 0,
             int ListingUserId = 0, int ListingSupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0,
-            bool? PaidOut = null, int RegionId = 0)
+            bool? PaidOut = null, int RegionId = 0, PaymentMethod Method = PaymentMethod.None)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -153,6 +153,9 @@ namespace Agrishare.Core.Entities
                 if (PaidOut.HasValue)
                     query = query.Where(e => e.PaidOut == PaidOut.Value);
 
+                if (Method != PaymentMethod.None)
+                    query = query.Where(e => e.PaymentMethodId == Method);
+
                 query = query.OrderBy(Sort.Coalesce(DefaultSort));
 
                 return query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
@@ -160,7 +163,7 @@ namespace Agrishare.Core.Entities
         }
 
         public static int Count(int ListingId = 0, int UserId = 0, int AgentId = 0, int SupplierId = 0, DateTime? StartDate = null, DateTime? EndDate = null, 
-            BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0, bool? PaidOut = null, int RegionId = 0)
+            BookingStatus Status = BookingStatus.None, bool Upcoming = false, int CategoryId = 0, bool? PaidOut = null, int RegionId = 0, PaymentMethod Method = PaymentMethod.None)
         {
             using (var ctx = new AgrishareEntities())
             {
@@ -207,6 +210,9 @@ namespace Agrishare.Core.Entities
 
                 if (PaidOut.HasValue)
                     query = query.Where(e => e.PaidOut == PaidOut.Value);
+
+                if (Method != PaymentMethod.None)
+                    query = query.Where(e => e.PaymentMethodId == Method);
 
                 return query.Count();
             }

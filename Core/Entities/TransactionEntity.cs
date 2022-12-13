@@ -259,6 +259,8 @@ namespace Agrishare.Core.Entities
             if (Booking == null)
                 Booking = Booking.Find(BookingId);
 
+            var agent = Agent.Find(Booking?.User?.AgentId ?? 0);
+
             new Journal
             {
                 Amount = Booking.Price,
@@ -271,7 +273,11 @@ namespace Agrishare.Core.Entities
                 Date = DateTime.UtcNow,
                 Currency = Entities.Currency.ZWL,
                 CurrencyAmount = Amount,
-                RegionId = Booking.Listing.RegionId
+                RegionId = Booking.Listing.RegionId,
+                Gateway = Gateway,
+                ReceiptNo = EcoCashReference,
+                AgrishareCommission = Transaction.AgriShareCommission,
+                AgentCommission = agent?.Commission ?? 0
             }.Save();
 
             var bookingUsers = BookingUser.List(BookingId: BookingId);

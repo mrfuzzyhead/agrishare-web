@@ -51,6 +51,7 @@
 
         <div class="filter-view">
             <gl-dropdown-list gl-placeholder="Category" ng-model="list.filter.category" gl-source="list.response.Categories" gl-selection="Id"></gl-dropdown-list>
+            <gl-dropdown-list gl-placeholder="Payment Type" ng-model="list.filter.method" gl-source="list.response.PaymentMethods" gl-selection="Id"></gl-dropdown-list>
             <gl-dropdown-list gl-placeholder="Status" ng-model="list.filter.status" gl-source="list.response.Statuses" gl-selection="Id"></gl-dropdown-list>
             <gl-date gl-placeholder="From" ng-model="list.filter.startDate"></gl-date>
             <gl-date gl-placeholder="To" ng-model="list.filter.endDate"></gl-date>

@@ -2,6 +2,7 @@
 using Agrishare.API.Models;
 using Agrishare.Core;
 using Agrishare.Core.Entities;
+using Agrishare.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -244,6 +245,28 @@ namespace Agrishare.API.Controllers.CMS
             return Error();
         }
 
+        [Route("users/failedotpattempts/reset")]
+        [AcceptVerbs("GET")]
+        public object ResetFailedOtpAttempts(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.FailedOtpAttempts = 0;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
+        [Route("users/verify")]
+        [AcceptVerbs("GET")]
+        public object VerifyAccount(int Id)
+        {
+            var user = Entities.User.Find(Id: Id);
+            user.StatusId = UserStatus.Verified;
+            if (user.Save())
+                return Find(Id);
+            return Error();
+        }
+
         /* Password */
 
         [Route("users/password/find")]
@@ -361,11 +384,12 @@ namespace Agrishare.API.Controllers.CMS
         [AcceptVerbs("GET")]
         public object BroadcastFind(int Id = 0)
         {
-            var entity = new SmsModel();
+            var entity = new SNS.MessageModel();
 
             var data = new
             {
-                Entity = entity
+                Entity = entity,
+                Sent = false
             };
 
             return Success(data);
@@ -373,18 +397,18 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("users/broadcast/save")]
         [AcceptVerbs("POST")]
-        public object BroadcastSend(SmsModel Model)
+        public object BroadcastSend(SNS.MessageModel Model)
         {
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            Model.Sent = true;
 
-            if (Core.Utils.SNS.SendBulkMessage(Model.Message, ErrorMessage: out var errorMessage))
+            if (SNS.SendBulkMessage(Model, ErrorMessage: out var errorMessage))
                 return Success(new
                 {
                     Entity = Model,
-                    Feedback = "Broadcast push notification sent!"
+                    Feedback = "Broadcast push notification sent!",
+                    Sent = true
                 });
 
             return Error(errorMessage);

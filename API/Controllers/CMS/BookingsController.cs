@@ -27,8 +27,8 @@ namespace Agrishare.API.Controllers.CMS
             else
                 status = (Entities.BookingStatus)Enum.ToObject(typeof(Entities.BookingStatus), Filter.Status);
 
-            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, RegionId: CurrentRegion.Id);
-            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, Sort: "DateCreated DESC", RegionId: CurrentRegion.Id);
+            var recordCount = Entities.Booking.Count(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, RegionId: CurrentRegion.Id, Method: Filter.Method);
+            var list = Entities.Booking.List(PageIndex: PageIndex, PageSize: PageSize, UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate, EndDate: Filter.EndDate, CategoryId: Filter.Category, PaidOut: paidOut, Sort: "DateCreated DESC", RegionId: CurrentRegion.Id, Method: Filter.Method);
             var title = "Bookings";
 
             if (Filter.UserId > 0)
@@ -64,6 +64,9 @@ namespace Agrishare.API.Controllers.CMS
 
             var Categories = Entities.Category.List(ParentId: 0);
             Categories.Insert(0, new Entities.Category { Id = 0, Title = "All" });
+
+            var PaymentMethods = EnumInfo.ToList<PaymentMethod>().Where(s => s.Id != (int)Entities.PaymentMethod.None).ToList();
+            PaymentMethods.Insert(0, new EnumDescriptor { Id = 0, Title = "All" });
 
             var graphData = Entities.Booking.Graph(UserId: Filter.UserId, AgentId: Filter.AgentId, Status: status, StartDate: Filter.StartDate ?? DateTime.Now.AddMonths(-6), EndDate: Filter.EndDate ?? DateTime.Now, CategoryId: Filter.Category, RegionId: CurrentRegion.Id);
             var Graph = new List<object>();
@@ -114,6 +117,7 @@ namespace Agrishare.API.Controllers.CMS
                     Graph
                 },
                 Statuses,
+                PaymentMethods,
                 Categories = Categories.Select(c => c.Json())
             };
 
@@ -366,13 +370,13 @@ namespace Agrishare.API.Controllers.CMS
 
         [Route("bookings/paid")]
         [AcceptVerbs("GET")]
-        public object BookingPaid(int Id, Currency Currency, decimal Amount)
+        public object BookingPaid(int Id, Currency Currency, decimal Amount, string ReceiptNo)
         {
             var booking = Booking.Find(Id: Id);
             if (booking == null || booking.Id == 0)
                 return Error("Booking not found");
 
-            if (booking.StatusId != BookingStatus.Approved && booking.StatusId != BookingStatus.Paid)
+            if (booking.StatusId != BookingStatus.AwaitingPayment)
                 return Error("Booking has already been updated");
 
             booking.StatusId = BookingStatus.InProgress;
@@ -381,6 +385,8 @@ namespace Agrishare.API.Controllers.CMS
                 decimal rate = 1;
                 if (booking.Listing.Region.Id == (int)Regions.Zimbabwe && Currency == Currency.ZWL)
                     rate = Amount / booking.Price;
+
+                var agent = Agent.Find(booking.User?.AgentId ?? 0);
 
                 new Journal
                 {
@@ -394,7 +400,11 @@ namespace Agrishare.API.Controllers.CMS
                     TypeId = JournalType.Payment,
                     CurrencyAmount = Amount,
                     Currency = Currency,
-                    UserId = booking.UserId
+                    UserId = booking.UserId,
+                    Gateway = PaymentGateway.Cash,
+                    ReceiptNo = ReceiptNo,
+                    AgrishareCommission = Transaction.AgriShareCommission,
+                    AgentCommission = agent?.Commission ?? 0
                 }.Save();
 
                 var transactionFee = TransactionFee.Find(booking.Price - booking.AgriShareCommission);

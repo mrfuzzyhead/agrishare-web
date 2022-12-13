@@ -17,7 +17,7 @@ namespace Agrishare.API.Controllers.App
         public object List(int PageIndex, int PageSize, string Sort, int CategoryId, decimal Latitude, decimal Longitude,
             DateTime StartDate, int ServiceId = 0, decimal Size = 0, bool IncludeFuel = true, bool Mobile = false, BookingFor For = BookingFor.Me,
             decimal DestinationLatitude = 0, decimal DestinationLongitude = 0, decimal TotalVolume = 0, string Keywords = "", bool HideUnavailable = false,
-            decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0)
+            decimal DistanceToWaterSource = 0, decimal DepthOfWaterSource = 0, int LabourServices = 0, int LandRegion = 0, bool ShowVerified = false)
         {
             Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Search, CategoryId: CategoryId);
 
@@ -29,7 +29,7 @@ namespace Agrishare.API.Controllers.App
                 Mobile: Mobile, For: For, DestinationLatitude: DestinationLatitude, DestinationLongitude: DestinationLongitude, 
                 TotalVolume: TotalVolume, Keywords: Keywords, RegionId: CurrentRegion.Id, HideUnavailable: HideUnavailable,
                 DistanceToWaterSource: DistanceToWaterSource, DepthOfWaterSource: DepthOfWaterSource, LabourServices: LabourServices,
-                LandRegion: LandRegion);
+                LandRegion: LandRegion, ShowVerified: ShowVerified);
 
             if (list.Count() > 0)
                 Counter.Hit(UserId: CurrentUser.Id, Event: Counters.Match, CategoryId: CategoryId);

@@ -237,7 +237,7 @@ CREATE TABLE `Counters` (
   CONSTRAINT `counters_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_3` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `counters_ibfk_4` FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=272 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Devices` */
 
@@ -282,9 +282,13 @@ CREATE TABLE `Journals` (
   `Amount` decimal(10,3) NOT NULL DEFAULT '0.000',
   `CurrencyAmount` decimal(10,3) NOT NULL DEFAULT '0.000',
   `Currency` smallint(6) NOT NULL DEFAULT '1',
+  `AgrishareCommission` decimal(10,3) NOT NULL,
+  `AgentCommission` decimal(10,3) NOT NULL,
   `Reconciled` tinyint(1) NOT NULL DEFAULT '0',
   `EcoCashReference` varchar(128) DEFAULT NULL,
   `TypeId` smallint(6) NOT NULL DEFAULT '0',
+  `Gateway` smallint(6) NOT NULL DEFAULT '0',
+  `ReceiptNo` varchar(64) DEFAULT NULL,
   `Date` datetime NOT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -293,10 +297,11 @@ CREATE TABLE `Journals` (
   KEY `UserId` (`UserId`),
   KEY `BookingId` (`BookingId`),
   KEY `RegionId` (`RegionId`),
+  KEY `Deleted` (`Deleted`),
   CONSTRAINT `journals_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `journals_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `journals_ibfk_3` FOREIGN KEY (`RegionId`) REFERENCES `Regions` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `Listings` */
 
@@ -330,6 +335,7 @@ CREATE TABLE `Listings` (
   `ColloquialArea` varchar(256) DEFAULT NULL,
   `AdministrativeAreaLevel1` varchar(256) DEFAULT NULL,
   `Country` varchar(256) DEFAULT NULL,
+  `Verified` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `UserId` (`UserId`),
   KEY `CategoryId` (`CategoryId`),
@@ -351,7 +357,7 @@ CREATE TABLE `Log` (
   `LastModified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1600 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1604 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Messages` */
 
@@ -397,7 +403,7 @@ CREATE TABLE `Notifications` (
   KEY `BookingId` (`BookingId`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE,
   CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `Pages` */
 
@@ -633,6 +639,8 @@ CREATE TABLE `Users` (
   `AuthToken` varchar(1024) DEFAULT NULL,
   `FailedLoginAttempts` int(11) NOT NULL DEFAULT '0',
   `FailedVoucherAttempts` int(11) NOT NULL DEFAULT '0',
+  `FailedOtpAttempts` int(11) NOT NULL DEFAULT '0',
+  `OtpRequests` int(11) NOT NULL DEFAULT '0',
   `VerificationCode` varchar(8) DEFAULT NULL,
   `VerificationCodeExpiry` datetime DEFAULT NULL,
   `NotificationPreferences` smallint(6) NOT NULL DEFAULT '0',

@@ -56,6 +56,8 @@ namespace Agrishare.Core.Entities
         public Nullable<int> ReferredById { get; set; }
         public int ReferralCount { get; set; }
         public string ReferralCode { get; set; }
+        public int FailedOtpAttempts { get; set; }
+        public int OtpRequests { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journals { get; set; }

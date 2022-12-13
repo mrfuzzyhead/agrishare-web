@@ -120,6 +120,7 @@
     <Content Include="Data\Listing PDF.html" />
     <Content Include="Data\Email Template.html" />
     <Content Include="Data\New Booking.html" />
+    <Content Include="Data\Verify Account.html" />
     <Content Include="Data\Verification Code.html" />
     <Content Include="Data\WHH-Logo.svg" />
     <Content Include="Login.aspx" />

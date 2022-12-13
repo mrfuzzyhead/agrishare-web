@@ -186,6 +186,26 @@
 
             </div>
 
+
+
+            <div class="box">
+
+                <h2>Listing Verification</h2>
+                <ul class="details">
+                    <li ng-if="detail.entity.Verified">
+                        <strong>Verified Date</strong>
+                        <span>{{detail.entity.VerifiedDate | date:'d MMMM yyyy'}}</span>
+                    </li>
+                </ul>
+
+                <div class="padded">
+                    <gl-icon-button ng-click="detail.async('/cms/listings/verified/toggle?id='+detail.entity.Id)" class="accent">
+                        {{detail.entity.Verified ? 'Not verified' : 'Verified'}}
+                    </gl-icon-button>
+                </div>
+
+            </div>
+
         </div>
 
 </ag-section>
