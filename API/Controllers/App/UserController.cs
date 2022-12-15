@@ -294,6 +294,9 @@ namespace Agrishare.API.Controllers.App
                 CurrentUser.AuthToken = Guid.NewGuid().ToString();
                 CurrentUser.Save();
 
+                if (CurrentUser.ReferredById.HasValue)
+                    Entities.User.UpdateReferralCount(CurrentUser.ReferredById.Value);
+
                 return new
                 {
                     User = CurrentUser.ProfileJson()
