@@ -224,6 +224,92 @@ namespace Agrishare.API.Controllers.App
         }
 
         [@Authorize(Roles = "User")]
+        [Route("code/request")]
+        [AcceptVerbs("GET")]
+        public object RequestCode()
+        {
+            if (CurrentUser.StatusId == UserStatus.Verified)
+                return Success(new
+                {
+                    User = CurrentUser.ProfileJson()
+                });
+
+            if (CurrentUser.OtpRequests > Entities.User.MaxOtpRequests)
+            {
+                SendVerificationRequest();
+                return Error("A message has been sent to the Agrishare admin team. They will contact you to verify your account.");
+            }
+
+            if (CurrentUser.SendVerificationCode())
+            {
+                Counter.Hit(CurrentUser.Id, Counters.RequestOTP);
+                return Success("Please check your messages");
+            }
+
+            return Error("Unable to send verification code - please try again");
+        }
+
+        [@Authorize(Roles = "User")]
+        [Route("code/manual")]
+        [AcceptVerbs("GET")]
+        public object RequestVerification()
+        {
+            SendVerificationRequest();
+            return Success("A message has been sent to the Agrishare admin team. They will contact you to verify your account.");
+        }
+
+        private void SendVerificationRequest()
+        {
+            var template = Template.Find(Title: "Verify Account");
+            template.Replace("Name", CurrentUser.FullName);
+            template.Replace("Telephone", CurrentUser.Telephone);
+            template.Replace("Link", $"{Config.CMSURL}/#/users/detail/{CurrentUser.Id}");
+
+            new Email
+            {
+                Message = template.EmailHtml(),
+                RecipientEmail = Config.ApplicationEmailAddress,
+                SenderEmail = CurrentUser.EmailAddress.Coalesce($"{CurrentUser.Telephone}@hariplay.app"),
+                Subject = $"URGENT: {CurrentUser.FullName} - unable to verify account"
+            }
+            .Send();
+        }
+
+        [@Authorize(Roles = "User")]
+        [Route("code/verify")]
+        [AcceptVerbs("GET")]
+        public object VerifyCode(string Code)
+        {
+            if (CurrentUser?.FailedOtpAttempts > Entities.User.MaxFailedOtpAttempts)
+                return Error("Your account has been locked - please reset your PIN.");
+
+            if (CurrentUser?.VerificationCode == Code)
+            {
+                if (CurrentUser.VerificationCodeExpiry < DateTime.UtcNow)
+                    return Error("This code has expired");
+
+                CurrentUser.OtpRequests = 0;
+                CurrentUser.VerificationCode = string.Empty;
+                CurrentUser.StatusId = UserStatus.Verified;
+                CurrentUser.AuthToken = Guid.NewGuid().ToString();
+                CurrentUser.Save();
+
+                return new
+                {
+                    User = CurrentUser.ProfileJson()
+                };
+            }
+
+            if (CurrentUser.Id > 0)
+            {
+                CurrentUser.FailedOtpAttempts += 1;
+                CurrentUser.Save();
+            }
+
+            return Error("Invalid code");
+        }
+
+        [@Authorize(Roles = "User")]
         [Route("profile/update")]
         [AcceptVerbs("POST")]
         public object UpdateProfile(UserModel User)
