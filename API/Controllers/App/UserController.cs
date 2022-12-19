@@ -228,21 +228,23 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object RequestCode()
         {
-            if (CurrentUser.StatusId == UserStatus.Verified)
+            var currentUser = Entities.User.Find(CurrentUser.Id);
+
+            if (currentUser.StatusId == UserStatus.Verified)
                 return Success(new
                 {
-                    User = CurrentUser.ProfileJson()
+                    User = currentUser.ProfileJson()
                 });
 
-            if (CurrentUser.OtpRequests > Entities.User.MaxOtpRequests)
+            if (currentUser.OtpRequests > Entities.User.MaxOtpRequests)
             {
                 SendVerificationRequest();
                 return Error("A message has been sent to the Agrishare admin team. They will contact you to verify your account.");
             }
 
-            if (CurrentUser.SendVerificationCode())
+            if (currentUser.SendVerificationCode())
             {
-                Counter.Hit(CurrentUser.Id, Counters.RequestOTP);
+                Counter.Hit(currentUser.Id, Counters.RequestOTP);
                 return Success("Please check your messages");
             }
 
@@ -280,33 +282,35 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object VerifyCode(string Code)
         {
-            if (CurrentUser?.FailedOtpAttempts > Entities.User.MaxFailedOtpAttempts)
+            var currentUser = Entities.User.Find(CurrentUser.Id);
+
+            if (currentUser?.FailedOtpAttempts > Entities.User.MaxFailedOtpAttempts)
                 return Error("Your account has been locked - please reset your PIN.");
 
-            if (CurrentUser?.VerificationCode == Code)
+            if (currentUser?.VerificationCode == Code)
             {
-                if (CurrentUser.VerificationCodeExpiry < DateTime.UtcNow)
+                if (currentUser.VerificationCodeExpiry < DateTime.UtcNow)
                     return Error("This code has expired");
 
-                CurrentUser.OtpRequests = 0;
-                CurrentUser.VerificationCode = string.Empty;
-                CurrentUser.StatusId = UserStatus.Verified;
-                CurrentUser.AuthToken = Guid.NewGuid().ToString();
-                CurrentUser.Save();
+                currentUser.OtpRequests = 0;
+                currentUser.VerificationCode = string.Empty;
+                currentUser.StatusId = UserStatus.Verified;
+                currentUser.AuthToken = Guid.NewGuid().ToString();
+                currentUser.Save();
 
-                if (CurrentUser.ReferredById.HasValue)
-                    Entities.User.UpdateReferralCount(CurrentUser.ReferredById.Value);
+                if (currentUser.ReferredById.HasValue)
+                    Entities.User.UpdateReferralCount(currentUser.ReferredById.Value);
 
                 return new
                 {
-                    User = CurrentUser.ProfileJson()
+                    User = currentUser.ProfileJson()
                 };
             }
 
-            if (CurrentUser.Id > 0)
+            if (currentUser.Id > 0)
             {
-                CurrentUser.FailedOtpAttempts += 1;
-                CurrentUser.Save();
+                currentUser.FailedOtpAttempts += 1;
+                currentUser.Save();
             }
 
             return Error("Invalid code");
@@ -320,45 +324,47 @@ namespace Agrishare.API.Controllers.App
             if (!ModelState.IsValid)
                 return Error(ModelState);
 
-            var newTelephone = CurrentUser.Telephone != User.Telephone;
+            var currentUser = Entities.User.Find(CurrentUser.Id);
 
-            CurrentUser.FirstName = User.FirstName;
-            CurrentUser.LastName = User.LastName;
-            CurrentUser.Telephone = User.Telephone;
-            CurrentUser.EmailAddress = User.EmailAddress;
-            CurrentUser.DateOfBirth = User.DateOfBirth;
-            CurrentUser.GenderId = User.GenderId;
-            CurrentUser.LanguageId = User.LanguageId ?? Entities.Language.English;
+            var newTelephone = currentUser.Telephone != User.Telephone;
+
+            currentUser.FirstName = User.FirstName;
+            currentUser.LastName = User.LastName;
+            currentUser.Telephone = User.Telephone;
+            currentUser.EmailAddress = User.EmailAddress;
+            currentUser.DateOfBirth = User.DateOfBirth;
+            currentUser.GenderId = User.GenderId;
+            currentUser.LanguageId = User.LanguageId ?? Entities.Language.English;
 
             try
             {
-                CurrentUser.Region = Region.Find(User.RegionId.Value);
+                currentUser.Region = Region.Find(User.RegionId.Value);
             }
             catch
             {
-                CurrentUser.Region = Region.Find((int)Regions.Zimbabwe);
+                currentUser.Region = Region.Find((int)Regions.Zimbabwe);
             }
 
             if (newTelephone)
-                CurrentUser.StatusId = Entities.UserStatus.Pending;
+                currentUser.StatusId = Entities.UserStatus.Pending;
 
-            if (!Regex.IsMatch(CurrentUser.Telephone, @"^0[\d]{9}"))
-                return Error($"{CurrentUser.Telephone} is not a valid cell number. The number should start with 0 and contain 10 digits.");
+            if (!Regex.IsMatch(currentUser.Telephone, @"^0[\d]{9}"))
+                return Error($"{currentUser.Telephone} is not a valid cell number. The number should start with 0 and contain 10 digits.");
 
-            if (!CurrentUser.UniqueTelephone())
-                return Error($"{CurrentUser.Telephone} has already been registered");
+            if (!currentUser.UniqueTelephone())
+                return Error($"{currentUser.Telephone} has already been registered");
 
-            if (!CurrentUser.EmailAddress.IsEmpty() && !CurrentUser.UniqueEmailAddress())
-                return Error($"{CurrentUser.EmailAddress} has already been registered");
+            if (!currentUser.EmailAddress.IsEmpty() && !CurrentUser.UniqueEmailAddress())
+                return Error($"{currentUser.EmailAddress} has already been registered");
 
-            if (CurrentUser.Save())
+            if (currentUser.Save())
             { 
                 if (newTelephone)
-                    CurrentUser.SendVerificationCode();
+                    currentUser.SendVerificationCode();
 
                 return Success(new
                 {
-                    User = CurrentUser.ProfileJson(),
+                    User = currentUser.ProfileJson(),
                     Verify = newTelephone
                 });
             }
@@ -371,20 +377,22 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object UpdateNotificationPreferences(bool SMS, bool PushNotifications, bool Email, bool BulkSMS = false)
         {
-            CurrentUser.NotificationPreferences = 0;
-            if (SMS)
-                CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.SMS;
-            if (PushNotifications)
-                CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.PushNotifications;
-            if (Email)
-                CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.Email;
-            if (BulkSMS)
-                CurrentUser.NotificationPreferences += (int)Entities.NotificationPreferences.BulkSMS;
+            var currentUser = Entities.User.Find(CurrentUser.Id);
 
-            if (CurrentUser.Save())
+            currentUser.NotificationPreferences = 0;
+            if (SMS)
+                currentUser.NotificationPreferences += (int)Entities.NotificationPreferences.SMS;
+            if (PushNotifications)
+                currentUser.NotificationPreferences += (int)Entities.NotificationPreferences.PushNotifications;
+            if (Email)
+                currentUser.NotificationPreferences += (int)Entities.NotificationPreferences.Email;
+            if (BulkSMS)
+                currentUser.NotificationPreferences += (int)Entities.NotificationPreferences.BulkSMS;
+
+            if (currentUser.Save())
                 return Success(new
                 {
-                    User = CurrentUser.ProfileJson()
+                    User = currentUser.ProfileJson()
                 });
 
             return Error("Could not update preferences");
@@ -395,8 +403,10 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object UpdateLanguagePreference(Language LanguageId)
         {
-            CurrentUser.LanguageId = LanguageId;
-            if (CurrentUser.Save())
+            var currentUser = Entities.User.Find(CurrentUser.Id);
+
+            currentUser.LanguageId = LanguageId;
+            if (currentUser.Save())
                 return Success(new
                 {
                     User = CurrentUser.ProfileJson()
@@ -410,22 +420,24 @@ namespace Agrishare.API.Controllers.App
         [AcceptVerbs("GET")]
         public object UpdatePaymentPreferences([FromUri] PaymentPreferencesModel Preferences)
         {
-            CurrentUser.PaymentMethods = new List<PaymentMethod>();
-            if (Preferences.Cash)
-                CurrentUser.PaymentMethods.Add(PaymentMethod.Cash);
-            if (Preferences.BankTransfer)
-                CurrentUser.PaymentMethods.Add(PaymentMethod.BankTransfer);
-            if (Preferences.MobileMoney)
-                CurrentUser.PaymentMethods.Add(PaymentMethod.MobileMoney);
-            CurrentUser.BankAccount.Bank = Preferences.BankName;
-            CurrentUser.BankAccount.Branch = Preferences.BranchName;
-            CurrentUser.BankAccount.AccountName = Preferences.AccountName;
-            CurrentUser.BankAccount.AccountNumber = Preferences.AccountNumber;
+            var currentUser = Entities.User.Find(CurrentUser.Id);
 
-            if (CurrentUser.Save())
+            currentUser.PaymentMethods = new List<PaymentMethod>();
+            if (Preferences.Cash)
+                currentUser.PaymentMethods.Add(PaymentMethod.Cash);
+            if (Preferences.BankTransfer)
+                currentUser.PaymentMethods.Add(PaymentMethod.BankTransfer);
+            if (Preferences.MobileMoney)
+                currentUser.PaymentMethods.Add(PaymentMethod.MobileMoney);
+            currentUser.BankAccount.Bank = Preferences.BankName;
+            currentUser.BankAccount.Branch = Preferences.BranchName;
+            currentUser.BankAccount.AccountName = Preferences.AccountName;
+            currentUser.BankAccount.AccountNumber = Preferences.AccountNumber;
+
+            if (currentUser.Save())
                 return Success(new
                 {
-                    User = CurrentUser.ProfileJson()
+                    User = currentUser.ProfileJson()
                 });
 
             return Error("Could not update preferences");
