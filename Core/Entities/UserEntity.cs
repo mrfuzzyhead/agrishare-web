@@ -815,7 +815,8 @@ namespace Agrishare.Core.Entities
                 PaymentMethods,
                 ReferralCount,
                 ReferralCode,
-                AgentName
+                AgentName,
+                ReferredById
             };
         }
 
